@@ -1,0 +1,92 @@
+/*
+ * Copyright (c) 2008 - 2009 Anqh
+ *
+ * Based on Better Web Readability Project - CSS Library by Vladimir Carrer, see official site for more info: http://www.vcarrer.com/
+ *
+ * Original
+ * Font size 16px
+ * Line height 26px
+ *
+ * Modified
+ * Font size 12px
+ * Line height 20px
+ * H1 24px
+ * H2 21px
+ * H3 18px
+ * H4 16px
+ * H5 14px
+ * H6 14px
+ */
+
+body                         { font: 75%/1.6667em Lucida Grande, Lucida Sans Unicode, sans-serif; font-size-adjust: none; font-style: normal; font-variant: normal; font-weight: normal; }
+
+p                            { font-weight: 300; padding: 0 0 0.8333em 0; }
+p + p                        { text-indent: 1.667em; }
+p.first:first-letter         { float: left; font-family: Baskerville, Palatino Linotype, serif; font-size: 3em; font-weight: 700; line-height: 1em; padding: 0.2em 0.1em 0 0; }
+p img                        { float: left; margin: 0.5em 0.833em 0.833em 0; padding: 0; }
+p img.right                  { float: right; margin: 0.5em 0 0.833em 0.833em }
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6                           { font-weight: normal; font-family: Georgia, serif; }
+h1                           { font-size: 2em; line-height: 1.6667em; margin-top: 0.833em; }
+h2                           { font-size: 1.75em; line-height: 1.9048em; /*margin-top: 0.952em;*/ }
+h3                           { font-size: 1.5em; line-height: 1.1111em; margin-top: 1.111em; }
+h4                           { font-size: 1.3333em; line-height: 1.25em; margin-top: 1.25em; }
+h5,
+h6                           { font-size: 1.16667em; line-height: 1.4286em; margin-top: 1.4286em; }
+
+input,
+textarea,
+select,
+option                       { font-family: Lucida Grande, Lucida Sans Unicode, sans-serif; }
+
+ul                           { list-style: none; list-style-position: outside; }
+ul.bullet                    { list-style: disc; }
+ul.circle                    { list-style: circle; }
+ul.square                    { list-style: square; }
+ol,
+ul.bullet,
+ul.circle,
+ul.square,
+dl                           { margin: 0 0 1.667em 0; }
+li ol                        { margin: 0 1.667em; }
+dl dt                        { font-weight: bold; }
+dl dd                        { margin-left: 1.667em; }
+
+a                            { text-decoration: none; }
+a:hover                      { text-decoration: underline; }
+
+table                        { margin-bottom: 1.667em; border-collapse: collapse; }
+th                           { font-weight: bold; }
+tr,
+th,
+td                           { height: 20px; margin: 0; padding: 0 1.667em 0 1em; }
+tfoot                        { font-style: italic; }
+caption                      { font-family: Georgia, serif; text-align: center; }
+
+acronym                      { font-variant: small-caps; letter-spacing: 0.1em; text-transform: lowercase; }
+address                      { font-style: italic; }
+small                        { font-size: 0.75em; line-height: 2.222em; }
+dfn,
+strong                       { font-weight: bold; }
+em, 
+dfn                          { font-style: italic; }
+pre, 
+code                         { margin: 1.667em 0; white-space: pre; }
+pre, 
+code, 
+tt                           { font: 1em monospace; line-height: 1.5; } 
+tt                           { display: block; margin: 1.667em 0; }
+hr                           { margin-bottom: 1.667em; }
+
+blockquote                   { font-family: Georgia, serif; font-style: italic; padding: 1em 1em 1.667em 1em; }
+blockquote:before            { content: "\201C"; font-family: Georgia, serif; font-size: 3em; line-height: 0; margin-left: -0.667em; }
+blockquote > p               { padding: 0; margin: 0; }
+blockquote em                { font-style: normal; }
+
+.note                        { font-family: Georgia, Times New Roman, Times, serif; font-size: 0.9em; font-style: italic; margin: 0.1em; } 
+.mono                        { font-family: Courier New, Courier, monospace; }

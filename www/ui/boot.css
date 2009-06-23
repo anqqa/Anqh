@@ -1,0 +1,65 @@
+/*
+ * Copyright (c) 2008 - 2009 Anqh
+ */
+
+body                         { line-height: 1; }
+html                         { min-height: 100%; }
+body, 
+form, 
+ol, 
+ul, 
+dl, 
+li, 
+dt, 
+dd, 
+td, 
+th, 
+tr,
+h1, 
+h2, 
+h3, 
+h4, 
+h5, 
+h6, 
+p, 
+pre, 
+blockquote, 
+del,
+dfn,
+em,
+form,
+fieldset,
+label,
+legend,
+table, 
+caption,
+tbody,
+tfoot, 
+thead,
+address                      { font-family: inherit; font-size: 100%; font-style: inherit; font-weight: inherit; margin: 0; padding: 0; }
+
+blockquote,
+q                            { quotes: '' ''; }
+blockquote:before,
+blockquote:after,
+q:before,
+q:after                      { content: ''; content: none; }
+
+ul                           { list-style-image: none; list-style-position: outside; list-style-type: none; }
+ins                          { text-decoration: none; }
+del                          { text-decoration: line-through; }
+a:focus                      { outline-color: -moz-use-text-color; outline-style: none; outline-width: 0; }
+img                          { border: 0 none; }
+
+fieldset                     { border: 0 none; margin: 0; padding: 0; }
+input, 
+select, 
+textarea                     { font-size: 100%; vertical-align: middle; }
+
+table                        { border-collapse: collapse; border-spacing: 0; empty-cells: show; }
+caption,
+th,
+td                           { text-align: left; font-weight: normal; }
+table,
+td,
+th                           { vertical-align: middle; }
