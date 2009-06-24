@@ -2,7 +2,7 @@
 /**
  * ORM auto modeler library.
  * Based heavily on Auto Modeler ORM by Jeremy Bush, see official site for more
- * info: http://dev.argentuminvoice.com/projects/argentum
+ * info: http://projects.kohanaphp.com/projects/show/automodeler
  *
  * @package    Anqh
  * @author     Antti Qvickström
