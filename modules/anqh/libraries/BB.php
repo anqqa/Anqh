@@ -2,50 +2,81 @@
 include_once(Kohana::find_file('vendor', 'nbbc/nbbc'));
 
 /**
- * BBCode library
+ * BBCode library.
+ *
+ * Uses NBBC Copyright (C) 2008-9, the Phantom Inker. All rights reserved.
+ * See official site for more info: http://nbbc.sourceforge.net/
  *
  * @package    Anqh
  * @author     Antti Qvickström
  * @copyright  (c) 2009 Antti Qvickström
- * @license    MIT
+ * @license    http://www.opensource.org/licenses/mit-license.php MIT license
  */
 class BB extends BBCode {
 
-	public $text;
+	/**
+	 * The BBCode formatted text
+	 *
+	 * @var  string
+	 */
+	public $text = null;
 
 
 	/**
 	 * Create new BBCode object and initialize our own settings
 	 *
 	 */
-	public function __construct() {
+	public function __construct($text = null) {
 		parent::BBCode();
 
+		$this->text = $text;
+
+		// Automagically print hrefs
 		$this->SetDetectURLs(true);
+
+		// We have our own smileys
+		$this->SetEnableSmileys(false);
+
+		// We handle newlines with Kohana
+		$this->SetIgnoreNewlines(true);
+		$this->SetPreTrim('a');
+		$this->SetPostTrim('a');
+
+		// User our own quote
+		$this->AddRule('quote', array(
+			'simple_start' => '<blockquote>',
+			'simple_end'   => '</blockquote>',
+			'class'        => 'block',
+			'allow_in'     => array('listitem', 'block', 'columns'),
+		));
 	}
 
 
 	/**
 	 * Creates and returns new BBCode object
 	 *
-	 * @chainable
-	 * @param   string  text with bbcode
-	 * @return  BBCode
+	 * @param   string  $text
+	 * @return  BB
 	 */
 	public static function factory($text = null) {
-		$bbcode = new BB;
-		$bbcode->text = $text;
-
-		return $bbcode;
+		return new BB($text);
 	}
 
 
 	/**
 	 * Return BBCode parsed to HTML
 	 *
-	 * @return string
+	 * @return  string
 	 */
 	public function render() {
-		return empty($this->text) ? '' : $this->Parse($this->text);
+		if (is_null($this->text)) {
+			return '';
+		}
+
+		// Convert old system tags to BBCode
+		$this->text = str_replace(array('[link', '[/link]', '[q]', '[/q]'), array('[url', '[/url]', '[quote]', '[/quote]'), $this->text);
+
+		return text::auto_p($this->Parse($this->text));
 	}
+
 }
