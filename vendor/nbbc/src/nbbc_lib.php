@@ -15,7 +15,7 @@
 	//
 	//-----------------------------------------------------------------------------
 	//
-	//  Copyright (c) 2008, the Phantom Inker.  All rights reserved.
+	//  Copyright (c) 2008-9, the Phantom Inker.  All rights reserved.
 	//
 	//  Redistribution and use in source and binary forms, with or without
 	//  modification, are permitted provided that the following conditions
@@ -411,11 +411,16 @@
 			if ($action == BBCODE_CHECK) return true;
 
 			$url = is_string($default) ? $default : $bbcode->UnHTMLEncode(strip_tags($content));
-			if ($bbcode->IsValidURL($url))
-				return '<a href="' . htmlspecialchars($url) . '" class="bbcode_url">' . $content . '</a>';
-			else if (is_string($default))
-				return "[url=" . htmlspecialchars($default) . "]" . $content . "[/url]";
-			else return "[url]" . $content . "[/url]";
+			if ($bbcode->IsValidURL($url)) {
+				if ($bbcode->url_targetable !== false && isset($params['target']))
+					$target = " target=\"" . htmlspecialchars($params['target']) . "\"";
+				else $target = "";
+				if ($bbcode->url_target !== false)
+					if (!($bbcode->url_targetable == 'override' && isset($params['target'])))
+						$target = " target=\"" . htmlspecialchars($bbcode->url_target) . "\"";
+				return '<a href="' . htmlspecialchars($url) . '" class="bbcode_url"' . $target . '>' . $content . '</a>';
+			}
+			else return htmlspecialchars($params['_tag']) . $content . htmlspecialchars($params['_endtag']);
 		}
 
 		// Format an [email] tag by producing an <a>...</a> element.
@@ -429,9 +434,7 @@
 			$email = is_string($default) ? $default : $bbcode->UnHTMLEncode(strip_tags($content));
 			if ($bbcode->IsValidEmail($email))
 				return '<a href="mailto:' . htmlspecialchars($email) . '" class="bbcode_email">' . $content . '</a>';
-			else if (is_string($default))
-				return "[email=" . htmlspecialchars($default) . "]" . $content . "[/email]";
-			else return "[email]" . $content . "[/email]";
+			else return htmlspecialchars($params['_tag']) . $content . htmlspecialchars($params['_endtag']);
 		}
 		
 		// Format a [size] tag by producing a <span> with a style with a different font-size.
@@ -488,7 +491,7 @@
 				return strlen($name) > 0;
 			$title = trim(@$params['title']);
 			if (strlen($title) <= 0) $title = trim($default);
-			return "<a href=\"{$bbcode->wiki_url}" . urlencode($name) . "\" class=\"bbcode_wiki\">"
+			return "<a href=\"{$bbcode->wiki_url}$name\" class=\"bbcode_wiki\">"
 				. htmlspecialchars($title) . "</a>";
 		}
 
@@ -519,7 +522,7 @@
 				}
 			}
 
-			return "[img]" . $content . "[/img]";
+			return htmlspecialchars($params['_tag']) . htmlspecialchars($content) . htmlspecialchars($params['_endtag']);
 		}
 
 		// Format a [rule] tag.  This substitutes the content provided by the BBCode

@@ -15,7 +15,7 @@
 	//
 	//-----------------------------------------------------------------------------
 	//
-	//  Copyright (c) 2008, the Phantom Inker.  All rights reserved.
+	//  Copyright (c) 2008-9, the Phantom Inker.  All rights reserved.
 	//
 	//  Redistribution and use in source and binary forms, with or without
 	//  modification, are permitted provided that the following conditions
@@ -112,6 +112,8 @@
 
 		var $local_img_dir;	// The host filesystem path to local images (should be an absolute path).
 		var $local_img_url;	// The URL path to local images (possibly a relative path).
+		var $url_targetable; // If true, [url] tags can accept a target="..." parameter.
+		var $url_target;	// If non-false, [url] tags will use this target and no other.
 		
 		var $rule_html;		// The default HTML to output for a [rule] tag.
 
@@ -152,6 +154,8 @@
 			$this->limit_precision = 0.15;
 			$this->detect_urls = false;
 			$this->url_pattern = '<a href="{$url/h}">{$text/h}</a>';
+			$this->url_targetable = false;
+			$this->url_target = false;
 		}
 
 		//-----------------------------------------------------------------------------
@@ -193,6 +197,12 @@
 		function GetDetectURLs()       { return $this->detect_urls; }
 		function SetURLPattern($pattern) { $this->url_pattern = $pattern; }
 		function GetURLPattern()       { return $this->url_pattern; }
+
+		function SetURLTargetable($enable) { $this->url_targetable = $enable; }
+		function GetURLTargetable()    { return $this->url_targetable; }
+
+		function SetURLTarget($target) { $this->url_target = $target; }
+		function GetURLTarget()        { return $this->url_target; }
 
 		//-----------------------------------------------------------------------------
 		// Rule-management:  You can add your own custom tag rules, or use the defaults.
@@ -289,14 +299,14 @@
 		}
 
 		// This takes an arbitrary string and makes it a wiki-safe string:  It converts
-		// all characters to be within [a-zA-Z0-9.:_-] by converting everything else to
+		// all characters to be within [a-zA-Z0-9'",.:_-] by converting everything else to
 		// _ characters, compacts multiple _ characters together, and trims initial and
 		// trailing _ characters.  So, for example, [[Washington, D.C.]] would become
 		// "Washington_D.C.", safe to pass through a URL or anywhere else.  All characters
 		// in the extended-character range (0x7F-0xFF) will be URL-encoded.
 		function Wikify($string) {
-			return urlencode(str_replace(" ", "_",
-				trim(preg_replace("/[,!?;@#\$%\\^&*<>=+`~'\\x00-\\x20_-]+/", " ", $string))));
+			return rawurlencode(str_replace(" ", "_",
+				trim(preg_replace("/[!?;@#\$%\\^&*<>=+`~\\x00-\\x20_-]+/", " ", $string))));
 		}
 
 		// Returns true if the given string is a valid URL.  If $email_too is false,
@@ -317,21 +327,21 @@
 			if (preg_match("/^
 				(?:https?|ftp):\\/\\/
 				(?:
-					(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+
-					[a-z0-9]
-					(?:[a-z0-9-]*[a-z0-9])?
+					(?:[a-zA-Z0-9](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?\.)+
+					[a-zA-Z0-9]
+					(?:[a-zA-Z0-9-]*[a-zA-Z0-9])?
 				|
 					\\[
 					(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}
 					(?:
-						25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:
+						25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-zA-Z0-9-]*[a-zA-Z0-9]:
 						(?:[\\x01-\\x08\\x0B\\x0C\\x0E-\\x1F\\x21-\\x5A\\x53-\\x7F]
 							|\\\\[\\x01-\\x09\\x0B\\x0C\\x0E-\\x7F])+
 					)
 					\\]
 				)
 				(?::[0-9]{1,5})?
-				(?:\\/[^\n\r]*)?
+				(?:[\\/\\?\\#][^\\n\\r]*)?
 				$/Dx", $string)) return true;
 
 			// Check for anything that does *not* have a colon in it before the first
@@ -351,6 +361,9 @@
 		// Returns true if the given string is a valid e-mail address.  This allows
 		// everything that RFC821 allows, including e-mail addresses that make no sense.
 		function IsValidEmail($string) {
+			$validator = new BBCodeEmailAddressValidator;
+			return $validator->check_email_address($string);
+		/*
 			return preg_match("/^
 				(?:
 					[a-z0-9\\!\\#\\\$\\%\\&\\'\\*\\+\\/=\\?\\^_`\\{\\|\\}~-]+
@@ -375,6 +388,7 @@
 					\\]
 				)
 				$/Dx", $string);
+		*/
 		}
 
 		// This function is used to wrap around calls to htmlspecialchars() for
@@ -881,7 +895,8 @@
 							print "<b>Internal_GenerateOutput:</b> optional-tag's content: <tt>"
 								. htmlspecialchars($tag_body) . "</tt><br />\n";
 						}
-								
+
+						$this->Internal_UpdateParamsForMissingEndTag(@$token[BBCODE_STACK_TAG]);
 						$tag_output = $this->DoTag(BBCODE_OUTPUT, $name,
 							@$token[BBCODE_STACK_TAG]['_default'], @$token[BBCODE_STACK_TAG], $tag_body);
 							
@@ -1482,6 +1497,20 @@
 		//-----------------------------------------------------------------------------
 		//  Parser token-processing routines (internal).
 
+		// If an end-tag is required/optional but missing, we simulate it here so that the
+		// rule handlers still see a valid '_endtag' parameter.  This way, all rules always
+		// see valid '_endtag' parameters except for rules for isolated tags.
+		function Internal_UpdateParamsForMissingEndTag(&$params) {
+			switch ($this->tag_marker) {
+			case '[': $tail_marker = ']'; break;
+			case '<': $tail_marker = '>'; break;
+			case '{': $tail_marker = '}'; break;
+			case '(': $tail_marker = ')'; break;
+			default: $tail_marker = $this->tag_marker; break;
+			}
+			$params['_endtag'] = $this->tag_marker . '/' . $params['_name'] . $tail_marker;
+		}
+
 		// Process an isolated tag, a tag that is not allowed to have an end tag.
 		function Internal_ProcessIsolatedTag($tag_name, $tag_params, $tag_rule) {
 			if ($this->debug) {
@@ -1543,6 +1572,7 @@
 				if ($token_type == BBCODE_ENDTAG
 					&& @$this->lexer->tag['_name'] == $tag_name) {
 					// Found the end tag, so we're done.
+					$end_tag_params = $this->lexer->tag;
 					break;
 				}
 				if ($this->debug) {
@@ -1624,6 +1654,8 @@
 			// pass the contents through htmlspecialchars or FixupOutput
 			// or anything else that could sanitize it:  They asked for
 			// verbatim contents, so they're going to get it.
+			$tag_params['_endtag'] = $end_tag_params['_tag'];
+			$tag_params['_hasend'] = true;
 			$output = $this->DoTag(BBCODE_OUTPUT, $tag_name,
 				@$tag_params['_default'], $tag_params, $content);
 
@@ -1815,6 +1847,8 @@
 			$this->Internal_ComputeCurrentClass();
 			
 			$this->Internal_CleanupWSByPoppingStack(@$this->tag_rules[$tag_name]['before_tag'], $this->stack);
+			$start_tag_params['_endtag'] = $tag_params['_tag'];
+			$start_tag_params['_hasend'] = true;
 			$output = $this->DoTag(BBCODE_OUTPUT, $tag_name, @$start_tag_params['_default'],
 				$start_tag_params, $contents);
 			$this->Internal_CleanupWSByEatingInput(@$this->tag_rules[$tag_name]['after_endtag']);
@@ -1857,6 +1891,7 @@
 			// must be known in advance, which is why the tag marker cannot be changed
 			// during the parse.
 			$this->lexer = new BBCodeLexer($string, $this->tag_marker);
+			$this->lexer->debug = $this->debug;
 
 			$BBCode_Profiler->End('Lexer:Split');
 

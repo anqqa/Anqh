@@ -1,4 +1,46 @@
 
+2009-06-21 / v1.4.2 / Phantom Inker (inker2576@yahoo.com)
+	* SECURITY FIX: [img] tag was allowing HTML content to be passed
+		through.
+
+2009-04-03 / v1.4.1 / Phantom Inker (inker2576@yahoo.com)
+	* Fixed documentation for [quote] tag's url= attribute.
+
+2009-03-20 / v1.4.1 / Phantom Inker (inker2576@yahoo.com)
+	* Added support for SetURLTarget() and GetURLTarget(), and
+		extended support for SetURLTargeting().
+	* Added four more regression tests for URL targeting.
+
+2009-02-16 / v1.4.0 RELEASE / Phantom Inker (inker2576@yahoo.com)
+	* Replaced parsing logic for tags so that an equal-sign before
+	    whitespace can be considered part of a tag's value.  This
+	    allows [url=http://foo.com?bar=baz] to be parsed the way the
+	    user expects.  Note that this does break some (probably
+	    invalid) tags, but overall, the new parsing algorithm seems
+	    to be a win.
+	* Added several regression tests for the new tag-parsing logic.
+	* Added SetURLTargetable() and GetURLTargetable().  However, the
+	    default setting is to have this disabled for security reasons.
+	* Updated [url] tag to support URL targeting, using the standard
+	    target="" form.
+	* Fixed Wikify() so that wiki links with ' or , in them will be
+	    processed correctly.
+	* Added the _tag, _endtag, _hasend, and _params tag parameters.
+	* Added new appendix H for the tag parameters; added additional
+	    documentation for Set/GetURLTargetable().
+	* Added $debug flag to BBCodeLexer, replicated from the same flag in
+	    class BBCode itself.
+
+2009-01-08 / v1.3.4 / Phantom Inker (inker2576@yahoo.com)
+	* Replaced IsValidEmail() with e-mail validator from AddedBytes.com,
+	    which does a considerably better job of validating incorrect
+	    e-mails.  This fixes a bug were some e-mail addresses in [email]
+	    tags were being rejected even though they were legal.
+
+2008-12-01 / v1.3.3 / Phantom Inker (inker2576@yahoo.com)
+	* Added regression tests for [[wiki]] tags due to possible issue
+		identified in debugging CMXpress v0.9.8.
+
 2008-11-06 / v1.3.2 / Phantom Inker (inker2576@yahoo.com)
 	* Added regression tests for parsing equal signs in tags per tracker
 		ID #2220598.

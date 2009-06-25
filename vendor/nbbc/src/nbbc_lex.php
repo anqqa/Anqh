@@ -15,7 +15,7 @@
 	//
 	//-----------------------------------------------------------------------------
 	//
-	//  Copyright (c) 2008, the Phantom Inker.  All rights reserved.
+	//  Copyright (c) 2008-9, the Phantom Inker.  All rights reserved.
 	//
 	//  Redistribution and use in source and binary forms, with or without
 	//  modification, are permitted provided that the following conditions
@@ -62,6 +62,7 @@
 		var $unget;			// Whether to "unget" the last token.
 		
 		var $verbatim;		// In verbatim mode, we return all input, unparsed, including comments.
+		var $debug;			// In debug mode, we dump decoded tags when we find them.
 
 		var $tagmarker;		// Which kind of tag marker we're using:  "[", "<", "(", or "{"
 		var $pat_main;		// Main tag-matching pattern.
@@ -357,29 +358,51 @@
 			else return $string;
 		}
 
+		// Given a tokenized piece of a tag, decide what type of token it is.  Our
+		// return values are:
+		//    -1    End-of-input (EOI).
+		//    '='   Token is an = sign.
+		//    ' '   Token is whitespace.
+		//    '"'   Token is quoted text.
+		//    'A'   Token is unquoted text.
+		function Internal_ClassifyPiece($ptr, $pieces) {
+			if ($ptr >= count($pieces)) return -1;	// EOI.
+			$piece = $pieces[$ptr];
+			if ($piece == '=') return '=';
+			else if (preg_match("/^[\\'\\\"]/", $piece)) return '"';
+			else if (preg_match("/^[\\x00-\\x20]+$/", $piece)) return ' ';
+			else return 'A';
+		}
+
 		// Given a string containing a complete [tag] (including its brackets), break
 		// it down into its components and return them as an array.
 		function Internal_DecodeTag($tag) {
+
+			if ($this->debug) {
+				print "<b>Lexer::InternalDecodeTag:</b> input: " . htmlspecialchars($tag) . "<br />\n";
+			}
+
+			// Create the initial result object.
+			$result = Array('_tag' => $tag, '_endtag' => '', '_name' => '',
+				'_hasend' => false, '_end' => false, '_default' => false);
+
 			// Strip off the [brackets] around the tag, leaving just its content.
 			$tag = substr($tag, 1, strlen($tag)-2);
-			
+
 			// The starting bracket *must* be followed by a non-whitespace character.
 			$ch = ord(substr($tag, 0, 1));
-			if ($ch >= 0 && $ch <= 32)
-				return Array('_name' => '', '_end' => false, '_default' => false);
+			if ($ch >= 0 && $ch <= 32) return $result;
 
-			// Break it apart into words, quoted text, whitespace, and equal signs, and leave out the whitespace.
-			$pieces = preg_split("/(\\\"[^\\\"]+\\\"|\\'[^\\']+\\'|=)|[\\x00-\\x20]+/",
+			// Break it apart into words, quoted text, whitespace, and equal signs.
+			$pieces = preg_split("/(\\\"[^\\\"]+\\\"|\\'[^\\']+\\'|=|[\\x00-\\x20]+)/",
 				$tag, -1, PREG_SPLIT_DELIM_CAPTURE|PREG_SPLIT_NO_EMPTY);
 			$ptr = 0;
 
 			// Handle malformed (empty) tags correctly.
-			if (count($pieces) < 1)
-				return Array('_name' => '', '_end' => false, '_default' => false);
+			if (count($pieces) < 1) return $result;
 
 			// The first piece should be the tag name, whatever it is.  If it starts with a /
 			// we remove the / and mark it as an end tag.
-			$result = Array();
 			if (@substr($pieces[$ptr], 0, 1) == '/') {
 				$result['_name'] = strtolower(substr($pieces[$ptr++], 1));
 				$result['_end'] = true;
@@ -388,57 +411,147 @@
 				$result['_name'] = strtolower($pieces[$ptr++]);
 				$result['_end'] = false;
 			}
-			
-			// If the second piece is an equal sign, then the third piece is the tag's default value.
-			if (@$pieces[$ptr] == '=') {
+
+			// Skip whitespace after the tag name.
+			while (($type = $this->Internal_ClassifyPiece($ptr, $pieces)) == ' ')
 				$ptr++;
-				// See if this first parameter is quoted; if not, we need to collect.
-				$ch = @substr($pieces[$ptr], 0, 1);
-				if ($ch == "'" || $ch == "\"")
-					$value = $this->Internal_StripQuotes(@$pieces[$ptr++]);
+
+			$params = Array();
+
+			// If the next piece is an equal sign, then the tag's default value follows.
+			if ($type != '=') {
+				$result['_default'] = false;
+				$params[] = Array('key' => '', 'value' => '');
+			}
+			else {
+				$ptr++;
+
+				// Skip whitespace after the initial equal-sign.
+				while (($type = $this->Internal_ClassifyPiece($ptr, $pieces)) == ' ')
+					$ptr++;
+
+				// Examine the next (real) piece, and see if it's quoted; if not, we need to
+				// use heuristics to guess where the default value begins and ends.
+				if ($type == "\"")
+					$value = $this->Internal_StripQuotes($pieces[$ptr++]);
 				else {
 					// Collect pieces going forward until we reach an = sign or the end of the
 					// tag; then rewind before whatever comes before the = sign, and everything
 					// between here and there becomes the default value.  This allows tags like
 					// [font=Times New Roman size=4] to make sense even though the font name is
-					// not quoted.
+					// not quoted.  Note, however, that there's a special initial case, where
+					// any equal-signs before whitespace are considered to be part of the parameter
+					// as well; this allows an ugly tag like [url=http://foo?bar=baz target=my_window]
+					// to behave in a way that makes (tolerable) sense.
+					$after_space = false;
 					$start = $ptr;
-					while ($ptr < count($pieces)-1 && $pieces[$ptr] != '=')
+					while (($type = $this->Internal_ClassifyPiece($ptr, $pieces)) != -1) {
+						if ($type == ' ') $after_space = true;
+						if ($type == '=' && $after_space) break;
 						$ptr++;
-					if (@$pieces[$ptr] == '=') {
+					}
+					if ($type == -1) $ptr--;
+					
+					// We've now found the first (appropriate) equal-sign after the start of the
+					// default value.  (In the example above, that's the "=" after "target".)  We
+					// now have to rewind back to the last whitespace to find where the default
+					// value ended.
+					if ($type == '=') {
 						// Rewind before = sign.
 						$ptr--;
 						// Rewind before any whitespace before = sign.
-						while ($ptr > $start && preg_match("/^[\\x00-\\x20]+$/", $pieces[$ptr]))
+						while ($ptr > $start && $this->Internal_ClassifyPiece($ptr, $pieces) == ' ')
 							$ptr--;
-						// Rewind before any non-whitespace before = sign.
-						if ($ptr > $start && !preg_match("/^[\\x00-\\x20]+$/", $pieces[$ptr]))
+						// Rewind before any text elements before that.
+						while ($ptr > $start && $this->Internal_ClassifyPiece($ptr, $pieces) != ' ')
 							$ptr--;
 					}
+
 					// The default value is everything from $start to $ptr, inclusive.
 					$value = "";
 					for (; $start <= $ptr; $start++) {
-						if (strlen($value) > 0) $value .= " ";
-						$value .= $this->Internal_StripQuotes(@$pieces[$start]);
+						if ($this->Internal_ClassifyPiece($start, $pieces) == ' ')
+							$value .= " ";
+						else $value .= $this->Internal_StripQuotes($pieces[$start]);
 					}
+					$value = trim($value);
+					
+					$ptr++;
 				}
+
 				$result['_default'] = $value;
+				$params[] = Array('key' => '', 'value' => $value);
 			}
-			else $result['_default'] = false;
 
 			// The rest of the tag is composed of either floating keys or key=value pairs, so walk through
-			// the tag and collect them all.
-			while ($ptr < count($pieces)) {
-				$key = strtolower($pieces[$ptr++]);
-				if (@$pieces[$ptr] == '=') {
+			// the tag and collect them all.  Again, we have the nasty special case where an equal sign
+			// in a parameter but before whitespace counts as part of that parameter.
+			while (($type = $this->Internal_ClassifyPiece($ptr, $pieces)) != -1) {
+
+				// Skip whitespace before the next key name.
+				while ($type == ' ') {
 					$ptr++;
-					$value = $this->Internal_StripQuotes(@$pieces[$ptr++]);
+					$type = $this->Internal_ClassifyPiece($ptr, $pieces);
 				}
-				else $value = $this->Internal_StripQuotes($key);
-				if ($key != '_end' && $key != '_name' && $key != '_default')
+
+				// Decode the key name.
+				if ($type == 'A' || $type == '"')
+					$key = strtolower($this->Internal_StripQuotes(@$pieces[$ptr++]));
+				else if ($type == '=') {
+					$ptr++;
+					continue;
+				}
+				else if ($type == -1) break;
+
+				// Skip whitespace after the key name.
+				while (($type = $this->Internal_ClassifyPiece($ptr, $pieces)) == ' ')
+					$ptr++;
+
+				// If an equal-sign follows, we need to collect a value.  Otherwise, we
+				// take the key itself as the value.
+				if ($type != '=')
+					$value = $this->Internal_StripQuotes($key);
+				else {
+					$ptr++;
+					// Skip whitespace after the equal sign.
+					while (($type = $this->Internal_ClassifyPiece($ptr, $pieces)) == ' ')
+						$ptr++;
+					if ($type == '"') {
+						// If we get a quoted value, take that as the only value.
+						$value = $this->Internal_StripQuotes($pieces[$ptr++]);
+					}
+					else if ($type != -1) {
+						// If we get a non-quoted value, consume non-quoted values
+						// until we reach whitespace.
+						$value = $pieces[$ptr++];
+						while (($type = $this->Internal_ClassifyPiece($ptr, $pieces)) != -1
+							&& $type != ' ')
+							$value .= $pieces[$ptr++];
+					}
+					else $value = "";
+				}
+
+				// Record this in the associative array if it's a legal public identifier name.
+				// Legal *public* identifier names must *not* begin with an underscore.
+				if (substr($key, 0, 1) != '_')
 					$result[$key] = $value;
+
+				// Record this in the parameter list always.
+				$params[] = Array('key' => $key, 'value' => $value);
 			}
-			
+
+			// Add the parameter list as a member of the associative array.
+			$result['_params'] = $params;
+
+			if ($this->debug) {
+				// In debugging modes, output the tag as we collected it.
+				print "<b>Lexer::InternalDecodeTag:</b> output: ";
+				ob_start();
+				print_r($result);
+				$output = ob_get_clean();
+				print htmlspecialchars($output) . "<br />\n";
+			}
+
 			// Save the resulting parameters, and return the whole shebang.
 			return $result;
 		}

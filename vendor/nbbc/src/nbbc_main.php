@@ -15,7 +15,7 @@
 	//
 	//-----------------------------------------------------------------------------
 	//
-	//  Copyright (c) 2008, the Phantom Inker.  All rights reserved.
+	//  Copyright (c) 2008-9, the Phantom Inker.  All rights reserved.
 	//
 	//  Redistribution and use in source and binary forms, with or without
 	//  modification, are permitted provided that the following conditions
@@ -48,8 +48,8 @@
 	//
 	//-----------------------------------------------------------------------------
 
-	define("BBCODE_VERSION", "1.3.1");		// Current version number
-	define("BBCODE_RELEASE", "2008-08-08");	// Current release date
+	define("BBCODE_VERSION", "1.4.2");		// Current version number
+	define("BBCODE_RELEASE", "2009-06-21");	// Current release date
 
 	define("BBCODE_VERBATIM", 2);		// Content type:  Content is not processed as BBCode.
 	define("BBCODE_REQUIRED", 1);		// Content type:  Content may not be empty or whitespace.
@@ -144,5 +144,6 @@
 	require_once("$BBCode_SourceDir/nbbc_lex.php");		// The lexical analyzer.
 	require_once("$BBCode_SourceDir/nbbc_parse.php");	// The parser/converter.
 	require_once("$BBCode_SourceDir/nbbc_lib.php");		// The library of standard BBCode rules and Smileys.
+	require_once("$BBCode_SourceDir/nbbc_email.php");	// E-mail address validator.
 
 ?>
