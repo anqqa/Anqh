@@ -8,7 +8,6 @@
  * @copyright  (c) 2009 Antti Qvickström
  * @license    MIT
  */
- */
 class Role_Model extends ORM {
 
 	protected $has_and_belongs_to_many = array('users');
