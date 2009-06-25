@@ -5,7 +5,7 @@
  * @package    Anqh
  * @author     Antti Qvickström
  * @copyright  (c) 2009 Antti Qvickström
- * @license    MIT
+ * @license    http://www.opensource.org/licenses/mit-license.php MIT license
  */
 class url extends url_Core {
 
@@ -36,7 +36,7 @@ class url extends url_Core {
 		$url = '';
 
 		// sniff base url etc based on given object
-		if ($model instanceof Auto_Modeler_ORM) {
+		if ($model instanceof Modeler_ORM) {
 
 			// Auto Modeler ORM object given
 			$url = $model->url_base or $url = $model->object_name;

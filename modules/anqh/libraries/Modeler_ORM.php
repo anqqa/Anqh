@@ -7,11 +7,9 @@
  * @package    Anqh
  * @author     Antti Qvickström
  * @copyright  (c) 2009 Antti Qvickström
- * @license    MIT
- *
- * @todo       Rename to avoid name conflicts with Auto Modeler ORM
+ * @license    http://www.opensource.org/licenses/mit-license.php MIT license
  */
-class Auto_Modeler_ORM extends ORM {
+class Modeler_ORM extends ORM {
 
 	protected $cache;
 	protected $cache_age = 86400; // 60 * 60 * 24
@@ -225,7 +223,6 @@ class Auto_Modeler_ORM extends ORM {
 			} catch (Kohana_Database_Exception $e) {
 				$values->message('error', 'saving_to_database');
 				return false;
-				//throw new Kohana_User_Exception('auto_modeler.database_save_error', Kohana::lang('generic.error_saving_to_database'));
 			}
 		}
 		return false;

@@ -5,9 +5,9 @@
  * @package    Anqh
  * @author     Antti Qvickström
  * @copyright  (c) 2009 Antti Qvickström
- * @license    MIT
+ * @license    http://www.opensource.org/licenses/mit-license.php MIT license
  */
-class Exif_Model extends Auto_Modeler_ORM {
+class Exif_Model extends Modeler_ORM {
 
 	// ORM
 	protected $belongs_to = array('image');
