@@ -13,8 +13,7 @@ class User_Model extends Modeler_ORM {
 	protected $has_many = array('favorites', 'friends', 'tokens', 'user_comments');
 	protected $has_one = array('city', 'default_image' => 'image');
 	protected $has_and_belongs_to_many = array('images', 'roles');
-
-	// Columns to ignore
+	protected $reload_on_wakeup = false;
 	protected $ignored_columns = array('password_confirm');
 
 	// Validation
@@ -50,7 +49,8 @@ class User_Model extends Modeler_ORM {
 
 	// Cached data
 	protected $data_roles;
-
+	protected static $users = array();
+	protected static $cache_max_age = 3600;
 
 	/***** MAGIC *****/
 
@@ -168,11 +168,9 @@ class User_Model extends Modeler_ORM {
 	 * Call after adding/deleting comment
 	 */
 	public function clear_comment_cache() {
-
-		// clear caches
-		$this->cache->delete($this->cache->key('comments', $this->id, 1));
-		$this->cache->delete($this->cache->key('comments', $this->id, 2));
-		$this->cache->delete($this->cache->key('comments', $this->id, 3));
+		for ($page = 1; $page <= User_Comment_Model::$cache_max_pages; $page++) {
+			$this->cache->delete($this->cache->key('comments', $this->id, $page));
+		}
 	}
 
 
@@ -193,26 +191,33 @@ class User_Model extends Modeler_ORM {
 	 * @param  int  $page_num
 	 * @param  int  $page_size
 	 */
-	public function get_comments($page_num, $page_size = 25) {
-		$cache_key = $this->cache->key('comments', $this->id, $page_num);
+	public function find_comments($page_num, $page_size = 25) {
 
-		// cache only 3 first pages
-		if ($page_num < 4) {
+		// Try to fetch from cache first
+		$cache_key = $this->cache->key('comments', $this->id, $page_num);
+		if ($page_num <= User_Comment_Model::$cache_max_pages) {
 			$comments = $this->cache->get($cache_key);
 		}
 
+		// Did we find any comments?
 		if (!empty($comments)) {
-			return  unserialize($comments);
+
+			// Found from cache
+			$comments = unserialize($comments);
+
 		} else {
+
+			// Not found from cache, load from DB
 			$page_offset = ($page_num - 1) * $page_size;
 			$comments = $this->limit($page_size, $page_offset)->user_comments;
 
 			// cache only 3 first pages
-			if ($page_num < 4) {
-				$this->cache->set($cache_key, serialize($comments->as_array()), null, 3600);
+			if ($page_num <= User_Comment_Model::$cache_max_pages) {
+				$this->cache->set($cache_key, serialize($comments->as_array()), null, User_Comment_Model::$cache_max_age);
 			}
-			return $comments;
 		}
+
+		return $comments;
 	}
 
 	/***** /COMMENTS *****/
@@ -324,6 +329,43 @@ class User_Model extends Modeler_ORM {
 	}
 
 	/***** /FRIENDS *****/
+
+
+	/**
+	 * Load one user.
+	 * Numeric id will be fetched from cache, string from db.
+	 *
+	 * @param  mixed  $id
+	 */
+	public function find_user($id) {
+
+		// Look from local cache first
+		$user = isset(self::$users[$id]) ? self::$users[$id] : null;
+
+		// If not found, look from global cache
+		if (is_null($user) && is_numeric($id)) {
+			if ($user = $this->cache->get($this->cache->key('user', (int)$id))) {
+				$user = unserialize($user);
+
+				// Found from global cache, add to local cache
+				self::$users[$user->id] = self::$users[$user->username] = $user;
+
+			}
+		}
+
+		// If still not found, get from db
+		if (is_null($user)) {
+			if ($user = $this->find($id)) {
+
+				// Found from db, add to local and global cache
+				self::$users[$user->id] = self::$users[$user->username] = $user;
+				$this->cache->set($this->cache->key('user', $user->id), serialize($user), null, self::$cache_max_age);
+
+			}
+		}
+
+		return $user;
+	}
 
 
 	/**

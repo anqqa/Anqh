@@ -211,7 +211,7 @@ $(function() {
 	public static function nick($user, $nick = null) {
 		if (empty($nick)) {
 			if (!($user instanceof User_Model)) {
-				$user = new User_Model((int)$user);
+				$user = ORM::factory('user')->find_user($user);
 			}
 			$nick = $user->username;
 		}

@@ -75,9 +75,9 @@ class url extends url_Core {
 	public static function user($user) {
 		$prefix = '/member/';
 
-		// id given
+		// User id given
 		if (is_numeric($user) && (int)$user > 0) {
-			$user = new User_Model($user);
+			$user = ORM::factory('user')->find_user($user);
 			if ($user->id) {
 				$user = $user->username;
 			}
@@ -88,7 +88,7 @@ class url extends url_Core {
 			$user = $user->username;
 		}
 
-		// username given
+		// Username given
 		if (is_string($user)) {
 			return $prefix . urlencode($user);
 		}
