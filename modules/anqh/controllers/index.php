@@ -10,7 +10,7 @@
 class Index_Controller extends Website_Controller {
 
 	public function index() {
-		$this->template->main = 'Welcome to ' . Kohana::config('site.site_name');
-
+		widget::add('main', __('Welcome to :site', array(':site' => Kohana::config('site.site_name'))));
 	}
+
 }
