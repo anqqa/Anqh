@@ -1,5 +1,5 @@
 <?php
-include_once(Kohana::find_file('vendor', 'nbbc/nbbc'));
+require_once(Kohana::find_file('vendor', 'nbbc/nbbc'));
 
 /**
  * BBCode library.
@@ -44,8 +44,8 @@ class BB extends BBCode {
 
 		// User our own quote
 		$this->AddRule('quote', array(
-			'simple_start' => '<blockquote>',
-			'simple_end'   => '</blockquote>',
+			'simple_start' => '<blockquote><p>',
+			'simple_end'   => '</p></blockquote>',
 			'class'        => 'block',
 			'allow_in'     => array('listitem', 'block', 'columns'),
 		));
