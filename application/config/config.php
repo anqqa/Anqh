@@ -113,10 +113,12 @@ $config['extension_prefix'] = 'MY_';
  * in your application directory, configuration files, controllers, views, etc.
  */
 $config['modules'] = array(
-	MODPATH.'anqh',      // Anqh core
-	MODPATH.'gmaps',     // Google Maps integration
-	MODPATH.'events',    // Events module for Anqh
-	MODPATH.'forum',     // Forum module for Anqh
-	MODPATH.'blog',      // Blog module for Anqh
-	MODPATH.'venues',    // Venues module for Anqh
+	MODPATH . 'kohana3',  // Kohana 3 features for Kohana 2, e.g. I18n
+	MODPATH . 'gmaps',    // Google Maps integration
+
+	MODPATH . 'anqh',     // Anqh core
+	MODPATH . 'events',   // Event calendar for Anqh
+	MODPATH . 'forum',    // Forum for Anqh
+	MODPATH . 'blog',     // Blogs for Anqh
+	MODPATH . 'venues',   // Venues for Anqh
 );
