@@ -207,105 +207,11 @@ $(function() {
 	 * @param	  User_Model  $user  or uid
 	 * @param	  string      $nick
 	 * @return  string
+	 *
+	 * @deprecated  User html::user instead
 	 */
 	public static function nick($user, $nick = null) {
-		if (empty($nick)) {
-			if (!($user instanceof User_Model)) {
-				$user = ORM::factory('user')->find_user($user);
-			}
-			$nick = $user->username;
-		}
-
-		return html::anchor(url::user($nick), $nick);
-	}
-
-
-	/**
-	 * Parse klubitus code
-	 *
-	 * @param		string	text to parse
-	 * @param		bool		inline images
-	 * @return	string
-	 * @deprecated
-	 */
-	public static function parse_code($text, $pics = false) {
-		$codes = array(
-			"/\[p\](.*?)\[\/p\]/si",
-			"/\[b\](.*?)\[\/b\]/si",
-			"/\[u\](.*?)\[\/u\]/si",
-			"/\[i\](.*?)\[\/i\]/si",
-			"/\[q\](.*?)\[\/q\]/si",
-			"/\[o\](.*?)\[\/o\]/si",
-			"/\[url\](.*?)\[\/url\]/i",
-			"/\[url=(.*?)\](.*?)\[\/url\]/i",
-			"/\[sup\](.*?)\[\/sup\]/si",
-			"/\[sub\](.*?)\[\/sub\]/si",
-			"/\[code\](.*?)\[\/code\]/si",
-			"/\[big\](.*?)\[\/big\]/si",
-			"/\[small\](.*?)\[\/small\]/si",
-			"/\[ol\](.*?)\[\/ol\]/si",
-			"/\[ul\](.*?)\[\/ul\]/si",
-			"/\[li\](.*?)\[\/li\]/si",
-			"/\[spoiler\](.*)\[\/spoiler\]/si",
-			"/\[email\](.*?)\[\/email\]/si",
-			"/\[img=(left|right)\](.*?)\[\/img\]/si",
-			"/\[list\](.*?)\[\/list\]/si",
-			"/\[list=(1|a|i)\](.*?)\[\/list\]/si",
-			"/\[\*\]/si",
-			"/\[size=([1-2]?[0-9])\](.*?)\[\/size\]/si",
-			"/\[color=(.*?)\](.*?)\[\/color\]/si"
-		);
-		$html = array(
-			'<p>$1</p>',
-			'<strong>$1</strong>',
-			'<u>$1</u>',
-			'<em>$1</em>',
-			'<blockquote>$1</blockquote>',
-			'<del>$1</del>',
-			'<a href="$1">$1</a>',
-			'<a href="$1">$2</a>',
-			'<sup>$1</sup>',
-			'<sub>$1</sub>',
-			'<code>$1</code>',
-			'<big>$1</big>',
-			'<small>$1</small>',
-			'<ol>$1</ol>',
-			'<ul>$1</ul>',
-			'<li>$1</li>',
-			'<span class="spoiler">$1</span>',
-			'<a href="mailto:$1">$1</a>',
-			'<img src="$2" alt="$2" align="$1" />',
-			'<ul>$1</ul>',
-			'<ol type="$1">$2</ol>',
-			'<li>',
-			'<span style="font-size: $1px">$2</span>',
-			'<span style="color: $1">$2</span>
-		');
-		if ($pics) {
-			$codes[] = "/\[img\](.*?)\[\/img\]/si";
-			$html[] = '<img src="$1" alt="$1" />';
-		}
-		$text = preg_replace($codes, $html, $text);
-		return $text;
-	}
-
-
-	/**
-	 * Parse links
-	 *
-	 * @param		string	$text
-	 * @return	string
-	 * @deprecated
-	 */
-	public static function parse_links($text) {
-		$text = str_replace(array('[link', '[/link]'), array('[url', '[/url]'), $text); // deprecated link to url
-		$text = preg_replace("/([^\w\/])(www\.[a-z0-9\-]+\.[a-z0-9\-]+)/i", '$1http://$2', $text); // add http to www.
-		$text = preg_replace("/\[url\](?!http|https|ftp|news|mailto)(.*?)\[\/url\]/i", '[url]http://$1[/url]', $text);
-		$text = preg_replace("/\[url=(?!http|https|ftp|news|mailto)(.*?)\]/i", '[url=http://$1]', $text);
-		$text = preg_replace("/((?<![\]|=])(http|https|ftp|news|mailto):\/\/[\w-?&;:#~=\.\/\@\+%]+[\w\/][?]?)/i", '[url]$1[/url]', $text);
-		//$text = preg_replace("/((?<![\]|=])(http|https|ftp|news|mailto):\/\/[\w-?&;:#~=\.\/\@\+%]+[\w\/][?]?)/i", '<a href="$1">$1</a>', $text);
-		$text = preg_replace("/([\w-?&;#~=\.\/]+\@(\[?)[a-zA-Z0-9\-\.]+\.([a-zA-Z]{2,4}|[0-9]{1,3})(\]?))/i", '[email]$1[/email]', $text);
-		return $text;
+		return self::user($user, $nick);
 	}
 
 
@@ -326,4 +232,24 @@ $(function() {
 		}
 		return $compiled;
 	}
+
+
+	/**
+	 * Returns user link
+	 *
+	 * @param	  User_Model  $user  or uid
+	 * @param	  string      $nick
+	 * @return  string
+	 */
+	public static function user($user, $nick = null) {
+		if (empty($nick)) {
+			if (!($user instanceof User_Model)) {
+				$user = ORM::factory('user')->find_user($user);
+			}
+			$nick = $user->username;
+		}
+
+		return html::anchor(url::user($nick), $nick, array('class' => 'user'));
+	}
+
 }
