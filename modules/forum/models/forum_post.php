@@ -15,7 +15,7 @@ class Forum_Post_Model extends Modeler_ORM {
 
 	// Validation
 	protected $rules = array(
-		'forum_topic_id' => array('required', 'valid::numeric'),
+		'forum_topic_id' => array('valid::numeric'),
 		'forum_area_id'  => array('required', 'valid::numeric'),
 		'post'           => array('required', 'length[1, 4096]'),
 		'parent_id'      => array('valid::numeric'),
