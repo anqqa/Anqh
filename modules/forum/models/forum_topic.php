@@ -28,6 +28,46 @@ class Forum_Topic_Model extends Modeler_ORM {
 
 
 	/**
+	 * Get topics by latest post
+	 *
+	 * @param   integer  $limit
+	 * @param   integer  $page
+	 * @return  ORM_Iterator
+	 */
+	public function find_active($limit = 20, $page = 1) {
+
+		// Add area filter if necessary
+		if (!empty($this->forum_area_id)) {
+			$topics = ORM::factory('forum_topic')->orderby('last_post_id', 'DESC')->where('forum_area_id', $this->forum_area_id)->find_all($limit, ($page - 1) * $limit);
+		} else {
+			$topics = ORM::factory('forum_topic')->orderby('last_post_id', 'DESC')->find_all($limit, ($page - 1) * $limit);
+		}
+
+		return $topics;
+	}
+
+
+	/**
+	 * Get topics by latest topic
+	 *
+	 * @param   integer  $limit
+	 * @param   integer  $page
+	 * @return  ORM_Iterator
+	 */
+	public function find_latest($limit = 20, $page = 1) {
+
+		// Add area filter if necessary
+		if (!empty($this->forum_area_id)) {
+			$topics = ORM::factory('forum_topic')->orderby('id', 'DESC')->where('forum_area_id', $this->forum_area_id)->find_all($limit, ($page - 1) * $limit);
+		} else {
+			$topics = ORM::factory('forum_topic')->orderby('id', 'DESC')->find_all($limit, ($page - 1) * $limit);
+		}
+
+		return $topics;
+	}
+
+
+	/**
 	 * Refresh topic values, fixing ids, counts etc
 	 *
 	 * @param   boolean  $save  save new values

@@ -17,4 +17,3 @@ $config['forum/([0-9]+.*)'] = 'forum/area/$1';
 
 // Topics
 $config['topic/([0-9]+.*)'] = 'forum/topic/$1';
-

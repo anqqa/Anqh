@@ -18,11 +18,16 @@ class Forum_Controller extends Website_Controller {
 	function __construct() {
 		parent::__construct();
 
+		$this->config = Kohana::config('forum');
+
 		$this->breadcrumb[] = html::anchor('forum', __('Forum'));
 		$this->page_title = __('Forum');
 
-		$this->config = Kohana::config('forum');
-
+		$this->tabs = array(
+			'active' => array('link' => 'forum',        'text' => __('Active topics')),
+			'latest' => array('link' => 'forum/latest', 'text' => __('New topics')),
+			'areas'  => array('link' => 'forum/areas',  'text' => __('Forum areas')),
+		);
 	}
 
 
@@ -31,32 +36,102 @@ class Forum_Controller extends Website_Controller {
 	private function _side_views($extra_views = array()) {
 		widget::add('side', implode("\n", $extra_views));
 
-		$tabs = array();
-		$tabs[] = array('href' => '#topics-active', 'title' => __('Active topics'), 'tab' => new View('forum/topics_list', array('id' => 'topics-active', 'title' => __('Active topics'), 'topics' => ORM::factory('forum_topic')->orderby('last_post_id', 'DESC')->find_all($this->config['topics_per_list']))));
-		$tabs[] = array('href' => '#topics-new',    'title' => __('New topics'),    'tab' => new View('forum/topics_list', array('id' => 'topics-new',    'title' => __('New topics'),    'topics' => ORM::factory('forum_topic')->orderby('id', 'DESC')->find_all($this->config['topics_per_list']))));
-		$tabs[] = array('href' => '#forum-areas',   'title' => __('Forum areas'),   'tab' => new View('forum/groups_list', array('id' => 'forum-areas',   'title' => __('Forum areas'),   'groups' => ORM::factory('forum_group')->find_all())));
+		// Initialize tabs
+		$tabs = array(
+			'active' => array('href' => '#topics-active', 'title' => __('Active'), 'tab' => new View('forum/topics_list', array(
+				'id'     => 'topics-active',
+				'title'  => __('Active topics'),
+				'topics' => ORM::factory('forum_topic')->find_active($this->config['topics_per_list'])
+			))),
+			'latest' => array('href' => '#topics-new', 'title' => __('New'), 'tab' => new View('forum/topics_list', array(
+				'id'     => 'topics-new',
+				'title'  => __('New topics'),
+				'topics' => ORM::factory('forum_topic')->find_latest($this->config['topics_per_list'])
+			))),
+			'areas' => array('href' => '#forum-areas', 'title' => __('Areas'), 'selected' => in_array($this->tab_id, array('active', 'latest')), 'tab' => new View('forum/groups_list', array(
+				'id'     => 'forum-areas',
+				'title'  => __('Forum areas'),
+				'groups' => ORM::factory('forum_group')->find_all()
+			))),
+		);
+
 		widget::add('side', View::factory('generic/tabs', array('id' => 'topics-tab', 'tabs' => $tabs)));
-		//widget::add('foot', html::script_source('$(function() { $("#topics-tab > ul").tabs({ fx: { height: "toggle", opacity: "toggle", duration: "fast" } }); });'));
 	}
 
 	/***** /INTERNAL *****/
 
 
-	/***** VIEWS *****/
+	/***** MAIN VIEWS *****/
 
+	/**
+	 * Default view
+	 */
 	public function index() {
+		$this->active();
+	}
+
+
+	/**
+	 * Show forum areas
+	 */
+	public function areas() {
+		$this->tab_id = 'areas';
+
 		if (Auth::instance()->logged_in('admin')) {
 			$this->page_actions[] = array('link' => 'forum/group/add', 'text' => __('New group'), 'class' => 'group-add');
 			$this->page_actions[] = array('link' => 'forum/area/add',  'text' => __('New area'),  'class' => 'area-add');
 		}
 
-		$forum_groups = ORM::factory('forum_group')->find_all();
-		widget::add('main', View::factory('forum/groups', array('groups' => $forum_groups)));
+		widget::add('main', View::factory('forum/groups', array('groups' => ORM::factory('forum_group')->find_all())));
+
 		$this->_side_views();
 	}
 
 
+	/**
+	 * Show topics by latest post
+	 */
+	public function active() {
+		$this->tab_id = 'active';
+
+		widget::add('main', View::factory('forum/topics', array(
+			'topics' => ORM::factory('forum_topic')->find_active($this->config['topics_per_list']),
+			'area'   => true,
+		)));
+
+		$this->_side_views();
+	}
+
+
+	/**
+	 * Show topics by latest topic
+	 */
+	public function latest() {
+		$this->tab_id = 'latest';
+
+		widget::add('main', View::factory('forum/topics', array(
+			'topics' => ORM::factory('forum_topic')->find_latest($this->config['topics_per_list']),
+		)));
+
+		$this->_side_views();
+	}
+
+	/***** /MAIN VIEWS *****/
+
+
+	/***** AREA VIEWS *****/
+
+	/**
+	 * Show forum area
+	 *
+	 * @param  mixed   $area_id
+	 * @param  string  $action
+	 */
 	public function area($area_id, $action = false) {
+
+		// Hide tabs
+		$this->tabs = null;
+
 		// add new area
 		if ($area_id == 'add') {
 			$this->_area_add();
@@ -99,7 +174,7 @@ class Forum_Controller extends Website_Controller {
 
 			// Logged user actions
 			if (Auth::instance()->logged_in()) {
-				$this->page_actions[] = array('link' => url::model($forum_area) . '/post', 'text' => __('New topics'), 'class' => 'post-add');
+				$this->page_actions[] = array('link' => url::model($forum_area) . '/post', 'text' => __('New topic'), 'class' => 'topic-add');
 			}
 
 			// check access and proceed
@@ -121,7 +196,7 @@ class Forum_Controller extends Website_Controller {
 
 				if (count($topics)) {
 					widget::add('main', $pagination);
-					widget::add('main', View::factory('forum/area', array('area' => $forum_area, 'topics' => $topics)));
+					widget::add('main', View::factory('forum/topics', array('topics' => $topics)));
 					widget::add('main', $pagination);
 				} else {
 					$errors[] = __('No topics found');
@@ -203,6 +278,10 @@ class Forum_Controller extends Website_Controller {
 		$this->_side_views();
 	}
 
+	/***** /AREA VIEWS *****/
+
+
+	/***** GROUP VIEWS *****/
 
 	/**
 	 * Forum group
@@ -211,6 +290,10 @@ class Forum_Controller extends Website_Controller {
 	 * @param  string  $action
 	 */
 	public function group($group_id, $action = false) {
+
+		// Hide tabs
+		$this->tabs = null;
+
 		// new group
 		if ($group_id == 'add') {
 			$this->_group_add();
@@ -306,6 +389,10 @@ class Forum_Controller extends Website_Controller {
 		$this->_side_views();
 	}
 
+	/***** /GROUP VIEWS *****/
+
+
+	/***** POST VIEWS *****/
 
 	/**
 	 * Single post functions
@@ -314,6 +401,10 @@ class Forum_Controller extends Website_Controller {
 	 * @param  string   $action
 	 */
 	public function post($post_id, $action = false) {
+
+		// Hide tabs
+		$this->tabs = null;
+
 		if ($action) {
 			switch ($action) {
 
@@ -512,6 +603,11 @@ class Forum_Controller extends Website_Controller {
 		$this->_post_edit(null, null, $parent_id, (bool)$quote);
 	}
 
+	/***** /POST VIEWS *****/
+
+
+	/***** TOPIC VIEWS *****/
+
 	/**
 	 * View topic
 	 *
@@ -519,6 +615,10 @@ class Forum_Controller extends Website_Controller {
 	 * @param  string  $action
 	 */
 	public function topic($topic_id, $action = false) {
+
+		// Hide tabs
+		$this->tabs = null;
+
 		if ($action) {
 			switch ($action) {
 
@@ -573,12 +673,8 @@ class Forum_Controller extends Website_Controller {
 				// handle pagination
 				$per_page = $this->config['posts_per_page'];
 				$pagination = new Pagination(array(
-					'style'          => 'digg',
 					'items_per_page' => $per_page,
-					//'query_string'   => 'page',
-					'uri_segment'    => 'page',
 					'total_items'    => $forum_topic->posts,
-					'auto_hide'      => true,
 				));
 				$posts = $forum_topic->limit($per_page, $pagination->sql_offset)->forum_posts;
 				$this->page_subtitle .= __(':posts posts, page :page of :pages', array(
@@ -755,7 +851,6 @@ class Forum_Controller extends Website_Controller {
 		$this->_side_views();
 	}
 
-	/***** /VIEWS *****/
-
+	/***** /TOPIC VIEWS *****/
 
 }

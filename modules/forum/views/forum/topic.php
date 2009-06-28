@@ -1,8 +1,8 @@
 <ul class="contentlist topic topic-<?= $topic->id ?>">
-<?php foreach ($posts as $post): ?>
-		<li id="post-<?= $post->id ?>" class="clearfix post <?= text::alternate('', ' alt') ?>">
+<?php foreach ($posts as $post): $mine = ($this->user && $post->author_id == $this->user->id); $owners = ($post->author_id == $topic->author_id); ?>
+		<li id="post-<?= $post->id ?>" class="clearfix post <?= $owners ? 'owner ' : '' ?><?= $mine ? 'my ' : '' ?><?= text::alternate('', ' alt') ?>">
 
-			<?php if ($this->user && $post->author_id == $this->user->id): ?>
+			<?php if ($mine): ?>
 			<span class="actions">
 				<?= html::anchor('forum/post/' . $post->id . '/edit',   __('Edit'),   array('class' => 'action post-edit')) ?>
 				<?= html::anchor('forum/post/' . $post->id . '/delete', __('Delete'), array('class' => 'action post-delete')) ?>
@@ -13,6 +13,7 @@
 
 				<?= html::avatar($post->author->avatar, $post->author->username) ?>
 
+				<span class="details">
 				<?= __('Written by :user :ago ago',
 					array(
 						':user' => html::nick($post->author_id, $post->author_name),
@@ -32,6 +33,7 @@
 						':parent' => html::anchor(url::model($parent_topic) . '/' . $post->parent_id . '#post-' . $post->parent_id, text::title($parent_topic->name)),
 					)) ?>
 				<?php endif; ?>
+				</span>
 			</div>
 
 			<div class="post-content">
