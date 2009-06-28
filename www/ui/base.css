@@ -1,0 +1,251 @@
+/*
+ * Copyright (c) 2008 - 2009 Anqh
+ */
+
+/***** DOCK *****/
+
+#dock                                  { left: 0; position: fixed; top: 0; z-index: 100; }
+
+/***** /DOCK *****/
+
+
+/***** HEADER *****/
+
+#header                                { height: 150px; padding-top: 25px; margin-bottom: 1px; }
+#header .container-12                  { height: 150px; }
+#header h1 a                           { display: block; }
+#header ul                             { bottom: 0; left: 0; position: absolute; }
+#header li                             { display: block; float: left; margin-right: 1px; }
+#header li.selected                    { margin-bottom: -1px; }
+#header li a                           { display: block; font-variant: small-caps; height: 1em; padding: 1.6667em 2.5em 0.8333em 0.8333em; vertical-align: middle; }
+#header li a:hover                     { text-decoration: none; }
+
+#tabs li                               { float: left; }
+#tabs li a                             { display: block; padding: 0.8333em 1em; }
+#tabs li a:hover                       { text-decoration: none; }
+
+/***** /HEADER *****/
+
+
+/***** FOOTER *****/
+
+#footer          { margin-top: 2em; min-height: 150px; }
+#footer p,
+#footer .menu    { text-align: center; }
+#footer .menu li { display: inline; padding: 0 6px; }
+#footer .tab     { float: left; margin-bottom: 1em; }
+#footer .tab li  { white-space: nowrap; }
+
+/***** /FOOTER *****/
+
+
+/***** AREAS *****/
+
+#content .container-12                 { padding-bottom: 0.8333em; }
+#content .breadcrumb                   { padding-top: 0.75em; margin-bottom: 1px; }
+
+#title                                 { margin-bottom: -1px; }
+#title .actions                        { float: right; margin-top: 10px; /*position: absolute; right: 10px; top: 10px;*/ }
+
+#center,
+#right,
+#right-ads                             { padding-bottom: 0.8333em; padding-top: 0.8333em; }
+
+ul.grouped li.group + li.group         { padding-top: 1.6667em; }
+ul.contentlist li                      { padding-top: 0.883em; padding-bottom: 0.883em; }
+ul.contentlist li.group                { border: none; min-height: 5em; padding-bottom: 0; padding-top: 0; }
+ul.contentlist li h4                   { margin-top: 0; }
+ul.contentlist li .details             { opacity: .5; }
+ul.contentlist li:hover .details       { opacity: 1; }
+ul.contentlist li .hidden              { float: right; visibility: hidden; }
+ul.contentlist li:hover .hidden        { visibility: visible; }
+
+
+/***** /AREAS *****/
+
+
+/***** FORM *****/
+
+label                                  { display: block; }
+.horizontal label                      { display: inline; }
+input,
+textarea,
+select            { -moz-border-radius: 5px; margin-right: 0.5em; padding: 2px 3px 4px; }
+input[type="submit"]                   { cursor: pointer; padding: 0 0.5em; }
+input[type="text"],
+input[type="password"],
+input[type="file"],
+textarea,
+select                                 { width: 99%; }
+fieldset a                             { vertical-align: middle; }
+form .notice .info,
+form .error .info { float: right; margin-right: 2px; -moz-border-radius: 4px 4px 0 0; padding: 0 0.5em; }
+form .notice input,
+form .error input { -moz-border-radius-topright: 0; }
+form .buttons     { display: block; margin-bottom: 1em; margin-top: 1em; text-align: center; }
+.hint             { font-style: italic; }
+
+#dock form                   { float: left; }
+#dock label,
+#dock input                  { display: inline; }
+#dock input[type="text"],
+#dock input[type="password"] { width: 100px; }
+
+/***** /FORM *****/
+
+
+/***** ELEMENTS *****/
+
+/*.subtitle { margin-bottom: 1.6667em; }*/
+.tip      { font-size: 0.9em; font-style: italic; line-height: 1.552em; }
+.ad       { text-align: center; }
+
+.extra-actions { text-align: right; }
+
+.step,
+.date *      { display: block; text-align: center; }
+.step        { font: 3em/1.5em Georgia, serif; }
+.date .day   { font: 2em/0.833em Georgia, serif; }
+.date .month { text-transform: uppercase; }
+
+.pagination { text-align: center; }
+
+.button               { background: transparent no-repeat left top; display: block; float: left; margin: 0 5px 0 -5px; padding: 0.833em 0; text-align: center; }
+.button.x-small       { background-position: left top; width: 50px; }
+.button.small         { background-position: 0 -40px; width: 75px; }
+.button.medium        { background-position: 0 -80px; width: 100px; }
+.button.large         { background-position: 0 -120px; width: 125px; }
+.button.x-large       { background-position: 0 -160px; width: 150px; }
+.button:hover         { text-decoration: none; }
+.button.x-small:hover { background-position: -150px 0; }
+.button.small:hover   { background-position: -150px -40px; }
+.button.medium:hover  { background-position: -150px -80px; }
+.button.large:hover   { background-position: -150px -120px; }
+.button.x-large:hover { background-position: -150px -160px; }
+
+#map                  { color: white; height: 200px; width: 400px; }
+
+.logo { float: right; }
+
+.avatar a { margin: 0 6px; }
+.side a.action { float: right; }
+
+table.calendar th,
+table.calendar td            { padding: 0; }
+
+/***** /ELEMENTS *****/
+
+
+/***** ICONS *****/
+
+.icon16     { background: no-repeat left center; padding-left: 20px; }
+.icon24     { text-align: right; }
+.icon24 img { height: 24px; width: 24px; }
+.icon48     { background: transparent no-repeat center top; height: 48px; }
+
+.type-calendar { background-image: url(icons/16x16/calendar.png); }
+.type-forum    { background-image: url(icons/16x16/forum.png); }
+.type-photos   { background-image: url(icons/16x16/photo.png); }
+.type-music    { background-image: url(icons/16x16/music.png); }
+.type-blogs    { background-image: url(icons/16x16/blog.png); }
+.type-venues   { background-image: url(icons/16x16/globe.png); }
+.type-groups   { background-image: url(icons/16x16/group.png); }
+.type-members  { background-image: url(icons/16x16/member.png); }
+
+/*#main > .icon48  { position: relative; top: -0.667em; }*/
+
+#forum #group-18 .icon48,
+#calendar .icon48 { background-image: url(icons/48x48/calendar.png); }
+/*#member .group,*/
+#forum .icon48    { background-image: url(icons/48x48/forum.png); }
+#photos .icon48   { background-image: url(icons/48x48/photos.png); }
+#forum #group-17 .icon48,
+#music .icon48    { background-image: url(icons/48x48/music.png); }
+#blogs .icon48    { background-image: url(icons/48x48/blog.png); }
+#venues .icon48   { background-imagE: url(icons/48x48/globe.png); }
+#forum #group-20 .icon48,
+#sign .icon48,
+#members .icon48  { background-image: url(icons/48x48/member.png); }
+
+#tabs li.tab-list a                    { background-image: url(icons/48x48/list.png); }
+#tabs li.tab-map a,
+.address .icon48                       { background-image: url(icons/48x48/map.png); }
+.homepage .icon48                      { background-image: url(icons/48x48/web.png); }
+
+/***** /ICONS *****/
+
+
+/***** JQUERY *****/
+
+.side .ui-tabs-panel h4                { display: none; }
+
+/* autocomplete */
+
+.ac_results    { overflow: hidden; padding: 0; z-index: 99999; }
+.ac_results ul { list-style-position: outside; list-style: none; margin: 0; padding: 0; width: 100%; }
+.ac_results li { cursor: default; display: block; font: menu; font-size: 12px; margin: 0; padding: 2px 5px; line-height: 16px; overflow: hidden; }
+
+/* /autocomplete */
+
+/***** /JQUERY *****/
+
+
+/***** profile ******/
+
+#member .comments #comment { width: 300px; }
+#member .comments p        { margin-top: 1.667em; }
+#member .commentor         { text-align: right; }
+
+/***** /profile *****/
+
+
+/***** calendar *****/
+
+table.calendar        { width: 100%; }
+table.calendar th,
+table.calendar td     { text-align: right; width: 12.5%; }
+table.calendar .prev  { text-align: left; }
+table.calendar .month { text-align: center; }
+table.calendar .inactive { opacity: 0.50; }
+table.calendar .today { font-weight: bold; }
+
+#events .calendar .events              { margin-top: -1px; }
+#events .tab .events li   { white-space: nowrap; overflow: hidden; }
+
+/***** /calendar *****/
+
+
+/***** forum *****/
+
+#forum .topics h4        { margin-top: 0; }
+
+#forum .avatar           { background-image: none; }
+#forum .post .avatar     { height: 60px; text-align: center; }
+#forum .post .avatar img { margin-top: 1.5px; }
+#forum .post .actions                  { float: right; }
+#forum .post .post-content             { clear: both; }
+
+/*blockquote:before        { content: '“'; font: 3em/0.3em Georgia, serif; margin-left: -0.4em; vertical-align: -0.333em; }*/
+
+/*blockquote               { margin: 1.667em 1em; padding: 0 22px; text-indent: -22px; }
+blockquote:first-letter  { padding-left: 22px; }
+blockquote p             { text-indent: 0; }*/
+
+.forum .tab .events li   { white-space: nowrap; overflow: hidden; }
+.forum .ui-tabs-panel h4 { display: none; }
+
+/***** /forum *****/
+
+
+/***** venues *****/
+
+body#venues .venue ol                 { margin-top: 2em; }
+
+/***** /venues *****/
+
+
+/***** members *****/
+
+#members ul.contentlist li { padding-top: 0; padding-bottom: 0; }
+
+/***** /members *****/
