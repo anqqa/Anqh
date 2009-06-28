@@ -38,7 +38,13 @@ h2                                     { font-size: 1.75em; line-height: 1.9048e
 h3                                     { font-size: 1.5em; line-height: 1.1111em; margin-top: 1.111em; }
 h4                                     { font-size: 1.3333em; line-height: 1.25em; margin-top: 1.25em; }
 h5,
-h6                                     { font-size: 1.16667em; line-height: 1.4286em; margin-top: 1.4286em; }
+h6                                     { font-size: 1.1667em; line-height: 1.4286em; margin-top: 1.4286em; }
+h1 span                                { font-size: 0.5em; }
+h2 span                                { font-size: 0.571em; }
+h3 span                                { font-size: 0.667em; }
+h4 span                                { font-size: 0.75em; }
+h5 span,
+h6 span                                { font-size: 0.857em; }
 
 input,
 textarea,
@@ -81,12 +87,13 @@ code                                   { margin: 1.667em 0; white-space: pre; }
 pre,
 code,
 tt                                     { font: 1em monospace; line-height: 1.5; }
+var                                    { font-family: Georgia, Times New Roman, Times, serif; font-style: normal; }
 tt                                     { display: block; margin: 1.667em 0; }
 hr                                     { margin-bottom: 1.667em; }
 
 blockquote                             { font-family: Georgia, serif; font-style: italic; padding: 1.667em; }
-blockquote:before                      { content: "\201C"; font-family: Georgia, serif; font-size: 3em; line-height: 0; margin-left: -0.667em; }
-blockquote > p                         { padding: 0; margin: 0; }
+blockquote:before                      { content: "\201C"; font-family: Georgia, serif; font-size: 4em; line-height: 0; margin-left: -0.5em; vertical-align: -0.7em; }
+/*blockquote > p                         { padding: 0; margin: 0; }*/
 blockquote em                          { font-style: normal; }
 
 .note                                  { font-family: Georgia, Times New Roman, Times, serif; font-size: 0.9em; font-style: italic; margin: 0.1em; }
