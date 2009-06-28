@@ -45,7 +45,8 @@ blockquote:after,
 q:before,
 q:after                                { content: ''; content: none; }
 
-ul                                     { list-style-image: none; list-style-position: outside; list-style-type: none; }
+abbr,
+acronym                                { cursor: help; }
 ins                                    { text-decoration: none; }
 del                                    { text-decoration: line-through; }
 a:focus                                { outline-color: -moz-use-text-color; outline-style: none; outline-width: 0; }
@@ -56,6 +57,7 @@ input,
 select,
 textarea                               { font-size: 100%; vertical-align: middle; }
 
+ul                                     { list-style-image: none; list-style-position: outside; list-style-type: none; }
 table                                  { border-collapse: collapse; border-spacing: 0; empty-cells: show; }
 caption,
 th,
