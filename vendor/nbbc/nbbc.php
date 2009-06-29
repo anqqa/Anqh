@@ -1663,7 +1663,7 @@ $link = $possible_content = "";
 foreach ($tag_rule['plain_link'] as $possible_content) {
 if ($possible_content == '_content'
 && strlen($contents) > 0) {
-$link = $this->unhtmlentities(strip_tags($contents));
+$link = $this->UnHTMLEncode(strip_tags($contents));
 break;
 }
 if (isset($params[$possible_content])
