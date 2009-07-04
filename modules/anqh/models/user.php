@@ -87,6 +87,11 @@ class User_Model extends Modeler_ORM {
 				$value = date::format('date_SQL', $value);
 				break;
 
+			// Always lowercase e-mail
+			case 'email':
+				$value = utf8::strtolower($value);
+				break;
+
 			// use Auth to hash the password
 			case 'password':
 				$value = Auth::instance()->hash_password($value);
@@ -262,43 +267,6 @@ class User_Model extends Modeler_ORM {
 
 
 	/**
-	 * Does the user have any of these roles
-	 *
-	 * @param  array|string  $roles
-	 */
-	public function has_role($roles) {
-
-		// Model must contain data
-		if (!$this->loaded) {
-			return false;
-		}
-
-		// Load roles
-		if (!is_array($this->data_roles)) {
-			$data_roles = array();
-			foreach ($this->roles as $role) {
-				$data_roles[$role->id] = $role->name;
-			}
-			$this->data_roles = $data_roles;
-		}
-
-		if (is_array($roles)) {
-
-			// Multiple roles given
-			$matching_roles = array_intersect($roles, $this->data_roles);
-			$has_role = !empty($matching_roles);
-
-		} else {
-
-			// Sigle role given
-			$has_role = in_array($roles, $this->data_roles);
-
-		}
-		return $has_role;
-	}
-
-
-	/**
 	 * Check for friendship
 	 *
 	 * @param  mixed  $friend  id, username, User_Model
@@ -339,6 +307,11 @@ class User_Model extends Modeler_ORM {
 	 */
 	public function find_user($id) {
 
+		// PostgreSQL text fields are case sensitive, so use always lowercase names and emails
+		if (!is_numeric($id) && !empty($id)) {
+			$id = utf8::strtolower($id);
+		}
+
 		// Look from local cache first
 		$user = isset(self::$users[$id]) ? self::$users[$id] : null;
 
@@ -348,23 +321,72 @@ class User_Model extends Modeler_ORM {
 				$user = unserialize($user);
 
 				// Found from global cache, add to local cache
-				self::$users[$user->id] = self::$users[$user->username] = $user;
+				self::$users[$user->id] = self::$users[utf8::strtolower($user->username)] = self::$users[utf8::strtolower($user->email)] = $user;
 
 			}
 		}
 
 		// If still not found, get from db
 		if (is_null($user)) {
-			if ($user = $this->find($id)) {
 
-				// Found from db, add to local and global cache
-				self::$users[$user->id] = self::$users[$user->username] = $user;
-				$this->cache->set($this->cache->key('user', $user->id), serialize($user), null, self::$cache_max_age);
+			if (is_numeric($id)) {
+
+				// Numeric IDs are safe to fetch with the usual way
+				$user = $this->find($id);
+
+			} else {
+
+				// Textual IDs (username, email) must be lowercased because PostgreSQL is case sensitive
+				$user = $this->where('LOWER("' . $this->table_name . '"."' . $this->unique_key($id) . '") = LOWER(' . $this->db->escape($id) . ')', '', false)->find();
 
 			}
+
+			// If found from db, add to local and global cache
+			if ($user) {
+				self::$users[$user->id] = self::$users[utf8::strtolower($user->username)] = self::$users[utf8::strtolower($user->email)] = $user;
+				$this->cache->set($this->cache->key('user', $user->id), serialize($user), null, self::$cache_max_age);
+			}
+
 		}
 
 		return $user;
+	}
+
+
+	/**
+	 * Does the user have any of these roles
+	 *
+	 * @param  array|string  $roles
+	 */
+	public function has_role($roles) {
+
+		// Model must contain data
+		if (!$this->loaded) {
+			return false;
+		}
+
+		// Load roles
+		if (!is_array($this->data_roles)) {
+			$data_roles = array();
+			foreach ($this->roles as $role) {
+				$data_roles[$role->id] = $role->name;
+			}
+			$this->data_roles = $data_roles;
+		}
+
+		if (is_array($roles)) {
+
+			// Multiple roles given
+			$matching_roles = array_intersect($roles, $this->data_roles);
+			$has_role = !empty($matching_roles);
+
+		} else {
+
+			// Sigle role given
+			$has_role = in_array($roles, $this->data_roles);
+
+		}
+		return $has_role;
 	}
 
 
