@@ -80,7 +80,7 @@ $config['enable_hooks'] = TRUE;
  *  3 - Notices
  *  4 - Debugging
  */
-$config['log_threshold'] = IN_PRODUCTION ? 1 : 3;
+$config['log_threshold'] = IN_PRODUCTION ? 2 : 3;
 
 /**
  * Message logging directory.
@@ -114,9 +114,9 @@ $config['extension_prefix'] = 'MY_';
  */
 $config['modules'] = array(
 	MODPATH . 'kohana3',  // Kohana 3 features for Kohana 2, e.g. I18n
-	MODPATH . 'gmaps',    // Google Maps integration
-
 	MODPATH . 'anqh',     // Anqh core
+
+	MODPATH . 'gmaps',    // Google Maps integration
 	MODPATH . 'events',   // Event calendar for Anqh
 	MODPATH . 'forum',    // Forum for Anqh
 	MODPATH . 'blog',     // Blogs for Anqh
