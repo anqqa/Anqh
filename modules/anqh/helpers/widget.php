@@ -17,14 +17,14 @@ class widget {
    *
    * @var  array
    */
-	static $weights = array();
+	protected static $weights = array();
 
 	/**
    * Widgets
    *
    * @var  array
    */
-	static $widgets = array();
+	protected static $widgets = array();
 
 
   /**
