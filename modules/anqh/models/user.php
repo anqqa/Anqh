@@ -48,6 +48,7 @@ class User_Model extends Modeler_ORM {
 	);
 
 	// Cached data
+	protected $data_friends;
 	protected $data_roles;
 	protected static $users = array();
 	protected static $cache_max_age = 3600;
@@ -141,26 +142,42 @@ class User_Model extends Modeler_ORM {
 	 * @return boolean
 	 */
 	public function login(array &$array, $redirect = false) {
+
 		// Login starts out invalid
 		$status = false;
 
+		// Log login attempt
+		$login = new Login_Model();
+		$login->password = !empty($array['password']);
+		$login->username = $array['username'];
+
 		if ($this->validate($array, false, array(), array(), array('rules' => 'login'))) {
+
 			// Attempt to load the user
-			$this->find($array['username']);
+			$this->find_user($array['username']);
+			if ($this->loaded) {
+				$login->uid = $this->id;
+				$login->username = $this->username;
 
-			if ($this->loaded && Auth::instance()->login($this, $array['password'])) 	{
-				if (is_string($redirect))	{
+				if (Auth::instance()->login($this, $array['password'])) 	{
+					$login->success = 1;
+
 					// Redirect after a successful login
-					url::redirect($redirect);
-				}
+					if (is_string($redirect))	{
+						$login->save();
+						url::redirect($redirect);
+					}
 
-				// Login is successful
-				$status = true;
-			} else {
-				$array->add_error('username', 'invalid');
+					// Login is successful
+					$status = true;
+
+				} else {
+					$array->add_error('username', 'invalid');
+				}
 			}
 		}
 
+		$login->save();
 		return $status;
 	}
 
@@ -182,7 +199,6 @@ class User_Model extends Modeler_ORM {
 	/**
 	 * Get user's total comment count
 	 *
-	 * @param   User_Model  $user
 	 * @return  int
 	 */
 	public function get_comment_count() {
@@ -267,33 +283,56 @@ class User_Model extends Modeler_ORM {
 
 
 	/**
+	 * Get user's friends
+	 *
+	 * @param   integer  $page_num
+	 * @param   integer  $page_size
+	 * @return  ORM_Iterator
+	 */
+	public function find_friends($page_num = 1, $page_size = 25) {
+		$page_offset = ($page_num - 1) * $page_size;
+		$friends = ORM::factory('friend')->where('user_id', $this->id)->find_all($page_size, $page_offset);
+
+		return $friends;
+	}
+
+
+	/**
+	 * Get user's total friend count
+	 *
+	 * @return  int
+	 */
+	public function get_friend_count() {
+		return (int)ORM::factory('friend')->where('user_id', $this->id)->count_all();
+	}
+
+
+	/**
 	 * Check for friendship
 	 *
 	 * @param  mixed  $friend  id, username, User_Model
 	 */
 	public function is_friend($friend) {
-		static $friends;
-
 		if (empty($friend)) {
 			return false;
 		}
 
-		// load friends
-		if (!is_array($friends)) {
+		// Load friends
+		if (!is_array($this->data_friends)) {
 			$friends = array();
-
 			if ($this->loaded) {
 				foreach ($this->friends as $friendship) {
-					$friends[$friendship->friend->id] = utf8::strtoupper($friendship->friend->username);
+					$friends[$friendship->friend->id] = utf8::strtolower($friendship->friend->username);
 				}
 			}
+			$this->data_friends = $friends;
 		}
 
 		if ($friend instanceof User_Model) {
 			$friend = $friend->id;
 		}
 
-		return is_numeric($friend) ? isset($friends[$friend]) : in_array(utf8::strtoupper($friend), $friends);
+		return is_numeric($friend) ? isset($friends[$friend]) : in_array(utf8::strtolower($friend), $this->friends);
 	}
 
 	/***** /FRIENDS *****/
@@ -307,17 +346,14 @@ class User_Model extends Modeler_ORM {
 	 */
 	public function find_user($id) {
 
-		// PostgreSQL text fields are case sensitive, so use always lowercase names and emails
-		if (!is_numeric($id) && !empty($id)) {
-			$id = utf8::strtolower($id);
-		}
+		$id = (is_numeric($id) || empty($id)) ? (int)$id : utf8::strtolower($id);
 
 		// Look from local cache first
 		$user = isset(self::$users[$id]) ? self::$users[$id] : null;
 
 		// If not found, look from global cache
-		if (is_null($user) && is_numeric($id)) {
-			if ($user = $this->cache->get($this->cache->key('user', (int)$id))) {
+		if (is_null($user) && is_int($id)) {
+			if ($user = $this->cache->get($this->cache->key('user', $id))) {
 				$user = unserialize($user);
 
 				// Found from global cache, add to local cache
@@ -329,14 +365,14 @@ class User_Model extends Modeler_ORM {
 		// If still not found, get from db
 		if (is_null($user)) {
 
-			if (is_numeric($id)) {
+			if (is_int($id)) {
 
 				// Numeric IDs are safe to fetch with the usual way
-				$user = $this->find($id);
+				$user = $this->find((int)$id);
 
 			} else {
 
-				// Textual IDs (username, email) must be lowercased because PostgreSQL is case sensitive
+				// Text IDs (username, email) must be lowercased because PostgreSQL is case sensitive
 				$user = $this->where('LOWER("' . $this->table_name . '"."' . $this->unique_key($id) . '") = LOWER(' . $this->db->escape($id) . ')', '', false)->find();
 
 			}
