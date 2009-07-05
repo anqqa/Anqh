@@ -1,5 +1,5 @@
 <?php
-require_once(Kohana::find_file('vendor', 'nbbc/nbbc'));
+require_once(Kohana::find_file('lib', 'nbbc/nbbc'));
 
 /**
  * BBCode library.
@@ -10,16 +10,18 @@ require_once(Kohana::find_file('vendor', 'nbbc/nbbc'));
  * @package    Anqh
  * @author     Antti Qvickström
  * @copyright  (c) 2009 Antti Qvickström
+ * @copyright  (c) 2008-9, the Phantom Inker
+ * @copyright  (c) 2004-2008 AddedBytes.com
  * @license    http://www.opensource.org/licenses/mit-license.php MIT license
  */
-class BB extends BBCode {
+class BB_Core extends BBCode {
 
 	/**
 	 * The BBCode formatted text
 	 *
 	 * @var  string
 	 */
-	public $text = null;
+	protected $text = null;
 
 
 	/**

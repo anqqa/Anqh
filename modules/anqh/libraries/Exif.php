@@ -1,5 +1,5 @@
 <?php
-include_once(Kohana::find_file('vendor', 'exif/exif'));
+include_once(Kohana::find_file('lib', 'exif/exif'));
 
 /**
  * Exif library
