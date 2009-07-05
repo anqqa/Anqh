@@ -11,7 +11,7 @@
  */
 class Modeler_ORM extends ORM {
 
-	protected $cache;
+	protected $cache = 'default';
 	protected $cache_age = 86400; // 60 * 60 * 24
 	protected $cache_key;
 
@@ -20,7 +20,11 @@ class Modeler_ORM extends ORM {
 
 	protected $form = array();
 
+	// By default the model can't change id
+	protected $ignored_columns = array('id');
+
 	// Validation
+	protected $validation = array();
 	protected $filters = array();
 	protected $rules = array();
 	protected $callbacks = array();
@@ -41,10 +45,12 @@ class Modeler_ORM extends ORM {
 	 * @return  void
 	 */
 	public function __construct($id = null) {
+		if (!is_object($this->cache)) {
+			$this->cache = Cache::instance($this->cache);
+		}
+
 		if (empty($id)) $id = null;
 		parent::__construct($id);
-
-		$this->cache = Cache::instance();
 	}
 
 
@@ -56,6 +62,16 @@ class Modeler_ORM extends ORM {
 	 */
 	public function __get($column) {
 		return ($column == 'url_base') ? $this->url_base : parent::__get($column);
+	}
+
+
+	/**
+	 * Get validation errors
+	 *
+	 * @param  array  $lang
+	 */
+	public function errors($lang = null) {
+		return ($this->validation instanceof Validation) ? $this->validation->errors($lang) : array();
 	}
 
 
@@ -92,7 +108,7 @@ class Modeler_ORM extends ORM {
 
 			// No user given, use logged in user
 			$user = Auth::instance()->get_user();
-			return ($author_id == $user->id);
+			return (isset($user->id) && $author_id == $user->id);
 
 		} else if (is_int($user)) {
 
@@ -127,13 +143,11 @@ class Modeler_ORM extends ORM {
 	 * @param  array  $data
 	 */
 	public function set_fields($data) {
-		$allowed = $this->table_columns;
-		// can't change database id
-		unset($allowed['id']);
-
-		foreach ($data as $key => $value)
-			if (isset($allowed[$key]))
-				$this->$key = $value;
+		foreach ($data as $key => $value) {
+			if ($key != 'id') {
+				parent::__set($key, $value);
+			}
+		}
 	}
 
 
@@ -167,6 +181,18 @@ class Modeler_ORM extends ORM {
 		}
 
 		return parent::unique_key($id);
+	}
+
+
+	/**
+	 * Check if current object contains valid data
+	 *
+	 * @param  array   $extra_data       to be set to the object
+	 * @param  array   $extra_functions  to be executed with data
+	 * @param  string  $set              name of validation rules etc if not default
+	 */
+	public function valid($extra_data = array(), $extra_functions = array(), $set = null) {
+		//$validation = Validation::factory(array_merge($extra_data, $this->));
 	}
 
 
