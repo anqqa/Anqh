@@ -136,22 +136,28 @@ abstract class Website_Controller extends Controller {
 		widget::add('footer', View::factory('forum/topics_list',  array('id' => 'footer-topics-active', 'class' => 'grid-3', 'title' => __('Active topics'), 'topics' => ORM::factory('forum_topic')->orderby('last_post_id', 'DESC')->find_all(10))));
 
 		// dock
+		$locales = Kohana::config('locale');
+		if (count($locales['locales'])) {
+			foreach ($locales['locales'] as $lang => $locale) {
+				widget::add('dock2', html::anchor('set/lang/' . $lang, html::specialchars($locale['language'][2])));
+			}
+		}
 		if ($this->user) {
 
 			// authenticated view
 			widget::add('dock', __('Welcome, :user!', array(':user' => html::nick($this->user->id, $this->user->username))));
-			widget::add('dock', html::anchor('/sign/out', __('Sign out')));
+			widget::add('dock', html::anchor('sign/out', __('Sign out')));
 
 			// admin functions
 			if (Auth::instance()->logged_in('admin')) {
-				widget::add('dock2', html::anchor('/roles', __('Roles')));
-				widget::add('dock2', html::anchor('/tags', __('Tags')));
+				widget::add('dock2', html::anchor('roles', __('Roles')));
+				widget::add('dock2', html::anchor('tags', __('Tags')));
 			}
 
 		} else {
 
 			// non-authenticated view
-			$form =  form::open('/sign/in');
+			$form =  form::open('sign/in');
 			$form .= form::input('username', null, 'title="' . __('Username') . '"');
 			$form .= form::password('password', null, 'title="' . __('Password') . '"');
 			$form .= form::submit('submit', __('Sign in'));
@@ -229,30 +235,6 @@ abstract class Website_Controller extends Controller {
 	public function _error($title = '', $errors = false) {
 		$this->page_title = $title;
 		widget::add('main', '<div class="error">' . (is_array($errors) ? implode('<br />', $errors) : $errors) . '</div>');
-	}
-
-
-	/**
-	 * Set generic setting (theme, country etc)
-	 *
-	 * @param string $setting
-	 * @param array  $value
-	 */
-	public function set($setting = false, $value = false) {
-		$this->history = false;
-
-		if ($value) {
-			switch ($setting) {
-				case 'country':
-					$countries = Kohana::config('site.countries');
-					// set country or clear
-					if (in_array($value, $countries))	$_SESSION['country'] = !empty($_SESSION['country']) && $_SESSION['country'] == $value ? null : $value;
-					break;
-			}
-		}
-
-		$return = empty($_SESSION['history']) ? '/' : $_SESSION['history'];
-		url::redirect($return);
 	}
 
 }
