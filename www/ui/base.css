@@ -129,9 +129,18 @@ form .buttons     { display: block; margin-bottom: 1em; margin-top: 1em; text-al
 
 .avatar a { margin: 0 6px; }
 .side a.action { float: right; }
-a.user                                 { font-weight: bold; }
+a.user                                 { /*font-weight: bold;*/ }
 table.calendar th,
 table.calendar td            { padding: 0; }
+.actions                               { float: right; }
+
+#dock #password-hint                   { display: none; }
+
+form.filters                           { margin-bottom: 1.6667em; }
+form.filters li,
+form.filters li label                  { display: inline; }
+form.filters li input[type="checkbox"] { display: none; }
+form.filters li label                  { cursor: pointer; padding: 0 0.5em; }
 
 /***** /ELEMENTS *****/
 
