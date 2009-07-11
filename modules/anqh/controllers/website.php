@@ -92,7 +92,7 @@ abstract class Website_Controller extends Controller {
 			return;
 		}
 
-		// use profiler only when an admin is logged in
+		// Use profiler only when an admin is logged in
 		if (Auth::instance()->logged_in('admin')) {
 			$this->profiler = new Profiler;
 		}
@@ -110,74 +110,95 @@ abstract class Website_Controller extends Controller {
 		// Add controller name as default page id
 		$this->page_id = Router::$controller;
 
-		// init page values
+		// Init page values
 		$this->country = empty($_SESSION['country']) ? false : $_SESSION['country'];
 		$this->menu = Kohana::config('site.menu');
 		$this->stylesheets = array('ui/' . Kohana::config('site.skin') . '/skin', 'ui/' . Kohana::config('site.skin') . '/jquery-ui');
 		$this->breadcrumb = array(html::anchor('/', __('Home')));
 		$this->tabs = array();
 
-		// if a country is seleced, add custom stylesheet
+		// If a country is seleced, add custom stylesheet
 		if ($this->country && Kohana::config('site.country_css')) {
 			$this->stylesheets[] = 'ui/' . utf8::strtolower($this->country) . '/skin';
 		}
 
-		// generic views
+		// Generic views
 		widget::add('actions',    View::factory('generic/actions')->bind('actions', $this->page_actions));
 		widget::add('breadcrumb', View::factory('generic/breadcrumb')->bind('breadcrumb', $this->breadcrumb));
 		widget::add('navigation', View::factory('generic/menu')->bind('items', $this->menu)->bind('selected', $this->page_id));
 		widget::add('tabs',       View::factory('generic/tabs_side')->bind('tabs', $this->tabs)->bind('selected', $this->tab_id));
 
-		// header
+		// Header
 		widget::add('header', View::factory('generic/header'));
 
-		// footer
+		// Footer
 		widget::add('footer', View::factory('events/events_list', array('id' => 'footer-events-new',    'class' => 'grid-3', 'title' => __('New events'),   'events' => ORM::factory('event')->orderby('id', 'DESC')->find_all(10))));
 		widget::add('footer', View::factory('forum/topics_list',  array('id' => 'footer-topics-active', 'class' => 'grid-3', 'title' => __('Active topics'), 'topics' => ORM::factory('forum_topic')->orderby('last_post_id', 'DESC')->find_all(10))));
 
-		// dock
+		// Dock
 		$locales = Kohana::config('locale');
 		if (count($locales['locales'])) {
+			$languages = array();
 			foreach ($locales['locales'] as $lang => $locale) {
-				widget::add('dock2', html::anchor('set/lang/' . $lang, html::specialchars($locale['language'][2])));
+				$languages[] = html::anchor('set/lang/' . $lang, html::specialchars($locale['language'][2]));
 			}
+			widget::add('dock2', __('Language: ') . implode(', ', $languages));
 		}
 		if ($this->user) {
 
-			// authenticated view
+			// Authenticated view
 			widget::add('dock', __('Welcome, :user!', array(':user' => html::nick($this->user->id, $this->user->username))));
 			widget::add('dock', html::anchor('sign/out', __('Sign out')));
 
-			// admin functions
+			// Admin functions
 			if (Auth::instance()->logged_in('admin')) {
-				widget::add('dock2', html::anchor('roles', __('Roles')));
-				widget::add('dock2', html::anchor('tags', __('Tags')));
+				widget::add('dock2', ' | ' . __('Admin: ') . html::anchor('roles', __('Roles')) . ', ' . html::anchor('tags', __('Tags')));
 			}
 
 		} else {
 
-			// non-authenticated view
+			// Non-authenticated view
 			$form =  form::open('sign/in');
 			$form .= form::input('username', null, 'title="' . __('Username') . '"');
-			$form .= form::password('password', null, 'title="' . __('Password') . '"');
+			$form .= form::input('password-hint', __('Password'), 'autocomplete="off" class="hint"');
+			$form .= form::password('password');
 			$form .= form::submit('submit', __('Sign in'));
 			$form .= form::close();
 			$form .= html::anchor('/sign/up', __('Sign up'));
 			widget::add('dock', $form);
 
+			$password = <<<JS
+$(function() {
+	$('#password-hint').show();
+	$('#password').hide();
+
+	$('#password-hint').focus(function() {
+		$('#password-hint').hide();
+		$('#password').show();
+		$('#password').focus();
+	});
+	$('#password').blur(function() {
+		if($('#password').val() == '') {
+			$('#password-hint').show();
+			$('#password').hide();
+		}
+	});
+});
+JS;
+			widget::add('dock', html::script_source($password));
 		}
 
-		// end
+		// End
 		widget::add('end', View::factory('generic/end'));
 
-		// foot
+		// Foot
 		$google_analytics = Kohana::config('site.google_analytics');
 		if ($google_analytics) {
 			widget::add('foot', html::script_source('var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www."); document.write(unescape("%3Cscript src=\'" + gaJsHost + "google-analytics.com/ga.js\' type=\'text/javascript\'%3E%3C/script%3E"));'));
 			widget::add('foot', html::script_source("try { var pageTracker = _gat._getTracker('" . $google_analytics . "'); pageTracker._trackPageview(); } catch(err) {}"));
 		}
 
-		// ads
+		// Ads
 		$ads = Kohana::config('site.ads');
 		if ($ads && $ads['enabled']) {
 			foreach ($ads['slots'] as $ad => $slot) {
@@ -196,10 +217,14 @@ abstract class Website_Controller extends Controller {
 	 */
 	public function _autocomplete_city($field = 'city_name', $hidden = 'city_id') {
 		$countries = ORM::factory('country')->in('country', Kohana::config('site.countries'));
+
 		$cities = array();
-		foreach ($countries->find_all() as $country)
-			foreach ($country->cities as $city)
+		foreach ($countries->find_all() as $country) {
+			foreach ($country->cities as $city) {
 				$cities[] = "{ id: '" . $city->id . "', text: '" . html::specialchars($city->city) . "' }";
+			}
+		}
+
 		widget::add('foot', html::script_source('var cities = [' . implode(', ', $cities) . '];'));
 		widget::add('foot', html::script_source("$('input#" . $field . "').autocomplete(cities, { formatItem: function(item) { return item.text; }}).result(function(event, item) { $(\"input[name='" . $hidden . "']\").val(item.id); });"));
 	}
