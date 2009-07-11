@@ -20,6 +20,8 @@ class Tag_Model extends Modeler_ORM {
 		'tag_group_id' => array('valid::digit'),
 	);
 
+	protected $url_base = 'tag';
+
 
 	public function __construct($id = null) {
 		parent::__construct($id);

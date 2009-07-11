@@ -22,6 +22,8 @@ class Tag_Group_Model extends Modeler_ORM {
 		'description'  => array('length[0, 250]'),
 	);
 
+	protected $url_base = 'tags';
+
 
 	public function __construct($id = null) {
 		parent::__construct($id);
