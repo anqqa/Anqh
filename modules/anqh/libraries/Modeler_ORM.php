@@ -143,6 +143,10 @@ class Modeler_ORM extends ORM {
 	 * @param  array  $data
 	 */
 	public function set_fields($data) {
+
+		// Strip properties not in model
+		$data = array_intersect_key($data, $this->table_columns);
+
 		foreach ($data as $key => $value) {
 			if ($key != 'id') {
 				parent::__set($key, $value);
