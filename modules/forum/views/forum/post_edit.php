@@ -13,6 +13,7 @@
 	<fieldset>
 		<?= empty($post['id']) ? '' : form::hidden('id', $post['id']) ?>
 		<?= empty($parent_id) ? '' : form::hidden('parent_id', $parent_id) ?>
+		<?= ''/*empty($post['parent_id']) ? '' : form::hidden('parent_id', $post['parent_id'])*/ ?>
 		<?= form::submit(false, __('Save')) ?>
 		<?= html::anchor($_SESSION['history'], __('Cancel')) ?>
 	</fieldset>

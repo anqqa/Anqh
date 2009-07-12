@@ -46,11 +46,73 @@ class BB_Core extends BBCode {
 
 		// User our own quote
 		$this->AddRule('quote', array(
-			'simple_start' => '<blockquote><p>',
-			'simple_end'   => '</p></blockquote>',
-			'class'        => 'block',
-			'allow_in'     => array('listitem', 'block', 'columns'),
+			'mode'     => BBCODE_MODE_CALLBACK,
+			'method'   => array($this, 'bbcode_quote'),
+			'class'    => 'block',
+			'allow_in' => array('listitem', 'block', 'columns'),
+			'content'  => BBCODE_REQUIRED,
 		));
+	}
+
+
+	/**
+	 * Handle forum quotations
+	 *
+	 * @param   BBCode  $bbcode
+	 * @param   string  $action
+	 * @param   string  $name
+	 * @param   string  $default
+	 * @param   array   $params
+	 * @param   string  $content
+	 * @return  string
+	 */
+	public function bbcode_quote($bbcode, $action, $name, $default, $params, $content) {
+
+		// Pass all to 2nd phase
+		if ($action == BBCODE_CHECK) {
+			return true;
+		}
+
+		// Parse parameters
+		foreach ($params['_params'] as $param) {
+			switch ($param['key']) {
+
+				// Parent post id
+				case 'post':
+					$post_id = (int)$param['value'];
+					$post = ORM::factory('forum_post', $post_id);
+					break;
+
+				// Parent post author
+				case 'author':
+					$author_name = $param['value'];
+					$author = ORM::factory('user')->find_user($author_name);
+					break;
+
+			}
+		}
+
+		// Add parent post
+		if (isset($post) && $post->id) {
+			$quote = '<blockquote cite="' . url::model($post->forum_topic) . '/' . $post->id . '#post-' . $post->id . '"><p>';
+
+			// Override author
+			$author = $post->author;
+		} else {
+			$quote = '<blockquote><p>';
+		}
+
+		$quote .= trim($content);
+
+		// Post author
+		if (isset($author) && $author->id) {
+			$quote .= '</p><p class="author">' . __('-- :author', array(':author' => html::user($author)));
+		} else if (isset($author_name)) {
+			$quote .= '</p><p class="author">' . __('-- :author', array(':author' => html::specialchars($author_name)));
+		}
+
+		$quote .= '</p></blockquote>';
+		return $quote;
 	}
 
 

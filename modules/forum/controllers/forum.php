@@ -503,16 +503,16 @@ class Forum_Controller extends Website_Controller {
 		// Load post or start new
 		$forum_post = new Forum_Post_Model((int)$post_id);
 		$forum_topic = $forum_post->id ? $forum_post->forum_topic : new Forum_Topic_Model((int)$topic_id);
-		$forum_area = $forum_topic->forum_area;
 		$errors = $forum_topic->id ? array() : __('Topic not found');
 
 		if (empty($errors)) {
 
-			// check access and proceed
+			// Check access and proceed
+			$forum_area = $forum_topic->forum_area;
 			if ($forum_area->access_has($this->user, Forum_Area_Model::ACCESS_WRITE)) {
 
 				$this->page_title = text::title($forum_topic->name);
-				$this->page_subtitle = __('Area :area. ', array(
+				$this->page_subtitle = __('Area :area.', array(
 					':area' => html::anchor(url::model($forum_area), text::title($forum_area->name), array('title' => strip_tags($forum_area->description)))
 				));
 				$form_errors = array();
@@ -521,6 +521,10 @@ class Forum_Controller extends Website_Controller {
 				$form_values_post  = $forum_post->as_array();
 				$editing = (bool)$forum_post->id;
 
+				if (!$editing && $quote && $parent_post->id) {
+					$form_values_post['post'] = '[quote author="' . $parent_post->author->username .'" post="' . $parent_post->id . '"]' . $parent_post->post . '[/quote]';
+				}
+
 				// check post
 				if (request::method() == 'post') {
 					$post = $this->input->post();
@@ -528,8 +532,9 @@ class Forum_Controller extends Website_Controller {
 					$post['forum_topic_id'] = $forum_topic->id;
 					if ($editing) {
 						$extra = array(
-							'modifies' => (int)$forum_post->modifies + 1,
-							'modified' => date::unix2sql(time()),
+							'parent_id' => $forum_post->parent_id,
+							'modifies'  => (int)$forum_post->modifies + 1,
+							'modified'  => date::unix2sql(time()),
 						);
 					} else {
 						$extra = array(
@@ -785,7 +790,7 @@ class Forum_Controller extends Website_Controller {
 					$post['forum_area_id'] = $forum_area->id;
 					$topic = $post;
 					$post_extra = $topic_extra = array(
-						'author_id' => $this->user->id,
+						'author_id'   => $this->user->id,
 						'author_name' => $this->user->username
 					);
 					if ($editing) {
