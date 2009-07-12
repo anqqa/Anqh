@@ -34,7 +34,7 @@
 #footer .menu    { text-align: center; }
 #footer .menu li { display: inline; padding: 0 6px; }
 #footer .tab     { float: left; margin-bottom: 1em; }
-#footer .tab li  { white-space: nowrap; }
+#footer .tab li                        { overflow: hidden; text-overflow: ellipsis; -o-text-overflow: ellipsis; white-space: nowrap; }
 
 /***** /FOOTER *****/
 
@@ -230,7 +230,7 @@ table.calendar .inactive { opacity: 0.50; }
 table.calendar .today { font-weight: bold; }
 
 #events .calendar .events              { margin-top: -1px; }
-#events .tab .events li   { white-space: nowrap; overflow: hidden; }
+#events .tab .events li                { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; -o-text-overflow: ellipsis; }
 
 /***** /calendar *****/
 
