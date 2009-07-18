@@ -17,7 +17,7 @@
 						<h4><?= html::anchor(url::model($event), text::title($event->name)) ?></h4>
 
 						<?php if ($event->price !== null && $event->price != -1): ?>
-						<span class="details price"><?= ($event->price == 0 ? __('Free entry') : $event->price . html::specialchars(Kohana::config('locale.currency.symbol'))) ?></span>
+						<span class="details price"><?= ($event->price == 0 ? __('Free entry') : '<var>' . $event->price . html::specialchars(Kohana::config('locale.currency.symbol')) . '</var>') ?></span>
 						<?php endif; ?>
 
 						<?php if ($event->venue_id): ?>
