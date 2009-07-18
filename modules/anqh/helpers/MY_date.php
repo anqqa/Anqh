@@ -10,6 +10,17 @@
 class date extends date_Core {
 
 	/**
+	 * SQL date
+	 */
+	const DATE_SQL = 'date_sql';
+
+	/**
+	 * SQL time
+	 */
+	const TIME_SQL = 'time_sql';
+
+
+	/**
 	 * Returns date range Y-m-d - Y-m-d
 	 *
 	 * @param	 DateTime	$date
@@ -45,7 +56,7 @@ class date extends date_Core {
 	 * Locale formatted date
 	 *
 	 * @param   string  $format
-	 * @param   mixed   $date default now
+	 * @param   mixed   $date    default now
 	 * @return  strign
 	 */
 	public static function format($format, $date = false) {
@@ -54,12 +65,12 @@ class date extends date_Core {
 		switch ($format) {
 
 			// SQL date
-			case 'date_SQL':
+			case self::DATE_SQL:
 				$format = 'Y-m-d';
 				break;
 
 			// SQL time
-			case 'time_SQL':
+			case self::TIME_SQL:
 				$format = 'Y-m-d H:i:s';
 				break;
 
@@ -68,6 +79,7 @@ class date extends date_Core {
 				break;
 
 		}
+
 		return date($format, $date);
 	}
 

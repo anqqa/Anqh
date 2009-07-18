@@ -31,12 +31,41 @@ class html extends html_Core {
 	/**
 	 * Prints date box
 	 *
-	 * @param		string|int	$date
-	 * @return	string
+	 * @param   string|integer  $date
+	 * @param   boolean         $year
+	 * @return  string
 	 */
-	public static function box_day($date) {
-		is_string($date) and $date = strtotime($date);
-		return '<div class="grid-1 date"><span class="weekday">' . Kohana::lang('calendar.' . strtolower(date('D', $date))) . '</span> <span class="day">' . date('d', $date) . '</span> <span class="month">' . Kohana::lang('calendar.' . strtolower(date('M', $date))) . '</span></div>';
+	public static function box_day($date, $year = false) {
+		if (!is_numeric($date)) {
+			$date = strtotime($date);
+		}
+
+		$weekday = Kohana::lang('calendar.' . strtolower(date('D', $date)));
+		$day = date('d', $date);
+		$month = Kohana::lang('calendar.' . strtolower(date('M', $date)));
+		if ($year) {
+			$month .= " '" . date('y', $date);
+		}
+
+		// Today?
+		if (date('Y-m-d', $date) == date('Y-m-d')) {
+			$weekday = __('Today');
+			return <<<DATE
+<div class="grid-1 alpha date today">
+	<span class="weekday">$weekday</span>
+	<span class="day">$day</span>
+	<span class="month">$month</span>
+</div>
+DATE;
+		} else {
+			return <<<DATE
+<div class="grid-1 alpha date">
+	<span class="weekday">$weekday</span>
+	<span class="day">$day</span>
+	<span class="month">$month</span>
+</div>
+DATE;
+		}
 	}
 
 
@@ -80,7 +109,6 @@ $(function() {
 
 	$("#<?= $dialog_id ?>").dialog({
 		autoOpen: false,
-		height: 100,
 		modal: true,
 		buttons: {
 			'<?= $ok ?>': function() {
