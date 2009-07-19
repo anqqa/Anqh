@@ -1,6 +1,6 @@
 
 <?php if (!empty($filters)): ?>
-<?= form::open(null, array('class' => 'filters')) ?>
+<?= form::open(null, array('class' => 'filters pills')) ?>
 
 	<?php foreach ($filters as $type => $filter): ?>
 	<fieldset>
@@ -76,6 +76,7 @@ $(function() {
 			if (!checked) {
 				return false;
 			}
+
 			$('form.filters input[value!=\"all\"]').attr('checked', false);
 			filters(checked);
 

@@ -70,7 +70,7 @@ label                                  { display: block; }
 .horizontal label                      { display: inline; }
 input,
 textarea,
-select            { -moz-border-radius: 5px; margin-right: 0.5em; padding: 2px 3px 4px; }
+select                                 { -moz-border-radius: 5px; margin: 0 -3px; padding: 2px 3px 4px; }
 input[type="submit"]                   { cursor: pointer; padding: 0 0.5em; }
 input[type="text"],
 input[type="password"],
@@ -79,9 +79,9 @@ textarea,
 select                                 { width: 99%; }
 fieldset a                             { vertical-align: middle; }
 form .notice .info,
-form .error .info { float: right; margin-right: 2px; -moz-border-radius: 4px 4px 0 0; padding: 0 0.5em; }
+form .error .info                      { float: right; -moz-border-radius: 4px 4px 0 0; padding: 0 0.5em; }
 form .notice input,
-form .error input { -moz-border-radius-topright: 0; }
+form .error input                      { -moz-border-radius-topright: 0; }
 form .buttons     { display: block; margin-bottom: 1em; margin-top: 1em; text-align: center; }
 .hint             { font-style: italic; }
 
@@ -136,11 +136,11 @@ table.calendar td            { padding: 0; }
 
 #dock #password-hint                   { display: none; }
 
-form.filters                           { margin-bottom: 1.6667em; }
-form.filters li,
-form.filters li label                  { display: inline; }
-form.filters li input[type="checkbox"] { display: none; }
-form.filters li label                  { cursor: pointer; padding: 0 0.5em; }
+.pills                                 { margin-bottom: 1.6667em; }
+.pills li,
+.pills li label                        { display: inline; }
+.pills li input[type="checkbox"]       { display: none; }
+.pills li label                        { cursor: pointer; padding: 0 0.5em; }
 
 /***** /ELEMENTS *****/
 
@@ -251,7 +251,7 @@ table.calendar .today { font-weight: bold; }
 blockquote:first-letter  { padding-left: 22px; }
 blockquote p             { text-indent: 0; }*/
 
-.forum .tab .events li   { white-space: nowrap; overflow: hidden; }
+#forum .tab .topics li   { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; -o-text-overflow: ellipsis; }
 .forum .ui-tabs-panel h4 { display: none; }
 
 /***** /forum *****/
