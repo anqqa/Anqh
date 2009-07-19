@@ -1,16 +1,20 @@
-<?= form::open() ?>
-<p>
-	<?= html::error($errors, 'name') ?>
-	<?= form::label('name', Kohana::lang('generic.name')) ?>
-	<?= form::input('name', $values['name'], 'maxlength="32"') ?>
 
-	<?= html::error($errors, 'description') ?>
-	<?= form::label('description', Kohana::lang('generic.description')) ?>
-	<?= form::input('description', $values['description'], 'maxlength="255"') ?>
-</p>
-	
-<p>
-	<?= form::submit(false, Kohana::lang('generic.form_save')) ?>
-	<?= html::anchor($_SESSION['history'], Kohana::lang('generic.form_cancel')) ?>
-</p>
-<?= form::close() ?>	
+<?= form::open() ?>
+
+	<fieldset>
+		<legend><?= __('Group') ?></legend>
+		<ul>
+
+			<?= form::input_wrap('name', $values, 'maxlength="32"', __('Name'), $errors) ?>
+
+			<?= form::input_wrap('description', $values, 'maxlength="32"', __('Description'), $errors) ?>
+
+		</ul>
+	</fieldset>
+
+	<fieldset>
+		<?= form::submit(false, __('Save')) ?>
+		<?= html::anchor($_SESSION['history'], __('Cancel')) ?>
+	</fieldset>
+
+<?= form::close() ?>
