@@ -5,7 +5,7 @@
  * @package    Anqh
  * @author     Antti Qvickström
  * @copyright  (c) 2009 Antti Qvickström
- * @license    MIT
+ * @license    http://www.opensource.org/licenses/mit-license.php MIT license
  */
 class form extends form_Core {
 
@@ -26,6 +26,43 @@ class form extends form_Core {
 		$input = form::button($data, $value, $extra);
 
 		return form::wrap($input, $name, $label, $error);
+	}
+
+
+	/**
+	 * Creates checkboxes list
+	 *
+	 * @param   string        $name    input name
+	 * @param   array         $data    array of checkboxes
+	 * @param   array         $values  checked values
+	 * @param   string        $label
+	 * @param   string|array  $error
+	 * @return  string
+	 */
+	public static function checkboxes_wrap($name, $data = array(), $values = array(), $label = '', $error = '', $class = '') {
+
+		// Get checkboxes
+		$checkboxes = isset($data[$name]) ? $data[$name] : $data;
+
+		if (!empty($checkboxes)) {
+
+			// Create internal id
+			$singular = inflector::singular($name) . '_';
+
+			// Get values
+			$values = isset($values[$name]) ? $values[$name] : $values;
+			$input = (empty($class)) ? "<ul>\n" : '<ul class="' . $class . "\">\n";
+			foreach ($checkboxes as $checkbox_id => $checkbox_name) {
+				$internal_id = $singular . $checkbox_id;
+				$input .= '<li>';
+				$input .= form::checkbox(array('id' => $internal_id, 'name' => $name . '[' . $checkbox_id . ']'), $checkbox_name, isset($values[$checkbox_id]));
+				$input .= form::label($internal_id, $checkbox_name);
+				$input .= "</li>\n";
+			}
+			$input .= "</ul>\n";
+
+			return form::wrap($input, $name, $label, $error);
+		}
 	}
 
 
