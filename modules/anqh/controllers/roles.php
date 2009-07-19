@@ -77,7 +77,6 @@ class Roles_Controller extends Website_Controller {
 			$this->breadcrumb[] = html::anchor('role/' . URL::title($role->id, $role->name), html::specialchars($role->name));
 			$this->page_title = text::title($role->name);
 			$this->page_actions[] = array('link' => 'role/' . URL::title($role->id, $role->name) . '/delete', 'text' => __('Delete role'), 'class' => 'role-delete');
-			html::confirm('.role-delete', 'role-delete', __('Delete role'), __('Area you sure you want to delete :target', array(':target' => html::specialchars($role->name))), __('Delete'), __('Cancel'));
 		} else {
 			$this->page_title = __('Role');
 		}

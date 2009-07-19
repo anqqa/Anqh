@@ -258,8 +258,6 @@ class Forum_Controller extends Website_Controller {
 		// show form
 		if ($forum_area->id) {
 			$this->page_actions[] = array('link' => url::model($forum_area) . '/delete', 'text' => __('Delete area'), 'class' => 'area-delete');
-			html::confirm('.area-delete', 'area-delete', __('Delete area'), __('Area you sure you want to delete :target', array(':target' => html::specialchars($forum_area->name))), __('Delete'), __('Cancel'));
-
 			$this->template->subtitle = __('Edit area');
 		} else {
 			$this->template->subtitle = __('New area');
@@ -375,7 +373,6 @@ class Forum_Controller extends Website_Controller {
 		if ($forum_group->id) {
 			$this->page_subtitle = __('Edit group');
 			$this->page_actions[] = array('link' => url::model($forum_group) . '/delete', 'text' => __('Delete group'), 'class' => 'group-delete');
-			html::confirm('.group-delete', 'group-delete', __('Delete group'), __('Are you sure you want to delete :target', array(':target' => html::specialchars($forum_group->name))), __('Delete'), __('Cancel'));
 		} else {
 			$this->page_subtitle = __('New group');
 		}
@@ -777,7 +774,6 @@ class Forum_Controller extends Website_Controller {
 				// Admin actions
 				if ($forum_topic->id) {
 					$this->page_actions[] = array('link' => url::model($forum_topic) . '/delete', 'text' => __('Delete topic'), 'class' => 'topic-delete');
-					html::confirm('.topic-delete', 'topic-delete', __('Delete topic'), __('Are you sure you want to delete :target', array(':target' => html::specialchars($forum_topic->name)), __('Delete'), __('Cancel')));
 				}
 
 				$form_values_topic = $forum_topic->as_array();

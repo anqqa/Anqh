@@ -16,7 +16,7 @@ class Venues_Controller extends Website_Controller {
 		parent::__construct();
 
 		$this->page_title = __('Venues');
-		$this->breadcrumb[] = html::anchor('/venues', __('Venues'));
+		$this->breadcrumb[] = html::anchor('venues', __('Venues'));
 	}
 
 
@@ -100,13 +100,13 @@ class Venues_Controller extends Website_Controller {
 		$errors = $venue_category->id ? array() : array('venues.error_venue_category_not_found');
 
 		if (empty($errors)) {
-			$this->breadcrumb[] = html::anchor('/venues/' . url::title($venue_category->id, $venue_category->name), $venue_category->name);
+			$this->breadcrumb[] = html::anchor(url::model($venue_category), $venue_category->name);
 			$this->page_title = text::title($venue_category->name);
 			$this->page_subtitle = html::specialchars($venue_category->description);
 
 			if (Auth::instance()->logged_in('admin') || Auth::instance()->logged_in('venue admin')) {
-				$this->page_actions[] = array('link' => 'venues/' . URL::title($venue_category->id, $venue_category->name) . '/edit', 'text' => __('Edit category'), 'class' => 'category-edit edit');
-				$this->page_actions[] = array('link' => 'venues/' . URL::title($venue_category->id, $venue_category->name) . '/add',  'text' => __('Add venue'),     'class' => 'venue-add add');
+				$this->page_actions[] = array('link' => url::model($venue_category) . '/edit', 'text' => __('Edit category'), 'class' => 'category-edit edit');
+				$this->page_actions[] = array('link' => url::model($venue_category) . '/add',  'text' => __('Add venue'),     'class' => 'venue-add add');
 			}
 
 			// organize by city
@@ -124,7 +124,7 @@ class Venues_Controller extends Website_Controller {
 				}
 			}
 			$this->page_subtitle .= ' - '
-				. __2(':cities city',  ':cities cities', count($venues_by_city), array(':cities' => '<var>' . count($venues_by_city) . '</var>'))
+				. __2(':cities city',  ':cities cities', count($venues_by_city), array(':cities' => '<var>' . count($venues_by_city) . '</var>')) . ', '
 				. __2(':venues venue', ':venues venues', $venues,                array(':venues' => '<var>' . $venues . '</var>'));
 
 			widget::add('main', View::factory('venues/venues', array('venues' => $venues_by_city, 'country' => $this->country)));
@@ -196,9 +196,8 @@ class Venues_Controller extends Website_Controller {
 		if ($venue_category->id) {
 			$this->page_subtitle = __('Edit category');
 
-			if (Auth::instance()->logged_in('admin') || Auth::instance()->logged_in('venue admin')) {
-				$this->page_actions[] = array('link' => 'venues/' . URL::title($venue_category->id, $venue_category->name) . '/delete', 'text' => __('Delete category'), 'class' => 'category-delete delete');
-				html::confirm('.category-delete', 'category-delete', __('Delete category'), __('Area you sure you want to delete :target', array(':target' => html::specialchars($venue_category->name))), __('Delete'), __('Cancel'));
+			if (Auth::instance()->logged_in('admin')) {
+				$this->page_actions[] = array('link' => url::model($venue_category) . '/delete', 'text' => __('Delete category'), 'class' => 'category-delete delete');
 			}
 
 		} else {
@@ -255,7 +254,6 @@ class Venues_Controller extends Website_Controller {
 			if ($this->user) {
 				$this->page_actions[] = array('link' => 'venue/' . URL::title($venue->id, $venue->name) . '/edit',   'text' => __('Edit venue'),   'class' => 'venue-edit edit');
 				$this->page_actions[] = array('link' => 'venue/' . URL::title($venue->id, $venue->name) . '/delete', 'text' => __('Delete venue'), 'class' => 'venue-delete delete');
-				html::confirm('.venue-delete', 'venue-delete', __('Delete venue'), __('Area you sure you want to delete :target', array(':target' => html::specialchars($venue->name))), __('Delete'), __('Cancel'));
 			}
 
 			widget::add('main', View::factory('venues/venue', array('venue' => $venue)));

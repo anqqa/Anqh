@@ -165,7 +165,6 @@ class Tags_Controller extends Website_Controller {
 
 			if (Auth::instance()->logged_in('admin')) {
 				$this->page_actions[] = array('link' => url::model($tag_group) . '/delete', 'text' => __('Delete group'), 'class' => 'group-delete');
-				html::confirm('.group-delete', 'group-delete', __('Delete group'), __('Area you sure you want to delete :target', array(':target' => html::specialchars($tag_group->name))), __('Delete'), __('Cancel'));
 			}
 
 		} else {
@@ -302,7 +301,6 @@ class Tags_Controller extends Website_Controller {
 
 			if (Auth::instance()->logged_in('admin')) {
 				$this->page_actions[] = array('link' => url::model($tag) . '/delete', 'text' => __('Delete tag'), 'class' => 'tag-delete');
-				html::confirm('.tag-delete', 'tag-delete', __('Delete tag'), __('Area you sure you want to delete :target', array(':target' => html::specialchars($tag->name))), __('Delete'), __('Cancel'));
 			}
 
 			if (!$tag->id) {

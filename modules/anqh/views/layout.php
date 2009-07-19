@@ -9,7 +9,7 @@
 	<?= html::stylesheet($stylesheets) ?>
 	<script type="text/javascript" src="http://www.google.com/jsapi?key=<?= Kohana::config('site.google_api_key') ?>"></script>
 	<?= html::script('http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js'); ?>
-	<?= html::script('http://ajax.googleapis.com/ajax/libs/jqueryui/1.7.1/jquery-ui.min.js') ?>
+	<?= html::script('http://ajax.googleapis.com/ajax/libs/jqueryui/1.7.2/jquery-ui.min.js') ?>
 <?= widget::get('head') ?>
 </head>
 
@@ -85,7 +85,7 @@
 
 	<div id="dock" class="container-1">
 		<div class="container-12 clearfix">
-			<div class="grid-6 actions">
+			<div class="grid-6">
 
 <?= widget::get('dock') ?>
 
@@ -127,40 +127,47 @@
 
 	<!-- /END -->
 
-
-<?= html::script(array('js/jquery.autocomplete.pack', 'js/jquery.hint')) ?>
-<?= html::script_source("$('input:text,input:password,textarea').hint('hint');"); ?>
+<?= html::script(array('js/jquery.autocomplete.pack', 'js/jquery.hint', 'js/jquery.text-overflow')) ?>
 
 <script type="text/javascript">
-/*
+//<![CDATA[
 $(function() {
-	var header = $('#header');
-	header.css({ position: 'absolute' });
 
-	var PADDING = 102;
-	var FIXED = (header.css('position') == 'fixed');
+	// Hook form input hints
+	$('input:text, textarea').hint('hint');
 
-	var win = $(window);
-
-	win.scroll(function() {
-		if (win.scrollTop() > PADDING) {
-			if ($.browser.msie && $.browser.version == '6.0') {
-				header.css('top', win.scrollTop() - PADDING);
-			} else if (!FIXED) {
-				//header.css({ top: -PADDING, position: 'fixed' });
-				header.css({ top: -Math.min(win.scrollTop(), header.height()), position: 'fixed' });
-				header.animate({ top: -PADDING }, { duration: 200, queue: false });
-				FIXED = true;
-			}
+	// Hook delete confirmations
+	function confirm_delete(title, action) {
+		if (title === undefined) title = 'Are you sure you want to do this?';
+		if (action === undefined) action = function() { return true; }
+		if ($('#dialog-confirm').length == 0) {
+			$('body').append('<div id="dialog-confirm" title="<?= __('Are you sure?') ?>">' + title + '</div>');
+			$('#dialog-confirm').dialog({
+				modal: true,
+				close: function(ev, ui) { $(this).remove(); },
+				buttons: {
+					'<?= __('No, cancel') ?>': function() { $(this).dialog('close'); },
+					'<?= __('Yes, delete') ?>': function() { $(this).dialog('close'); action(); }
+				}
+			});
 		} else {
-			if (FIXED) {
-				header.css({ top: 0, position: 'absolute' });
-				FIXED = false;
-			}
+			$('#confirm-dialog').dialog('open');
+		}
+	}
+
+	$('a[class*="-delete"]').click(function(e) {
+		e.preventDefault();
+		var action = $(this);
+		var title = action.text();
+		if (action.is('a')) {
+			confirm_delete(title, function() { window.location = action.attr('href'); });
+		} else {
+			confirm_delete(title, function() { action.parent('form').submit(); });
 		}
 	});
+
 });
-*/
+//]]>
 </script>
 
 <?= widget::get('foot') ?>
