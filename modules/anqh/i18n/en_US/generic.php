@@ -17,7 +17,7 @@ $lang = array(
 	'show_more' => 'Show more',
 	'view_list' => 'View as list',
 	'view_map'  => 'Show on map',
-	
+
 	/***** /LAYOUT *****/
 
 
@@ -26,11 +26,11 @@ $lang = array(
 	'add_new' => 'Add new',
 	'ago'     => '<var title="%s">%s</var> ago',
 	'by_ago'  => 'By <var>%s</var> <var title="%s">%s</var> ago',
-	'edited'  => 'edited <var title="%s">%s</var> ago', 
+	'edited'  => 'edited <var title="%s">%s</var> ago',
 	'page_of'	=> 'Page <var>%s</var> of <var>%s</var>',
 
 	/***** /UGC *****/
-	
+
 
 	/***** DATE *****/
 
@@ -39,6 +39,7 @@ $lang = array(
 	'date_DMYYYY'    => 'j.n.Y',
 	'date_DDMMYYYY'  => 'd.m.Y',
 	'date_DMYYYY_HM' => 'j.n.Y H:i',
+	'date_HHMM'      => 'H:i',
 
 	'second'  => 'second',
 	'seconds' => 'seconds',
@@ -103,7 +104,7 @@ $lang = array(
 	'role'           => 'Role',
 	'role_delete'    => 'Delete role',
 	'roles'          => 'Roles',
-	
+
 	/***** /GENERIC TERMS *****/
 
 
