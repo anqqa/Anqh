@@ -2,7 +2,7 @@
 <?= form::open() ?>
 
 	<fieldset>
-		<legend><?= __('Group') ?></legend>
+		<legend><?= __('Role') ?></legend>
 		<ul>
 
 			<?= form::input_wrap('name', $values, 'maxlength="32"', __('Name'), $errors) ?>
