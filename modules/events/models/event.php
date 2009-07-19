@@ -29,7 +29,8 @@ class Event_Model extends Modeler_ORM {
 		'start_hour'  => array('required', 'length[1,5]', 'valid::time'),
 		'end_hour'    => array('length[1,5]', 'valid::time'),
 		'age'         => array('length[1,2]', 'valid::digit'),
-		'price'       => array('length[1,4]', 'valid::numeric'),
+		'price'       => array('length[1,5]', 'valid::numeric'),
+		'price2'      => array('length[1,5]', 'valid::numeric'),
 		'info'        => array('length[1,40000]'),
 
 		'flyer_front' => array('upload::valid', 'upload::type[gif,jpg,png]', 'upload::size[400K]'),

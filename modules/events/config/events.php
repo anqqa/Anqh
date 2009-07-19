@@ -11,9 +11,23 @@
 // Tags
 $config['tag_group'] = 'Music';
 
-// Pictures
-$config['flyer_normal'] = array('width' => 640, 'height' => 640);
-$config['flyer_thumb']  = array('width' => 48, 'height' => 48);
+// Logo
+$config['logo'] = array(
+	'format' => 'jpg',
+	'sizes'  => array(
+		'normal' => array('width' => 460, 'height' => 460),
+		'thumb'  => array('width' => 88,  'height' => 31),
+	),
+);
+
+// Flyers
+$config['flyer'] = array(
+	'format' => 'jpg',
+	'sizes'  => array(
+		'normal' => array('width' => 460, 'height' => 460),
+		'thumb'  => array('width' => 48,  'height' => 48),
+	),
+);
 
 // Dates
 $config['year_min'] = 1999;

@@ -28,7 +28,7 @@
 
 		</li>
 
-		<?php if ($event->price !== null && $event->price !== -1 || $event->price2 !== null): ?>
+		<?php if ($event->price !== null && $event->price != -1 || $event->price2 !== null): ?>
 		<li class="price">
 
 			<h3><?= __('Tickets') ?></h3>
@@ -36,7 +36,7 @@
 				<?= __('Free entry') ?>
 			<?php else: ?>
 				<?= __(':price by the door', array(':price' => '<var>' . $event->price . html::specialchars(Kohana::config('locale.currency.symbol')) . '</var>')) ?>
-				<?= $event->price2 !== null ? ', ' . __('presale :price', array(':price' => $event->price2 . html::specialchars(Kohana::config('locale.currency.symbol')))) : '' ?>
+				<?= $event->price2 !== null ? ', ' . __('presale :price', array(':price' => '<var>' . $event->price2 . html::specialchars(Kohana::config('locale.currency.symbol')) . '</var>')) : '' ?>
 			<?php endif; ?>
 
 		</li>

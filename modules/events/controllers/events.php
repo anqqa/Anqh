@@ -409,15 +409,28 @@ class Events_Controller extends Website_Controller {
 
 			if ($event->validate($post, true, $extra)) {
 
-				// update tags
+				// Update tags
 				$event->remove(ORM::factory('tag'));
 				if (!empty($post['tags'])) {
 					foreach ($post['tags'] as $tag_id => $tag) {
 						$event->add(ORM::factory('tag', $tag_id));
 					}
+					$event->save();
 				}
 
-				// handle flyer uploads
+				// Handle flyer uploads
+				foreach (array('flyer_front_image_id' => $post->flyer_front, 'flyer_back_image_id' => $post->flyer_back) as $image_id => $flyer) {
+					if (isset($flyer) && empty($flyer['error'])) {
+						$image = Image_Model::factory('events.flyer', $flyer, $this->user->id);
+						if ($image->id) {
+							$event->add($image);
+							$event->{$image_id} = $image->id;
+							$event->save();
+						}
+					}
+				}
+
+				/*// handle flyer uploads
 				if (isset($post->flyer_front) && empty($post->flyer_front['error'])) {
 					$flyer = Image_Model::factory($post->flyer_front, false, Kohana::config('events.flyer_normal'), Kohana::config('events.flyer_thumb'), $this->user->id);
 					if ($flyer->id) {
@@ -433,7 +446,7 @@ class Events_Controller extends Website_Controller {
 						$event->flyer_back_image_id = $flyer->id;
 						$event->save();
 					}
-				}
+				}*/
 
 				url::redirect(url::model($event));
 			} else {

@@ -7,7 +7,7 @@
 
 			<?= form::input_wrap('name', $values, 'maxlength="100"', __('Name'), $errors) ?>
 
-			<?= form::input_wrap('homepage', $values, 'maxlength="100', __('Homepage'), $errors) ?>
+			<?= form::input_wrap('homepage', $values, 'maxlength="100"', __('Homepage'), $errors) ?>
 
 		</ul>
 	</fieldset>
@@ -60,25 +60,11 @@
 
 	<fieldset>
 		<legend><?= __('What?') ?></legend>
-
 		<ul>
 
 			<?= form::textarea_wrap('info', $values, 'rows="5" cols="25"', true, __('Information'), $errors) ?>
 
-			<li>
-			<?= html::error($errors, 'tags') ?>
-			<?php if (!empty($form['tags'])): ?>
-				<?= __('Tags') ?>
-				<ul class="pills">
-				<?php foreach ($form['tags'] as $tag_id => $tag): ?>
-					<li>
-						<?= form::checkbox(array('id' => 'tag_' . $tag, 'name' => 'tags[' . $tag_id . ']'), $tag, isset($values['tags'][$tag_id])) ?>
-						<?= form::label('tag_' . $tag, $tag) ?>
-					</li>
-				<?php endforeach; ?>
-				</ul>
-			<?php endif; ?>
-			</li>
+			<?= form::checkboxes_wrap('tags', $form, $values, __('Tags'), $errors, 'pills') ?>
 
 		</ul>
 
