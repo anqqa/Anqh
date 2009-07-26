@@ -1,7 +1,7 @@
 <?php
 /**
  * Error pages hook
- * 
+ *
  * @package    Anqh
  * @author     Antti Qvickström
  * @copyright  (c) 2009 Antti Qvickström
@@ -15,16 +15,21 @@ class error_hook {
 	public function __construct() {
 		Event::replace('system.404', array('Kohana', 'show_404'), array($this, 'show_404'));
 	}
-	
-	
+
+
 	/**
 	 * 404 handler
 	 */
 	public function show_404() {
 		header('HTTP/1.1 404 File Not Found');
 
-		$page = new Error_Controller();
-		$page->_404();
+		// On invite only mode move to invite page instead
+		if (Kohana::config('site.inviteonly')) {
+			url::redirect('invite');
+		} else {
+			$page = new Error_Controller();
+			$page->_404();
+		}
 		exit;
 	}
 
