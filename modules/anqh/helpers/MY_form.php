@@ -78,6 +78,10 @@ class form extends form_Core {
 	 * @return  string
 	 */
 	public static function dropdown_wrap($data, $options = NULL, $selected = NULL, $extra = '', $label = '', $error = '') {
+		$name = is_array($data) ? arr::get($data, 'name') : $data;
+		$selected = (is_array($selected) && isset($selected[$name])) ? $selected[$name] : $selected;
+		$options = (is_array($options) && isset($options[$name])) ? $options[$name] : $options;
+
 		$input = form::dropdown($data, $options, $selected, $extra);
 
 		return form::wrap($input, $name, $label, $error);
