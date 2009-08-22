@@ -567,7 +567,7 @@ class Events_Controller extends Website_Controller {
 		// fetch events
 		if ($this->country) {
 			$country = ORM::factory('country', $this->country);
-			$filter = array('country_id' => $country->id);
+			$filter = array('events.country_id' => $country->id);
 		} else {
 			$filter = false;
 		}
@@ -599,7 +599,7 @@ class Events_Controller extends Website_Controller {
 		// fetch events
 		if ($this->country) {
 			$country = ORM::factory('country', $this->country);
-			$filter = array('country_id' => $country->id);
+			$filter = array('events.country_id' => $country->id);
 		} else {
 			$filter = false;
 		}
