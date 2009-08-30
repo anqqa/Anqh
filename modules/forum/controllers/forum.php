@@ -77,7 +77,7 @@ class Forum_Controller extends Website_Controller {
 	public function areas() {
 		$this->tab_id = 'areas';
 
-		if (Auth::instance()->logged_in('admin')) {
+		if ($this->visitor->logged_in('admin')) {
 			$this->page_actions[] = array('link' => 'forum/group/add', 'text' => __('New group'), 'class' => 'group-add');
 			$this->page_actions[] = array('link' => 'forum/area/add',  'text' => __('New area'),  'class' => 'area-add');
 		}
@@ -168,12 +168,12 @@ class Forum_Controller extends Website_Controller {
 			$this->page_subtitle = html::specialchars($forum_area->description) . '&nbsp;';
 
 			// Admin actions
-			if (Auth::instance()->logged_in('admin')) {
+			if ($this->visitor->logged_in('admin')) {
 				$this->page_actions[] = array('link' => url::model($forum_area) . '/edit', 'text' => __('Edit area'), 'class' => 'area-edit');
 			}
 
 			// Logged user actions
-			if (Auth::instance()->logged_in()) {
+			if ($this->visitor->logged_in()) {
 				$this->page_actions[] = array('link' => url::model($forum_area) . '/post', 'text' => __('New topic'), 'class' => 'topic-add');
 			}
 
@@ -235,7 +235,7 @@ class Forum_Controller extends Website_Controller {
 		$this->history = false;
 
 		// for authenticated users only
-		if (!Auth::instance()->logged_in('admin')) url::redirect('/forum');
+		if (!$this->visitor->logged_in('admin')) url::redirect('/forum');
 
 		$errors = $form_errors = array();
 
@@ -319,7 +319,7 @@ class Forum_Controller extends Website_Controller {
 			$this->breadcrumb[] = html::anchor(url::model($forum_group), $forum_group->name);
 			$this->page_title = html::specialchars($forum_group->name);
 
-			if (Auth::instance()->logged_in('admin')) {
+			if ($this->visitor->logged_in('admin')) {
 				$this->page_actions[] = array('link' => url::model($forum_group) . '/edit', 'text' => __('Edit group'),   'class' => 'group-edit');
 				$this->page_actions[] = array('link' => url::model($forum_group) . '/add',  'text' => __('New area'),     'class' => 'area-add');
 			}
@@ -650,7 +650,7 @@ class Forum_Controller extends Website_Controller {
 			$this->breadcrumb[] = html::anchor(url::model($forum_area), $forum_area->name);
 
 			// Admin actions
-			if ($forum_topic->is_author() || Auth::instance()->logged_in('admin', 'forum moderator')) {
+			if ($forum_topic->is_author() || $this->visitor->logged_in('admin', 'forum moderator')) {
 				$this->page_actions[] = array('link' => url::model($forum_topic) . '/edit',   'text' => __('Edit topic'),   'class' => 'topic-edit');
 			}
 
@@ -758,7 +758,7 @@ class Forum_Controller extends Website_Controller {
 		$forum_post = new Forum_Post_Model((int)$forum_topic->first_post_id);
 
 		// for authenticated users only
-		if (!$forum_topic->is_author() && !Auth::instance()->logged_in('admin', 'forum moderator')) url::redirect('/forum');
+		if (!$forum_topic->is_author() && !$this->visitor->logged_in('admin', 'forum moderator')) url::redirect('/forum');
 
 		if (empty($errors)) {
 

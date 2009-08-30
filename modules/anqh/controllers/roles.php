@@ -13,13 +13,12 @@ class Roles_Controller extends Website_Controller {
 	 * Page constructor to enable role check
 	 */
 	public function __construct() {
+		parent::__construct();
 
-		// allow only admin access
-		if (!Auth::instance()->logged_in('admin')) {
+		// Allow only admin access
+		if (!$this->visitor->logged_in('admin')) {
 			url::redirect();
 		}
-
-		parent::__construct();
 
 		$this->breadcrumb[] = html::anchor('roles', __('Roles'));
 	}
@@ -65,7 +64,7 @@ class Roles_Controller extends Website_Controller {
 		if (request::method() == 'post') {
 			$post = $this->input->post();
 			if ($role->validate($post, true)) {
-				URL::redirect('/roles');
+				url::redirect('/roles');
 			} else {
 				$form_errors = $post->errors();
 			}
@@ -74,15 +73,14 @@ class Roles_Controller extends Website_Controller {
 
 		// show form
 		if ($role->id) {
-			$this->breadcrumb[] = html::anchor('role/' . URL::title($role->id, $role->name), html::specialchars($role->name));
+			$this->breadcrumb[] = html::anchor('role/' . url::title($role->id, $role->name), html::specialchars($role->name));
 			$this->page_title = text::title($role->name);
-			$this->page_actions[] = array('link' => 'role/' . URL::title($role->id, $role->name) . '/delete', 'text' => __('Delete role'), 'class' => 'role-delete');
+			$this->page_actions[] = array('link' => 'role/' . url::title($role->id, $role->name) . '/delete', 'text' => __('Delete role'), 'class' => 'role-delete');
 		} else {
 			$this->page_title = __('Role');
 		}
 
 		if (empty($errors)) {
-			//widget::add('main', $formo->get());
 			widget::add('main', View::factory('roles/role_edit', array('values' => $form_values, 'errors' => $form_errors)));
 		} else {
 			$this->_error(Kohana::lang('generic.error'), $errors);
@@ -97,14 +95,12 @@ class Roles_Controller extends Website_Controller {
 	 * @param  id|string  $role_id
 	 */
 	public function _role_delete($role_id) {
-		// for authenticated users only
-		if (!$this->user) url::redirect('roles');
-
 		$role = new Role_Model((int)$role_id);
 		if ($role->id) {
 			$role->delete();
-			url::redirect('roles');
 		}
+
+		url::redirect('roles');
 	}
 
 }

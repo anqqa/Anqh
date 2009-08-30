@@ -64,12 +64,12 @@ class User_Model extends Modeler_ORM {
 		parent::__construct($id);
 
 		// override defaults with configurable values, username
-		$min = max(1,  (int)Kohana::config('auth.username.length_min'));
-		$max = min(30, (int)Kohana::config('auth.username.length_max'));
-		$this->rules_register['username'] = array('required',  'length[' . $min . ',' . $max . ']', 'chars[' . Kohana::config('auth.username.chars') . ']');
+		$min = max(1,  (int)Kohana::config('visitor.username.length_min'));
+		$max = min(30, (int)Kohana::config('visitor.username.length_max'));
+		$this->rules_register['username'] = array('required',  'length[' . $min . ',' . $max . ']', 'chars[' . Kohana::config('visitor.username.chars') . ']');
 
 		// password
-		$min = max(1,  (int)Kohana::config('auth.password.length_min'));
+		$min = max(1,  (int)Kohana::config('visitor.password.length_min'));
 		$this->rules_register['password'] = $this->rules_password['password'] = array('required',  'length[' . $min . ',128]');
 	}
 
@@ -83,9 +83,9 @@ class User_Model extends Modeler_ORM {
 	public function __set($key, $value)	{
 		switch ($key) {
 
-			// day of birth
+			// Date of birth
 			case 'dob':
-				$value = date::format('date_SQL', $value);
+				$value = date::format(date::DATE_SQL, $value);
 				break;
 
 			// Always lowercase e-mail
@@ -93,9 +93,9 @@ class User_Model extends Modeler_ORM {
 				$value = utf8::strtolower($value);
 				break;
 
-			// use Auth to hash the password
+			// Use Auth to hash the password
 			case 'password':
-				$value = Auth::instance()->hash_password($value);
+				$value = Visitor::instance()->hash_password($value);
 				break;
 
 		}
@@ -159,7 +159,7 @@ class User_Model extends Modeler_ORM {
 				$login->uid = $this->id;
 				$login->username = $this->username;
 
-				if (Auth::instance()->login($this, $array['password'])) 	{
+				if (Visitor::instance()->login($this, $array['password'])) 	{
 					$login->success = 1;
 
 					// Redirect after a successful login
@@ -373,7 +373,7 @@ class User_Model extends Modeler_ORM {
 			} else {
 
 				// Text IDs (username, email) must be lowercased because PostgreSQL is case sensitive
-				$user = $this->where('LOWER("' . $this->table_name . '"."' . $this->unique_key($id) . '") = LOWER(' . $this->db->escape($id) . ')', '', false)->find();
+				$user = $this->where('LOWER(' . $this->table_name . '.' . $this->unique_key($id) . ') = LOWER(' . $this->db->escape($id) . ')', '', false)->find();
 
 			}
 

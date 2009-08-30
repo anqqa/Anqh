@@ -187,7 +187,7 @@ class Member_Controller extends Website_Controller {
 		$errors = $this->member->id ? array() : array('member.error_member_not_found');
 
 		// only owner or admin
-		if ($this->member->id !== $this->user->id && !Auth::instance()->logged_in('admin')) {
+		if ($this->member->id !== $this->user->id && !$this->visitor->logged_in('admin')) {
 			url::redirect(empty($_SESSION['history']) ? '/members' : $_SESSION['history']);
 		}
 
@@ -410,7 +410,7 @@ class Member_Controller extends Website_Controller {
 			widget::add('main', View::factory('member/member', array('user' => $member)));
 
 			// comments
-			if (Auth::instance()->logged_in()) {
+			if ($this->visitor->logged_in()) {
 
 				$comment = new User_Comment_Model();
 				$form_values = $comment->as_array();

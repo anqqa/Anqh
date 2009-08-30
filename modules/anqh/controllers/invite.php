@@ -15,7 +15,7 @@ class Invite_Controller extends Website_Controller {
 	 * @var  string
 	 */
 	public $history = '/';
-	
+
 	/**
 	 * Use different page template for invite only page
 	 *
@@ -27,11 +27,11 @@ class Invite_Controller extends Website_Controller {
 	 * Invite only page
 	 */
 	public function index() {
-		
+
 		// Redirect to front page if already logged in
-		if (Auth::instance()->logged_in() || !Kohana::config('site.inviteonly')) {
+		if ($this->visitor->logged_in() || !Kohana::config('site.inviteonly')) {
 			url::redirect('/');
 		}
 	}
-	
+
 }

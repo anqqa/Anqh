@@ -49,7 +49,7 @@ class Venues_Controller extends Website_Controller {
 	/***** VIEWS *****/
 
 	public function index() {
-		if (Auth::instance()->logged_in('admin')) {
+		if ($this->visitor->logged_in('admin')) {
 			$this->page_actions[] = array('link' => 'venues/category/add', 'text' => __('Add category'), 'class' => 'category-add');
 		}
 
@@ -104,7 +104,7 @@ class Venues_Controller extends Website_Controller {
 			$this->page_title = text::title($venue_category->name);
 			$this->page_subtitle = html::specialchars($venue_category->description);
 
-			if (Auth::instance()->logged_in('admin') || Auth::instance()->logged_in('venue admin')) {
+			if ($this->visitor->logged_in('admin', 'venue moderator')) {
 				$this->page_actions[] = array('link' => url::model($venue_category) . '/edit', 'text' => __('Edit category'), 'class' => 'category-edit edit');
 				$this->page_actions[] = array('link' => url::model($venue_category) . '/add',  'text' => __('Add venue'),     'class' => 'venue-add add');
 			}
@@ -172,7 +172,7 @@ class Venues_Controller extends Website_Controller {
 		$this->history = false;
 
 		// for authenticated users only
-		if (!Auth::instance()->logged_in('admin')) {
+		if (!$this->visitor->logged_in('admin')) {
 			url::redirect('/venues');
 		}
 
@@ -185,7 +185,7 @@ class Venues_Controller extends Website_Controller {
 		if (request::method() == 'post') {
 			$post = $this->input->post();
 			if ($venue_category->validate($post, true, array('author_id' => $this->user->id))) {
-				URL::redirect('/venues/' . URL::title($venue_category->id, $venue_category->name));
+				url::redirect('/venues/' . url::title($venue_category->id, $venue_category->name));
 			} else {
 				$form_errors = $post->errors();
 			}
@@ -196,7 +196,7 @@ class Venues_Controller extends Website_Controller {
 		if ($venue_category->id) {
 			$this->page_subtitle = __('Edit category');
 
-			if (Auth::instance()->logged_in('admin')) {
+			if ($this->visitor->logged_in('admin')) {
 				$this->page_actions[] = array('link' => url::model($venue_category) . '/delete', 'text' => __('Delete category'), 'class' => 'category-delete delete');
 			}
 
@@ -252,8 +252,8 @@ class Venues_Controller extends Website_Controller {
 			$this->page_title = text::title($venue->name);
 
 			if ($this->user) {
-				$this->page_actions[] = array('link' => 'venue/' . URL::title($venue->id, $venue->name) . '/edit',   'text' => __('Edit venue'),   'class' => 'venue-edit edit');
-				$this->page_actions[] = array('link' => 'venue/' . URL::title($venue->id, $venue->name) . '/delete', 'text' => __('Delete venue'), 'class' => 'venue-delete delete');
+				$this->page_actions[] = array('link' => 'venue/' . url::title($venue->id, $venue->name) . '/edit',   'text' => __('Edit venue'),   'class' => 'venue-edit edit');
+				$this->page_actions[] = array('link' => 'venue/' . url::title($venue->id, $venue->name) . '/delete', 'text' => __('Delete venue'), 'class' => 'venue-delete delete');
 			}
 
 			widget::add('main', View::factory('venues/venue', array('venue' => $venue)));
@@ -281,15 +281,16 @@ class Venues_Controller extends Website_Controller {
 	 * @param  integer|string  $venue_id
 	 */
 	public function _venue_delete($venue_id) {
-		// for authenticated users only
-		if (!$this->user) url::redirect('/venues');
+
+		// For authenticated users only
+		if (!$this->visitor->logged_in('admin', 'venue moderator')) url::redirect('/venues');
 
 		$venue = new Venue_Model((int)$venue_id);
 		if ($venue->id) {
 			$return_id = $venue->venue_category_id;
 			$venue->delete();
-			url::redirect('/venues/' . $return_id);
 		}
+		url::redirect('/venues/' . $return_id);
 	}
 
 
@@ -303,7 +304,7 @@ class Venues_Controller extends Website_Controller {
 		$this->history = false;
 
 		// for authenticated users only
-		if (!$this->user) url::redirect('/venues');
+		if (!$this->visitor->logged_in('admin', 'venue moderator')) url::redirect('/venues');
 
 		$errors = $form_errors = array();
 
@@ -351,7 +352,7 @@ class Venues_Controller extends Website_Controller {
 					}
 				}
 
-				URL::redirect('/venue/' . URL::title($venue->id, $venue->name));
+				url::redirect('/venue/' . url::title($venue->id, $venue->name));
 			} else {
 				$form_errors = $post->errors();
 			}

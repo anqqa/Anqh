@@ -36,7 +36,7 @@ class Tags_Controller extends Website_Controller {
 	 * Main tags page
 	 */
 	public function index() {
-		if (Auth::instance()->logged_in('admin')) {
+		if ($this->visitor->logged_in('admin')) {
 			$this->page_actions[] = array('link' => 'tags/group/add', 'text' => __('Add group'), 'class' => 'group-add');
 		}
 
@@ -90,7 +90,7 @@ class Tags_Controller extends Website_Controller {
 			$this->page_title    = text::title($tag_group->name);
 			$this->page_subtitle = html::specialchars($tag_group->description) . '&nbsp;';
 
-			if (Auth::instance()->logged_in('admin')) {
+			if ($this->visitor->logged_in('admin')) {
 				$this->page_actions[] = array('link' => url::model($tag_group) . '/edit', 'text' => __('Edit group'), 'class' => 'group-edit');
 				$this->page_actions[] = array('link' => url::model($tag_group) . '/add',  'text' => __('New tag'),   'class' => 'tag-add');
 			}
@@ -151,7 +151,7 @@ class Tags_Controller extends Website_Controller {
 		if (request::method() == 'post') {
 			$post = $this->input->post();
 			if ($tag_group->validate($post, true, array('author_id' => $this->user->id))) {
-				URL::redirect(url::model($tag_group));
+				url::redirect(url::model($tag_group));
 			} else {
 				$form_errors = $post->errors();
 			}
@@ -163,7 +163,7 @@ class Tags_Controller extends Website_Controller {
 			$this->breadcrumb[] = html::anchor(url::model($tag_group), $tag_group->name);
 			$this->page_subtitle = __('Edit group');
 
-			if (Auth::instance()->logged_in('admin')) {
+			if ($this->visitor->logged_in('admin')) {
 				$this->page_actions[] = array('link' => url::model($tag_group) . '/delete', 'text' => __('Delete group'), 'class' => 'group-delete');
 			}
 
@@ -217,7 +217,7 @@ class Tags_Controller extends Website_Controller {
 			$this->page_title    = text::title($tag->name);
 			$this->page_subtitle = html::specialchars($tag->description) . '&nbsp;';
 
-			if (Auth::instance()->logged_in('admin')) {
+			if ($this->visitor->logged_in('admin')) {
 				$this->page_actions[] = array('link' => url::model($tag) . '/edit', 'text' => __('Edit tag'), 'class' => 'tag-edit');
 			}
 
@@ -299,7 +299,7 @@ class Tags_Controller extends Website_Controller {
 			$this->breadcrumb[] = html::anchor(url::model($tag->tag_group), $tag->tag_group->name);
 			$this->breadcrumb[] = html::anchor(url::model($tag), $tag->name);
 
-			if (Auth::instance()->logged_in('admin')) {
+			if ($this->visitor->logged_in('admin')) {
 				$this->page_actions[] = array('link' => url::model($tag) . '/delete', 'text' => __('Delete tag'), 'class' => 'tag-delete');
 			}
 

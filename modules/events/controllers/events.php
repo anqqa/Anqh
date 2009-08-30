@@ -100,7 +100,7 @@ class Events_Controller extends Website_Controller {
 	private function _build_calendar() {
 
 		// Actions
-		if (Auth::instance()->logged_in('event') || Auth::instance()->logged_in('event admin') || Auth::instance()->logged_in('admin')) {
+		if ($this->visitor->logged_in('event', 'event moderator', 'admin')) {
 			$this->page_actions[] = array('link' => 'event/add', 'text' => __('Add event'), 'class' => 'event-add');
 		}
 
@@ -319,13 +319,17 @@ class Events_Controller extends Website_Controller {
 		if (empty($errors)) {
 			$this->breadcrumb[] = html::anchor(url::model($event), $event->name);
 
-			// actions
-			if ($event->is_favorite($this->user)) {
-				$this->page_actions[] = array('link' => url::model($event) . '/unfavorite', 'text' => __('Remove favorite'), 'class' => 'favorite-delete');
-			} else {
-				$this->page_actions[] = array('link' => url::model($event) . '/favorite',   'text' => __('Add favorite'),    'class' => 'favorite-add');
+			// Actions
+			if ($this->visitor->logged_in()) {
+				if ($event->is_favorite($this->user)) {
+					$this->page_actions[] = array('link' => url::model($event) . '/unfavorite', 'text' => __('Remove favorite'), 'class' => 'favorite-delete');
+				} else {
+					$this->page_actions[] = array('link' => url::model($event) . '/favorite',   'text' => __('Add favorite'),    'class' => 'favorite-add');
+				}
+				if ($event->is_author() || $this->visitor->logged_in('admin', 'event moderator')) {
+					$this->page_actions[] = array('link' => url::model($event) . '/edit', 'text' => __('Edit event'), 'class' => 'event-edit');
+				}
 			}
-			$this->page_actions[] = array('link' => url::model($event) . '/edit', 'text' => __('Edit event'), 'class' => 'event-edit');
 
 			list($year, $month, $day) = explode('-', date('Y-m-d', strtotime($event->start_time)));
 			$this->date->setDate($year, $month, $day);
@@ -347,12 +351,15 @@ class Events_Controller extends Website_Controller {
 	public function _event_delete($event_id) {
 		$this->history = false;
 
-		// for authenticated users only
-		if (!$this->user) url::redirect(empty($_SESSION['history']) ? '/events' : $_SESSION['history']);
+		$event = new Event_Model((int)$event_id);
 
-		$this->event = new Event_Model((int)$event_id);
-		if ($this->event->id) {
-			$this->event->delete();
+		// For authenticated users only
+		if (!$this->user || (!$event->is_author() && !$this->visitor->logged_in('admin', 'event moderator'))) {
+			url::redirect(empty($_SESSION['history']) ? '/events' : $_SESSION['history']);
+		}
+
+		if ($event->id) {
+			$event->delete();
 			url::redirect('/events');
 		}
 
@@ -368,13 +375,15 @@ class Events_Controller extends Website_Controller {
 	public function _event_edit($event_id = false) {
 		$this->history = false;
 
-		// for authenticated users only
-		if (!$this->user) url::redirect(empty($_SESSION['history']) ? '/events' : $_SESSION['history']);
+		$event = new Event_Model((int)$event_id);
+
+		// For authenticated users only
+		if (!$this->user || (!$event->is_author() && !$this->visitor->logged_in('admin', 'event moderator'))) {
+			url::redirect(empty($_SESSION['history']) ? '/events' : $_SESSION['history']);
+		}
 
 		$errors = $form_errors = array();
 		$form_messages = '';
-
-		$event = new Event_Model((int)$event_id);
 		$form_values = $event->as_array();
 		$form_values['start_date'] = '';
 		$form_values['start_hour'] = '';
@@ -560,7 +569,7 @@ class Events_Controller extends Website_Controller {
 		$this->tab_id = 'past';
 
 		// actions
-		if (Auth::instance()->logged_in('event') || Auth::instance()->logged_in('event admin') || Auth::instance()->logged_in('admin')) {
+		if ($this->visitor->logged_in('event', 'event moderator',  'admin')) {
 			$this->page_actions[] = array('link' => 'event/add', 'text' => __('Add event'), 'class' => 'event-add');
 		}
 
@@ -592,7 +601,7 @@ class Events_Controller extends Website_Controller {
 		$this->tab_id = 'upcoming';
 
 		// actions
-		if (Auth::instance()->logged_in('event') || Auth::instance()->logged_in('event admin') || Auth::instance()->logged_in('admin')) {
+		if ($this->visitor->logged_in('event', 'event admin', 'admin')) {
 			$this->page_actions[] = array('link' => 'event/add', 'text' => __('Add event'), 'class' => 'event-add');
 		}
 

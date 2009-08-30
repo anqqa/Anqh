@@ -98,7 +98,7 @@ class Sign_Controller extends Website_Controller {
 				$invitation->delete();
 				$user->save();
 				$user->add(ORM::factory('role', 'login'));
-				Auth::instance()->login($user, $post->password);
+				$this->visitor->login($user, $post->password);
 
 				$return = empty($_SESSION['history']) ? '/' : $_SESSION['history'];
 				url::redirect($return);
@@ -120,7 +120,7 @@ class Sign_Controller extends Website_Controller {
 		$this->history = false;
 
 		// Load auth and log out
-		Auth::instance()->logout();
+		$this->visitor->logout();
 
 		// Redirect back to the login page
 		$return = empty($_SESSION['history']) ? '/' : $_SESSION['history'];

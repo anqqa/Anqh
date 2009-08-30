@@ -93,7 +93,7 @@ abstract class Website_Controller extends Controller {
 		}
 
 		// Use profiler only when an admin is logged in
-		if (Auth::instance()->logged_in('admin')) {
+		if ($this->visitor->logged_in('admin')) {
 			$this->profiler = new Profiler;
 		}
 
@@ -132,7 +132,7 @@ abstract class Website_Controller extends Controller {
 		widget::add('header', View::factory('generic/header'));
 
 		// Footer
-		widget::add('footer', View::factory('events/events_list', array('id' => 'footer-events-new',    'class' => 'grid-3', 'title' => __('New events'),   'events' => ORM::factory('event')->orderby('id', 'DESC')->find_all(10))));
+		widget::add('footer', View::factory('events/events_list', array('id' => 'footer-events-new',    'class' => 'grid-3', 'title' => __('New events'),    'events' => ORM::factory('event')->orderby('id', 'DESC')->find_all(10))));
 		widget::add('footer', View::factory('forum/topics_list',  array('id' => 'footer-topics-active', 'class' => 'grid-3', 'title' => __('Active topics'), 'topics' => ORM::factory('forum_topic')->orderby('last_post_id', 'DESC')->find_all(10))));
 
 		// Dock
@@ -151,7 +151,7 @@ abstract class Website_Controller extends Controller {
 			widget::add('dock', html::anchor('sign/out', __('Sign out')));
 
 			// Admin functions
-			if (Auth::instance()->logged_in('admin')) {
+			if ($this->visitor->logged_in('admin')) {
 				widget::add('dock2', ' | ' . __('Admin: ') . html::anchor('roles', __('Roles')) . ', ' . html::anchor('tags', __('Tags')));
 			}
 
@@ -160,7 +160,7 @@ abstract class Website_Controller extends Controller {
 			// Non-authenticated view
 			$form =  form::open('sign/in');
 			$form .= form::input('username', null, 'title="' . __('Username') . '"');
-			$form .= form::input('password-hint', __('Password'), 'autocomplete="off" class="hint"');
+			$form .= form::input('password-hint', __('Password'), 'class="hint"');
 			$form .= form::password('password');
 			$form .= form::submit('submit', __('Sign in'));
 			$form .= form::close();

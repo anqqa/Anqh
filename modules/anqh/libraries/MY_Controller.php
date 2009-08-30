@@ -7,7 +7,7 @@
  * @copyright  (c) 2009 Antti Qvickström
  * @license    http://www.opensource.org/licenses/mit-license.php MIT license
  */
-class Controller extends Controller_Core {
+abstract class Controller extends Controller_Core {
 
 	/**
 	 * Use auto-rendering, defaults to false
@@ -58,6 +58,13 @@ class Controller extends Controller_Core {
 	 */
 	protected $user;
 
+	/**
+	 * Visitor Model, current site visiting user
+	 *
+	 * @var  Visitor
+	 */
+	protected $visitor;
+
 
 	/**
 	 * Template loading and setup routine.
@@ -68,8 +75,11 @@ class Controller extends Controller_Core {
 		// Maybe controllers shouldn't know about cache? But still..
 		$this->cache = Cache::instance();
 
+		// Load current visitor for easy access
+		$this->visitor = Visitor::instance();
+
 		// Load current user for easy controller access, null if not logged
-		$this->user = Auth::instance()->get_user();
+		$this->user = $this->visitor->get_user();
 
 		// Build the page
 		$this->template = View::factory($this->template);

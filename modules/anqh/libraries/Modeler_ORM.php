@@ -107,18 +107,18 @@ class Modeler_ORM extends ORM {
 		if (empty($user)) {
 
 			// No user given, use logged in user
-			$user = Auth::instance()->get_user();
-			return (isset($user->id) && $author_id == $user->id);
+			$user = Visitor::instance()->get_user();
+			return (isset($user->id) && $author_id === $user->id);
 
 		} else if (is_int($user)) {
 
 			// User id given
-			return ($author_id == $user);
+			return ($author_id === $user);
 
 		} else if ($user instanceof User_Model) {
 
 			// User Model given
-			return ($author_id == $user->id);
+			return ($author_id === $user->id);
 
 		}
 
