@@ -1,13 +1,16 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="<?= $language ?>" lang="<?= $language ?>">
+<!doctype html>
+<html>
 
 <head>
-	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta charset="UTF-8" />
 	<title><?= strip_tags($page_title) ?><?= (!empty($page_title) ? ' | ' : '') . Kohana::config('site.site_name') ?></title>
 	<link rel="icon" type="image/png" href="/ui/favicon.png" />
 	<?= html::stylesheet(array('ui/boot', 'ui/grid', 'ui/typo', 'ui/base', 'ui/site', 'ui/jquery-ui')); ?>
 	<?= html::stylesheet($stylesheets) ?>
-	<script type="text/javascript" src="http://www.google.com/jsapi?key=<?= Kohana::config('site.google_api_key') ?>"></script>
+	<!--[if IE]>
+	<?= html::script('http://html5shiv.googlecode.com/svn/trunk/html5.js'); ?>
+	<![endif]-->
+	<script src="http://www.google.com/jsapi?key=<?= Kohana::config('site.google_api_key') ?>"></script>
 	<?= html::script('http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js'); ?>
 	<?= html::script('http://ajax.googleapis.com/ajax/libs/jqueryui/1.7.2/jquery-ui.min.js') ?>
 <?= widget::get('head') ?>
@@ -17,7 +20,7 @@
 
 	<!-- HEADER -->
 
-	<div id="header" class="container-1 header"><!-- <header> -->
+	<header id="header" class="container-1">
 		<div class="container-12 clearfix">
 
 <h1><?= html::anchor('/', Kohana::config('site.site_name')) ?></h1>
@@ -25,66 +28,66 @@
 <?= widget::get('navigation') ?>
 
 		</div>
-	</div><!-- </header> -->
+	</header>
 
 	<!-- HEADER -->
 
 
 	<!-- CONTENT -->
 
-	<div id="content" class="container-1 section"><!-- <section> -->
+	<section id="content" class="container-1">
 
-		<div class="container-12 clearfix header breadcrumb"><!-- <header> -->
+		<header class="container-12 clearfix breadcrumb">
 			<div class="grid-12">
 
 <?= widget::get('breadcrumb') ?>
 <?= widget::get('search') ?>
 
 			</div>
-		</div><!-- </header> -->
+		</header>
 
-		<div class="container-12 clearfix section"><!-- <section> -->
+		<section class="container-12 clearfix">
 			<div id="main-content" class="grid-10-full">
 
-				<div id="title" class="grid-10 header"><!-- <header> -->
+				<header id="title" class="grid-10">
 
 <?= widget::get('actions') ?>
 
 					<h2><?= $page_title ?></h2>
 					<p class="subtitle"><?= $page_subtitle ?></p>
 <?= widget::get('tabs') ?>
-				</div><!-- </header> -->
+				</header>
 
-				<div id="submenu" class="grid-10 nav"><!-- <nav> -->
+				<nav id="submenu" class="grid-10 nav">
 
 <?= widget::get('subnavigation') ?>
 
-				</div><!-- </nav> -->
+				</nav>
 
 <?= $content ?>
 
-			</div><!-- </section> -->
+			</div>
 
 
 			<!-- SIDE ADS -->
 
-			<div id="right-ads" class="grid-2 aside"><!-- <aside> -->
+			<section id="right-ads" class="grid-2">
 
 <?= widget::get('side_ads') ?>
 
-			</div><!-- </aside> -->
+			</section>
 
 			<!-- /SIDE ADS -->
 
-		</div>
-	</div><!-- </section> -->
+		</section>
+	</section>
 
 	<!-- /CONTENT -->
 
 
 	<!-- DOCK -->
 
-	<div id="dock" class="container-1 section"><!-- <section> -->
+	<section id="dock" class="container-1">
 		<div class="container-12 clearfix">
 			<div class="grid-6">
 
@@ -97,34 +100,34 @@
 
 			</div>
 		</div>
-	</div><!-- </section> -->
+	</section>
 
 	<!-- /DOCK -->
 
 
 	<!-- FOOTER -->
 
-	<div id="footer" class="container-1 footer"><!-- <footer> -->
-		<div class="container-12 clearfix section"><!-- <section> -->
+	<footer id="footer" class="container-1">
+		<section class="container-12 clearfix section">
 
 <?= widget::get('navigation') ?>
 <?= widget::get('footer') ?>
 
 
-		</div><!-- </section> -->
-		<div id="end" class="container-12 clearfix section"><!-- <section> -->
+		</section>
+		<section id="end" class="container-12 clearfix section">
 
 <?= widget::get('end') ?>
 
-		</div><!-- </section> -->
-	</div><!-- </footer> -->
+		</section>
+	</footer>
 
 	<!-- /FOOTER -->
 
 
 <?= html::script(array('js/jquery.autocomplete.pack', 'js/jquery.hint', 'js/jquery.text-overflow')) ?>
 
-<script type="text/javascript">
+<script>
 //<![CDATA[
 $(function() {
 

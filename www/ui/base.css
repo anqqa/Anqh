@@ -43,7 +43,7 @@
 
 #content .container-12                 { padding-bottom: 0.8333em; }
 #content .breadcrumb                   { padding-top: 0.75em; margin-bottom: 1px; }
-#content .breadcrumb .nav              { display: inline; }
+#content .breadcrumb nav               { display: inline; }
 
 #content #search                       { float: right; }
 #content #search input,

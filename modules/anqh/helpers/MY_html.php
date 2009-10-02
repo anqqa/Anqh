@@ -1,11 +1,11 @@
 <?php
 /**
- * Anqh extended HTML helper class.
+ * Anqh extended HTML5 helper class.
  *
  * @package    Anqh
  * @author     Antti Qvickström
  * @copyright  (c) 2009 Antti Qvickström
- * @license    MIT
+ * @license    http://www.opensource.org/licenses/mit-license.php MIT license
  */
 class html extends html_Core {
 
@@ -244,6 +244,18 @@ $(function() {
 
 
 	/**
+	 * Creates a script link.
+	 *
+	 * @param   string|array  filename
+	 * @param   boolean       include the index_page in the link
+	 * @return  string
+	 */
+	public static function script($script, $index = FALSE) {
+		return str_replace(' type="text/javascript"', '', parent::script($script, $index));
+	}
+
+
+	/**
 	 * JavaScript source code block
 	 *
 	 * @param   string  $source
@@ -256,7 +268,7 @@ $(function() {
 			foreach ($source as $script)
 				$compiled .= html::script_source($script);
 		} else {
-			$compiled = implode("\n", array('<script type="text/javascript">', '//<![CDATA[', $source, '//]]>', '</script>'));
+			$compiled = implode("\n", array('<script>', '//<![CDATA[', $source, '//]]>', '</script>'));
 		}
 		return $compiled;
 	}
