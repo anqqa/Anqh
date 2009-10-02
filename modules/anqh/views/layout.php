@@ -17,7 +17,7 @@
 
 	<!-- HEADER -->
 
-	<div id="header" class="container-1">
+	<div id="header" class="container-1 header"><!-- <header> -->
 		<div class="container-12 clearfix">
 
 <h1><?= html::anchor('/', Kohana::config('site.site_name')) ?></h1>
@@ -25,65 +25,66 @@
 <?= widget::get('navigation') ?>
 
 		</div>
-	</div>
+	</div><!-- </header> -->
 
-	<!-- /HEADER -->
+	<!-- HEADER -->
 
 
 	<!-- CONTENT -->
 
-	<div id="content" class="container-1">
+	<div id="content" class="container-1 section"><!-- <section> -->
 
-		<div class="container-12 clearfix breadcrumb">
+		<div class="container-12 clearfix header breadcrumb"><!-- <header> -->
 			<div class="grid-12">
 
 <?= widget::get('breadcrumb') ?>
+<?= widget::get('search') ?>
 
 			</div>
-		</div>
+		</div><!-- </header> -->
 
-		<div class="container-12 clearfix">
+		<div class="container-12 clearfix section"><!-- <section> -->
 			<div id="main-content" class="grid-10-full">
 
-				<div id="title" class="grid-10">
+				<div id="title" class="grid-10 header"><!-- <header> -->
 
 <?= widget::get('actions') ?>
 
 					<h2><?= $page_title ?></h2>
 					<p class="subtitle"><?= $page_subtitle ?></p>
 <?= widget::get('tabs') ?>
-				</div>
+				</div><!-- </header> -->
 
-				<div id="submenu" class="grid-10">
+				<div id="submenu" class="grid-10 nav"><!-- <nav> -->
 
 <?= widget::get('subnavigation') ?>
 
-				</div>
+				</div><!-- </nav> -->
 
 <?= $content ?>
 
-			</div>
+			</div><!-- </section> -->
 
 
 			<!-- SIDE ADS -->
 
-			<div id="right-ads" class="grid-2 side">
+			<div id="right-ads" class="grid-2 aside"><!-- <aside> -->
 
 <?= widget::get('side_ads') ?>
 
-			</div>
+			</div><!-- </aside> -->
 
 			<!-- /SIDE ADS -->
 
 		</div>
-	</div>
+	</div><!-- </section> -->
 
 	<!-- /CONTENT -->
 
 
 	<!-- DOCK -->
 
-	<div id="dock" class="container-1">
+	<div id="dock" class="container-1 section"><!-- <section> -->
 		<div class="container-12 clearfix">
 			<div class="grid-6">
 
@@ -96,36 +97,30 @@
 
 			</div>
 		</div>
-	</div>
+	</div><!-- </section> -->
 
 	<!-- /DOCK -->
 
 
 	<!-- FOOTER -->
 
-	<div id="footer" class="container-1">
-		<div class="container-12 clearfix">
+	<div id="footer" class="container-1 footer"><!-- <footer> -->
+		<div class="container-12 clearfix section"><!-- <section> -->
 
 <?= widget::get('navigation') ?>
 <?= widget::get('footer') ?>
 
-		</div>
-	</div>
 
-	<!-- /FOOTER -->
-
-
-	<!-- END -->
-
-	<div id="end" class="container-1">
-		<div class="container-12 clearfix">
+		</div><!-- </section> -->
+		<div id="end" class="container-12 clearfix section"><!-- <section> -->
 
 <?= widget::get('end') ?>
 
-		</div>
-	</div>
+		</div><!-- </section> -->
+	</div><!-- </footer> -->
 
-	<!-- /END -->
+	<!-- /FOOTER -->
+
 
 <?= html::script(array('js/jquery.autocomplete.pack', 'js/jquery.hint', 'js/jquery.text-overflow')) ?>
 
