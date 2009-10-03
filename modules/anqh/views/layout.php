@@ -47,7 +47,7 @@
 		</header>
 
 		<section class="container-12 clearfix">
-			<div id="main-content" class="grid-10-full">
+			<section id="main-content" class="grid-10-full">
 
 				<header id="title" class="grid-10">
 
@@ -66,7 +66,7 @@
 
 <?= $content ?>
 
-			</div>
+			</section>
 
 
 			<!-- SIDE ADS -->
@@ -125,14 +125,14 @@
 	<!-- /FOOTER -->
 
 
-<?= html::script(array('js/jquery.autocomplete.pack', 'js/jquery.hint', 'js/jquery.text-overflow')) ?>
+<?= html::script(array('js/jquery.autocomplete.pack', 'js/jquery.form', 'js/jquery.text-overflow')) ?>
 
 <script>
 //<![CDATA[
 $(function() {
 
 	// Hook form input hints
-	$('input:text, textarea').hint('hint');
+	$('input:text, textarea, input:password').hint('hint');
 
 	// Hook delete confirmations
 	function confirm_delete(title, action) {
