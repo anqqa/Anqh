@@ -9,14 +9,13 @@
  */
 class Sign_Controller extends Website_Controller {
 
-	public $controller = 'sign';
-
-
 	/**
 	 * Register
 	 */
 	public function index() {
-		$this->up();
+		$this->history = false;
+
+		url::redirect('sign/up');
 	}
 
 
@@ -37,8 +36,10 @@ class Sign_Controller extends Website_Controller {
 
 	/**
 	 * Send new invitation
+	 *
+	 * @param  string  $code  Invalid code given?
 	 */
-	public function _invite() {
+	public function _invite($code = null) {
 		$this->history = false;
 
 		$invitation = new Invitation_Model();
@@ -47,24 +48,33 @@ class Sign_Controller extends Website_Controller {
 		$form_errors = array();
 		$form_message = '';
 
-		// handle post
-		if (request::method() == 'post') {
+		if ($code) {
+
+			// Invalid code given
+			$form_errors = array('code' => 'default');
+			$form_values['code'] = $code;
+
+		} else if(request::method() == 'post') {
+
+	 		// Handle post
 			$post = $this->input->post();
 
-			// validate email
+			// Validate email
 			if ($invitation->validate($post, false)) {
-				$code = $invitation->code();
-				$mail = Kohana::lang('member.invitation_email', $code, url::site('/sign/up/' . $code));
-				$subject = Kohana::lang('member.invitation_email_subject', Kohana::config('site.site_name'));
 
-				// send invitation
+				// Send invitation
+				$code = $invitation->code();
+				$subject = __(':site invite', array(':site' => Kohana::config('site.site_name')));
+				$mail = __("Your invitation code is: :code\n\nOr click directly to sign up: :url", array(':code' => $code, ':url' => url::site('/sign/up/' . $code)));
+
+				// Send invitation
 				if (email::send($post->email, Kohana::config('site.email_invitation'), $subject, $mail)) {
 					$invitation->code = $code;
 					$invitation->save();
 
-					$form_message = Kohana::lang('member.invitation_sent');
+					$form_message = __('Invitation sent, you can proceed to Step 2 when you receive your mail.');
 				} else {
-					$form_message = Kohana::lang('generic.error_sending_email', $post->email);
+					$form_message =__('Could not send email to :email', array(':email' => $post->email));
 				}
 
 			} else {
@@ -73,7 +83,7 @@ class Sign_Controller extends Website_Controller {
 			$form_values = arr::overwrite($form_values, $post->as_array());
 		}
 
-		$this->template->main = new View('member/invite', array('values' => $form_values, 'errors' => $form_errors, 'message' => $form_message));
+		widget::add('main', View::factory('member/invite', array('values' => $form_values, 'errors' => $form_errors, 'message' => $form_message)));
 	}
 
 
@@ -109,7 +119,7 @@ class Sign_Controller extends Website_Controller {
 
 		}
 
-		$this->template->main = new View('member/signup', array('values' => $form_values, 'errors' => $form_errors, 'invitation' => $invitation));
+		widget::add('main', View::factory('member/signup', array('values' => $form_values, 'errors' => $form_errors, 'invitation' => $invitation)));
 	}
 
 
@@ -136,21 +146,24 @@ class Sign_Controller extends Website_Controller {
 	public function up($code = false) {
 		$this->history = false;
 
-		$this->template->title = Kohana::lang('member.signup');
+		$this->page_title = __('Sign up');
 
-		// check if we got the code from the form
-		if (!$code && request::method() == 'post') {
-			$code = $this->input->post('code');
-			if ($code) {
-				url::redirect('/sign/up/' . $code);
-			}
-		}
-
-		// check invitation code
+		// Check invitation code
 		if ($code) {
 			$invitation = new Invitation_Model($code);
 			if ($invitation->email) {
 				$this->_join($invitation);
+			} else {
+				$this->_invite($code);
+			}
+			return;
+		}
+
+		// Check if we got the code from the form
+		if (!$code && request::method() == 'post') {
+			$code = $this->input->post('code');
+			if ($code) {
+				url::redirect('/sign/up/' . $code);
 				return;
 			}
 		}

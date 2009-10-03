@@ -1,56 +1,35 @@
-<ul class="contentlist invitation">
 
-	<li class="group">
-		<?= form::open() ?>
-		<?= html::box_step(1) ?>
-		<h3><?= Kohana::lang('member.invitation_require') ?></h3>
-		<p class="prefix-1">
-			<?= Kohana::lang('member.invitation_intro') ?>
-		</p>
-		
+<?= form::open('sign/up') ?>
+
+	<?= html::box_step(1) ?>
+	<fieldset class="prefix-1">
+		<legend><?= __('Not yet invited?') ?></legend>
+		<p><?= __("No problem! If you don't already have an invitation, get one here or invite your friend.") ?></p>
 		<?php if (empty($message)): ?>
-		<p class="prefix-1<?= isset($errors['email']) ? ' error' : '' ?>">
-			<?= html::error($errors, 'email') ?>
-			<?= form::label('email', Kohana::lang('member.invitation_send_to')) ?>
-			<?= form::input('email', $values['email'], 'title="' . Kohana::lang('member.email_example') . '" maxlength="127"') ?>
-			<span class="tip"><?= Kohana::lang('member.tip_invitation') ?></span>
-		</p>
-		
-		<p class="prefix-1">
-			<span class="buttons">
-				<?= form::submit('invitation_send', Kohana::lang('member.invitation_send')) ?>
-			</span>
-		</p>
+		<ul>
+			<?= form::input_wrap('email', $values, 'title="' . __('john.doe@domain.tld') . '" maxlength="127"', __('Send an invitation to'), $errors) ?>
+			<li class="tip"><?= __('Please remember sign up is available only with a valid, invited email.') ?></li>
+			<li><?= form::submit('invitation_send', __('Send invitation')) ?></li>
+		</ul>
 		<?php else:?>
-		<p class="prefix-1">
-			<span class="message"><?= $message ?></span>
-		</p>
+		<p class="message"><?= $message ?></p>
 		<?php endif; ?>
-		
-		<?= form::close() ?>
-	</li>
+	</fieldset>
 
-	<li class="group">
-		<?= form::open() ?>
-		<?= html::box_step(2) ?>
-		<h3><?= Kohana::lang('member.invitation_received') ?></h3>
-		<p class="prefix-1">
-			<?= Kohana::lang('member.invitation_ready') ?>
-		</p>
-		
-		<p class="prefix-1<?= isset($errors['code']) ? ' error' : '' ?>">
-			<?= html::error($errors, 'code') ?>
-			<?= form::label('code', Kohana::lang('member.invitation_code')) ?>
-			<?= form::input('code', $values['email'], 'title="' . Kohana::lang('member.invitation_example') . '" maxlength="32"') ?>
-			<span class="tip"><?= Kohana::lang('member.tip_invitation_code') ?></span>
-		</p>
-		
-		<p class="prefix-1">
-			<span class="buttons">
-				<?= form::submit('invitation_check', Kohana::lang('member.signup')) ?>
-			</span>
-		</p>
-		<?= form::close() ?>
-	</li>
+<?= form::close() ?>
 
-</ul>
+
+<?= form::open('sign/up') ?>
+
+	<?= html::box_step(2) ?>
+	<fieldset class="prefix-1">
+		<legend><?= __('Got my invitation!') ?></legend>
+		<p><?= __('You received your invitation and are ready to sign up? Excellent! ') ?></p>
+		<ul>
+			<?= form::input_wrap('code', $values, 'title="' . __('M0573XC3LL3N751R') . '" maxlength="32"', __('Enter your invitation code'), $errors) ?>
+			<li class="tip"><?= __('Your invitation code is included in the mail you received, 16 characters.') ?></li>
+			<li><?= form::submit('invitation_check', __('Final step!')) ?></li>
+		</ul>
+	</fieldset>
+
+<?= form::close() ?>

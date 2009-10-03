@@ -1,44 +1,46 @@
+
 <?= form::open() ?>
-<ul class="contentlist signup">
 
-	<li class="group">
-	<?= html::box_step(1) ?>
-		<p class="prefix-1<?= isset($errors['username']) ? ' error' : '' ?>">
-			<?= html::error($errors, 'username') ?>
-			<?= form::label('signup_username', Kohana::lang('member.username')) ?>
-			<?= form::input(array('name' => 'username', 'id' => 'signup_username'), $values['username'], 'title="' . Kohana::lang('member.username_example') . '" maxlength="' . (int)Kohana::config('auth.username.length_max') . '"') ?>
-			<span class="tip"><?= Kohana::lang('member.tip_username', Kohana::config('auth.username.length_min')) ?></span>
-		</p>
-	</li>
-
-	<li class="group">
-	<?= html::box_step(2) ?>
-		<p class="prefix-1<?= isset($errors['password']) ? ' error' : '' ?>">
-			<?= html::error($errors, 'password') ?>
-			<?= form::label('signup_password', Kohana::lang('member.password')) ?>
-			<?= form::password(array('name' => 'password', 'id' => 'signup_password')) ?>
-			<span class="tip"><?= Kohana::lang('member.tip_password', Kohana::config('auth.password.length_min')) ?></span>
-		</p>
-	</li>
-
-	<li class="group">
 	<?= html::box_step(3) ?>
-		<p class="prefix-1">
-			<?= html::error($errors, 'email') ?>
-			<?= form::label('signup_email', Kohana::lang('member.email')) ?>
-			<?= form::input(array('name' => 'email', 'id' => 'signup_email'), $invitation->email, 'title="' . Kohana::lang('member.email_example') . '" disabled="disabled"') ?>
+	<fieldset class="prefix-1">
+		<legend><?= __('Almost there!') ?></legend>
+		<ul>
+
+			<?= form::input_wrap(
+				array('name' => 'username', 'id' => 'signup_username'),
+				$values,
+				'title="' . __('JohnDoe') . '" maxlength="' . (int)Kohana::config('visitor.username.length_max') . '"',
+				__('Username'),
+				$errors,
+				__('Choose a unique username with at least <var>:length</var> characters. No special characters, thank you.', array(':length' => Kohana::config('visitor.username.length_min')))
+			) ?>
+
+			<?= form::password_wrap(
+				array('name' => 'password', 'id' => 'signup_password'),
+				$values,
+				'title="' . __('j0hnd03ru13z!') . '"',
+				__('Password'),
+				$errors,
+				__('Try to use letters, numbers and special characters for a stronger password, with at least <var>:length</var> characters.', array(':length' => Kohana::config('visitor.password.length_min')))
+			) ?>
+
+			<?= form::input_wrap(
+				array('name' => 'email', 'id' => 'signup_email'),
+				$invitation->email,
+				'title="' . __('john.doe@domain.tld') . '" disabled="disabled"',
+				__('Email')
+			) ?>
+
+		</ul>
+	</fieldset>
+
+	<fieldset class="prefix-1">
+		<?= form::submit(false, __('Sign up!')) ?>
+		<?= html::anchor($_SESSION['history'], __('Cancel')) ?>
+
+		<p class="tip">
+			<?= __('By signing up, you accept the <a href=":terms">Tems of Use</a> and <a href=":privacy">Privacy Policy</a>.', array(':terms' => '/terms', ':privacy' => '/privacy')) ?>
 		</p>
-	</li>
-	
-	<li class="group iconless">
-		<p class="prefix-1">
-			<span class="buttons">
-				<?= form::submit('signup_submit', Kohana::lang('member.signup')) ?>
-				<?= html::anchor(empty($_SESSION['history']) ? '/' : $_SESSION['history'], Kohana::lang('generic.form_cancel')) ?>
-			</span>
-			<span class="tip"><?= Kohana::lang('member.tip_signup') ?></span>
-		</p>
-	</li>
-	
-</ul>
+	</fieldset>
+
 <?= form::close() ?>
