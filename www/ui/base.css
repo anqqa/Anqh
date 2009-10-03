@@ -72,10 +72,14 @@ ul.contentlist li:hover .hidden        { visibility: visible; }
 /***** FORM *****/
 
 label                                  { display: block; }
+input[type="checkbox"] + label,
+input[type="radio"] + label,
 .horizontal label                      { display: inline; }
 input,
 textarea,
 select                                 { -moz-border-radius: 5px; margin: 0 -3px; padding: 2px 3px 4px; }
+input[type="checkbox"],
+input[type="radio"]                    { margin: 0; }
 input[type="submit"]                   { cursor: pointer; padding: 0 0.5em; }
 input[type="text"],
 input[type="password"],
@@ -138,8 +142,6 @@ a.user                                 { /*font-weight: bold;*/ }
 table.calendar th,
 table.calendar td            { padding: 0; }
 .actions                               { float: right; }
-
-#dock #password-hint                   { display: none; }
 
 .pills                                 { margin-bottom: 1.6667em; }
 .pills li,

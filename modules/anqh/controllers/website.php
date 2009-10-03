@@ -161,32 +161,12 @@ abstract class Website_Controller extends Controller {
 			// Non-authenticated view
 			$form =  form::open('sign/in');
 			$form .= form::input('username', null, 'title="' . __('Username') . '"');
-			$form .= form::input('password-hint', __('Password'), 'class="hint"');
-			$form .= form::password('password');
+			$form .= form::password('password', '', 'title="' . __('Password') . '"');
 			$form .= form::submit('submit', __('Sign in'));
 			$form .= form::close();
 			$form .= html::anchor('/sign/up', __('Sign up'));
 			widget::add('dock', $form);
 
-			$password = <<<JS
-$(function() {
-	$('#password-hint').show();
-	$('#password').hide();
-
-	$('#password-hint').focus(function() {
-		$('#password-hint').hide();
-		$('#password').show();
-		$('#password').focus();
-	});
-	$('#password').blur(function() {
-		if($('#password').val() == '') {
-			$('#password-hint').show();
-			$('#password').hide();
-		}
-	});
-});
-JS;
-			widget::add('dock', html::script_source($password));
 		}
 
 		// End

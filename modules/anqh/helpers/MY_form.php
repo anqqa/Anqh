@@ -17,15 +17,16 @@ class form extends form_Core {
 	 * @param   string        a string to be attached to the end of the attributes
 	 * @param   string        $label
 	 * @param   string|array  $error
+	 * @param   string|array  $tip
 	 * @return  string
 	 */
-	public static function button_wrap($data = '', $value = '', $extra = '', $label = '', $error = '') {
+	public static function button_wrap($data = '', $value = '', $extra = '', $label = '', $error = '', $tip = '') {
 		$name = is_array($data) ? arr::get($data, 'name') : $data;
 		$value = is_array($value) ? arr::get($value, $name) : $value;
 
 		$input = form::button($data, $value, $extra);
 
-		return form::wrap($input, $name, $label, $error);
+		return form::wrap($input, $name, $label, $error, $tip);
 	}
 
 
@@ -37,9 +38,10 @@ class form extends form_Core {
 	 * @param   array         $values  checked values
 	 * @param   string        $label
 	 * @param   string|array  $error
+	 * @param   string|array  $tip
 	 * @return  string
 	 */
-	public static function checkboxes_wrap($name, $data = array(), $values = array(), $label = '', $error = '', $class = '') {
+	public static function checkboxes_wrap($name, $data = array(), $values = array(), $label = '', $error = '', $class = '', $tip = '') {
 
 		// Get checkboxes
 		$checkboxes = isset($data[$name]) ? $data[$name] : $data;
@@ -61,7 +63,7 @@ class form extends form_Core {
 			}
 			$input .= "</ul>\n";
 
-			return form::wrap($input, $name, $label, $error);
+			return form::wrap($input, $name, $label, $error, $tip);
 		}
 	}
 
@@ -75,16 +77,17 @@ class form extends form_Core {
 	 * @param   string        a string to be attached to the end of the attributes
 	 * @param   string        $label
 	 * @param   string|array  $error
+	 * @param   string|array  $tip
 	 * @return  string
 	 */
-	public static function dropdown_wrap($data, $options = NULL, $selected = NULL, $extra = '', $label = '', $error = '') {
+	public static function dropdown_wrap($data, $options = NULL, $selected = NULL, $extra = '', $label = '', $error = '', $tip = '') {
 		$name = is_array($data) ? arr::get($data, 'name') : $data;
 		$selected = (is_array($selected) && isset($selected[$name])) ? $selected[$name] : $selected;
 		$options = (is_array($options) && isset($options[$name])) ? $options[$name] : $options;
 
 		$input = form::dropdown($data, $options, $selected, $extra);
 
-		return form::wrap($input, $name, $label, $error);
+		return form::wrap($input, $name, $label, $error, $tip);
 	}
 
 
@@ -96,15 +99,16 @@ class form extends form_Core {
 	 * @param   string        a string to be attached to the end of the attributes
 	 * @param   string        $label
 	 * @param   string|array  $error
+	 * @param   string|array  $tip
 	 * @return  string
 	 */
-	public static function input_wrap($data, $value = '', $extra = '', $label = '', $error = '') {
+	public static function input_wrap($data, $value = '', $extra = '', $label = '', $error = '', $tip = '') {
 		$name = is_array($data) ? arr::get($data, 'name') : $data;
 		$value = is_array($value) ? arr::get($value, $name) : $value;
 
 		$input = form::input($data, $value, $extra);
 
-		return form::wrap($input, $name, $label, $error);
+		return form::wrap($input, $name, $label, $error, $tip);
 	}
 
 
@@ -116,15 +120,31 @@ class form extends form_Core {
 	 * @param   string        a string to be attached to the end of the attributes
 	 * @param   string        $label
 	 * @param   string|array  $error
+	 * @param   string|array  $tip
+	 * @param   string        $show_password
 	 * @return  string
 	 */
-	public static function password_wrap($data, $value = '', $extra = '', $label = '', $error = '') {
+	public static function password_wrap($data, $value = '', $extra = '', $label = '', $error = '', $tip = '', $show_password = '') {
 		$name = is_array($data) ? arr::get($data, 'name') : $data;
 		$value = is_array($value) ? arr::get($value, $name) : $value;
 
+		// Inject show password element id
+		if ($show_password) {
+			if (is_array($data)) {
+				$data['show'] = $name . '_show';
+			} else {
+				$data = array('name' => $name, 'show' => $name . '_show');
+			}
+		}
+
 		$input = form::password($data, $value, $extra);
 
-		return form::wrap($input, $name, $label, $error);
+		// Add 'Show password' ?
+		if ($show_password) {
+			$input .= form::checkbox($name . '_show', 'yes') . form::label($name . '_show', $show_password);
+		}
+
+		return form::wrap($input, $name, $label, $error, $tip);
 	}
 
 
@@ -137,15 +157,16 @@ class form extends form_Core {
 	 * @param   boolean       encode existing entities
 	 * @param   string        $label
 	 * @param   string|array  $error
+	 * @param   string|array  $tip
 	 * @return  string
 	 */
-	public static function textarea_wrap($data, $value = '', $extra = '', $double_encode = TRUE, $label = '', $error = '') {
+	public static function textarea_wrap($data, $value = '', $extra = '', $double_encode = TRUE, $label = '', $error = '', $tip = '') {
 		$name = is_array($data) ? arr::get($data, 'name') : $data;
 		$value = is_array($value) ? arr::get($value, $name) : $value;
 
 		$input = form::textarea($data, $value, $extra, $double_encode);
 
-		return form::wrap($input, $name, $label, $error);
+		return form::wrap($input, $name, $label, $error, $tip);
 	}
 
 
@@ -157,15 +178,16 @@ class form extends form_Core {
 	 * @param   string        a string to be attached to the end of the attributes
 	 * @param   string        $label
 	 * @param   string|array  $error
+	 * @param   string|array  $tip
 	 * @return  string
 	 */
-	public static function upload_wrap($data, $value = '', $extra = '', $label = '', $error = '') {
+	public static function upload_wrap($data, $value = '', $extra = '', $label = '', $error = '', $tip = '') {
 		$name = is_array($data) ? arr::get($data, 'name') : $data;
 		$value = is_array($value) ? arr::get($value, $name) : $value;
 
 		$input = form::upload($data, $value, $extra);
 
-		return form::wrap($input, $name, $label, $error);
+		return form::wrap($input, $name, $label, $error, $tip);
 	}
 
 
@@ -176,9 +198,10 @@ class form extends form_Core {
 	 * @param   string|array  $name
 	 * @param   string        $label
 	 * @param   string|array  $error
+	 * @param   string|array  $tip
 	 * @return  string
 	 */
-	public static function wrap($input, $name = '', $label = '', $error = '') {
+	public static function wrap($input, $name = '', $label = '', $error = '', $tip = '') {
 
 		$wrap = '';
 
@@ -199,7 +222,12 @@ class form extends form_Core {
 			$wrap .= form::label($name, $label);
 		}
 
-		return $wrap . $input . "</li>\n";
+		// Input tip if any
+		if (!empty($tip)) {
+			$tip = '<p class="tip">' . (is_array($tip) ? arr::get($tip, $name) : $tip) . '</p>';
+		}
+
+		return $wrap . $input . $tip . "</li>\n";
 	}
 
 }
