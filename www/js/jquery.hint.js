@@ -1,44 +1,81 @@
 /**
-* @author Remy Sharp
-* @url http://remysharp.com/2007/01/25/jquery-tutorial-text-box-hints/
-*/
-
+ * Form input title hint
+ *
+ * @author  Antti Qvickström (password patch)
+ * @author  Remy Sharp (original)
+ * @url     http://remysharp.com/2007/01/25/jquery-tutorial-text-box-hints/
+ */
 (function ($) {
+	$.fn.hint = function (blurClass) {
+		blurClass = blurClass || 'blur';
 
-$.fn.hint = function (blurClass) {
-  if (!blurClass) { 
-    blurClass = 'blur';
-  }
-    
-  return this.each(function () {
-    // get jQuery version of 'this'
-    var $input = $(this),
-    
-    // capture the rest of the variable to allow for reuse
-      title = $input.attr('title'),
-      $form = $(this.form),
-      $win = $(window);
+	  return this.each(function () {
 
-    function remove() {
-      if ($input.val() === title && $input.hasClass(blurClass)) {
-        $input.val('').removeClass(blurClass);
-      }
-    }
+	    // Get jQuery version of 'this' and capture the rest of the variable to allow for reuse
+	    var $input = $(this),
+	      title = $input.attr('title'),
+	      isPassword = $input.attr('type') == 'password',
+	      $form = $(this.form),
+	      $win = $(window);
 
-    // only apply logic if the element has the attribute
-    if (title) { 
-      // on blur, set value to title attr if text is blank
-      $input.blur(function () {
-        if (this.value === '') {
-          $input.val(title).addClass(blurClass);
-        }
-      }).focus(remove).blur(); // now change all inputs to title
-      
-      // clear the pre-defined text when form is submitted
-      $form.submit(remove);
-      $win.unload(remove); // handles Firefox's autocomplete
-    }
-  });
-};
+	    // Clear hint
+	    function remove() {
+	    	if (isPassword) {
+	    		$password.remove();
+	    		$input.show();
+	    	} else {
+	      	if ($input.val() === title && $input.hasClass(blurClass)) {
+	        	$input.val('').removeClass(blurClass);
+	      	}
+	    	}
+	    }
 
+	    // Only apply logic if the element has the attribute
+	    if (title) {
+
+	    	if (isPassword) {
+
+	    		// Add text input to handle title
+    			$input.attr('title', null);
+    			var $password = $input.clone();
+    			var display = $input.css('display');
+    			$password.attr({ type: 'text', id: this.id + '-hint', name: $input.attr('name') + '-hint' })
+    				.hide()
+    				.addClass(blurClass)
+    				.val(title)
+    				.insertAfter($input)
+    				.focus(function() {
+    					$password.hide();
+    					$input.show().focus();
+    				});
+    			$input.blur(function() {
+    				if (this.value === '') {
+	    				$input.hide();
+	    				$password.css('display', display);
+    				}
+    			});
+    			if ($input.val() === '') {
+    				$input.hide();
+    				$password.css('display', display);
+    			}
+
+	    	} else {
+
+		      // On blur, set value to title attr if text is blank
+		      $input.blur(function () {
+		        if (this.value === '') {
+		          $input.addClass(blurClass).val(title);
+		        }
+		      }).focus(remove).blur();
+
+	    	}
+
+	      // Clear the pre-defined text when form is submitted
+	      $form.submit(remove);
+
+	      // Handles Firefox's autocomplete
+	      $win.unload(remove);
+	    }
+	  });
+	};
 })(jQuery);
