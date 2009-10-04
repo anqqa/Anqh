@@ -37,9 +37,7 @@ class Invitation_Model extends Modeler_ORM {
 	 * @param  string      $field
 	 */
 	public function unique_email(Validation $array, $field) {
-		$exists = (bool)ORM::factory('user')->where('email', $array[$field])->count_all();
-
-		if ($exists) {
+		if (ORM::factory('user')->where('email', strtolower($array[$field]))->count_all()) {
 			$array->add_error($field, 'unique');
 		}
 	}

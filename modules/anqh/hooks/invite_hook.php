@@ -28,7 +28,7 @@ class invite_hook {
 		$uri = new URI();
 
 		// Redirect to invite page if not logged or signing in
-		if (!in_array($uri->string(), array('invite', 'sign/in')) && !Visitor::instance()->logged_in()) {
+		if (!in_array($uri->string(), array('invite', 'sign/in')) && strpos($uri->string(), 'sign/up') !== 0 && !Visitor::instance()->logged_in()) {
 			url::redirect('invite');
 		}
 	}

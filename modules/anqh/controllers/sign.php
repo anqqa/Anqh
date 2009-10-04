@@ -25,12 +25,11 @@ class Sign_Controller extends Website_Controller {
 	public function in() {
 		$this->history = false;
 
-		$return = empty($_SESSION['history']) ? '/' : $_SESSION['history'];
 		if (request::method() == 'post') {
 			ORM::factory('user')->login($this->input->post(), false);
 		}
 
-		url::redirect($return);
+		url::back();
 	}
 
 
@@ -103,15 +102,15 @@ class Sign_Controller extends Website_Controller {
 		if (request::method() == 'post') {
 			$post = $this->input->post();
 			$post['email'] = $invitation->email;
-
 			if ($user->validate($post, false, null, null, array('rules' => 'register', 'callbacks' => 'register'))) {
 				$invitation->delete();
-				$user->save();
+
 				$user->add(ORM::factory('role', 'login'));
+				$user->save();
+
 				$this->visitor->login($user, $post->password);
 
-				$return = empty($_SESSION['history']) ? '/' : $_SESSION['history'];
-				url::redirect($return);
+				url::back();
 			} else {
 				$form_errors = $post->errors();
 				$form_values = arr::overwrite($form_values, $post->as_array());
@@ -133,8 +132,7 @@ class Sign_Controller extends Website_Controller {
 		$this->visitor->logout();
 
 		// Redirect back to the login page
-		$return = empty($_SESSION['history']) ? '/' : $_SESSION['history'];
-		url::redirect($return);
+		url::back();
 	}
 
 
@@ -152,10 +150,26 @@ class Sign_Controller extends Website_Controller {
 		if ($code) {
 			$invitation = new Invitation_Model($code);
 			if ($invitation->email) {
+
+				// Valid invitation code found, sign up form
 				$this->_join($invitation);
+
 			} else {
+
+				// Invite only hook
+				if (Kohana::config('site.inviteonly')) {
+					url::redirect('/');
+					return;
+				}
+
 				$this->_invite($code);
 			}
+			return;
+		}
+
+		// Invite only hook
+		if (Kohana::config('site.inviteonly')) {
+			url::redirect('/');
 			return;
 		}
 
