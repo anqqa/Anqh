@@ -55,6 +55,16 @@ class url extends url_Core {
 
 
 	/**
+	 * Redirect back to history
+	 *
+	 * @param  string  $default  if no history found
+	 */
+	public static function back($default = '/') {
+		url::redirect(empty($_SESSION['history']) ? $default : $_SESSION['history']);
+	}
+
+
+	/**
 	 * Convert strings to url safe title
 	 *
 	 * @param   mixed
