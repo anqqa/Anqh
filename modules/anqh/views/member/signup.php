@@ -28,7 +28,8 @@
 				array('name' => 'email', 'id' => 'signup_email'),
 				$invitation->email,
 				'title="' . __('john.doe@domain.tld') . '" disabled="disabled"',
-				__('Email')
+				__('Email'),
+				$errors
 			) ?>
 
 		</ul>
@@ -36,7 +37,7 @@
 
 	<fieldset class="prefix-1">
 		<?= form::submit(false, __('Sign up!')) ?>
-		<?= html::anchor($_SESSION['history'], __('Cancel')) ?>
+		<?= html::anchor(empty($_SESSION['history']) ? '/' : $_SESSION['history'], __('Cancel')) ?>
 
 		<p class="tip">
 			<?= __('By signing up, you accept the <a href=":terms">Tems of Use</a> and <a href=":privacy">Privacy Policy</a>.', array(':terms' => '/terms', ':privacy' => '/privacy')) ?>

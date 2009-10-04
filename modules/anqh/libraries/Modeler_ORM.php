@@ -149,7 +149,7 @@ class Modeler_ORM extends ORM {
 
 		foreach ($data as $key => $value) {
 			if ($key != 'id') {
-				parent::__set($key, $value);
+				$this->__set($key, $value);
 			}
 		}
 	}
@@ -163,7 +163,8 @@ class Modeler_ORM extends ORM {
 	 * @param  string      $field
 	 */
 	public function unique(Validation $array, $field) {
-		// skip non changed
+
+		// Skip non changed
 		if ($array[$field] == $this->$field) return;
 
 		$exists = (bool)$this->db->where($field, $array[$field])->count_records($this->table_name);
@@ -210,41 +211,42 @@ class Modeler_ORM extends ORM {
 	 * @return  int|bool
 	 */
 	public function validate(array &$values, $save = false, $extra_values = null, $extra_functions = null, $set = null) {
-		// create new Validation object and remove empty values
+
+		// Create new Validation object and remove empty values
 		$values = Validation::factory($values)->pre_filter('trim')->post_filter(array($this, 'null'));
 
-		// what data to use with validation
+		// What data to use with validation
 		$validation_filters   = isset($set['filters'])   ? 'filters_'   . $set['filters']   : 'filters';
 		$validation_rules     = isset($set['rules'])     ? 'rules_'     . $set['rules']     : 'rules';
 		$validation_callbacks = isset($set['callbacks']) ? 'callbacks_' . $set['callbacks'] : 'callbacks';
 
-		// add filters
+		// Add filters
 		foreach ($this->$validation_filters as $field => $filters)
 			foreach ($filters as $filter)
 				$values->pre_filter($filter, $field);
 
-		// add validation rules
+		// Add validation rules
 		foreach ($this->$validation_rules as $field => $rules)
 			foreach ($rules as $rule)
 				$values->add_rules($field, $rule);
 
-		// add validation callbacks
+		// Add validation callbacks
 		foreach ($this->$validation_callbacks as $field => $callbacks)
 			foreach ($callbacks as $callback)
 				$values->add_callbacks($field, array($this, $callback));
 
-		// non-model validation functions
+		// Non-model validation functions
 		if (!empty($extra_functions))
 			foreach ($extra_functions as $function)
 				$this->$function($values);
 
-		// validate
+		// Validate
 		if ($values->validate()) {
 
-			// set validated values to current object, skipping non-db
+			// Set validated values to current object, skipping non-db
 			$this->set_fields($values->safe_array());
 
-			// add extra values
+			// Add extra values
 			if (!empty($extra_values))
 				$this->set_fields($extra_values);
 
@@ -255,6 +257,7 @@ class Modeler_ORM extends ORM {
 				return false;
 			}
 		}
+
 		return false;
 	}
 
