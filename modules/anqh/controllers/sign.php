@@ -53,7 +53,7 @@ class Sign_Controller extends Website_Controller {
 			$form_errors = array('code' => 'default');
 			$form_values['code'] = $code;
 
-		} else if(request::method() == 'post') {
+		} else if (request::method() == 'post') {
 
 	 		// Handle post
 			$post = $this->input->post();
@@ -168,7 +168,7 @@ class Sign_Controller extends Website_Controller {
 		}
 
 		// Invite only hook
-		if (Kohana::config('site.inviteonly')) {
+		if (Kohana::config('site.inviteonly') && !Visitor::instance()->logged_in()) {
 			url::redirect('/');
 			return;
 		}

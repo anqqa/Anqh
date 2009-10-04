@@ -149,7 +149,11 @@ abstract class Website_Controller extends Controller {
 
 			// Authenticated view
 			widget::add('dock', __('Welcome, :user!', array(':user' => html::nick($this->user->id, $this->user->username))));
-			widget::add('dock', html::anchor('sign/out', __('Sign out')));
+			widget::add('dock', ' ' . html::anchor('sign/out', __('Sign out')));
+
+			if (Kohana::config('site.inviteonly')) {
+				widget::add('dock', ' | ' . html::anchor('sign/up', __('Send invite')));
+			}
 
 			// Admin functions
 			if ($this->visitor->logged_in('admin')) {
