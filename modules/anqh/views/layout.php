@@ -5,8 +5,10 @@
 	<meta charset="UTF-8" />
 	<title><?= strip_tags($page_title) ?><?= (!empty($page_title) ? ' | ' : '') . Kohana::config('site.site_name') ?></title>
 	<link rel="icon" type="image/png" href="/ui/favicon.png" />
-	<?= html::stylesheet(array('ui/boot', 'ui/grid', 'ui/typo', 'ui/base', 'ui/site', 'ui/jquery-ui')); ?>
-	<?= html::stylesheet($stylesheets) ?>
+	<?= html::stylesheet(array('ui/boot', 'ui/grid', 'ui/typo', 'ui/base')) ?>
+	<?= less::stylesheet('ui/dark/skin.less') ?>
+	<!--<?= html::stylesheet(array('ui/boot', 'ui/grid', 'ui/typo', 'ui/base', 'ui/site', 'ui/jquery-ui')) ?>-->
+	<!--<?= html::stylesheet($stylesheets) ?>-->
 	<!--[if IE]>
 	<?= html::script('http://html5shiv.googlecode.com/svn/trunk/html5.js'); ?>
 	<![endif]-->
@@ -16,62 +18,45 @@
 <?= widget::get('head') ?>
 </head>
 
-<body id="<?= $page_id ?>" class="<?= $page_class ?>">
+<body id="<?= $page_id ?>" class="fixed <?= $page_class ?>">
 
 	<!-- HEADER -->
 
-	<header id="header" class="container-1">
-		<div class="container-12 clearfix">
+	<header id="header">
+		<div class="section header">
 
 <h1><?= html::anchor('/', Kohana::config('site.site_name')) ?></h1>
 <?= widget::get('header') ?>
 <?= widget::get('navigation') ?>
 
 		</div>
+		<div class="section breadcrumb">
+			<div class="unit size3of5">
+
+<?= widget::get('breadcrumb') ?>
+
+			</div>
+			<div class="unit size2of5 last-unit">
+
+<?= widget::get('search') ?>
+
+			</div>
+		</div>
+
 	</header>
 
-	<!-- HEADER -->
+	<!-- /HEADER -->
 
 
 	<!-- CONTENT -->
 
-	<section id="content" class="container-1">
+	<section id="body">
 
-		<header class="container-12 clearfix breadcrumb">
-			<div class="grid-12">
-
-<?= widget::get('breadcrumb') ?>
-<?= widget::get('search') ?>
-
-			</div>
-		</header>
-
-		<section class="container-12 clearfix">
-			<section id="main-content" class="grid-10-full">
-
-				<header id="title" class="grid-10">
-
-<?= widget::get('actions') ?>
-
-					<h2><?= $page_title ?></h2>
-					<p class="subtitle"><?= $page_subtitle ?></p>
-<?= widget::get('tabs') ?>
-				</header>
-
-				<nav id="submenu" class="grid-10 nav">
-
-<?= widget::get('subnavigation') ?>
-
-				</nav>
-
-<?= $content ?>
-
-			</section>
-
+		<section class="section">
 
 			<!-- SIDE ADS -->
 
-			<section id="right-ads" class="grid-2">
+			<section id="side-ads">
 
 <?= widget::get('side_ads') ?>
 
@@ -79,7 +64,34 @@
 
 			<!-- /SIDE ADS -->
 
+
+			<!-- MAIN CONTENT -->
+
+			<section id="content">
+
+				<header id="title" class="line">
+
+<?= widget::get('actions') ?>
+
+					<h2><?= $page_title ?></h2>
+					<p class="subtitle"><?= $page_subtitle ?></p>
+
+<?= widget::get('tabs') ?>
+
+				</header>
+
+				<div class="line">
+
+<?= $content ?>
+
+				</div>
+
+			</section>
+
+			<!-- /MAIN CONTENT -->
+
 		</section>
+
 	</section>
 
 	<!-- /CONTENT -->
@@ -87,14 +99,14 @@
 
 	<!-- DOCK -->
 
-	<section id="dock" class="container-1">
-		<div class="container-12 clearfix">
-			<div class="grid-6">
+	<section id="dock">
+		<div class="section">
+			<div class="unit size1of2">
 
 <?= widget::get('dock') ?>
 
 			</div>
-			<div class="grid-6 extra-actions">
+			<div class="unit size1of2 lastunit extra-actions">
 
 <?= widget::get('dock2') ?>
 
@@ -107,15 +119,14 @@
 
 	<!-- FOOTER -->
 
-	<footer id="footer" class="container-1">
-		<section class="container-12 clearfix section">
+	<footer id="footer">
+		<section class="section">
 
 <?= widget::get('navigation') ?>
 <?= widget::get('footer') ?>
 
-
 		</section>
-		<section id="end" class="container-12 clearfix section">
+		<section id="end" class="section">
 
 <?= widget::get('end') ?>
 

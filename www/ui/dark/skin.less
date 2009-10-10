@@ -3,20 +3,17 @@
  */
 
 @default-color: #a7a7a7;
-@background-color: black;
-@background-image: url(../background.jpg) fixed no-repeat center top;
+@body-background-color: black;
+@body-background-image: url(../background.jpg) fixed no-repeat center top;
+@section-background: black;
 
-@import "../boot.css";
-@import "../grid.css";
-@import "../typo.css";
-@import "../base.css";
 @import "../site.css";
 @import "../jquery-ui.css";
 @import "jquery-ui.css";
 
 /***** TEXT *****/
 
-body                                   { background: black url(../background.jpg) fixed no-repeat center top; color: #a7a7a7; }
+body                                   { background: @body-background-color @body-background-image; color: @default-color; }
 a,
 a *                                    { color: #3ac; }
 a:hover *,
@@ -52,13 +49,13 @@ abbr                                   { border-bottom-color: #333; }
 
 /***** HEADER *****/
 
-#header                                { }
 #header li                             { background: url(../black50.png); }
 #header li:hover                       { background: url(../black75.png); }
 #header li a                           { color: #ccc; }
 #header li a:hover                     { color: white; }
 #header li.selected                    { background: black; border-bottom: 1px solid black; }
 #header li.selected a                  { color: #ca3; }
+#header .section.breadcrumb            { background: @section-background; }
 
 /***** /HEADER *****/
 
@@ -79,12 +76,12 @@ abbr                                   { border-bottom-color: #333; }
 
 /***** CENTER *****/
 
-#content .container-12                 { background: black; }
+#body .section                         { background: @section-background; }
 #title                                 { background: #111; border-bottom: 1px solid #222; }
-#tabs li                               { background: black; border-right: 1px solid #111; }
-#tabs li:hover,
-#tabs li.selected                      { background: #222; }
-#tabs li.selected a                    { color: #ca3; }
+#title nav li                          { background: black; border-right: 1px solid #111; }
+#title nav li:hover,
+#title nav li.selected                 { background: #222; }
+#title nav li.selected a               { color: #ca3; }
 
 /***** /CENTER *****/
 

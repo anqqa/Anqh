@@ -2,7 +2,10 @@
  * Copyright (c) 2008 - 2009 Anqh
  *
  * Based on 960 Grid System by Nathan Smith, see official site for more info: http://960.gs/
+ * Based on Object Oriented CSS Framework by Nicole Sullivan, see official site for more info: http://github.com/stubbornella/oocss/tree/master/css/
  */
+
+/***** 960GS *****/
 
 .container-1                           { width: 100%; }
 .container-12,
@@ -123,7 +126,7 @@
 .container-12 .suffix-4                { margin-right: 320px; }
 .container-12 .suffix-5                { margin-right: 400px; }
 .container-16 .suffix-5                { margin-right: 300px; }
-.container-16 .suffix-6                { margin-right: 360px: }
+.container-16 .suffix-6                { margin-right: 360px; }
 .container-12 .suffix-6,
 .container-16 .suffix-8                { margin-right: 480px; }
 .container-12 .suffix-7                { margin-right: 560px; }
@@ -145,3 +148,28 @@
 .clearfix                              { display: inline-block; }
 * html .clearfix                       { height: 1%; }
 .clearfix                              { display: block; }
+
+/***** /960GS *****/
+
+/***** OOCSS *****/
+
+.section                               { margin: 0 auto; position: relative; width: 100%; }
+.section,
+.line                                  { *zoom: 1; }
+.section:after,
+.line:after                            { clear: both; content: "."; display: block; height: 0; visibility: hidden; }
+.lastunit                              { display: table-cell; *display: block; float: none; _left: -3px; _margin-right: -3px; _position: relative; width: auto; *zoom: 1; }
+.lastunit:after                        { clear: both; content: " . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . "; display:block; height:0 !important; line-height: 0; visibility: hidden; }
+.unit                                  { float: left; }
+.size1of1                              { float: none; }
+.size1of2                              { width: 50%; }
+.size1of3                              { width: 33.33333%; }
+.size2of3                              { width: 66.66666%; }
+.size1of4                              { width: 25%; }
+.size3of4                              { width: 75%; }
+.size1of5                              { width: 20%; }
+.size2of5                              { width: 40%; }
+.size3of5                              { width: 60%; }
+.size4of5                              { width: 80%; }
+
+/***** /OOCSS *****/

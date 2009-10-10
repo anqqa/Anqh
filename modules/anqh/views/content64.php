@@ -1,9 +1,9 @@
 
 <!-- MAIN CONTENT -->
 
-<div id="center" class="grid-6">
+<div id="center" class="unit size3of5">
 
-<?= widget::get('main') ?> 
+<?= widget::get('main') ?>
 
 </div>
 
@@ -12,9 +12,9 @@
 
 <!-- SIDE CONTENT -->
 
-<div id="right" class="grid-4 side">
+<div id="side" class="unit size2of5 lastunit">
 
-<?= widget::get('side') ?> 
+<?= widget::get('side') ?>
 
 </div>
 

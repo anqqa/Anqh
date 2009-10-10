@@ -2,17 +2,27 @@
  * Copyright (c) 2008 - 2009 Anqh
  */
 
+/***** TEMPLATE *****/
+
+.fixed .section                        { width: 960px; }
+.liquid .section                       { margin: 0 25px; width: auto; }
+
+#side-ads                              { float: right; _margin-left: -3px; padding: 10px; width: 140px; }
+#content                               { overflow: hidden; _overflow: visible; _zoom: 1; }
+
+/***** /TEMPLATE *****/
+
 /***** DOCK *****/
 
-#dock                                  { left: 0; position: fixed; top: 0; z-index: 100; }
+#dock                                  { left: 0; position: fixed; right: 0; top: 0; z-index: 100; }
 
 /***** /DOCK *****/
 
 
 /***** HEADER *****/
 
-#header                                { height: 150px; padding-top: 35px; margin-bottom: 1px; }
-#header .container-12                  { height: 150px; }
+#header                                { padding-top: 35px; margin-bottom: 1px; }
+#header .header                        { height: 150px; }
 #header h1 a                           { display: block; }
 #header ul                             { bottom: 0; left: 0; position: absolute; }
 #header li                             { display: block; float: left; margin-right: 1px; }
@@ -20,9 +30,12 @@
 #header li a                           { display: block; font-variant: small-caps; height: 1em; padding: 1.6667em 2.5em 0.8333em 0.8333em; vertical-align: middle; }
 #header li a:hover                     { text-decoration: none; }
 
-#tabs li                               { float: left; }
-#tabs li a                             { display: block; padding: 0.8333em 1em; }
-#tabs li a:hover                       { text-decoration: none; }
+#header .breadcrumb                    { line-height: 2em; margin-bottom: 1px; margin-top: 1px; padding-bottom: 0.75em; padding-top: 0.75em; }
+#header .breadcrumb nav                { display: inline; padding-left: 10px; }
+
+#header #search                        { float: right; padding-right: 10px; }
+#header #search input,
+#header #search select                 { margin-left: 0; width: 100px; }
 
 /***** /HEADER *****/
 
@@ -31,8 +44,8 @@
 
 #footer          { margin-top: 2em; min-height: 150px; }
 #footer p,
-#footer .nav ul  { text-align: center; }
-#footer .nav li  { display: inline; padding: 0 6px; }
+#footer nav ul   { text-align: center; }
+#footer nav li   { display: inline; padding: 0 6px; }
 #footer .tab     { float: left; margin-bottom: 1em; }
 #footer .tab li                        { overflow: hidden; text-overflow: ellipsis; -o-text-overflow: ellipsis; white-space: nowrap; }
 
@@ -41,20 +54,18 @@
 
 /***** AREAS *****/
 
-#content .container-12                 { padding-bottom: 0.8333em; }
-#content .breadcrumb                   { padding-top: 0.75em; margin-bottom: 1px; }
-#content .breadcrumb nav               { display: inline; }
+#body .section                         { padding-bottom: 0.8333em; }
 
-#content #search                       { float: right; }
-#content #search input,
-#content #search select                { margin-left: 0; width: 100px; }
-
-#title                                 { margin-bottom: -1px; }
+#title                                 { margin-bottom: -1px; padding: 0 10px; }
 #title .actions                        { float: right; margin-top: 10px; /*position: absolute; right: 10px; top: 10px;*/ }
+#title nav li                          { float: left; }
+#title nav li a                        { display: block; padding: 0.8333em 1em; }
+#title nav li a:hover                  { text-decoration: none; }
+
 
 #center,
-#right,
-#right-ads                             { padding-bottom: 0.8333em; padding-top: 0.8333em; }
+#side,
+#side-ads                              { padding-bottom: 0.8333em; padding-top: 0.8333em; }
 
 ul.grouped li.group + li.group         { padding-top: 1.6667em; }
 ul.contentlist li                      { padding-top: 0.883em; padding-bottom: 0.883em; }
@@ -204,7 +215,7 @@ ul.contentlist ul.bbcode_list li + li  { border-top: none; padding-top: 0; }
 
 /***** JQUERY *****/
 
-.aside .ui-tabs-panel h4                { display: none; }
+#side .ui-tabs-panel h4                { display: none; }
 
 /* autocomplete */
 

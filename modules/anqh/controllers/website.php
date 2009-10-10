@@ -133,8 +133,8 @@ abstract class Website_Controller extends Controller {
 		widget::add('header', View::factory('generic/header'));
 
 		// Footer
-		widget::add('footer', View::factory('events/events_list', array('id' => 'footer-events-new',    'class' => 'grid-3', 'title' => __('New events'),    'events' => ORM::factory('event')->orderby('id', 'DESC')->find_all(10))));
-		widget::add('footer', View::factory('forum/topics_list',  array('id' => 'footer-topics-active', 'class' => 'grid-3', 'title' => __('Active topics'), 'topics' => ORM::factory('forum_topic')->orderby('last_post_id', 'DESC')->find_all(10))));
+		widget::add('footer', View::factory('events/events_list', array('id' => 'footer-events-new',    'class' => 'unit size1of4', 'title' => __('New events'),    'events' => ORM::factory('event')->orderby('id', 'DESC')->find_all(10))));
+		widget::add('footer', View::factory('forum/topics_list',  array('id' => 'footer-topics-active', 'class' => 'unit size1of4', 'title' => __('Active topics'), 'topics' => ORM::factory('forum_topic')->orderby('last_post_id', 'DESC')->find_all(10))));
 
 		// Dock
 		$locales = Kohana::config('locale');
