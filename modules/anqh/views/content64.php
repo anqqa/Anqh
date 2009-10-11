@@ -1,21 +1,21 @@
 
 <!-- MAIN CONTENT -->
 
-<div id="center" class="unit size3of5">
+<section id="center" class="unit size3of5">
 
 <?= widget::get('main') ?>
 
-</div>
+</section>
 
 <!-- /MAIN CONTENT -->
 
 
 <!-- SIDE CONTENT -->
 
-<div id="side" class="unit size2of5 lastunit">
+<section id="side" class="unit size2of5 lastunit">
 
 <?= widget::get('side') ?>
 
-</div>
+</section>
 
 <!-- /SIDE CONTENT -->

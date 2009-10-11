@@ -51,7 +51,7 @@ class html extends html_Core {
 		if (date('Y-m-d', $date) == date('Y-m-d')) {
 			$weekday = __('Today');
 			return <<<DATE
-<div class="grid-1 alpha date today">
+<div class="date today">
 	<span class="weekday">$weekday</span>
 	<span class="day">$day</span>
 	<span class="month">$month</span>
@@ -59,7 +59,7 @@ class html extends html_Core {
 DATE;
 		} else {
 			return <<<DATE
-<div class="grid-1 alpha date">
+<div class="date">
 	<span class="weekday">$weekday</span>
 	<span class="day">$day</span>
 	<span class="month">$month</span>

@@ -171,5 +171,7 @@
 .size2of5                              { width: 40%; }
 .size3of5                              { width: 60%; }
 .size4of5                              { width: 80%; }
+.size1of6                              { width: 16.66667%; }
+.size5of6                              { width: 83.33333%; }
 
 /***** /OOCSS *****/

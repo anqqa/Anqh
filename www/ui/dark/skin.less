@@ -2,10 +2,31 @@
  * Copyright 2008 - 2009 Anqh
  */
 
-@default-color: #a7a7a7;
 @body-background-color: black;
 @body-background-image: url(../background.jpg) fixed no-repeat center top;
 @section-background: black;
+
+@header-color: #ca3;
+@subheader-color: #ac3;
+
+@text-color: #a7a7a7;
+@link-color: #3ac;
+@link-hover-color: white;
+@action-link-color: black;
+@positive-color: #ac3;
+@negative-color: #c33;
+
+@separator-color: #333;
+@separator-border: 1px dashed @separator-color;
+
+@dock-background: transparent url(../black75.png);
+@dock-separator: 1px solid #333;
+@dock-color: #f2f2f2;
+
+@mainmenu-link-background: url(../black50.png);
+@mainmenu-link-hover-background: url(../black75.png);
+@mainmenu-color: #ccc;
+@mainmenu-hover-color: @link-hover-color;
 
 @import "../site.css";
 @import "../jquery-ui.css";
@@ -13,17 +34,17 @@
 
 /***** TEXT *****/
 
-body                                   { background: @body-background-color @body-background-image; color: @default-color; }
+body                                   { background: @body-background-color @body-background-image; color: @text-color; }
 a,
-a *                                    { color: #3ac; }
+a *                                    { color: @link-color; }
 a:hover *,
-a:hover                                { color: white; }
+a:hover                                { color: @link-hover-color; }
 h2 span,
 h3 span,
 h4 span,
 h5 span,
-h6 span                                { color: #a7a7a7; }
-h2                                     { color: #ca3; }
+h6 span                                { color: @text-color; }
+h2                                     { color: @header-color; }
 legend,
 h3,
 h4,
@@ -32,7 +53,7 @@ h3 a,
 /*h4 a,*/
 label,
 dt,
-h5 a                                   { color: #ac3; }
+h5 a                                   { color: @subheader-color; }
 abbr                                   { border-bottom-color: #333; }
 
 /***** /TEXT *****/
@@ -40,21 +61,21 @@ abbr                                   { border-bottom-color: #333; }
 
 /***** DOCK *****/
 
-#dock                                  { background: transparent url(../black75.png); border-bottom: 1px solid #333; padding: 0.4116em 0; }
+#dock                                  { background: @dock-background; border-bottom: @dock-border; padding: 0.4116em 0; }
 #dock label,
-#dock div                              { color: #f2f2f2; }
+#dock div                              { color: @dock-color; }
 
 /***** /DOCK *****/
 
 
 /***** HEADER *****/
 
-#header li                             { background: url(../black50.png); }
-#header li:hover                       { background: url(../black75.png); }
-#header li a                           { color: #ccc; }
-#header li a:hover                     { color: white; }
-#header li.selected                    { background: black; border-bottom: 1px solid black; }
-#header li.selected a                  { color: #ca3; }
+#header li                             { background: @mainmenu-link-background; }
+#header li:hover                       { background: @mainmenu-link-hover-background; }
+#header li a                           { color: @mainmenu-color; }
+#header li a:hover                     { color: @mainmenu-hover-color; }
+#header li.selected                    { background: @section-background; border-bottom: 1px solid @section-background; }
+#header li.selected a                  { color: @header-color; }
 #header .section.breadcrumb            { background: @section-background; }
 
 /***** /HEADER *****/
@@ -81,7 +102,7 @@ abbr                                   { border-bottom-color: #333; }
 #title nav li                          { background: black; border-right: 1px solid #111; }
 #title nav li:hover,
 #title nav li.selected                 { background: #222; }
-#title nav li.selected a               { color: #ca3; }
+#title nav li.selected a               { color: @header-color; }
 
 /***** /CENTER *****/
 
@@ -98,9 +119,9 @@ input:focus,
 select:focus,
 textarea:focus     { border-color: #f2f2f2; }
 input[type="checkbox"] + label,
-input[type="radio"] + label            { color: #a7a7a7; }
-input[type="submit"]                   { background: #3ac; border: 0 none; color: black; }
-input[type="submit"]:hover             { background: white; }
+input[type="radio"] + label            { color: @text-color; }
+input[type="submit"]                   { background: @link-color; border: 0 none; color: @action-link-color; }
+input[type="submit"]:hover             { background: @link-hover-color; }
 
 form .error .info  { background: red; color: black; }
 form .error input  { border-color: red; }
@@ -116,42 +137,49 @@ form .notice input { border-color: green; }
 /*.tab,*/
 /*.container,
 ul.contentlist li                      { margin-left: -10px; margin-right: -10px; padding-left: 10px; padding-right: 10px; }*/
+section article .actions a.action,
 .tab .actions a.action,
 .container .actions a.action,
 ul.contentlist li .actions a.action    { background: #222; }
+section article:hover,
 /*.tab:hover,*/
 .container:hover,
 ul.contentlist li:hover                { background: #111; }
+section article:hover .actions a.action,
 .tab:hover .actions a.action,
 .container:hover .actions a.action,
 ul.contentlist li:hover .actions a.action,
-a.action                               { background: #3ac; color: black; padding: 0 0.5em; -moz-border-radius: 5px; }
+a.action                               { background: @link-color; color: @action-link-color; padding: 0 0.5em; -moz-border-radius: 5px; }
+section article:hover .actions a[class*="-add"],
 ul.contentlist li:hover .actions a[class*="-add"],
-a[class*="-add"]                       { background: #ac3; }
+a[class*="-add"]                       { background: @positive-color; }
+section article:hover .actions a[class*="-delete"],
 ul.contentlist li:hover .actions a[class*="-delete"],
-a[class*="-delete"]                    { background: #c33; }
+a[class*="-delete"]                    { background: @negative-color; }
+section article .actions a.action:hover,
 ul.contentlist li .actions a.action:hover,
-a.action:hover                         { background: white; text-decoration: none; }
+a.action:hover                         { background: @link-hover-color; text-decoration: none; }
 
-ul.contentlist li + li                 { border-top: 1px dashed #333; padding-top: 0.75em; }
+section article + article,
+ul.contentlist li + li                 { border-top: @separator-border; padding-top: 0.75em; }
 
 .tip { color: #999; }
 
 .step,
-.date .day                     { color: #ac3; }
+.date .day                     { color: @subheader-color; }
 .date span                     { background: #222; }
 .date .weekday                 { background: #333; -moz-border-radius: 5px 0 0 0; }
 .date .month                   { -moz-border-radius: 0 0 5px 5px; }
-.date.today .weekday           { background: #ac3; color: black; }
+.date.today .weekday           { background: @subheader-color; color: black; }
 
 .button { background-image: url(button.png); color: #ca3; }
 
 .my                                    { color: #b0a88a; }
 .owner                                 { color: #a9ba6d; }
 
-.pills li label                        { background: #222; color: #a7a7a7; -moz-border-radius: 5px; }
-.pills li label:hover                  { background: white; color: black; }
-.pills li input[type="checkbox"]:checked + label { background: #ac3; color: black; }
+.pills li label                        { background: #222; color: @text-color; -moz-border-radius: 5px; }
+.pills li label:hover                  { background: @link-hover-color; color: @action-link-color; }
+.pills li input[type="checkbox"]:checked + label { background: @positive-color; color: @action-link-color; }
 
 /***** /ELEMENTS *****/
 

@@ -1,14 +1,19 @@
-<ul class="grouped">
+
+<section class="mod groups">
 	<?php foreach ($groups as $group): ?>
 
-	<li class="group clearfix group-<?= $group->id ?>">
-		<h3><?= html::anchor(url::model($group), $group->name) ?></h3>
-		<p><?= html::specialchars($group->description) ?></p>
-		<ul class="contentlist areas">
+	<section class="group group-<?= $group->id ?>">
+
+		<header>
+			<h3><?= html::anchor(url::model($group), $group->name) ?></h3>
+			<p><?= html::specialchars($group->description) ?></p>
+		</header>
+
 		<?php foreach ($group->forum_areas as $area): ?>
 
 			<?php if ($area->access_has($this->user, Forum_Area_Model::ACCESS_READ)): ?>
-			<li class="area-<?= $area->id ?>">
+
+			<article class="area area-<?= $area->id ?>">
 				<h4>
 					<?= html::anchor(url::model($area), text::title($area->name), array('title' => strip_tags($area->description))) ?>
 					<span><?= __(':topics topics, :posts posts', array(
@@ -27,19 +32,21 @@
 				<sup><?= __('No topics found') ?></sup>
 				<?php endif; ?>
 				</span>
-			</li>
+			</article>
+
 			<?php else: ?>
-			<li class="area-<?= $area->id ?> disabled">
+
+			<article class="area area-<?= $area->id ?> disabled">
 				<h4>
 					<span title="<?= strip_tags($area->description) ?>"><?= text::title($area->name) ?>
 				</h4>
 				<?= __('Members only') ?>
-			</li>
+			</article>
+
 			<?php	endif; ?>
 
 		<?php endforeach; ?>
-		</ul>
-	</li>
+	</section>
 
 	<?php endforeach; ?>
-</ul>
+</section>

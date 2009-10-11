@@ -80,11 +80,11 @@
 
 				</header>
 
-				<div class="line">
+				<section class="line">
 
 <?= $content ?>
 
-				</div>
+				</section>
 
 			</section>
 

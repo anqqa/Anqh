@@ -7,10 +7,8 @@
 .fixed .section                        { width: 960px; }
 .liquid .section                       { margin: 0 25px; width: auto; }
 
-#side-ads                              { float: right; _margin-left: -3px; padding: 10px; width: 140px; }
-#content                               { overflow: hidden; _overflow: visible; _zoom: 1; }
-
 /***** /TEMPLATE *****/
+
 
 /***** DOCK *****/
 
@@ -56,6 +54,9 @@
 
 #body .section                         { padding-bottom: 0.8333em; }
 
+#side-ads                              { float: right; _margin-left: -3px; padding: 10px; width: 140px; }
+#content                               { overflow: hidden; _overflow: visible; _zoom: 1; }
+
 #title                                 { margin-bottom: -1px; padding: 0 10px; }
 #title .actions                        { float: right; margin-top: 10px; /*position: absolute; right: 10px; top: 10px;*/ }
 #title nav li                          { float: left; }
@@ -67,13 +68,21 @@
 #side,
 #side-ads                              { padding-bottom: 0.8333em; padding-top: 0.8333em; }
 
+.groups .group + .group,
 ul.grouped li.group + li.group         { padding-top: 1.6667em; }
+section article                        { padding: 0.883em 10px; }
 ul.contentlist li                      { padding-top: 0.883em; padding-bottom: 0.883em; }
+.groups .group,
 ul.contentlist li.group                { border: none; min-height: 5em; padding-bottom: 0; padding-top: 0; }
+section article h4,
 ul.contentlist li h4                   { margin-top: 0; }
+section article .details,
 ul.contentlist li .details             { opacity: .5; }
+section article:hover .details,
 ul.contentlist li:hover .details       { opacity: 1; }
+section article .hidden,
 ul.contentlist li .hidden              { float: right; visibility: hidden; }
+section article:hover .hidden,
 ul.contentlist li:hover .hidden        { visibility: visible; }
 
 
@@ -247,6 +256,10 @@ table.calendar .month { text-align: center; }
 table.calendar .inactive { opacity: 0.50; }
 table.calendar .today { font-weight: bold; }
 
+#events section.day                    { padding: 0.8333em 10px; }
+#events .date                          { margin-right: 10px; }
+#events .city h3                       { margin-top: 0; }
+#events .events article                { padding: 0.8333em 0; }
 #events .calendar .events              { margin-top: -1px; }
 #events .tab .events li                { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; -o-text-overflow: ellipsis; }
 
@@ -261,16 +274,12 @@ table.calendar .today { font-weight: bold; }
 #forum .post .avatar     { height: 60px; text-align: center; }
 #forum .post .avatar img { margin-top: 1.5px; }
 #forum .post .actions                  { float: right; }
-#forum .post .post-content             { clear: both; }
+#forum .post section             { clear: both; }
+#forum .post footer .actions           { margin-top: -0.883em; }
 
-/*blockquote:before        { content: '“'; font: 3em/0.3em Georgia, serif; margin-left: -0.4em; vertical-align: -0.333em; }*/
-
-/*blockquote               { margin: 1.667em 1em; padding: 0 22px; text-indent: -22px; }
-blockquote:first-letter  { padding-left: 22px; }
-blockquote p             { text-indent: 0; }*/
 
 #forum .tab .topics li   { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; -o-text-overflow: ellipsis; }
-.forum .ui-tabs-panel h4 { display: none; }
+.forum .ui-tabs-panel h4               { display: none; }
 
 /***** /forum *****/
 
