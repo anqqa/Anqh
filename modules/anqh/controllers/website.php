@@ -129,13 +129,19 @@ abstract class Website_Controller extends Controller {
 		widget::add('footer', View::factory('forum/topics_list',  array('id' => 'footer-topics-active', 'class' => 'unit size1of4', 'title' => __('Active topics'), 'topics' => ORM::factory('forum_topic')->orderby('last_post_id', 'DESC')->find_all(10))));
 
 		// Dock
+		$classes = array(
+			'<a href="#fixed" onclick="$(\'body\').addClass(\'fixed\').removeClass(\'liquid\'); return false;">' . __('Narrow') . '</a>',
+			'<a href="#liquid" onclick="$(\'body\').addClass(\'liquid\').removeClass(\'fixed\'); return false;">' . __('Wide') . '</a>',
+		);
+		widget::add('dock2', __('Layout: ') . implode(', ', $classes));
+
 		$locales = Kohana::config('locale');
 		if (count($locales['locales'])) {
 			$languages = array();
 			foreach ($locales['locales'] as $lang => $locale) {
 				$languages[] = html::anchor('set/lang/' . $lang, html::specialchars($locale['language'][2]));
 			}
-			widget::add('dock2', __('Language: ') . implode(', ', $languages));
+			widget::add('dock2', ' | ' . __('Language: ') . implode(', ', $languages));
 		}
 		if ($this->user) {
 
