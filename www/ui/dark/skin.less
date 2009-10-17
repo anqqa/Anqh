@@ -1,33 +1,47 @@
 /*
+ * Dark skin
+ *
  * Copyright 2008 - 2009 Anqh
  */
 
-@body-background-color: black;
-@body-background-image: url(../background.jpg) fixed no-repeat center top;
-@section-background: black;
+@body-background-color:                black;
+@body-background-image:                url(../background.jpg) fixed no-repeat center top;
+@section-background:                   black;
 
-@header-color: #ca3;
-@subheader-color: #ac3;
+@header-color:                         #ca3;
+@subheader-color:                      #ac3;
 
-@text-color: #a7a7a7;
-@link-color: #3ac;
-@link-hover-color: white;
-@action-link-color: black;
-@positive-color: #ac3;
-@negative-color: #c33;
+@text-color:                           #a7a7a7;
+@link-color:                           #3ac;
+@link-hover-color:                     white;
+@action-link-color:                    black;
+@positive-color:                       #ac3;
+@negative-color:                       #c33;
+@error-background:                     red;
+@info-background:                      green;
+@error-color:                          @action-link-color;
+@info-color:                           @action-link-color;
 
-@separator-color: #333;
-@separator-border: 1px dashed @separator-color;
+@separator-color:                      #333;
+@separator-border:                     1px dashed @separator-color;
 
-@dock-background: transparent url(../black75.png);
-@dock-separator: 1px solid #333;
-@dock-color: #f2f2f2;
+@input-background:                     #111;
+@input-color:                          #f2f2f2;
+@input-hint-color:                     #666;
+@input-border-color:                   @input-hint-color;
+@input-border-hover-color:             #999;
+@input-border-focus-color:             @input-color;
 
-@mainmenu-link-background: url(../black50.png);
-@mainmenu-link-hover-background: url(../black75.png);
-@mainmenu-color: #ccc;
-@mainmenu-hover-color: @link-hover-color;
+@dock-background:                      transparent url(../black75.png);
+@dock-separator:                       1px solid #333;
+@dock-color:                           #f2f2f2;
 
+@mainmenu-link-background:             url(../black50.png);
+@mainmenu-link-hover-background:       url(../black75.png);
+@mainmenu-color:                       #ccc;
+@mainmenu-hover-color:                 @link-hover-color;
+
+@import "../widget.less";
 @import "../site.css";
 @import "../jquery-ui.css";
 @import "jquery-ui.css";
@@ -107,31 +121,6 @@ abbr                                   { border-bottom-color: #333; }
 /***** /CENTER *****/
 
 
-/***** FORMS *****/
-
-input,
-select,
-textarea           { background: #111; border: 1px solid #666; color: #f2f2f2; }
-input:hover,
-select:hover,
-textarea:hover     { border-color: #999; }
-input:focus,
-select:focus,
-textarea:focus     { border-color: #f2f2f2; }
-input[type="checkbox"] + label,
-input[type="radio"] + label            { color: @text-color; }
-input[type="submit"]                   { background: @link-color; border: 0 none; color: @action-link-color; }
-input[type="submit"]:hover             { background: @link-hover-color; }
-
-form .error .info  { background: red; color: black; }
-form .error input  { border-color: red; }
-form .notice .info { background: green; color: black; }
-form .notice input { border-color: green; }
-.hint              { color: #666; }
-
-/***** /FORMS *****/
-
-
 /***** ELEMENTS *****/
 
 /*.tab,*/
@@ -149,7 +138,7 @@ section article:hover .actions a.action,
 .tab:hover .actions a.action,
 .container:hover .actions a.action,
 ul.contentlist li:hover .actions a.action,
-a.action                               { background: @link-color; color: @action-link-color; padding: 0 0.5em; -moz-border-radius: 5px; }
+a.action                               { background: @link-color; color: @action-link-color; -moz-border-radius: 5px; }
 section article:hover .actions a[class*="-add"],
 ul.contentlist li:hover .actions a[class*="-add"],
 a[class*="-add"]                       { background: @positive-color; }
@@ -177,9 +166,6 @@ ul.contentlist li + li                 { border-top: @separator-border; padding-
 .my                                    { color: #b0a88a; }
 .owner                                 { color: #a9ba6d; }
 
-.pills li label                        { background: #222; color: @text-color; -moz-border-radius: 5px; }
-.pills li label:hover                  { background: @link-hover-color; color: @action-link-color; }
-.pills li input[type="checkbox"]:checked + label { background: @positive-color; color: @action-link-color; }
 
 /***** /ELEMENTS *****/
 

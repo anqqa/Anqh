@@ -153,9 +153,12 @@
 
 /***** OOCSS *****/
 
+.mod,
 .section                               { margin: 0 auto; position: relative; width: 100%; }
+.mod,
 .section,
 .line                                  { *zoom: 1; }
+.mod:after,
 .section:after,
 .line:after                            { clear: both; content: "."; display: block; height: 0; visibility: hidden; }
 .lastunit                              { display: table-cell; *display: block; float: none; _left: -3px; _margin-right: -3px; _position: relative; width: auto; *zoom: 1; }

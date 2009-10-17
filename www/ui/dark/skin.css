@@ -21,6 +21,7 @@ h4,
 h5,
 h3 a,
 /*h4 a,*/
+label,
 dt,
 h5 a                                   { color: #ac3; }
 abbr                                   { border-bottom-color: #333; }
@@ -87,6 +88,8 @@ textarea:hover     { border-color: #999; }
 input:focus,
 select:focus,
 textarea:focus     { border-color: #f2f2f2; }
+input[type="checkbox"] + label,
+input[type="radio"] + label            { color: #a7a7a7; }
 input[type="submit"]                   { background: #3ac; border: 0 none; color: black; }
 input[type="submit"]:hover             { background: white; }
 
@@ -137,7 +140,7 @@ ul.contentlist li + li                 { border-top: 1px dashed #333; padding-to
 .my                                    { color: #b0a88a; }
 .owner                                 { color: #a9ba6d; }
 
-.pills li label                        { background: #222; -moz-border-radius: 5px; }
+.pills li label                        { background: #222; color: #a7a7a7; -moz-border-radius: 5px; }
 .pills li label:hover                  { background: white; color: black; }
 .pills li input[type="checkbox"]:checked + label { background: #ac3; color: black; }
 

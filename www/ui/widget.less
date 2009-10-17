@@ -1,0 +1,60 @@
+/*
+ * Widget LESS styles. Generic UI widgets: buttons, inputs etc
+ *
+ * Copyright 2009 Anqh
+ */
+
+/***** INPUTS *****/
+
+label                                  { display: block; }
+input[type="checkbox"] + label,
+input[type="radio"] + label,
+.horizontal label                      { display: inline; }
+
+input,
+textarea,
+select                                 { background: @input-background; border: 1px solid @input-border-color; border-radius: 5px; -moz-border-radius: 5px; -webkit-border-radius: 5px; color: @input-color; margin: 0 -3px; padding: 2px 3px 4px; }
+input:hover,
+select:hover,
+textarea:hover                         { border-color: @input-border-hover-color; }
+input:focus,
+select:focus,
+textarea:focus                         { border-color: @input-border-focus-color; }
+input[type="checkbox"],
+input[type="radio"]                    { color: @text-color; margin: 0; }
+input[type="text"],
+input[type="password"],
+input[type="file"],
+textarea,
+select                                 { width: 99%; }
+
+fieldset a                             { vertical-align: middle; }
+
+form .notice .info,
+form .error .info                      { float: right; border-radius: 4px 4px 0 0; -moz-border-radius: 4px 4px 0 0; -webkit-border-radius: 4px 4px 0 0; padding: 0 0.5em; }
+form .notice input,
+form .error input                      { border-top-right-radius: 0; -moz-border-radius-topright: 0; -webkit-border-top-right-radius: 0; }
+form .error .info                      { background: @error-background; color: @error-color; }
+form .error input                      { border-color: @error-background; }
+form .notice .info                     { background: @info-background; color: @info-color; }
+form .notice input                     { border-color: @info-background; }
+
+.hint                                  { color: @input-hint-color; font-style: italic; }
+
+/***** /INPUTS *****/
+
+
+/***** BUTTONS *****/
+
+input[type="submit"]                   { background: @link-color; border: 0 none; color: @action-link-color; cursor: pointer; margin: auto; /*padding: 0 0.5em;*/ }
+input[type="submit"]:hover             { background: @link-hover-color; }
+form .buttons                          { display: block; margin-bottom: 1em; margin-top: 1em; text-align: center; }
+
+.pills                                 { margin-bottom: 1.6667em; }
+.pills li                              { display: inline; }
+.pills li label                        { background: @input-background; color: @text-color; cursor: pointer; display: inline; border-radius: 5px; -moz-border-radius: 5px; -webkit-border-radius: 5px; padding: 0 0.5em; }
+.pills li label:hover                  { background: @link-hover-color; color: @action-link-color; }
+.pills li input[type="checkbox"]       { display: none; }
+.pills li input[type="checkbox"]:checked + label { background: @positive-color; color: @action-link-color; }
+
+/***** /BUTTONS *****/

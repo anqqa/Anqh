@@ -91,29 +91,6 @@ ul.contentlist li:hover .hidden        { visibility: visible; }
 
 /***** FORM *****/
 
-label                                  { display: block; }
-input[type="checkbox"] + label,
-input[type="radio"] + label,
-.horizontal label                      { display: inline; }
-input,
-textarea,
-select                                 { -moz-border-radius: 5px; margin: 0 -3px; padding: 2px 3px 4px; }
-input[type="checkbox"],
-input[type="radio"]                    { margin: 0; }
-input[type="submit"]                   { cursor: pointer; padding: 0 0.5em; }
-input[type="text"],
-input[type="password"],
-input[type="file"],
-textarea,
-select                                 { width: 99%; }
-fieldset a                             { vertical-align: middle; }
-form .notice .info,
-form .error .info                      { float: right; -moz-border-radius: 4px 4px 0 0; padding: 0 0.5em; }
-form .notice input,
-form .error input                      { -moz-border-radius-topright: 0; }
-form .buttons     { display: block; margin-bottom: 1em; margin-top: 1em; text-align: center; }
-.hint             { font-style: italic; }
-
 #dock form                   { float: left; }
 #dock label,
 #dock input                  { display: inline; margin-left: 0; margin-right: 10px; }
@@ -124,6 +101,8 @@ form .buttons     { display: block; margin-bottom: 1em; margin-top: 1em; text-al
 
 
 /***** ELEMENTS *****/
+
+.mod.settings                { padding: 0 10px; }
 
 /*.subtitle { margin-bottom: 1.6667em; }*/
 .tip      { font-size: 0.9em; font-style: italic; line-height: 1.552em; }
@@ -152,6 +131,8 @@ form .buttons     { display: block; margin-bottom: 1em; margin-top: 1em; text-al
 .button.large:hover   { background-position: -150px -120px; }
 .button.x-large:hover { background-position: -150px -160px; }
 
+a.action              { padding: 2px 0.5em 4px; }
+
 #map                  { color: white; height: 200px; width: 400px; }
 
 .logo { float: right; }
@@ -162,12 +143,6 @@ a.user                                 { /*font-weight: bold;*/ }
 table.calendar th,
 table.calendar td            { padding: 0; }
 .actions                               { float: right; }
-
-.pills                                 { margin-bottom: 1.6667em; }
-.pills li,
-.pills li label                        { display: inline; }
-.pills li input[type="checkbox"]       { display: none; }
-.pills li label                        { cursor: pointer; padding: 0 0.5em; }
 
 /***** /ELEMENTS *****/
 
