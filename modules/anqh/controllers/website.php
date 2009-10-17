@@ -72,13 +72,6 @@ abstract class Website_Controller extends Controller {
 	 */
 	protected $tabs;
 
-	/**
-	 * Main content template
-	 *
-	 * @var  string
-	 */
-	protected $template_content = 'content64';
-
 
 	/**
 	 * Construct new page controller
@@ -99,7 +92,6 @@ abstract class Website_Controller extends Controller {
 
 		// Build the main view
 		$this->template
-			->bind('content',       View::factory($this->template_content))
 			->bind('stylesheets',   $this->stylesheets)
 			->bind('language',      $this->language)
 			->bind('page_id',       $this->page_id)

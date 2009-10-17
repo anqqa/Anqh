@@ -23,14 +23,15 @@
 	<!-- HEADER -->
 
 	<header id="header">
-		<div class="section header">
+
+		<section class="section header">
 
 <h1><?= html::anchor('/', Kohana::config('site.site_name')) ?></h1>
 <?= widget::get('header') ?>
 <?= widget::get('navigation') ?>
 
-		</div>
-		<div class="section breadcrumb">
+		</section>
+		<section class="section breadcrumb">
 			<div class="unit size3of5">
 
 <?= widget::get('breadcrumb') ?>
@@ -41,14 +42,14 @@
 <?= widget::get('search') ?>
 
 			</div>
-		</div>
+		</section>
 
 	</header>
 
 	<!-- /HEADER -->
 
 
-	<!-- CONTENT -->
+	<!-- BODY -->
 
 	<section id="body">
 
@@ -65,7 +66,7 @@
 			<!-- /SIDE ADS -->
 
 
-			<!-- MAIN CONTENT -->
+			<!-- CONTENT -->
 
 			<section id="content">
 
@@ -82,19 +83,40 @@
 
 				<section class="line">
 
-<?= $content ?>
+
+					<!-- MAIN CONTENT -->
+
+					<section id="center" class="unit size3of5">
+
+<?= widget::get('main') ?>
+
+					</section>
+
+					<!-- /MAIN CONTENT -->
+
+
+					<!-- SIDE CONTENT -->
+
+					<section id="side" class="unit size2of5">
+
+<?= widget::get('side') ?>
+
+					</section>
+
+					<!-- /SIDE CONTENT -->
+
 
 				</section>
 
 			</section>
 
-			<!-- /MAIN CONTENT -->
+			<!-- /CONTENT -->
 
 		</section>
 
 	</section>
 
-	<!-- /CONTENT -->
+	<!-- /BODY -->
 
 
 	<!-- DOCK -->
