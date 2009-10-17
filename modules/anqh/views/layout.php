@@ -2,7 +2,8 @@
 <html>
 
 <head>
-	<meta charset="UTF-8" />
+	<meta charset="utf-8" />
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<title><?= strip_tags($page_title) ?><?= (!empty($page_title) ? ' | ' : '') . Kohana::config('site.site_name') ?></title>
 	<link rel="icon" type="image/png" href="/ui/favicon.png" />
 	<?= html::stylesheet(array('ui/boot', 'ui/grid', 'ui/typo', 'ui/base')) ?>
