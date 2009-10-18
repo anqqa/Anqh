@@ -172,7 +172,7 @@ $(function() {
 		if (title === undefined) title = 'Are you sure you want to do this?';
 		if (action === undefined) action = function() { return true; }
 		if ($('#dialog-confirm').length == 0) {
-			$('body').append('<div id="dialog-confirm" title="<?= __('Are you sure?') ?>">' + title + '</div>');
+			$('body').append('<div id="dialog-confirm" title="' + title + '"><?= __('Are you sure?') ?></div>');
 			$('#dialog-confirm').dialog({
 				modal: true,
 				close: function(ev, ui) { $(this).remove(); },
