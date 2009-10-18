@@ -10,9 +10,19 @@
 class date extends date_Core {
 
 	/**
+	 * ISO8601 date
+	 */
+	const DATE_8601 = 'date_8601';
+
+	/**
 	 * SQL date
 	 */
 	const DATE_SQL = 'date_sql';
+
+	/**
+	 * ISO8601 time
+	 */
+	const TIME_8601 = 'time_8601';
 
 	/**
 	 * SQL time
@@ -64,9 +74,15 @@ class date extends date_Core {
 		if (!is_numeric($date)) $date = strtotime($date);
 		switch ($format) {
 
-			// SQL date
+			// ISO8601/SQL date
+			case self::DATE_8601:
 			case self::DATE_SQL:
 				$format = 'Y-m-d';
+				break;
+
+			// ISO8601 time
+			case self::TIME_8601:
+				$format = 'c';
 				break;
 
 			// SQL time

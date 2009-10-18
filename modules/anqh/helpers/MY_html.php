@@ -286,12 +286,22 @@ $(function() {
 		// Extract datetime
 		$datetime = (is_array($attributes)) ? arr::remove('datetime', $attributes) : $attributes;
 		if ($datetime) {
-			$datetime = date($short ? 'Y-m-d' : 'c', strtotime($datetime));
+			$time = strtotime($datetime);
+			$datetime = date::format($short ? date::DATE_8601 : date::TIME_8601, $time);
 			if (is_array($attributes)) {
 				$attributes['datetime'] = $datetime;
 			} else {
 				$attributes = array('datetime' => $datetime);
 			}
+
+			// Set title if not the same as content
+			if (!isset($attributes['title'])) {
+				$title = date::format($short ? 'DMYYYY' : 'DMYYYY_HM', $time);
+				if ($title != $str) {
+					$attributes['title'] = date::format($short ? 'DMYYYY' : 'DMYYYY_HM', $time);
+				}
+			}
+
 		}
 
 		return '<time' . html::attributes($attributes) . '>' . $str . '</time>';
