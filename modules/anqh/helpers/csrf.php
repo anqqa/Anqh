@@ -5,7 +5,9 @@
  * @package    Anqh
  * @author     Antti Qvickström
  * @copyright  (c) 2009 Antti Qvickström
- * @license    MIT
+ * @license    http://www.opensource.org/licenses/mit-license.php MIT license
+ *
+ * @todo       Refactor to use time limited and session token restricted keys
  */
 class csrf_Core {
 

@@ -21,9 +21,9 @@ class html extends html_Core {
 		if (empty($avatar) || strpos($avatar, ':') || strpos($avatar, '/') === false) $avatar = 'avatar/unknown.png';
 
 		if (empty($title)) {
-			return '<div class="grid-1 icon' . ($mini ? 24 : 48) . ' avatar">' . html::image(array('src' => $avatar), 'Avatar') . '</div>';
+			return '<div class="icon' . ($mini ? 24 : 48) . ' avatar">' . html::image(array('src' => $avatar), 'Avatar') . '</div>';
 		} else {
-			return '<div class="grid-1 icon' . ($mini ? 24 : 48) . ' avatar">' . html::anchor(url::user($title), html::image(array('src' => $avatar, 'title' => $title), $title)) . '</div>';
+			return '<div class="icon' . ($mini ? 24 : 48) . ' avatar">' . html::anchor(url::user($title), html::image(array('src' => $avatar, 'title' => $title), $title)) . '</div>';
 		}
 	}
 

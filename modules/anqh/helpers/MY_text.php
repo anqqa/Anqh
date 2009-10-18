@@ -31,6 +31,7 @@ class text extends text_Core {
 	 * @return  string
 	 */
 	public static function title($title, $format = true) {
+		return html::specialchars($title);
 		return html::specialchars($format ? utf8::ucwords(utf8::strtolower($title)) : $title);
 	}
 

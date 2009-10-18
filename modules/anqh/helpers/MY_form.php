@@ -52,7 +52,7 @@ class form extends form_Core {
 			$singular = inflector::singular($name) . '_';
 
 			// Get values
-			$values = isset($values[$name]) ? $values[$name] : $values;
+			$values = array_key_exists($name, $values) ? $values[$name] : $values;
 			$input = (empty($class)) ? "<ul>\n" : '<ul class="' . $class . "\">\n";
 			foreach ($checkboxes as $checkbox_id => $checkbox_name) {
 				$internal_id = $singular . $checkbox_id;
@@ -82,7 +82,7 @@ class form extends form_Core {
 	 */
 	public static function dropdown_wrap($data, $options = NULL, $selected = NULL, $extra = '', $label = '', $error = '', $tip = '') {
 		$name = is_array($data) ? arr::get($data, 'name') : $data;
-		$selected = (is_array($selected) && isset($selected[$name])) ? $selected[$name] : $selected;
+		$selected = (is_array($selected) && array_key_exists($name, $selected)) ? $selected[$name] : $selected;
 		$options = (is_array($options) && isset($options[$name])) ? $options[$name] : $options;
 
 		$input = form::dropdown($data, $options, $selected, $extra);
