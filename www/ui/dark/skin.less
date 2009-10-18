@@ -10,7 +10,7 @@
 @section-background-alt:               #111;
 
 @separator-color:                      #333;
-@separator-border:                     1px dashed @separator-color;
+@separator-border:                     1px dotted @separator-color;
 
 @input-background:                     #111;
 @input-background-alt:                 #222;
@@ -36,6 +36,7 @@
 @tip-color:                            #999;
 @owner-color:                          #a9ba6d;
 @my-color:                             #b0a88a;
+@private-color:                        #a3a;
 
 @badge-background:                     #222;
 @badge-background-alt:                 #333;
@@ -60,7 +61,7 @@
 
 section article:hover,
 .container:hover,
-ul.contentlist li:hover                { background: #111; }
+ul.contentlist li:hover                { border-left: 5px solid @separator-color; border-right: 5px solid @separator-color; padding-left: 5px; padding-right: 5px; }
 
 section article + aside,
 section article + article,
@@ -79,9 +80,7 @@ section aside + article                { padding-top: 0.75em; }
 
 /***** profile *****/
 
-#member .comments label.private,
-#member .comments .private .comment { color: #a3a; }
-#member #comment.private            { border-color: #a3a; }
+#member #comment.private               { border-color: @private-color; }
 
 /***** /profile *****/
 

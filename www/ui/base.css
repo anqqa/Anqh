@@ -14,6 +14,7 @@
 
 .groups .group + .group,
 ul.grouped li.group + li.group         { padding-top: 1.6667em; }
+/*section .mod,*/
 section article                        { padding: 0.883em 10px; }
 ul.contentlist li                      { padding-top: 0.883em; padding-bottom: 0.883em; }
 .groups .group,
@@ -73,21 +74,21 @@ table.calendar td            { padding: 0; }
 .icon24 img { height: 24px; width: 24px; }
 .icon48     { background: transparent no-repeat center top; height: 48px; }
 
-.type-calendar { background-image: url(icons/16x16/calendar.png); }
+/*.type-calendar { background-image: url(icons/16x16/calendar.png); }
 .type-forum    { background-image: url(icons/16x16/forum.png); }
 .type-photos   { background-image: url(icons/16x16/photo.png); }
 .type-music    { background-image: url(icons/16x16/music.png); }
 .type-blogs    { background-image: url(icons/16x16/blog.png); }
 .type-venues   { background-image: url(icons/16x16/globe.png); }
 .type-groups   { background-image: url(icons/16x16/group.png); }
-.type-members  { background-image: url(icons/16x16/member.png); }
+.type-members  { background-image: url(icons/16x16/member.png); }*/
 
 /*#main > .icon48  { position: relative; top: -0.667em; }*/
 
-#forum #group-18 .icon48,
-#calendar .icon48 { background-image: url(icons/48x48/calendar.png); }
+/*#forum #group-18 .icon48,
+#calendar .icon48 { background-image: url(icons/48x48/calendar.png); }*/
 /*#member .group,*/
-#forum .icon48    { background-image: url(icons/48x48/forum.png); }
+/*#forum .icon48    { background-image: url(icons/48x48/forum.png); }
 #photos .icon48   { background-image: url(icons/48x48/photos.png); }
 #forum #group-17 .icon48,
 #music .icon48    { background-image: url(icons/48x48/music.png); }
@@ -100,7 +101,7 @@ table.calendar td            { padding: 0; }
 #tabs li.tab-list a                    { background-image: url(icons/48x48/list.png); }
 #tabs li.tab-map a,
 .address .icon48                       { background-image: url(icons/48x48/map.png); }
-.homepage .icon48                      { background-image: url(icons/48x48/web.png); }
+.homepage .icon48                      { background-image: url(icons/48x48/web.png); }*/
 
 /***** /ICONS *****/
 
@@ -145,10 +146,6 @@ table.calendar .today { font-weight: bold; }
 
 #forum .topics h4        { margin-top: 0; }
 
-#forum .avatar           { background-image: none; }
-#forum .post .avatar     { height: 60px; text-align: center; }
-#forum .post .avatar img { margin-top: 1.5px; }
-#forum .post .actions                  { float: right; }
 #forum .post section             { clear: both; }
 #forum .post footer .actions           { margin-top: -0.883em; }
 
