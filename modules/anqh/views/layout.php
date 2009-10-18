@@ -1,5 +1,5 @@
 <!doctype html>
-<html>
+<html lang="<?= $language ?>">
 
 <head>
 	<meta charset="utf-8" />
@@ -7,9 +7,7 @@
 	<title><?= strip_tags($page_title) ?><?= (!empty($page_title) ? ' | ' : '') . Kohana::config('site.site_name') ?></title>
 	<link rel="icon" type="image/png" href="/ui/favicon.png" />
 	<?= html::stylesheet(array('ui/boot', 'ui/grid', 'ui/typo', 'ui/base')) ?>
-	<?= less::stylesheet('ui/dark/skin.less') ?>
-	<!--<?= html::stylesheet(array('ui/boot', 'ui/grid', 'ui/typo', 'ui/base', 'ui/site', 'ui/jquery-ui')) ?>-->
-	<!--<?= html::stylesheet($stylesheets) ?>-->
+	<?= less::stylesheet($skin) ?>
 	<!--[if IE]>
 	<?= html::script('http://html5shiv.googlecode.com/svn/trunk/html5.js'); ?>
 	<![endif]-->
@@ -25,14 +23,14 @@
 
 	<header id="header">
 
-		<section class="section header">
+		<div class="section header">
 
 <h1><?= html::anchor('/', Kohana::config('site.site_name')) ?></h1>
 <?= widget::get('header') ?>
 <?= widget::get('navigation') ?>
 
-		</section>
-		<section class="section breadcrumb">
+		</div>
+		<div class="section breadcrumb">
 			<div class="unit size3of5">
 
 <?= widget::get('breadcrumb') ?>
@@ -43,7 +41,7 @@
 <?= widget::get('search') ?>
 
 			</div>
-		</section>
+		</div>
 
 	</header>
 
@@ -52,9 +50,9 @@
 
 	<!-- BODY -->
 
-	<section id="body">
+	<div id="body">
 
-		<section class="section">
+		<div class="section">
 
 			<!-- SIDE ADS -->
 
@@ -69,7 +67,7 @@
 
 			<!-- CONTENT -->
 
-			<section id="content">
+			<div id="content">
 
 				<header id="title" class="line">
 
@@ -82,7 +80,7 @@
 
 				</header>
 
-				<section class="line">
+				<div class="line">
 
 
 					<!-- MAIN CONTENT -->
@@ -98,31 +96,32 @@
 
 					<!-- SIDE CONTENT -->
 
-					<section id="side" class="unit size2of5">
+					<aside id="side" class="unit size2of5">
 
 <?= widget::get('side') ?>
 
-					</section>
+					</aside>
 
 					<!-- /SIDE CONTENT -->
 
 
-				</section>
+				</div>
 
-			</section>
+			</div>
 
 			<!-- /CONTENT -->
 
-		</section>
 
-	</section>
+		</div>
+
+	</div>
 
 	<!-- /BODY -->
 
 
 	<!-- DOCK -->
 
-	<section id="dock">
+	<div id="dock">
 		<div class="section">
 			<div class="unit size1of2">
 
@@ -135,7 +134,7 @@
 
 			</div>
 		</div>
-	</section>
+	</div>
 
 	<!-- /DOCK -->
 
@@ -143,17 +142,17 @@
 	<!-- FOOTER -->
 
 	<footer id="footer">
-		<section class="section">
+		<div class="section">
 
 <?= widget::get('navigation') ?>
 <?= widget::get('footer') ?>
 
-		</section>
-		<section id="end" class="section">
+		</div>
+		<div id="end" class="section">
 
 <?= widget::get('end') ?>
 
-		</section>
+		</div>
 	</footer>
 
 	<!-- /FOOTER -->
@@ -205,4 +204,5 @@ $(function() {
 <?= widget::get('foot') ?>
 
 </body>
+
 </html>

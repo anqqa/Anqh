@@ -27,6 +27,7 @@ input[type="password"],
 input[type="file"],
 textarea,
 select                                 { width: 99%; }
+input.hint                             { color: @input-hint-color; font-style: italic; }
 
 fieldset a                             { vertical-align: middle; }
 
@@ -39,12 +40,30 @@ form .error input                      { border-color: @error-background; }
 form .notice .info                     { background: @info-background; color: @info-color; }
 form .notice input                     { border-color: @info-background; }
 
-.hint                                  { color: @input-hint-color; font-style: italic; }
-
 /***** /INPUTS *****/
 
 
 /***** BUTTONS *****/
+
+a.action                               { padding: 2px 0.5em 4px; }
+section article .actions a.action,
+.tab .actions a.action,
+.container .actions a.action,
+ul.contentlist li .actions a.action    { background: @action-background; }
+section article:hover .actions a.action,
+.tab:hover .actions a.action,
+.container:hover .actions a.action,
+ul.contentlist li:hover .actions a.action,
+a.action                               { background: @link-color; color: @action-link-color; border-radius: 5px; -moz-border-radius: 5px; -webkit-border-radius: 5px; }
+section article:hover .actions a[class*="-add"],
+ul.contentlist li:hover .actions a[class*="-add"],
+a[class*="-add"]                       { background: @positive-color; }
+section article:hover .actions a[class*="-delete"],
+ul.contentlist li:hover .actions a[class*="-delete"],
+a[class*="-delete"]                    { background: @negative-color; }
+section article .actions a.action:hover,
+ul.contentlist li .actions a.action:hover,
+a.action:hover                         { background: @link-hover-color; text-decoration: none; }
 
 input[type="submit"]                   { background: @link-color; border: 0 none; color: @action-link-color; cursor: pointer; margin: auto; /*padding: 0 0.5em;*/ }
 input[type="submit"]:hover             { background: @link-hover-color; }
@@ -58,3 +77,88 @@ form .buttons                          { display: block; margin-bottom: 1em; mar
 .pills li input[type="checkbox"]:checked + label { background: @positive-color; color: @action-link-color; }
 
 /***** /BUTTONS *****/
+
+
+/***** TEXT *****/
+
+a,
+a *                                    { color: @link-color; }
+a:hover *,
+a:hover                                { color: @link-hover-color; }
+
+h2 span,
+h3 span,
+h4 span,
+h5 span,
+h6 span                                { color: @text-color; }
+h2                                     { color: @header-color; }
+legend,
+h3,
+h4,
+h5,
+h3 a,
+label,
+dt,
+h5 a                                   { color: @subheader-color; }
+abbr[title]                            { border-bottom-color: #333; }
+
+a.user                                 { font-weight: bold; }
+
+.tip                                   { color: @tip-color; font-size: 0.9em; font-style: italic; line-height: 1.552em; }
+.my                                    { color: @my-color; }
+.owner                                 { color: @owner-color; }
+
+/***** /TEXT *****/
+
+
+/***** BBCODE *****/
+
+ul.contentlist ul.bbcode_list,
+ul.bbcode_list                         { list-style: disc; padding: 0 1.667em; }
+ul.contentlist ul.bbcode_list li,
+ul.bbcode_list li                      { margin-left: 0; margin-right: 0; padding: 0; }
+ul.contentlist ul.bbcode_list li + li  { border-top: none; padding-top: 0; }
+
+/***** /BBCODE *****/
+
+
+/***** BADGES *****/
+
+.step                                  { font-family: Georgia, serif; font-size: 3em; line-height: 1.5em; }
+.step,
+.date *                                { display: block; text-align: center; }
+.step,
+.date .day                             { color: @subheader-color; font-family: Georgia, serif; font-size: 2em; line-height: 0.833em; }
+.date span                             { background: @badge-background; }
+.date .weekday                         { background: @badge-background-alt; border-radius: 5px 0 0 0; -moz-border-radius: 5px 0 0 0; -webkit-border-radius: 5px 0 0 0; }
+.date .month                           { border-radius: 0 0 5px 5px; -moz-border-radius: 0 0 5px 5px; -webkit-border-radius: 0 0 5px 5px; text-transform: uppercase; }
+.date.today .weekday                   { background: @subheader-color; color: @action-link-color; }
+
+/***** /BADGES *****/
+
+
+/***** MEDIA *****/
+
+.avatar a                              { margin: 0 6px; }
+a img                                  { opacity: .9; }
+a:hover img                            { opacity: 1; }
+
+#map                                   { color: white; height: 200px; width: 400px; }
+
+.logo                                  { float: right; }
+
+/***** /MEDIA *****/
+
+
+/***** AUTO COMPLETE *****/
+
+.ac_loading                            { background: @input-background; }
+.ac_results                            { background: @input-background; border: 1px solid @input-border-focus-color; overflow: hidden; padding: 0; z-index: 99999; }
+.ac_results ul                         { list-style-position: outside; list-style: none; margin: 0; padding: 0; width: 100%; }
+.ac_results li                         { cursor: default; display: block; font: menu; margin: 0; padding: 2px 5px; overflow: hidden; }
+.ac_odd                                { background-color: @input-background-alt; }
+.ac_over                               { background-color: @input-hint-color; color: @input-border-focus-color; }
+.ac_over strong                        { color: @link-color; }
+
+/***** /AUTO COMPLETE *****/
+

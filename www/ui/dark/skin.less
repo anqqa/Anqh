@@ -7,13 +7,25 @@
 @body-background-color:                black;
 @body-background-image:                url(../background.jpg) fixed no-repeat center top;
 @section-background:                   black;
+@section-background-alt:               #111;
+
+@separator-color:                      #333;
+@separator-border:                     1px dashed @separator-color;
+
+@input-background:                     #111;
+@input-background-alt:                 #222;
+@input-color:                          #f2f2f2;
+@input-hint-color:                     #666;
+@input-border-color:                   @input-hint-color;
+@input-border-hover-color:             #999;
+@input-border-focus-color:             @input-color;
 
 @header-color:                         #ca3;
 @subheader-color:                      #ac3;
-
 @text-color:                           #a7a7a7;
 @link-color:                           #3ac;
 @link-hover-color:                     white;
+@action-background:                    #222;
 @action-link-color:                    black;
 @positive-color:                       #ac3;
 @negative-color:                       #c33;
@@ -21,16 +33,12 @@
 @info-background:                      green;
 @error-color:                          @action-link-color;
 @info-color:                           @action-link-color;
+@tip-color:                            #999;
+@owner-color:                          #a9ba6d;
+@my-color:                             #b0a88a;
 
-@separator-color:                      #333;
-@separator-border:                     1px dashed @separator-color;
-
-@input-background:                     #111;
-@input-color:                          #f2f2f2;
-@input-hint-color:                     #666;
-@input-border-color:                   @input-hint-color;
-@input-border-hover-color:             #999;
-@input-border-focus-color:             @input-color;
+@badge-background:                     #222;
+@badge-background-alt:                 #333;
 
 @dock-background:                      transparent url(../black75.png);
 @dock-separator:                       1px solid #333;
@@ -41,148 +49,25 @@
 @mainmenu-color:                       #ccc;
 @mainmenu-hover-color:                 @link-hover-color;
 
+@import "../layout.less";
 @import "../widget.less";
-@import "../site.css";
 @import "../jquery-ui.css";
+@import "../site.css";
 @import "jquery-ui.css";
-
-/***** TEXT *****/
-
-body                                   { background: @body-background-color @body-background-image; color: @text-color; }
-a,
-a *                                    { color: @link-color; }
-a:hover *,
-a:hover                                { color: @link-hover-color; }
-h2 span,
-h3 span,
-h4 span,
-h5 span,
-h6 span                                { color: @text-color; }
-h2                                     { color: @header-color; }
-legend,
-h3,
-h4,
-h5,
-h3 a,
-/*h4 a,*/
-label,
-dt,
-h5 a                                   { color: @subheader-color; }
-abbr                                   { border-bottom-color: #333; }
-
-/***** /TEXT *****/
-
-
-/***** DOCK *****/
-
-#dock                                  { background: @dock-background; border-bottom: @dock-border; padding: 0.4116em 0; }
-#dock label,
-#dock div                              { color: @dock-color; }
-
-/***** /DOCK *****/
-
-
-/***** HEADER *****/
-
-#header li                             { background: @mainmenu-link-background; }
-#header li:hover                       { background: @mainmenu-link-hover-background; }
-#header li a                           { color: @mainmenu-color; }
-#header li a:hover                     { color: @mainmenu-hover-color; }
-#header li.selected                    { background: @section-background; border-bottom: 1px solid @section-background; }
-#header li.selected a                  { color: @header-color; }
-#header .section.breadcrumb            { background: @section-background; }
-
-/***** /HEADER *****/
-
-
-/***** FOOTER *****/
-
-#footer                                { background: url(../black50.png); border-top: 1px solid #333; border-bottom: 1px solid #333; }
-
-/***** /FOOTER *****/
-
-
-/***** END *****/
-
-#end { color: #f2f2f2; }
-
-/***** /END *****/
-
-
-/***** CENTER *****/
-
-#body .section                         { background: @section-background; }
-#title                                 { background: #111; border-bottom: 1px solid #222; }
-#title nav li                          { background: black; border-right: 1px solid #111; }
-#title nav li:hover,
-#title nav li.selected                 { background: #222; }
-#title nav li.selected a               { color: @header-color; }
-
-/***** /CENTER *****/
 
 
 /***** ELEMENTS *****/
 
-/*.tab,*/
-/*.container,
-ul.contentlist li                      { margin-left: -10px; margin-right: -10px; padding-left: 10px; padding-right: 10px; }*/
-section article .actions a.action,
-.tab .actions a.action,
-.container .actions a.action,
-ul.contentlist li .actions a.action    { background: #222; }
 section article:hover,
-/*.tab:hover,*/
 .container:hover,
 ul.contentlist li:hover                { background: #111; }
-section article:hover .actions a.action,
-.tab:hover .actions a.action,
-.container:hover .actions a.action,
-ul.contentlist li:hover .actions a.action,
-a.action                               { background: @link-color; color: @action-link-color; -moz-border-radius: 5px; }
-section article:hover .actions a[class*="-add"],
-ul.contentlist li:hover .actions a[class*="-add"],
-a[class*="-add"]                       { background: @positive-color; }
-section article:hover .actions a[class*="-delete"],
-ul.contentlist li:hover .actions a[class*="-delete"],
-a[class*="-delete"]                    { background: @negative-color; }
-section article .actions a.action:hover,
-ul.contentlist li .actions a.action:hover,
-a.action:hover                         { background: @link-hover-color; text-decoration: none; }
 
+section article + aside,
 section article + article,
 ul.contentlist li + li                 { border-top: @separator-border; padding-top: 0.75em; }
-
-.tip { color: #999; }
-
-.step,
-.date .day                     { color: @subheader-color; }
-.date span                     { background: #222; }
-.date .weekday                 { background: #333; -moz-border-radius: 5px 0 0 0; }
-.date .month                   { -moz-border-radius: 0 0 5px 5px; }
-.date.today .weekday           { background: @subheader-color; color: black; }
-
-.button { background-image: url(button.png); color: #ca3; }
-
-.my                                    { color: #b0a88a; }
-.owner                                 { color: #a9ba6d; }
-
+section aside + article                { padding-top: 0.75em; }
 
 /***** /ELEMENTS *****/
-
-
-/***** JQUERY *****/
-
-/* autocomplete */
-
-.ac_results     { border: 1px solid black; background-color: white; }
-.ac_loading     { background: white; }
-.ac_odd         { background-color: #eee; }
-.ac_over        { background-color: #0a246a; color: white; }
-.ac_over strong { color: yellow; }
-
-/* /autocomplete */
-
-/***** /JQUERY *****/
 
 
 /***** events *****/
@@ -205,7 +90,6 @@ ul.contentlist li + li                 { border-top: @separator-border; padding-
 
 span.locked                            { color: #333; font-variant: small-caps; }
 blockquote                             { color: #777; }
-/*blockquote              { background: url(quote_close.gif) no-repeat right bottom; }
-blockquote:first-letter { background: url(quote_open.gif) no-repeat left top; }*/
+aside.post-old                         { color: @separator-color; text-align: center; }
 
 /***** /forum *****/

@@ -2,15 +2,40 @@
  * Copyright (c) 2008 - 2009 Anqh
  */
 
+/***** HTML5 *****/
+
+article,
+aside,
+footer,
+header,
+hgroup,
+menu,
+nav,
+section                                { display: block; }
+details,
+figure,
+mark,
+meter,
+time                                   { display: inline; }
+
+/***** HTML5 *****/
+
+
 body                                   { line-height: 1; }
 html                                   { min-height: 100%; }
-header,
-section,
-footer,
-aside,
-nav,
 article,
-figure                                 { display: block; }
+aside,
+footer,
+header,
+hgroup,
+menu,
+nav,
+section,
+details,
+figure,
+mark,
+meter,
+time,
 body,
 form,
 ol,
@@ -43,7 +68,7 @@ caption,
 tbody,
 tfoot,
 thead,
-address                                { font-family: inherit; font-size: 100%; font-style: inherit; font-weight: inherit; margin: 0; padding: 0; }
+address                                { font-family: inherit; font-size: 100%; font-style: inherit; font-weight: inherit; margin: 0; padding: 0; vertical-align: baseline; }
 
 blockquote,
 q                                      { quotes: '' ''; }
@@ -52,11 +77,11 @@ blockquote:after,
 q:before,
 q:after                                { content: ''; content: none; }
 
-abbr,
-acronym                                { cursor: help; }
+abbr[title],
+dfn[title]                             { cursor: help; }
 ins                                    { text-decoration: none; }
 del                                    { text-decoration: line-through; }
-a:focus                                { outline-color: -moz-use-text-color; outline-style: none; outline-width: 0; }
+a:focus                                { outline-color: -moz-use-text-color; }
 img                                    { border: 0 none; }
 
 fieldset                               { border: 0 none; margin: 0; padding: 0; }

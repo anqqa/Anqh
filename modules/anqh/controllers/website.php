@@ -59,6 +59,13 @@ abstract class Website_Controller extends Controller {
 	protected $profiler;
 
 	/**
+	 * Skin for the site
+	 *
+	 * @var  string
+	 */
+	protected $skin;
+
+	/**
 	 * Selected tab
 	 *
 	 * @var  string
@@ -92,6 +99,7 @@ abstract class Website_Controller extends Controller {
 
 		// Build the main view
 		$this->template
+			->bind('skin',          $this->skin)
 			->bind('stylesheets',   $this->stylesheets)
 			->bind('language',      $this->language)
 			->bind('page_id',       $this->page_id)
@@ -105,7 +113,8 @@ abstract class Website_Controller extends Controller {
 		// Init page values
 		$this->country = empty($_SESSION['country']) ? false : $_SESSION['country'];
 		$this->menu = Kohana::config('site.menu');
-		$this->stylesheets = array('ui/' . Kohana::config('site.skin') . '/skin', 'ui/' . Kohana::config('site.skin') . '/jquery-ui');
+		$this->skin = 'ui/' . Kohana::config('site.skin') . '/skin.less';
+		//$this->stylesheets = array('ui/' . Kohana::config('site.skin') . '/skin', 'ui/' . Kohana::config('site.skin') . '/jquery-ui');
 		$this->breadcrumb = array(html::anchor('/', __('Home')));
 		$this->tabs = array();
 
