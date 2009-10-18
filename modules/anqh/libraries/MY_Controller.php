@@ -59,6 +59,13 @@ abstract class Controller extends Controller_Core {
 	protected $user;
 
 	/**
+	 * Page got a valid CSRF token
+	 *
+	 * @var  boolean
+	 */
+	protected $valid_csrf = false;
+
+	/**
 	 * Visitor Model, current site visiting user
 	 *
 	 * @var  Visitor
@@ -75,21 +82,25 @@ abstract class Controller extends Controller_Core {
 		// Maybe controllers shouldn't know about cache? But still..
 		$this->cache = Cache::instance();
 
+		// Validate CSRF token
+		if (isset($_REQUEST['csrf'])) {
+			$this->valid_csrf = csrf::valid($_REQUEST['csrf']);
+		}
+
 		// Load current visitor for easy access
 		$this->visitor = Visitor::instance();
 
 		// Load current user for easy controller access, null if not logged
-		$this->user = $this->visitor->get_user();
+		$this->user = &$this->visitor->get_user();
 
 		// Build the page
 		$this->template = View::factory($this->template);
 
+		// Display the template immediately after the controller method?
 		if ($this->auto_render === true) {
-
-			// Display the template immediately after the controller method
 			Event::add('system.post_controller', array($this, '_display'));
-
 		}
+
 	}
 
 
