@@ -275,6 +275,30 @@ $(function() {
 
 
 	/**
+	 * Return formatted <time> tag
+	 *
+	 * @param  string        $str
+	 * @param  array|string  $attributes  handled as time if not an array
+	 * @param  boolean       $short       use only date
+	 */
+	public function time($str, $attributes = null, $short = false) {
+
+		// Extract datetime
+		$datetime = (is_array($attributes)) ? arr::remove('datetime', $attributes) : $attributes;
+		if ($datetime) {
+			$datetime = date($short ? 'Y-m-d' : 'c', strtotime($datetime));
+			if (is_array($attributes)) {
+				$attributes['datetime'] = $datetime;
+			} else {
+				$attributes = array('datetime' => $datetime);
+			}
+		}
+
+		return '<time' . html::attributes($attributes) . '>' . $str . '</time>';
+	}
+
+
+	/**
 	 * Returns user link
 	 *
 	 * @param	  User_Model  $user  or uid
