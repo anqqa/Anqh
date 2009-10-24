@@ -580,6 +580,7 @@ class Forum_Controller extends Website_Controller {
 
 		// show form
 		if (empty($errors)) {
+			widget::add('head', html::script(array('js/jquery.markitup.pack', 'js/markitup.bbcode')));
 			widget::add('main', View::factory('forum/post_edit', array(
 				'topic'     => $form_values_topic,
 				'post'      => $form_values_post,
