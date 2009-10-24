@@ -63,7 +63,7 @@ ul.contentlist li:hover .actions a[class*="-delete"],
 a[class*="-delete"]                    { background: @negative-color; }
 section article .actions a.action:hover,
 ul.contentlist li .actions a.action:hover,
-a.action:hover                         { background: @link-hover-color; text-decoration: none; }
+a.action:hover                         { background: @link-hover-color; color: @action-link-color; text-decoration: none; }
 
 input[type="submit"]                   { background: @link-color; border: 0 none; color: @action-link-color; cursor: pointer; margin: auto; /*padding: 0 0.5em;*/ }
 input[type="submit"]:hover             { background: @link-hover-color; }
@@ -113,17 +113,6 @@ a.user                                 { font-weight: bold; }
 /***** /TEXT *****/
 
 
-/***** BBCODE *****/
-
-ul.contentlist ul.bbcode_list,
-ul.bbcode_list                         { list-style: disc; padding: 0 1.667em; }
-ul.contentlist ul.bbcode_list li,
-ul.bbcode_list li                      { margin-left: 0; margin-right: 0; padding: 0; }
-ul.contentlist ul.bbcode_list li + li  { border-top: none; padding-top: 0; }
-
-/***** /BBCODE *****/
-
-
 /***** BADGES *****/
 
 .step                                  { font-family: Georgia, serif; font-size: 3em; line-height: 1.5em; }
@@ -164,4 +153,46 @@ a:hover img                            { opacity: 1; }
 .ac_over strong                        { color: @link-color; }
 
 /***** /AUTO COMPLETE *****/
+
+
+/***** BBCODE *****/
+
+ul.contentlist ul.bbcode_list,
+ul.bbcode_list                         { list-style: disc; padding: 0 1.667em; }
+ul.contentlist ul.bbcode_list li,
+ul.bbcode_list li                      { margin-left: 0; margin-right: 0; padding: 0; }
+ul.contentlist ul.bbcode_list li + li  { border-top: none; padding-top: 0; }
+
+.markItUp                              { margin: 5px 0; width: auto; }
+.markItUpResizeHandle                  { border-bottom: 3px dotted @input-border-color; cursor: n-resize; height: 5px; margin: 0 auto 2px; overflow: hidden; width: 40px; }
+.markItUpResizeHandle:hover            { border-bottom-color: @input-border-hover-color; }
+
+.markItUpHeader ul li                  { float: left; position: relative; }
+.markItUpHeader ul li:hover > ul       { display: block; }
+.markItUpHeader ul li a                { background: transparent no-repeat center center; display: block; height: 16px; padding: 2px 0.5em; text-indent: -9999px; width: 16px; }
+.markItUpHeader ul .markItUpSeparator  { background: @input-border-color; margin: 0 10px; overflow: hidden; width: 1px; }
+.markItUpHeader ul .markItUpDropMenu   {  }
+.markItUpHeader ul .markItUpDropMenu > a::after { content: '\25BC'; padding-left: 0.5em; }
+.markItUpHeader ul .markItUpDropMenu li { margin-right:0px; }
+
+.markItUpHeader ul ul                  { background: @section-background; display: none; left: 0; position: absolute; top: 1.6667em; }
+.markItUpHeader ul ul li               { float: none; width: auto; }
+
+.markItUpHeader .button-bold a         { background-image: url(/ui/icon/text_bold.png); }
+.markItUpHeader .button-italic a       { background-image: url(/ui/icon/text_italic.png); }
+.markItUpHeader .button-underline a    { background-image: url(/ui/icon/text_underline.png); }
+.markItUpHeader .button-size a         { background-image: url(/ui/icon/text_size.png); }
+.markItUpHeader .button-small a        { background-image: url(/ui/icon/text_size_small.png); }
+.markItUpHeader .button-normal a       { background-image: url(/ui/icon/text_size_normal.png); }
+.markItUpHeader .button-big a          { background-image: url(/ui/icon/text_size_big.png); }
+.markItUpHeader .button-picture a      { background-image: url(/ui/icon/photo_link.png); }
+.markItUpHeader .button-link a         { background-image: url(/ui/icon/world_link.png); }
+.markItUpHeader .button-list-bullets a { background-image: url(/ui/icon/text_list_numbers.png); }
+.markItUpHeader .button-list-numbers a { background-image: url(/ui/icon/text_list_bullets.png); }
+.markItUpHeader .button-list-item a    { background-image: url(/ui/icon/text_list_item.png); }
+.markItUpHeader .button-quote a        { background-image: url(/ui/icon/text_quote.png); }
+.markItUpHeader .button-code a         { background-image: url(/ui/icon/page_white_code.png); }
+.markItUpHeader .button-clear a        { background-image: url(/ui/icon/page_white_code_red.png); }
+
+/***** /BBCODE *****/
 
