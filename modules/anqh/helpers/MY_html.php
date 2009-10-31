@@ -21,9 +21,9 @@ class html extends html_Core {
 		if (empty($avatar) || strpos($avatar, ':') || strpos($avatar, '/') === false) $avatar = 'avatar/unknown.png';
 
 		if (empty($title)) {
-			return '<div class="icon' . ($mini ? 24 : 48) . ' avatar">' . html::image(array('src' => $avatar), 'Avatar') . '</div>';
+			return '<div class="avatar">' . html::image(array('src' => $avatar), 'Avatar') . '</div>';
 		} else {
-			return '<div class="icon' . ($mini ? 24 : 48) . ' avatar">' . html::anchor(url::user($title), html::image(array('src' => $avatar, 'title' => $title), $title)) . '</div>';
+			return '<div class="avatar">' . html::anchor(url::user($title), html::image(array('src' => $avatar, 'title' => $title), $title)) . '</div>';
 		}
 	}
 
@@ -191,12 +191,12 @@ $(function() {
 	 * @return  string
 	 */
 	public static function gravatar($email, $title = '', $mini = false) {
-		$gravatar = new Gravatar($email, ($mini ? 24 : 40), url::site('/avatar/unknown.png'));
+		$gravatar = new Gravatar($email, ($mini ? 25 : 50), url::site('/avatar/unknown.png'));
 
 		if (empty($title)) {
-			return '<div class="grid-1 icon' . ($mini ? 24 : 48) . ' avatar">' . html::image(array('src' => $gravatar->get_url()), 'Gravatar') . '</div>';
+			return '<div class="avatar">' . html::image(array('src' => $gravatar->get_url()), 'Gravatar') . '</div>';
 		} else {
-			return '<div class="grid-1 icon' . ($mini ? 24 : 48) . ' avatar">' . html::anchor(url::user($title), html::image(array('src' => $gravatar->get_url(), 'title' => $title), $title)) . '</div>';
+			return '<div class="avatar">' . html::anchor(url::user($title), html::image(array('src' => $gravatar->get_url(), 'title' => $title), $title)) . '</div>';
 		}
 	}
 
