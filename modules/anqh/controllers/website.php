@@ -198,6 +198,11 @@ abstract class Website_Controller extends Controller {
 			}
 		}
 
+		// Facebook connect
+		if (FB::enabled()) {
+			FB::init();
+		}
+
 	}
 
 

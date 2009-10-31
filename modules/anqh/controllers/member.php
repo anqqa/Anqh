@@ -9,10 +9,11 @@
  */
 class Member_Controller extends Website_Controller {
 
-	public $page_class = 'member';
-
-	public $functions = array();
-
+	/**
+	 * Selected user
+	 *
+	 * @var  User_Model
+	 */
 	protected $member;
 
 	/**
@@ -33,9 +34,12 @@ class Member_Controller extends Website_Controller {
 		$this->tabs = array();
 		$this->tabs['profile'] = array('link' => '', 'text' => __('Profile'));
 		if ($this->user) {
-			$this->tabs['friends'] = array('link' => '/friends',   'text' => __('Friends'));
+			$this->tabs['friends'] = array('link' => '/friends', 'text' => __('Friends'));
 		}
 		$this->tabs['favorites'] = array('link' => '/favorites', 'text' => __('Favorites'));
+		if ($this->user) {
+			$this->tabs['facebook'] = array('link' => '/facebook', 'text' => __('Facebook'));
+		}
 	}
 
 
@@ -44,32 +48,41 @@ class Member_Controller extends Website_Controller {
 		$action = is_array($actions) && count($actions) ? $actions[0] : false;
 		switch ($action) {
 
-			// edit basic info
+			// Edit basic info
 			case 'edit':
 				$this->edit($username);
 				break;
 
-			// show favorite
+			// Show Facebook content
+			case 'facebook':
+				if (FB::enabled()) {
+					$this->facebook($username);
+				} else {
+					$this->view($username);
+				}
+				break;
+
+			// Show favorite
 			case 'favorites':
 				$this->favorites($username);
 				break;
 
-			// add to friends
+			// Add to friends
 			case 'friend':
 				$this->friendadd($username);
 				break;
 
-			// view friends
+			// View friends
 			case 'friends':
 				$this->friends($username);
 				break;
 
-			// remove from friends
+			// Remove from friends
 			case 'unfriend':
 				$this->frienddelete($username);
 				break;
 
-			// view profile
+			// View profile
 			default:
 				$this->view($username);
 				break;
@@ -351,6 +364,74 @@ class Member_Controller extends Website_Controller {
 
 
 	/**
+	 * Facebook connect
+	 *
+	 * @param  string  $username
+	 */
+	public function facebook($username) {
+		$this->tab_id = 'facebook';
+		$member = new User_Model($username);
+
+		$this->member = $member;
+
+		$errors = $this->member->id ? array() : array('member.error_member_not_found');
+		$side_views = array();
+
+		if (empty($errors)) {
+			$owner = $this->user && $member->id == $this->user->id;
+
+			// Basic information
+			$this->page_title = text::title($this->member->username, false);
+
+			// Are we logged in Facebook?
+			$fb_uid = FB::instance()->get_loggedin_user();
+			$external_user = ($fb_uid) ?
+				$member->find_external_by_id($fb_uid) :
+				$member->find_external_by_provider(User_External_Model::PROVIDER_FACEBOOK);
+
+			// Did we do an action?
+			if (request::method() == 'post') {
+
+				// Connect accounts
+				if ($_POST['connect'] == User_External_Model::PROVIDER_FACEBOOK && $fb_uid) {
+					if (!$external_user->loaded && $member->map_external($fb_uid, User_External_Model::PROVIDER_FACEBOOK)) {
+
+						// Map succesful
+
+					} else {
+
+						// Map failed
+
+					}
+				} else {
+
+					// Not connected or invalid post
+
+				}
+
+				url::redirect(url::user($member) . '/facebook');
+			}
+
+			$parameters = array();
+			if ($fb_uid) {
+				$parameters['fb_uid'] = $fb_uid;
+			}
+			if ($external_user->loaded) {
+				$parameters['external_user'] = $external_user;
+			}
+
+			widget::add('main', View::factory('member/facebook', $parameters));
+		}
+
+		if (count($errors)) {
+			$this->_error(Kohana::lang('generic.error'), $errors);
+		}
+
+		$this->_side_views($side_views);
+	}
+
+
+	/**
 	 * User favorites
 	 *
 	 * @param  string  $username
@@ -367,9 +448,8 @@ class Member_Controller extends Website_Controller {
 		if (empty($errors)) {
 			$owner = $this->user && $this->member->id == $this->user->id;
 
-			// basic information
+			// Basic information
 			$this->page_title = text::title($this->member->username, false);
-			$this->template->subtitle = __('Favorites');
 
 			$favorites = $this->member->favorites;
 			widget::add('main', View::factory('member/favorites', array('favorites' => $favorites)));
@@ -401,6 +481,11 @@ class Member_Controller extends Website_Controller {
 
 		if (empty($errors)) {
 			$owner = ($this->user && $member->id == $this->user->id);
+
+			// Actions
+			if ($owner) {
+				$this->page_actions[] = array('link' => url::user($this->member) . '/edit', 'text' => __('Settings'), 'class' => 'settings');
+			}
 
 			// basic information
 			$this->page_title = text::title($member->username, false);
@@ -455,7 +540,6 @@ class Member_Controller extends Website_Controller {
 
 
 				// Side
-				$basic_actions = ($owner) ? array(array('link' => url::user($member) . '/edit', 'text' => __('Edit'))) : array();
 				$basic_info = array();
 				if (!empty($member->name)) {
 					$basic_info[__('Name')] = html::specialchars($member->name);
@@ -492,7 +576,6 @@ class Member_Controller extends Website_Controller {
 						'id'      => 'basic-info',
 						'title'   => __('Basic info'),
 						'list'    => $basic_info,
-						'actions' => $basic_actions,
 					))),
 					'site-info' => array('href' => '#site-info', 'title' => __('Site info'), 'tab' => new View('generic/list_info', array(
 						'id'      => 'site-info',
