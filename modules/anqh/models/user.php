@@ -14,13 +14,12 @@ class User_Model extends Modeler_ORM {
 	protected $has_one = array('city', 'default_image' => 'image');
 	protected $has_and_belongs_to_many = array('images', 'roles');
 	protected $reload_on_wakeup = false;
-	protected $ignored_columns = array('password_confirm');
 
 	// Validation
 	protected $rules = array(
 		'name'           => array('length[1,50]'),
-		'address_street' => array('length[0, 50]'),
-		'address_zip'    => array('length[4, 5]', 'valid::digit'),
+		'address_street' => array('length[0,50]'),
+		'address_zip'    => array('length[4,5]', 'valid::digit'),
 		'address_city'   => array('length[0,50]'),
 		'city_id'        => array('valid::digit'),
 		'dob'            => array('valid::date'),
@@ -242,6 +241,71 @@ class User_Model extends Modeler_ORM {
 	}
 
 	/***** /COMMENTS *****/
+
+
+	/***** EXTERNAL ACCOUNTS *****/
+
+	/**
+	 * Get 3rd party account by external id
+	 *
+	 * @param   string  $id
+	 * @return  User_External_Model
+	 */
+	public function find_external_by_id($id) {
+		return ORM::factory('user_external')->where(array('user_id' => $this->id, 'id' => $id))->find();
+	}
+
+
+	/**
+	 * Get 3rd party account by external provider
+	 *
+	 * @param   string  $provider
+	 * @return  User_External_Model
+	 */
+	public function find_external_by_provider($provider) {
+		return ORM::factory('user_external')->where(array('user_id' => $this->id, 'provider' => $provider))->find();
+	}
+
+
+	/**
+	 * Load one user by 3rd party account id
+	 *
+	 * @param   string  $id
+	 * @param   string  $provider
+	 * @return  User_Model
+	 */
+	public static function find_user_by_external($id, $provider) {
+		$external_user = ORM::factory('user_external')->where(array('id' => $id, 'provider' => $provider))->find();
+
+		return ($external_user->loaded) ? $external_user->user : new User_Model();
+	}
+
+
+	/**
+	 * Connect 3rd party account
+	 *
+	 * @param  string  $id
+	 * @param  string  $provider
+	 */
+	public function map_external($id, $provider) {
+
+		// Are we already connected?
+		$external_user = $this->find_external_by_id($id);
+
+		if ($this->loaded && !$external_user->loaded) {
+			$external = new User_External_Model();
+			$external->user_id = $this->id;
+			$external->id = $id;
+			$external->provider = $provider;
+			$external->stamp = time();
+
+			return $external->save();
+		}
+
+		return false;
+	}
+
+	/***** /EXTERNAL ACCOUNTS *****/
 
 
 	/***** FRIENDS *****/

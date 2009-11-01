@@ -107,6 +107,28 @@ class Visitor_Core {
 
 
 	/**
+	 * Attempt to login with 3rd party account
+	 *
+	 * @return  bool
+	 */
+	public function external_login($provider) {
+		if ($provider == User_External_Model::PROVIDER_FACEBOOK && $fb_uid = FB::instance()->get_loggedin_user()) {
+
+			// Load the external user
+			$user = User_Model::find_user_by_external($fb_uid, $provider);
+
+			if ($user->loaded && $this->complete_login($user)) {
+				$this->session->set($this->config['session_key'] . '_provider', $provider);
+
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+
+	/**
 	 * Create an instance of Visitor.
 	 *
 	 * @param   array  $config
@@ -159,12 +181,22 @@ class Visitor_Core {
 
 
 	/**
+	 * Get 3rd party provider used to sign in
+	 *
+	 * @return  string
+	 */
+	public function get_provider() {
+		return $this->session->get($this->config['session_key'] . '_provider', null);
+	}
+
+
+	/**
 	 * Gets the currently logged in user from the session or null
 	 *
 	 * @return  User_Model
 	 */
 	public function get_user() {
-		return ($this->logged_in()) ? $_SESSION[$this->config['session_key']] : null;
+		return ($this->logged_in()) ? $this->session->get($this->config['session_key'], null) : null;
 	}
 
 
@@ -246,7 +278,7 @@ class Visitor_Core {
 		$user = $this->session->get($this->config['session_key']);
 
 		// Not logged in, maybe autologin?
-		if (!is_object($user) and $this->config['lifetime'] and $this->auto_login()) {
+		if (!is_object($user) && $this->config['lifetime'] && $this->auto_login()) {
 			$user = $this->session->get($this->config['session_key']);
 		}
 
@@ -322,6 +354,14 @@ class Visitor_Core {
 		// Delete the autologin cookie to prevent re-login
 		if (cookie::get($this->config['cookie_name'])) {
 			cookie::delete($this->config['cookie_name']);
+		}
+
+		// Logout 3rd party?
+		if (FB::enabled() && Visitor::instance()->get_provider()) {
+			$this->session->delete($this->config['session_key'] . '_provider');
+			try {
+				FB::instance()->expire_session();
+			} catch (Exception $e) { }
 		}
 
 		// Destroy the session completely?

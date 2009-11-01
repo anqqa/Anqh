@@ -156,7 +156,12 @@ abstract class Website_Controller extends Controller {
 
 			// Authenticated view
 			widget::add('dock', __('Welcome, :user!', array(':user' => html::nick($this->user->id, $this->user->username))));
-			widget::add('dock', ' ' . html::anchor('sign/out', __('Sign out')));
+
+			if (FB::enabled() && Visitor::instance()->get_provider()) {
+				widget::add('dock', ' ' . html::anchor('sign/out', FB::icon() . __('Sign out')));
+			} else {
+				widget::add('dock', ' ' . html::anchor('sign/out', __('Sign out')));
+			}
 
 			if (Kohana::config('site.inviteonly')) {
 				widget::add('dock', ' | ' . html::anchor('sign/up', __('Send invite')));
@@ -176,6 +181,9 @@ abstract class Website_Controller extends Controller {
 			$form .= form::submit('submit', __('Sign in'));
 			$form .= form::close();
 			$form .= html::anchor('/sign/up', __('Sign up'));
+			if (FB::enabled()) {
+				$form .= ' | ' . FB::fbml_login();
+			}
 			widget::add('dock', $form);
 
 		}

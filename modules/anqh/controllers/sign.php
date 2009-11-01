@@ -26,7 +26,17 @@ class Sign_Controller extends Website_Controller {
 		$this->history = false;
 
 		if (request::method() == 'post') {
+
+			// Normal sign in
 			ORM::factory('user')->login($this->input->post(), false);
+
+		} else if (request::method() == 'get') {
+
+			// 3rd party sign in
+			if (FB::enabled()) {
+				Visitor::instance()->external_login(User_External_Model::PROVIDER_FACEBOOK);
+			}
+
 		}
 
 		url::back();
@@ -128,7 +138,6 @@ class Sign_Controller extends Website_Controller {
 	public function out() {
 		$this->history = false;
 
-		// Load auth and log out
 		$this->visitor->logout();
 
 		// Redirect back to the login page

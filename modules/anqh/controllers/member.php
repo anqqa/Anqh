@@ -378,7 +378,12 @@ class Member_Controller extends Website_Controller {
 		$side_views = array();
 
 		if (empty($errors)) {
+
+			// Only owner may view this for now
 			$owner = $this->user && $member->id == $this->user->id;
+			if (!$owner) {
+				url::redirect(url::user($member));
+			}
 
 			// Basic information
 			$this->page_title = text::title($this->member->username, false);
