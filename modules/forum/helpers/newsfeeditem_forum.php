@@ -37,12 +37,16 @@ class newsfeeditem_forum extends newsfeeditem {
 
 			case self::TYPE_REPLY:
 				$topic = new Forum_Topic_Model($item->data['topic_id']);
-				$text = __('replied to topic :topic', array(':topic' => html::anchor(url::model($topic), text::title($topic->name), array('title' => $topic->name))));
+				if ($topic->id) {
+					$text = __('replied to topic :topic', array(':topic' => html::anchor(url::model($topic), text::title($topic->name), array('title' => $topic->name))));
+				}
 				break;
 
 			case self::TYPE_TOPIC:
 				$topic = new Forum_Topic_Model($item->data['topic_id']);
-				$text = __('started a new topic :topic', array(':topic' => html::anchor(url::model($topic), text::title($topic->name), array('title' => $topic->name))));
+				if ($topic->id) {
+					$text = __('started a new topic :topic', array(':topic' => html::anchor(url::model($topic), text::title($topic->name), array('title' => $topic->name))));
+				}
 				break;
 
 		}

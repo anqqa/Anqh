@@ -63,11 +63,13 @@ class NewsFeed_Core {
 		// Print items
 		foreach ($this->items as $item) {
 			$helper = 'newsfeeditem_' . $item->class;
-			$feed[] = array(
-				'user'  => ORM::factory('user')->find_user($item->user_id),
-				'stamp' => $item->stamp,
-				'text'  => call_user_func(array($helper, 'get'), $item)
-			);
+			if ($text = call_user_func(array($helper, 'get'), $item)) {
+				$feed[] = array(
+					'user'  => ORM::factory('user')->find_user($item->user_id),
+					'stamp' => $item->stamp,
+					'text'  => $text
+				);
+			}
 		}
 
 		return $feed;

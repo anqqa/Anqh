@@ -37,12 +37,16 @@ class newsfeeditem_events extends newsfeeditem {
 
 			case self::TYPE_EVENT:
 				$event = new Event_Model($item->data['event_id']);
-				$text = __('added new event :event', array(':event' => html::anchor(url::model($event), text::title($event->name), array('title' => $event->name))));
+				if ($event->id) {
+					$text = __('added new event :event', array(':event' => html::anchor(url::model($event), text::title($event->name), array('title' => $event->name))));
+				}
 				break;
 
 			case self::TYPE_FAVORITE:
 				$event = new Event_Model($item->data['event_id']);
-				$text = __('added event :event to favorites', array(':event' => html::anchor(url::model($event), text::title($event->name), array('title' => $event->name))));
+				if ($event->id) {
+					$text = __('added event :event to favorites', array(':event' => html::anchor(url::model($event), text::title($event->name), array('title' => $event->name))));
+				}
 				break;
 
 		}

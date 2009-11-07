@@ -34,7 +34,9 @@ class newsfeeditem_user extends newsfeeditem {
 
 			case self::TYPE_FRIEND:
 				$friend = ORM::factory('user')->find_user($item->data['friend_id']);
-				$text = __('added :friend as a friend', array(':friend' => html::user($friend)));
+				if ($friend->id) {
+					$text = __('added :friend as a friend', array(':friend' => html::user($friend)));
+				}
 				break;
 
 			case self::TYPE_LOGIN:
