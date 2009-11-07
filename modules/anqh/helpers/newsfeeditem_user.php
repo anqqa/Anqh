@@ -10,6 +10,13 @@
 class newsfeeditem_user extends newsfeeditem {
 
 	/**
+	 * Add a user to friends
+	 *
+	 * Data: friend_id
+	 */
+	const TYPE_FRIEND = 'friend';
+
+	/**
 	 * Login event
 	 */
 	const TYPE_LOGIN = 'login';
@@ -25,7 +32,11 @@ class newsfeeditem_user extends newsfeeditem {
 		$text = '';
 		switch ($item->type) {
 
-			// Login event
+			case self::TYPE_FRIEND:
+				$friend = ORM::factory('user')->find_user($item->data['friend_id']);
+				$text = __('added :friend as a friend', array(':friend' => html::user($friend)));
+				break;
+
 			case self::TYPE_LOGIN:
 				$text = __('logged in');
 				break;
@@ -33,6 +44,19 @@ class newsfeeditem_user extends newsfeeditem {
 		}
 
 		return $text;
+	}
+
+
+	/**
+	 * Add a user to friends
+	 *
+	 * @param  User_Model  $user
+	 * @param  User_Model  $friend
+	 */
+	public static function friend(User_Model $user = null, User_Model $friend = null) {
+		if ($user && $friend) {
+			newsfeeditem::add($user->id, 'user', self::TYPE_FRIEND, array('friend_id' => $friend->id));
+		}
 	}
 
 

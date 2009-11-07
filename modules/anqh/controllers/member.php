@@ -285,6 +285,10 @@ class Member_Controller extends Website_Controller {
 			$this->member = new User_Model($username);
 			if ($this->member->id) {
 				$this->user->add_friend($this->member);
+
+				// News feed event
+				newsfeeditem_user::friend($this->user, $this->member);
+
 			}
 		}
 
