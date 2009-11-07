@@ -22,16 +22,17 @@ class newsfeeditem_user extends newsfeeditem {
 	 * @return  string
 	 */
 	public static function get(NewsFeedItem_Model $item) {
+		$text = '';
 		switch ($item->type) {
 
 			// Login event
 			case self::TYPE_LOGIN:
-				return __('logged in');
+				$text = __('logged in');
 				break;
 
 		}
 
-		return null;
+		return $text;
 	}
 
 

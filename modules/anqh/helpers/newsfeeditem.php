@@ -24,9 +24,7 @@ abstract class newsfeeditem_Core {
 		$item->stamp = time();
 		$item->class = $class;
 		$item->type = $type;
-		if (!empty($data)) {
-			$item->data = json_encode($data);
-		}
+		$item->data = $data;
 		$item->save();
 
 		return $item->saved;
