@@ -120,7 +120,7 @@ abstract class Website_Controller extends Controller {
 
 		// If a country is seleced, add custom stylesheet
 		if ($this->country && Kohana::config('site.country_css')) {
-			$this->stylesheets[] = 'ui/' . utf8::strtolower($this->country) . '/skin';
+			widget::add('head', html::stylesheet('ui/' . utf8::strtolower($this->country) . '/skin'));
 		}
 
 		// Generic views
@@ -157,8 +157,9 @@ abstract class Website_Controller extends Controller {
 			// Authenticated view
 			widget::add('dock', __('Welcome, :user!', array(':user' => html::nick($this->user->id, $this->user->username))));
 
+			// Logout also from Facebook
 			if (FB::enabled() && Visitor::instance()->get_provider()) {
-				widget::add('dock', ' ' . html::anchor('sign/out', FB::icon() . __('Sign out')));
+				widget::add('dock', ' ' . html::anchor('sign/out', FB::icon() . __('Sign out'), array('onclick' => "FB.Connect.logoutAndRedirect('/sign/out'); return false;")));
 			} else {
 				widget::add('dock', ' ' . html::anchor('sign/out', __('Sign out')));
 			}
