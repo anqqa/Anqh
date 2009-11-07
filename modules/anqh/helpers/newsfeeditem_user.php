@@ -22,20 +22,11 @@ class newsfeeditem_user extends newsfeeditem {
 	 * @return  string
 	 */
 	public static function get(NewsFeedItem_Model $item) {
-
-		// Get event author
-		$user = ORM::factory('user')->find_user($item->user_id);
-		$user_html = html::avatar($user->avatar, $user->username) . html::user($user);
-		$ago = html::time(date::timespan_short($item->stamp), $item->stamp);
-
 		switch ($item->type) {
 
 			// Login event
 			case self::TYPE_LOGIN:
-				return __(':user logged in :ago ago', array(
-					':user' => $user_html,
-					':ago' => $ago,
-				));
+				return __('logged in');
 				break;
 
 		}
