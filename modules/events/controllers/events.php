@@ -241,7 +241,7 @@ class Events_Controller extends Website_Controller {
 		$tabs[] = array('href' => '#events-new',     'title' => __('New events'),     'tab' => new View('events/events_list', array('id' => 'events-new',     'title' => __('New events'),     'events' => $new_events)));
 		$tabs[] = array('href' => '#events-updated', 'title' => __('Updated events'), 'tab' => new View('events/events_list', array('id' => 'events-updated', 'title' => __('Updated events'), 'events' => $updated_events)));
 		widget::add('side', new View('generic/tabs', array('id' => 'events-tab', 'tabs' => $tabs)));
-		widget::add('foot', html::script_source('$(function() { $("#events-tab > ul").tabs({ fx: { height: "toggle", opacity: "toggle", duration: "fast" } }); });'));
+		//widget::add('foot', html::script_source('$(function() { $("#events-tab > ul").tabs({ fx: { height: "toggle", opacity: "toggle", duration: "fast" } }); });'));
 	}
 
 	/***** /INTERNAL *****/
@@ -405,7 +405,8 @@ class Events_Controller extends Website_Controller {
 			}
 
 			// update
-			if ($event->id) {
+			$editing = (bool)$event->id;
+			if ($editing) {
 				$extra['modified'] = date::unix2sql(time());
 				$extra['modifies'] = (int)$event->modifies + 1;
 			} else {
@@ -439,6 +440,12 @@ class Events_Controller extends Website_Controller {
 					}
 				}
 
+				if (!$editing) {
+
+					// News feed event
+					newsfeeditem_events::event($this->user, $event);
+
+				}
 				/*// handle flyer uploads
 				if (isset($post->flyer_front) && empty($post->flyer_front['error'])) {
 					$flyer = Image_Model::factory($post->flyer_front, false, Kohana::config('events.flyer_normal'), Kohana::config('events.flyer_thumb'), $this->user->id);
@@ -663,13 +670,17 @@ class Events_Controller extends Website_Controller {
 	public function _favorite_add($event_id) {
 		$this->history = false;
 
-		// for authenticated only
+		// For authenticated only
 		if ($this->user) {
 
-			// require valid user
+			// Require valid event
 			$this->event = new Event_Model((int)$event_id);
 			if ($this->event->id) {
 				$this->event->add_favorite($this->user);
+
+				// News feed event
+				newsfeeditem_events::favorite($this->user, $this->event);
+
 			}
 		}
 

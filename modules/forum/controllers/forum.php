@@ -546,6 +546,7 @@ class Forum_Controller extends Website_Controller {
 
 						// update topic and area only on new posts
 						if (!$editing) {
+
 							// topic
 							$forum_topic->last_post_id = $forum_post->id;
 							$forum_topic->last_poster = $this->user->username;
@@ -561,6 +562,9 @@ class Forum_Controller extends Website_Controller {
 							// user
 							$this->user->posts += 1;
 							$this->user->save();
+
+							// News feed
+							newsfeeditem_forum::reply($this->user, $forum_post);
 						}
 
 						URL::redirect(url::model($forum_topic));
@@ -822,6 +826,9 @@ class Forum_Controller extends Website_Controller {
 							// user
 							$this->user->posts += 1;
 							$this->user->save();
+
+							// News feed
+							newsfeeditem_forum::topic($this->user, $forum_topic);
 						}
 
 						// redirect back to topic
