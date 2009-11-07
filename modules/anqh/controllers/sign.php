@@ -34,10 +34,13 @@ class Sign_Controller extends Website_Controller {
 
 			// 3rd party sign in
 			if (FB::enabled()) {
-				Visitor::instance()->external_login(User_External_Model::PROVIDER_FACEBOOK);
+				$this->visitor->external_login(User_External_Model::PROVIDER_FACEBOOK);
 			}
 
 		}
+
+		// Add newsfeed item
+		newsfeeditem_user::login($this->visitor->get_user());
 
 		url::back();
 	}
