@@ -10,11 +10,13 @@
 
 	<?= form::open() ?>
 	<fieldset class="horizontal">
+		<?php if ($private): ?>
 		<?= form::label('private', '<abbr title="' . __('Private comment') . '">' . __('Priv') . '</abbr>', 'class="private"') ?>
 		<?= form::checkbox('private', '1', $values['private'] == '1', "onchange=\"$('#comment').toggleClass('private', this.checked)\"") ?>
+		<?php endif; ?>
 
 		<?= html::error($errors, 'comment') ?>
-		<?= form::input('comment', $values['comment'], 'maxlength="300"') ?>
+		<?= form::input('comment', '', 'maxlength="300"') ?>
 
 		<?= form::submit(false, __('Comment')) ?>
 	</fieldset>
@@ -50,7 +52,7 @@
 
 			<?php if ($this->user && $comment->user_id == $this->user->id || $mine): ?>
 			<span class="actions">
-				<?= html::anchor('/member/comment/' . $comment->id . '/delete', __('Delete'), array('class' => 'action comment-delete')) ?>
+				<?= html::anchor(sprintf($delete, $comment->id), __('Delete'), array('class' => 'action comment-delete')) ?>
 			</span>
 			<?php endif; ?>
 

@@ -10,10 +10,27 @@
 class Blog_Entry_Model extends Modeler_ORM {
 
 	// ORM
-	protected $belongs_to = array('user');
-	protected $load_with  = array('user');
+	protected $has_many   = array('blog_comments');
+	protected $belongs_to = array('author' => 'user');
+	protected $load_with  = array('author');
 
 	protected $url_base = 'blog';
+
+
+	/**
+	 * Get blog comments
+	 *
+	 * @param  int  $page_num
+	 * @param  int  $page_size
+	 */
+	public function find_comments($page_num = 1, $page_size = 25) {
+
+		// Not found from cache, load from DB
+		$page_offset = ($page_num - 1) * $page_size;
+		$comments = $this->limit($page_size, $page_offset)->blog_comments;
+
+		return $comments;
+	}
 
 
 	/**
