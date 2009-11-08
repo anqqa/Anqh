@@ -540,11 +540,13 @@ class Member_Controller extends Website_Controller {
 
 				widget::add('main',
 					View::factory('member/comments', array(
+						'private'    => true,
+						'delete'     => '/member/comment/%d/delete',
 						'comments'   => $comments,
 						'errors'     => $form_errors,
 						'values'     => $form_values,
-						'pagination' => $pagination)
-					)
+						'pagination' => $pagination
+					))
 				);
 
 
