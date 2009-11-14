@@ -36,16 +36,16 @@ class newsfeeditem_blog extends newsfeeditem {
 		switch ($item->type) {
 
 			case self::TYPE_COMMENT:
-				$entry = new Blog_Entry_Model($item->date['entry_id']);
+				$entry = new Blog_Entry_Model($item->data['entry_id']);
 				if ($entry->id) {
-					$text = __('commented to blog :blog', array(':blog' => html::anchor(url::model($entry), text::title($entry->name), array('title' => $blog->name))));
+					$text = __('commented to blog :blog', array(':blog' => html::anchor(url::model($entry), text::title($entry->name), array('title' => $entry->name))));
 				}
 				break;
 
 			case self::TYPE_ENTRY:
-				$entry = new Blog_Entry_Model($item->date['entry_id']);
+				$entry = new Blog_Entry_Model($item->data['entry_id']);
 				if ($entry->id) {
-					$text = __('wrote a new blog entry :blog', array(':blog' => html::anchor(url::model($entry), text::title($entry->name), array('title' => $blog->name))));
+					$text = __('wrote a new blog entry :blog', array(':blog' => html::anchor(url::model($entry), text::title($entry->name), array('title' => $entry->name))));
 				}
 				break;
 

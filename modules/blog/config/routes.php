@@ -13,4 +13,5 @@
  */
 
 // Entries
-$config['blog/([0-9]+.*)'] = 'blogs/view/$1';
+$config['blog/(.*)'] = 'blogs/entry/$1';
+//$config['blog/([0-9]+.*)'] = 'blogs/view/$1';
