@@ -87,7 +87,7 @@ class Blogs_Controller extends Website_Controller {
 			$this->_entry_edit();
 			return;
 
-		} else if ($action){
+		} else if ($action) {
 			switch ($action) {
 
 				// Delete entry
@@ -115,7 +115,7 @@ class Blogs_Controller extends Website_Controller {
 			));
 
 			if ($entry->is_author() || $this->visitor->logged_in('admin')) {
-				$this->page_actions[] = array('link' => url::model($entry) . '/delete', 'text' => __('Delete entry'), 'class' => 'entry-delete');
+				$this->page_actions[] = array('link' => url::model($entry) . '/delete/?token=' . csrf::token($this->user->id), 'text' => __('Delete entry'), 'class' => 'entry-delete');
 				$this->page_actions[] = array('link' => url::model($entry) . '/edit', 'text' => __('Edit entry'), 'class' => 'entry-edit');
 			}
 
@@ -178,18 +178,12 @@ class Blogs_Controller extends Website_Controller {
 		$this->history = false;
 
 		$entry = new Blog_Entry_Model((int)$entry_id);
-
-		// For authenticated users only
-		if (!$this->user || (!$entry->is_author() && !$this->visitor->logged_in('admin'))) {
-			url::redirect(empty($_SESSION['history']) ? '/blogs' : $_SESSION['history']);
-		}
-
-		if ($entry->id) {
+		if ($this->user && $entry->id && csrf::valid($this->input->get('token'), $this->user->id) && ($entry->is_author() || $this->visitor->logged_in('admin'))) {
 			$entry->delete();
 			url::redirect('/blogs');
 		}
 
-		url::redirect(empty($_SESSION['history']) ? '/blogs' : $_SESSION['history']);
+		url::back('/blogs');
 	}
 
 
@@ -248,7 +242,7 @@ class Blogs_Controller extends Website_Controller {
 		/***** SHOW FORM *****/
 
 		if ($entry->id) {
-			$this->page_actions[] = array('link' => url::model($entry) . '/delete', 'text' => __('Delete entry'), 'class' => 'entry-delete');
+			$this->page_actions[] = array('link' => url::model($entry) . '/delete?token=' . csrf::token($this->user->id), 'text' => __('Delete entry'), 'class' => 'entry-delete');
 			$this->page_title = text::title($entry->name);
 			$this->page_subtitle = __('Edit entry');
 		} else {
