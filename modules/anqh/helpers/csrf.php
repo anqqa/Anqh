@@ -6,42 +6,58 @@
  * @author     Antti Qvickström
  * @copyright  (c) 2009 Antti Qvickström
  * @license    http://www.opensource.org/licenses/mit-license.php MIT license
- *
- * @todo       Refactor to use time limited and session token restricted keys
  */
 class csrf_Core {
 
 	/**
+	 * Token time to live in seconds, 30 minutes
+	 *
+	 * @var  integer
+	 */
+	private static $ttl = 1800;
+
+
+	/**
 	 * Get CSRF token
 	 *
+	 * @param   mixed    $id      Custom token id, e.g. uid
+	 * @param   string   $action  Optional action
+	 * @param   integer  $time
 	 * @return  string
 	 */
-	public static function token() {
+	public static function token($id = '', $action = '', $time = 0) {
 
-		// create new token if old exists
-		if (!$_SESSION['csrf']) {
-			$_SESSION['csrf'] = text::random('alnum', 16);
+		// Get id string for token, could be uid or ip etc
+		if (!$id) $id = Input::instance()->ip_address();
+
+		// Get time to live
+		if (!$time) $time = ceil(time() / self::$ttl);
+
+		// Get session specific salt
+		if (!isset($_SESSION['csrf_secret'])) {
+			$_SESSION['csrf_secret'] = text::random('alnum', 16);
 		}
 
-		return $_SESSION['csrf'];
+		return md5($time . $_SESSION['csrf_secret'] . $id . $action);
 	}
 
 
 	/**
-	 * Validate and clear CSRF token
+	 * Validate CSRF token
 	 *
-	 * @param   string  $token
-	 * @return  bool
+	 * @param   string   $token
+	 * @param   mixed    $id      Custom token id, e.g. uid
+	 * @param   string   $action  Optional action
+	 * @return  boolean
 	 */
-	public static function valid($token) {
+	public static function valid($token, $id = '', $action = '') {
 
-		// compare the given token to session token
-		$valid = ($_SESSION['csrf'] && $token === $_SESSION['csrf']);
+		// Get time to live
+		$time = ceil(time() / self::$ttl);
 
-		// clear session token - can use only once
-		unset($_SESSION['csrf']);
+		// Check token validity
+		return ($token === self::token($id, $action, $time) || $token === self::token($id, $action, $time - 1));
 
-		return $valid;
 	}
 
 }

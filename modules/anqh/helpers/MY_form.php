@@ -171,6 +171,17 @@ class form extends form_Core {
 
 
 	/**
+	 * Creates CSRF token input
+	 *
+	 * @param  mixed   $id      e.g. uid
+	 * @param  string  $action  optional action
+	 */
+	public static function token($id = '', $action = '') {
+		return form::hidden('token', csrf::token($id, $action));
+	}
+
+
+	/**
 	 * Creates an HTML form upload input tag.
 	 *
 	 * @param   string|array  input name or an array of HTML attributes
