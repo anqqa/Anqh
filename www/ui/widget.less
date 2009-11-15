@@ -45,28 +45,39 @@ form .notice input                     { border-color: @info-background; }
 
 /***** BUTTONS *****/
 
-a.action                               { padding: 2px 0.5em 4px; }
-section article .actions a.action,
-.tab .actions a.action,
-.container .actions a.action,
-ul.contentlist li .actions a.action    { background: @action-background; }
+a.action                               { margin-left: 5px; }
+button,
+input[type="submit"],
+a.action                               { background: @action-background; border-bottom: 1px solid rgba(0,0,0,0.25); border-radius: 5px; -moz-border-radius: 5px; -webkit-border-radius: 5px; display: inline-block; color: #fff; cursor: pointer; font-weight: bold; -moz-box-shadow: 0 1px 3px rgba(0,0,0,0.5); -webkit-box-shadow: 0 1px 3px rgba(0,0,0,0.5); padding: 5px 1em 4px; position: relative; text-shadow: 0 -1px 1px rgba(0,0,0,0.25); }
+input[type="submit"]                   { border-width: 0 0 1px 0; padding: 6px 1em 5px; }
+button:hover,
+input[type="submit"]:hover,
+a.action:hover                         { opacity: 0.9; text-decoration: none; }
+button:active,
+input[type="submit"]:active,
+a.action:active                        { top: 1px; }
+section article .actions,
+.tab .actions,
+.container .actions,
+ul.contentlist li .actions             { opacity: 0.1; }
+section article:hover .actions,
+.tab .actions:hover,
+.container .actions:hover,
+ul.contentlist li .actions:hover       { opacity: 1; }
 section article:hover .actions a.action,
 .tab:hover .actions a.action,
 .container:hover .actions a.action,
 ul.contentlist li:hover .actions a.action,
-a.action                               { background: @link-color; color: @action-link-color; border-radius: 5px; -moz-border-radius: 5px; -webkit-border-radius: 5px; }
+button,
+input[type="submit"],
+a.action                               { background-color: @link-color; }
 section article:hover .actions a[class*="-add"],
 ul.contentlist li:hover .actions a[class*="-add"],
-a[class*="-add"]                       { background: @positive-color; }
+a[class*="-add"]                       { background-color: @positive-color; }
 section article:hover .actions a[class*="-delete"],
 ul.contentlist li:hover .actions a[class*="-delete"],
-a[class*="-delete"]                    { background: @negative-color; }
-section article .actions a.action:hover,
-ul.contentlist li .actions a.action:hover,
-a.action:hover                         { background: @link-hover-color; color: @action-link-color; text-decoration: none; }
+a[class*="-delete"]                    { background-color: @negative-color; }
 
-input[type="submit"]                   { background: @link-color; border: 0 none; color: @action-link-color; cursor: pointer; margin: auto; /*padding: 0 0.5em;*/ }
-input[type="submit"]:hover             { background: @link-hover-color; }
 form .buttons                          { display: block; margin-bottom: 1em; margin-top: 1em; text-align: center; }
 
 .pills                                 { margin-bottom: 1.6667em; }
@@ -130,8 +141,8 @@ a.user                                 { font-weight: bold; }
 
 /***** MEDIA *****/
 
-.avatar                                { float: left; height: 60px; text-align: center; width: 60px; }
-.avatar a                              { margin: 0 6px; }
+.avatar                                { float: left; height: 50px; padding: 5px; text-align: center; width: 50px; }
+.avatar a                              { display: block; }
 a img                                  { opacity: .9; }
 a:hover img                            { opacity: 1; }
 
