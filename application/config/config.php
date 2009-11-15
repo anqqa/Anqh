@@ -19,7 +19,7 @@ $config['index_page'] = '';
 /**
  * Fake file extension that will be added to all generated URLs. Example: .html
  */
-$config['url_suffix'] = '';
+$config['url_suffix'] = '/';
 
 /**
  * Length of time of the internal cache in seconds. 0 or FALSE means no caching.
@@ -114,9 +114,10 @@ $config['extension_prefix'] = 'MY_';
  */
 $config['modules'] = array(
 	MODPATH . 'kohana3',  // Kohana 3 features for Kohana 2, e.g. I18n
+	MODPATH . 'gmaps',    // Google Maps integration
+
 	MODPATH . 'anqh',     // Anqh core
 
-	MODPATH . 'gmaps',    // Google Maps integration
 	MODPATH . 'events',   // Event calendar for Anqh
 	MODPATH . 'forum',    // Forum for Anqh
 	MODPATH . 'blog',     // Blogs for Anqh
