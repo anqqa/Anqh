@@ -10,22 +10,25 @@
 
 	<?= form::open() ?>
 	<fieldset class="horizontal">
-		<?php if ($private): ?>
-		<?= form::label('private', '<abbr title="' . __('Private comment') . '">' . __('Priv') . '</abbr>', 'class="private"') ?>
-		<?= form::checkbox('private', '1', $values['private'] == '1', "onchange=\"$('#comment').toggleClass('private', this.checked)\"") ?>
-		<?php endif; ?>
+		<ul>
+			<?php if ($private): ?>
+			<?= form::checkbox_wrap('private', '1', $values, "onchange=\"$('#comment').toggleClass('private', this.checked)\"", '<abbr class="private" title="' . __('Private comment') . '">' . __('Priv') . '</abbr>') ?>
+			<?php endif; ?>
 
-		<?= html::error($errors, 'comment') ?>
-		<?= form::input('comment', '', 'maxlength="300"') ?>
+			<?= form::input_wrap('comment', '', 'maxlength="300"', '', $errors) ?>
 
-		<?= form::submit(false, __('Comment')) ?>
+			<li><?= form::submit(false, __('Comment')) ?></li>
+		</ul>
+		<?= form::token() ?>
 	</fieldset>
 	<?= form::close() ?>
 
+	<ul>
 	<?php foreach ($comments as $comment):
+		$classes = array('line');
+
 		if (!$comment->private || $this->user && in_array($this->user->id, array($comment->user_id, $comment->author_id))):
 
-			$classes = array();
 			if ($comment->private) {
 				$classes[] = 'private';
 			}
@@ -44,11 +47,7 @@
 			}
  	?>
 
-	<article<?= ($classes ? ' class="' . implode(' ', $classes) . '"' : '') ?>>
-
-		<header>
-
-			<?= html::avatar($comment->author->avatar, $comment->author->username) ?>
+		<li class="<?= implode(' ', $classes) ?>">
 
 			<?php if ($this->user && $comment->user_id == $this->user->id || $mine): ?>
 			<span class="actions">
@@ -56,19 +55,21 @@
 			</span>
 			<?php endif; ?>
 
+			<?= html::avatar($comment->author->avatar, $comment->author->username) ?>
+
 			<?= html::nick($comment->author_id, $comment->author->username) ?>,
 			<?= __(':ago ago', array(
 				':ago' => html::time(date::timespan_short($comment->created), $comment->created))
 			) ?>
+			<br />
 
-		</header>
+			<?= $comment->private ? '<abbr title="' . __('Private comment') . '">' . __('Priv') . '</abbr>: ' : '' ?>
+			<?= html::specialchars($comment->comment) ?>
 
-		<?= $comment->private ? '<abbr title="' . __('Private comment') . '">' . __('Priv') . '</abbr>: ' : '' ?>
-		<?= html::specialchars($comment->comment) ?>
-
-	</article>
+		</li>
 
 	<?php endif; endforeach; ?>
+	</ul>
 
 	<footer>
 

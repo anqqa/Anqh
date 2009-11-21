@@ -50,7 +50,10 @@ class csrf_Core {
 	 * @param   string   $action  Optional action
 	 * @return  boolean
 	 */
-	public static function valid($token, $id = '', $action = '') {
+	public static function valid($token = false, $id = '', $action = '') {
+
+		// Default to token
+		if (!$token) $token = $_REQUEST['token'];
 
 		// Get time to live
 		$time = ceil(time() / self::$ttl);

@@ -162,8 +162,8 @@ class Member_Controller extends Website_Controller {
 	public function commentdelete($comment_id) {
 		$this->history = false;
 
-		// for authenticated users only
-		if (!$this->user) url::redirect(empty($_SESSION['history']) ? '/members' : $_SESSION['history']);
+		// For authenticated users only
+		if (!$this->user || !csrf::valid()) url::redirect(empty($_SESSION['history']) ? '/members' : $_SESSION['history']);
 
 		$comment = new User_Comment_Model((int)$comment_id);
 		if ($comment->id) {
@@ -514,7 +514,7 @@ class Member_Controller extends Website_Controller {
 				if ($post = $this->input->post()) {
 					$post['author_id'] = $this->user->id;
 					$post['user_id'] = $member->id;
-					if ($comment->validate($post, true, array())) {
+					if (csrf::valid() && $comment->validate($post, true, array())) {
 						$member->clear_comment_cache();
 						$this->user->commentsleft += 1;
 						$this->user->save();
@@ -541,7 +541,7 @@ class Member_Controller extends Website_Controller {
 				widget::add('main',
 					View::factory('member/comments', array(
 						'private'    => true,
-						'delete'     => '/member/comment/%d/delete',
+						'delete'     => '/member/comment/%d/delete/?token=' . csrf::token(),
 						'comments'   => $comments,
 						'errors'     => $form_errors,
 						'values'     => $form_values,
