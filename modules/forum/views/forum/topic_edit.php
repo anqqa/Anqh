@@ -17,9 +17,12 @@
 	</fieldset>
 
 	<fieldset>
+		<?= form::csrf() ?>
 		<?= empty($topic['id']) ? '' : form::hidden('id', $topic['id']) ?>
 		<?= form::submit(false, __('Save')) ?>
 		<?= html::anchor($_SESSION['history'], __('Cancel')) ?>
 	</fieldset>
 
 <?= form::close() ?>
+<?php
+echo html::script_source('$(function() { $("#post").markItUp(bbCodeSettings); });');

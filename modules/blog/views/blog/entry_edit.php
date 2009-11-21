@@ -13,6 +13,7 @@
 	</fieldset>
 
 	<fieldset>
+		<?= form::csrf() ?>
 		<?= empty($values['id']) ? '' : form::hidden('id', $values['id']) ?>
 		<?= form::submit(array('tabindex' => 3), __('Save')) ?>
 		<?= html::anchor($_SESSION['history'], __('Cancel')) ?>

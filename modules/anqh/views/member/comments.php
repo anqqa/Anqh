@@ -19,7 +19,7 @@
 
 			<li><?= form::submit(false, __('Comment')) ?></li>
 		</ul>
-		<?= form::token() ?>
+		<?= form::csrf() ?>
 	</fieldset>
 	<?= form::close() ?>
 

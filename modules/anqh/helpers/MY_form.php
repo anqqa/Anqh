@@ -92,6 +92,17 @@ class form extends form_Core {
 
 
 	/**
+	 * Creates CSRF token input
+	 *
+	 * @param  mixed   $id      e.g. uid
+	 * @param  string  $action  optional action
+	 */
+	public static function csrf($id = '', $action = '') {
+		return form::hidden('token', csrf::token($id, $action));
+	}
+
+
+	/**
 	 * Creates an HTML form select tag, or "dropdown menu".
 	 *
 	 * @param   string|array  input name or an array of HTML attributes
@@ -190,17 +201,6 @@ class form extends form_Core {
 		$input = form::textarea($data, $value, $extra, $double_encode);
 
 		return form::wrap($input, $name, $label, $error, $tip);
-	}
-
-
-	/**
-	 * Creates CSRF token input
-	 *
-	 * @param  mixed   $id      e.g. uid
-	 * @param  string  $action  optional action
-	 */
-	public static function token($id = '', $action = '') {
-		return form::hidden('token', csrf::token($id, $action));
 	}
 
 

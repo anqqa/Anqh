@@ -53,7 +53,7 @@ class Blogs_Controller extends Website_Controller {
 		$this->history = false;
 
 		// for authenticated users only
-		if (!$this->user) url::redirect(empty($_SESSION['history']) ? '/members' : $_SESSION['history']);
+		if (!$this->user || !csrf::valid()) url::redirect(empty($_SESSION['history']) ? '/members' : $_SESSION['history']);
 
 		$comment = new Blog_Comment_Model((int)$comment_id);
 		if ($comment->id) {
@@ -153,7 +153,7 @@ class Blogs_Controller extends Website_Controller {
 				widget::add('main',
 					View::factory('member/comments', array(
 						'private'    => false,
-						'delete'     => '/blogs/comment/%d/delete',
+						'delete'     => '/blogs/comment/%d/delete/?token=' . csrf::token(),
 						'comments'   => $comments,
 						'errors'     => $form_errors,
 						'values'     => $form_values,

@@ -15,7 +15,7 @@ class Forum_Controller extends Website_Controller {
 	/**
 	 * New forum controller
 	 */
-	function __construct() {
+	public function __construct() {
 		parent::__construct();
 
 		$this->config = Kohana::config('forum');
@@ -446,11 +446,8 @@ class Forum_Controller extends Website_Controller {
 	public function _post_delete($post_id) {
 		$this->history = false;
 
-		// for authenticated users only
-		if (!$this->user) url::redirect('/forum');
-
 		$forum_post = new Forum_Post_Model((int)$post_id);
-		if ($forum_post->id && $forum_post->author_id == $this->user->id) {
+		if ($this->user && csrf::valid() && $forum_post->id && $forum_post->author_id == $this->user->id) {
 			$forum_topic = $forum_post->forum_topic;
 			$is_first_post = $forum_topic->first_post_id == $forum_post->id;
 			$is_last_post = $forum_topic->last_post_id == $forum_post->id;
@@ -473,7 +470,7 @@ class Forum_Controller extends Website_Controller {
 			$forum_area->save();
 		}
 
-		url::redirect(empty($_SESSION['history']) ? '/forum' : $_SESSION['history']);
+		url::back('/forum');
 	}
 
 
@@ -542,7 +539,7 @@ class Forum_Controller extends Website_Controller {
 					$extra['author_ip'] = $this->input->ip_address();
 					$extra['author_host'] = $this->input->host_name();
 
-					if ($forum_post->validate($post, true, $extra)) {
+					if (csrf::valid() && $forum_post->validate($post, true, $extra)) {
 
 						// update topic and area only on new posts
 						if (!$editing) {
@@ -732,19 +729,19 @@ class Forum_Controller extends Website_Controller {
 	public function _topic_delete($topic_id) {
 		$this->history = false;
 
-		// for authenticated users only
-		if (!$this->user) url::redirect('/forum');
-
 		$forum_topic = new Forum_Topic_Model((int)$topic_id);
-		if ($forum_topic->id && $forum_topic->author_id == $this->user->id) {
+		if ($this->user && $forum_topic->id && csrf::valid() && ($forum_topic->is_author() || $this->visitor->logged_in('admin', 'forum moderator'))) {
 			$forum_area = $forum_topic->forum_area;
 
 			$forum_topic->delete();
 
 			$forum_area->refresh();
+
+			url::redirect(url::model($forum_area));
+		} else {
+			url::back('/forum');
 		}
 
-		url::redirect(url::model($forum_area));
 }
 
 
@@ -771,14 +768,14 @@ class Forum_Controller extends Website_Controller {
 			if ($forum_area->access_has($this->user, Forum_Area_Model::ACCESS_WRITE)) {
 				$form_errors = array();
 
-				$this->page_title = __('New topic');
+				$this->page_title = $forum_topic->id ? text::title($forum_topic->name) : __('New topic');
 				$this->page_subtitle = __('Area :area', array(
 					':area' => html::anchor(url::model($forum_area), text::title($forum_area->name), array('title' => strip_tags($forum_area->description)))
 				));
 
 				// Admin actions
 				if ($forum_topic->id) {
-					$this->page_actions[] = array('link' => url::model($forum_topic) . '/delete', 'text' => __('Delete topic'), 'class' => 'topic-delete');
+					$this->page_actions[] = array('link' => url::model($forum_topic) . '/delete/?token=' . csrf::token(), 'text' => __('Delete topic'), 'class' => 'topic-delete');
 				}
 
 				$form_values_topic = $forum_topic->as_array();
@@ -802,7 +799,7 @@ class Forum_Controller extends Website_Controller {
 					$post_extra['author_host'] = $this->input->host_name();
 
 					// validate post first and save topic if ok
-					if ($forum_post->validate($post, false, $post_extra) && $forum_topic->validate($topic, true, $topic_extra)) {
+					if (csrf::valid() && $forum_post->validate($post, false, $post_extra) && $forum_topic->validate($topic, true, $topic_extra)) {
 
 						// post
 						$forum_post->forum_topic_id = $forum_topic->id;
@@ -852,6 +849,7 @@ class Forum_Controller extends Website_Controller {
 
 		// show form
 		if (empty($errors)) {
+			widget::add('head', html::script(array('js/jquery.markitup.pack', 'js/markitup.bbcode')));
 			widget::add('main', View::factory('forum/topic_edit', array('topic' => $form_values_topic, 'post' => $form_values_post, 'errors' => $form_errors)));
 		} else {
 			$this->_error(Kohana::lang('generic.error'), $errors);

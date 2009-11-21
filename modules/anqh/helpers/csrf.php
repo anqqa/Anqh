@@ -53,7 +53,7 @@ class csrf_Core {
 	public static function valid($token = false, $id = '', $action = '') {
 
 		// Default to token
-		if (!$token) $token = $_REQUEST['token'];
+		if (!$token) $token = arr::get($_REQUEST, 'token');
 
 		// Get time to live
 		$time = ceil(time() / self::$ttl);

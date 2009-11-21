@@ -12,6 +12,7 @@
 	</fieldset>
 
 	<fieldset>
+		<?= form::csrf() ?>
 		<?= empty($post['id']) ? '' : form::hidden('id', $post['id']) ?>
 		<?= empty($parent_id) ? '' : form::hidden('parent_id', $parent_id) ?>
 		<?= form::submit(false, __('Save')) ?>
