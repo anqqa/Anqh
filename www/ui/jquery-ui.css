@@ -11,8 +11,8 @@
 .ui-helper-clearfix:after { content: "."; display: block; height: 0; clear: both; visibility: hidden; }
 .ui-helper-clearfix { display: inline-block; }
 /* required comment for clearfix to work in Opera \*/
-* html .ui-helper-clearfix { height:1%; }
-.ui-helper-clearfix { display:block; }
+* html .ui-helper-clearfix { height: 1%; }
+.ui-helper-clearfix { display: block; }
 /* end clearfix */
 .ui-helper-zfix { width: 100%; height: 100%; top: 0; left: 0; position: absolute; opacity: 0; filter:Alpha(Opacity=0); }
 
@@ -44,30 +44,30 @@
 
 /* Interaction states
 ----------------------------------*/
-.ui-state-default, 
+.ui-state-default,
 .ui-widget-content .ui-state-default,
-.ui-state-hover, 
-.ui-widget-content .ui-state-hover, 
-.ui-state-focus, 
+.ui-state-hover,
+.ui-widget-content .ui-state-hover,
+.ui-state-focus,
 .ui-widget-content .ui-state-focus,
-.ui-state-active, 
+.ui-state-active,
 .ui-widget-content .ui-state-active    { font-weight: normal; }
-.ui-state-default a, 
+.ui-state-default a,
 .ui-state-default a:link,
 .ui-state-default a:visited,
-.ui-state-active a, 
+.ui-state-active a,
 .ui-state-active a:link,
 .ui-state-active a:visited,
-.ui-state-hover a, 
+.ui-state-hover a,
 .ui-state-hover a:hover                { text-decoration: none; }
 
 /* Interaction Cues
 ----------------------------------*/
-.ui-state-disabled, 
+.ui-state-disabled,
 .ui-widget-content .ui-state-disabled  { filter: Alpha(Opacity=35); opacity: .35; }
-.ui-priority-primary, 
+.ui-priority-primary,
 .ui-widget-content .ui-priority-primary { font-weight: bold; }
-.ui-priority-secondary, 
+.ui-priority-secondary,
 .ui-widget-content .ui-priority-secondary { filter: Alpha(Opacity=70); font-weight: normal; opacity: .7; }
 
 /* Icons
@@ -273,26 +273,26 @@
 ----------------------------------*/
 .ui-datepicker { width: 17em; padding: .2em .2em 0; }
 .ui-datepicker .ui-datepicker-header   { position: relative; }
-.ui-datepicker .ui-datepicker-prev, 
+.ui-datepicker .ui-datepicker-prev,
 .ui-datepicker .ui-datepicker-next { position:absolute; top: 2px; width: 1.6667em; height: 1.6667em; }
-.ui-datepicker .ui-datepicker-prev-hover, 
+.ui-datepicker .ui-datepicker-prev-hover,
 .ui-datepicker .ui-datepicker-next-hover { top: 1px; }
 .ui-datepicker .ui-datepicker-prev { left:2px; }
 .ui-datepicker .ui-datepicker-next { right:2px; }
 .ui-datepicker .ui-datepicker-prev-hover { left:1px; }
 .ui-datepicker .ui-datepicker-next-hover { right:1px; }
-.ui-datepicker .ui-datepicker-prev span, 
+.ui-datepicker .ui-datepicker-prev span,
 .ui-datepicker .ui-datepicker-next span { display: block; position: absolute; left: 50%; margin-left: -8px; top: 50%; margin-top: -8px;  }
 .ui-datepicker .ui-datepicker-title { margin: 0 2.3em; text-align: center; }
 .ui-datepicker .ui-datepicker-title select { float:left; font-size:1em; margin:1px 0; }
 .ui-datepicker select.ui-datepicker-month-year {width: 100%;}
-.ui-datepicker select.ui-datepicker-month, 
+.ui-datepicker select.ui-datepicker-month,
 .ui-datepicker select.ui-datepicker-year { width: 49%;}
 .ui-datepicker .ui-datepicker-title select.ui-datepicker-year { float: right; }
 .ui-datepicker table { width: 100%; font-size: .9em; line-height: 1.8519em; margin:0 0 .4em; }
 .ui-datepicker th                      { padding: 0; text-align: center; font-weight: bold; border: 0;  }
 .ui-datepicker td                      { border: 0; padding: 1px; }
-.ui-datepicker td span, 
+.ui-datepicker td span,
 .ui-datepicker td a                    { display: block; padding: 0 .2em; text-align: right; text-decoration: none; }
 .ui-datepicker .ui-datepicker-buttonpane { background-image: none; margin: .7em 0 0 0; padding:0 .2em; border-left: 0; border-right: 0; border-bottom: 0; }
 .ui-datepicker .ui-datepicker-buttonpane button { float: right; margin: .5em .2em .4em; cursor: pointer; padding: .2em .6em .3em .6em; width:auto; overflow:visible; }
@@ -338,14 +338,14 @@
 ----------------------------------*/
 .ui-dialog                             { padding: 2px; position: relative; width: 300px; }
 .ui-dialog .ui-dialog-titlebar         { font-family: Georgia, serif; padding: .5em 10px .3em 10px; position: relative;  }
-.ui-dialog .ui-dialog-title            { float: left; } 
+.ui-dialog .ui-dialog-title            { float: left; }
 .ui-dialog .ui-dialog-titlebar-close   { position: absolute; right: 10px; top: 50%; width: 16px; margin: -8px 0 0 0; height: 16px; }
 .ui-dialog .ui-dialog-titlebar-close span { display: block; }
-.ui-dialog .ui-dialog-titlebar-close:hover, 
+.ui-dialog .ui-dialog-titlebar-close:hover,
 .ui-dialog .ui-dialog-titlebar-close:focus {  }
 .ui-dialog .ui-dialog-content          { border: 0; padding: .5em 10px; overflow: auto; zoom: 1; }
 .ui-dialog .ui-dialog-buttonpane       { border-width: 1px 0 0 0; margin: .5em 0 0 0; padding: .3em 10px 10px 10px; text-align: left; }
-.ui-dialog .ui-dialog-buttonpane button { cursor: pointer; float: right; overflow: visible; padding: 0 0.5em; width: auto; -moz-border-radius: 5px; }
+.ui-dialog .ui-dialog-buttonpane button { float: right; }
 .ui-dialog .ui-resizable-se { width: 14px; height: 14px; right: 3px; bottom: 3px; }
 .ui-draggable .ui-dialog-titlebar { cursor: move; }
 
@@ -392,10 +392,10 @@
 .ui-tabs .ui-tabs-nav                  { list-style: none; position: relative; }
 .ui-tabs .ui-tabs-nav li               { float: left; position: relative; }
 .ui-tabs .ui-tabs-nav li a             { float: left; text-decoration: none; padding: .8333em 1em 0.75em 1em; }
-.ui-tabs .ui-tabs-nav li.ui-tabs-selected a, 
-.ui-tabs .ui-tabs-nav li.ui-state-disabled a, 
+.ui-tabs .ui-tabs-nav li.ui-tabs-selected a,
+.ui-tabs .ui-tabs-nav li.ui-state-disabled a,
 .ui-tabs .ui-tabs-nav li.ui-state-processing a { cursor: text; }
-.ui-tabs .ui-tabs-nav li a, 
+.ui-tabs .ui-tabs-nav li a,
 .ui-tabs.ui-tabs-collapsible .ui-tabs-nav li.ui-tabs-selected a { cursor: pointer; } /* first selector in group seems obsolete, but required to overcome bug in Opera applying cursor: text overall if defined elsewhere... */
 .ui-tabs .ui-tabs-panel                { display: block; border-width: 0; }
 .ui-tabs .ui-tabs-hide                 { display: none !important; }

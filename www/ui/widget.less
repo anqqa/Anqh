@@ -9,6 +9,7 @@
 label                                  { display: block; }
 input[type="checkbox"] + label,
 input[type="radio"] + label,
+.horizontal li                         { display: inline; padding-right: 5px; }
 .horizontal label                      { display: inline; }
 
 input,
@@ -28,6 +29,7 @@ input[type="file"],
 textarea,
 select                                 { width: 99%; }
 input.hint                             { color: @input-hint-color; font-style: italic; }
+input.private                          { border-color: @private-color; }
 
 fieldset a                             { vertical-align: middle; }
 
@@ -45,36 +47,48 @@ form .notice input                     { border-color: @info-background; }
 
 /***** BUTTONS *****/
 
+.ui-widget .ui-dialog-buttonpane .ui-state-default,
 a.action                               { margin-left: 5px; }
+.ui-widget .ui-dialog-buttonpane .ui-state-default,
 button,
 input[type="submit"],
-a.action                               { background: @action-background; border-bottom: 1px solid rgba(0,0,0,0.25); border-radius: 5px; -moz-border-radius: 5px; -webkit-border-radius: 5px; display: inline-block; color: #fff; cursor: pointer; font-weight: bold; -moz-box-shadow: 0 1px 3px rgba(0,0,0,0.5); -webkit-box-shadow: 0 1px 3px rgba(0,0,0,0.5); padding: 5px 1em 4px; position: relative; text-shadow: 0 -1px 1px rgba(0,0,0,0.25); }
-input[type="submit"]                   { border-width: 0 0 1px 0; padding: 6px 1em 5px; }
+a.action                               { background: @action-background; border-bottom: 1px solid rgba(0,0,0,0.25); border-radius: 5px; -moz-border-radius: 5px; -webkit-border-radius: 5px; -moz-box-shadow: 0 1px 3px rgba(0,0,0,0.5); -webkit-box-shadow: 0 1px 3px rgba(0,0,0,0.5); display: inline-block; color: #fff; cursor: pointer; font-weight: bold; line-height: 1; padding: 4px 1em 3px; position: relative; text-shadow: 0 -1px 1px rgba(0,0,0,0.25); }
+.ui-widget .ui-dialog-buttonpane .ui-state-default,
+input[type="submit"]                   { border-width: 0 0 1px 0; padding: 1px 1em 0; }
+.ui-widget .ui-dialog-buttonpane .ui-state-hover,
 button:hover,
 input[type="submit"]:hover,
 a.action:hover                         { opacity: 0.9; text-decoration: none; }
+.ui-widget .ui-dialog-buttonpane .ui-state-default:active,
 button:active,
 input[type="submit"]:active,
 a.action:active                        { top: 1px; }
 section article .actions,
 .tab .actions,
 .container .actions,
+li.line .actions,
 ul.contentlist li .actions             { opacity: 0.1; }
+.ui-widget .ui-dialog-buttonpane .ui-state-hover,
 section article:hover .actions,
 .tab .actions:hover,
 .container .actions:hover,
+li.line:hover .actions,
 ul.contentlist li .actions:hover       { opacity: 1; }
+.ui-widget .ui-dialog-buttonpane .ui-state-default,
 section article:hover .actions a.action,
 .tab:hover .actions a.action,
 .container:hover .actions a.action,
+li.line:hover .actions a.action,
 ul.contentlist li:hover .actions a.action,
 button,
 input[type="submit"],
 a.action                               { background-color: @link-color; }
 section article:hover .actions a[class*="-add"],
+li.line:hover .actions a[class*="-add"],
 ul.contentlist li:hover .actions a[class*="-add"],
 a[class*="-add"]                       { background-color: @positive-color; }
 section article:hover .actions a[class*="-delete"],
+li.line:hover .actions a[class*="-delete"],
 ul.contentlist li:hover .actions a[class*="-delete"],
 a[class*="-delete"]                    { background-color: @negative-color; }
 

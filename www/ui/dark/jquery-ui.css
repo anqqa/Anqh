@@ -16,55 +16,52 @@
 
 /* Interaction states
 ----------------------------------*/
-.ui-state-default, 
+.ui-state-default,
 .ui-widget-content .ui-state-default   { border: 1px solid #222; background: #111; color: #3ac; }
 .ui-tabs .ui-state-default             { background: black; border: 1px solid #111; border-width: 0 1px 0 0; }
-.ui-state-default a, 
-.ui-state-default a:link, 
+.ui-state-default a,
+.ui-state-default a:link,
 .ui-state-default a:visited            { color: #3ac; }
-.ui-state-hover, 
-.ui-widget-content .ui-state-hover, 
-.ui-state-focus, 
+.ui-state-hover,
+.ui-widget-content .ui-state-hover,
+.ui-state-focus,
 .ui-widget-content .ui-state-focus     { border: 1px solid black; background: #000; color: #fff; }
-button.ui-state-default                { background: #3ac; border: 0 none; color: black; }
-.ui-dialog-buttonpane .ui-state-default { background: #3ac; border: 0 none; color: black; }
-.ui-dialog-buttonpane .ui-state-hover  { background: white; border: 0 none; color: black; }
-.ui-state-hover a, 
+.ui-state-hover a,
 .ui-state-hover a:hover                { color: #fff; }
-.ui-state-active, 
+.ui-state-active,
 .ui-widget-content .ui-state-active    { background: black; border: 1px solid black; color: #ca3; }
 .ui-tabs .ui-state-active,
 .ui-tabs .ui-state-hover               { background: #222; border-width: 0 1px 0 0; }
-.ui-state-active a, 
-.ui-state-active a:link, 
+.ui-state-active a,
+.ui-state-active a:link,
 .ui-state-active a:visited             { color: #ca3; }
 
 /* Interaction Cues
 ----------------------------------*/
-.ui-state-highlight, 
+.ui-state-highlight,
 .ui-widget-content .ui-state-highlight { border: 1px solid #ca3; background: #222; color: #a7a7a7; }
-.ui-state-highlight a, 
+.ui-state-highlight a,
 .ui-widget-content .ui-state-highlight a { color: #a7a7a7; }
-.ui-state-error, 
+.ui-state-error,
 .ui-widget-content .ui-state-error     { border: 1px solid #c33; background: black; color: #c33; }
-.ui-state-error a, 
+.ui-state-error a,
 .ui-widget-content .ui-state-error a,
-.ui-state-error-text, 
+.ui-state-error-text,
 .ui-widget-content .ui-state-error-text { color: #c33; }
 
 /* Icons
 ----------------------------------*/
 
 /* states and images */
-.ui-icon, 
+.ui-icon,
 .ui-widget-content .ui-icon,
 .ui-widget-header .ui-icon,
 .ui-state-default .ui-icon,
-.ui-state-hover .ui-icon, 
+.ui-state-hover .ui-icon,
 .ui-state-focus .ui-icon,
 .ui-state-active .ui-icon              { background-image: url(images/ui-icons_33aacc_256x240.png); }
 .ui-state-highlight .ui-icon           { background-image: url(images/ui-icons_ccaa33_256x240.png); }
-.ui-state-error .ui-icon, 
+.ui-state-error .ui-icon,
 .ui-state-error-text .ui-icon          { background-image: url(images/ui-icons_cc3333_256x240.png); }
 
 

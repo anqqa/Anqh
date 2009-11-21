@@ -70,6 +70,17 @@ body                                   { background: @body-background-color @bod
 
 .actions                               { float: right; }
 
+section article:hover,
+.container:hover,
+li.line:hover,
+ul.contentlist li:hover                { background: @section-background-alt; }
+
+section article + aside,
+section article + article,
+ul.contentlist li + li                 { border-top: @separator-border; padding-top: 0.8333em; }
+li.line + li.line                      { border-top: @separator-border; }
+section aside + article                { padding-top: 0.8333em; }
+
 /***** /BODY *****/
 
 

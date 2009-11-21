@@ -15,8 +15,9 @@
 .groups .group + .group,
 ul.grouped li.group + li.group         { padding-top: 1.6667em; }
 /*section .mod,*/
-section article                        { padding: 0.883em 10px; }
-ul.contentlist li                      { padding-top: 0.883em; padding-bottom: 0.883em; }
+li.line,
+section article                        { padding: 0.8333em 10px; }
+ul.contentlist li                      { padding-top: 0.8333em; padding-bottom: 0.883em; }
 .groups .group,
 ul.contentlist li.group                { border: none; min-height: 5em; padding-bottom: 0; padding-top: 0; }
 section article h4,
