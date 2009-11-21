@@ -49,7 +49,7 @@ class form extends form_Core {
 
 		$input = form::checkbox($data, $value, $checked, $extra);
 
-		return form::wrap($input, $name, $label, $error, $tip);
+		return form::wrap($input, $name, $label, $error, $tip, true);
 	}
 
 
@@ -233,9 +233,10 @@ class form extends form_Core {
 	 * @param   string        $label
 	 * @param   string|array  $error
 	 * @param   string|array  $tip
+	 * @param   bool          $label_after
 	 * @return  string
 	 */
-	public static function wrap($input, $name = '', $label = '', $error = '', $tip = '') {
+	public static function wrap($input, $name = '', $label = '', $error = '', $tip = '', $label_after = false) {
 
 		$wrap = '';
 
@@ -261,7 +262,7 @@ class form extends form_Core {
 			$tip = '<p class="tip">' . (is_array($tip) ? arr::get($tip, $name) : $tip) . '</p>';
 		}
 
-		return $wrap . $input . $tip . "</li>\n";
+		return ($label_after ? $input . $wrap : $wrap . $input) . $tip . "</li>\n";
 	}
 
 }
