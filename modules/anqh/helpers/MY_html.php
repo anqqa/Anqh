@@ -286,7 +286,7 @@ $(function() {
 		// Extract datetime
 		$datetime = (is_array($attributes)) ? arr::remove('datetime', $attributes) : $attributes;
 		if ($datetime) {
-			$time = strtotime($datetime);
+			$time = is_int($datetime) ? $datetime : strtotime($datetime);
 			$datetime = date::format($short ? date::DATE_8601 : date::TIME_8601, $time);
 			if (is_array($attributes)) {
 				$attributes['datetime'] = $datetime;
@@ -313,17 +313,23 @@ $(function() {
 	 *
 	 * @param	  User_Model  $user  or uid
 	 * @param	  string      $nick
+	 * @param   string      $class
 	 * @return  string
 	 */
-	public static function user($user, $nick = null) {
+	public static function user($user, $nick = null, $class = null) {
+		$class = $class ? array($class, 'user') : array('user');
+
 		if (empty($nick)) {
 			if (!($user instanceof User_Model)) {
 				$user = ORM::factory('user')->find_user($user);
 			}
 			$nick = $user->username;
+			if ($user->gender) {
+				$class[] = $user->gender == 'f' ? 'female' : 'male';
+			}
 		}
 
-		return html::anchor(url::user($nick), $nick, array('class' => 'user'));
+		return html::anchor(url::user($nick), $nick, array('class' => implode(' ', $class)));
 	}
 
 }
