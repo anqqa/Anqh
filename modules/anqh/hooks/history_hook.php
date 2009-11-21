@@ -1,14 +1,14 @@
 <?php
 /**
  * Hook to record short page history
- * 
+ *
  * @package    Anqh
  * @author     Antti Qvickström
  * @copyright  (c) 2009 Antti Qvickström
- * @license    MIT
+ * @license    http://www.opensource.org/licenses/mit-license.php MIT license
  */
 class history_hook {
-	
+
 	/**
 	 * Hook the recorder
 	 */
@@ -23,7 +23,7 @@ class history_hook {
 	public function history() {
 		if (Kohana::$instance->history) $_SESSION['history'] = url::current();
 	}
-	
+
 }
 
 new history_hook();
