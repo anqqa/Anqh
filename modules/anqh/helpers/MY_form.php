@@ -31,6 +31,29 @@ class form extends form_Core {
 
 
 	/**
+	 * Creates an HTML form checkbox input tag.
+	 *
+	 * @param   string|array   input name or an array of HTML attributes
+	 * @param   string         input value, when using a name
+	 * @param   boolean|array  make the checkbox checked by default
+	 * @param   string         a string to be attached to the end of the attributes
+	 * @param   string         $label
+	 * @param   string|array   $error
+	 * @param   string|array   $tip
+	 * @return  string
+	 */
+	public static function checkbox_wrap($data, $value = '', $checked = FALSE, $extra = '', $label = '', $error = '', $tip = '') {
+		$name = is_array($data) ? arr::get($data, 'name') : $data;
+		$value = is_array($value) ? arr::get($value, $name) : $value;
+		$checked = is_array($checked) ? arr::get($checked, $name) == $value : $checked;
+
+		$input = form::checkbox($data, $value, $checked, $extra);
+
+		return form::wrap($input, $name, $label, $error, $tip);
+	}
+
+
+	/**
 	 * Creates checkboxes list
 	 *
 	 * @param   string        $name    input name
