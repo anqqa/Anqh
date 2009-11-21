@@ -37,7 +37,7 @@ class Member_Controller extends Website_Controller {
 			$this->tabs['friends'] = array('link' => '/friends', 'text' => __('Friends'));
 		}
 		$this->tabs['favorites'] = array('link' => '/favorites', 'text' => __('Favorites'));
-		if ($this->user) {
+		if ($this->user && FB::enabled()) {
 			$this->tabs['facebook'] = array('link' => '/facebook', 'text' => __('Facebook'));
 		}
 	}
@@ -97,6 +97,10 @@ class Member_Controller extends Website_Controller {
 
 	public function _side_views($extra_views = array()) {
 
+		if (!$this->user || $this->user->id !== $this->member->id) {
+			unset($this->tabs['facebook']);
+		}
+
 		if ($this->member->id) {
 
 			$this->breadcrumb[] = html::anchor(url::user($this->member), html::specialchars($this->member->username));
@@ -114,8 +118,8 @@ class Member_Controller extends Website_Controller {
 					// $this->functions[] = array('link' => 'member/' . urlencode($this->member->username) . '/settings', 'text' => Kohana::lang('member.settings_edit'));
 				} else {
 					$this->page_actions[] = ($this->user->is_friend($this->member))
-						? array('link' => url::user($this->member) . '/unfriend', 'text' => __('Remove from friends'), 'class' => 'friend-delete')
-						: array('link' => url::user($this->member) . '/friend',   'text' => __('Add to friends'),      'class' => 'friend-add');
+						? array('link' => url::user($this->member) . '/unfriend/?token=' . csrf::token(), 'text' => __('Remove from friends'), 'class' => 'friend-delete')
+						: array('link' => url::user($this->member) . '/friend/?token=' . csrf::token(),   'text' => __('Add to friends'),      'class' => 'friend-add');
 				}
 			}
 
@@ -279,7 +283,7 @@ class Member_Controller extends Website_Controller {
 		$this->history = false;
 
 		// for authenticated only
-		if ($this->user) {
+		if ($this->user && csrf::valid()) {
 
 			// require valid user
 			$this->member = new User_Model($username);
@@ -352,7 +356,7 @@ class Member_Controller extends Website_Controller {
 		$this->history = false;
 
 		// for authenticated only
-		if ($this->user) {
+		if ($this->user && csrf::valid()) {
 
 			// require valid user
 			$this->member = new User_Model($username);
