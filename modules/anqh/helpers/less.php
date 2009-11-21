@@ -82,13 +82,15 @@ class less_Core extends lessc {
 	/**
 	 * Creates a stylesheet link with LESS support
 	 *
-	 * @param   string|array  filename, or array of filenames to match to array of medias
-	 * @param   string|array  media type of stylesheet, or array to match filenames
-	 * @param   boolean       include the index_page in the link
+	 * @param   string|array  $style    filename, or array of filenames to match to array of medias
+	 * @param   string|array  $media    media type of stylesheet, or array to match filenames
+	 * @param   boolean       $index    include the index_page in the link
+	 * @param   array         $imports  compare file date for these too, CSS and LESS in style @import
 	 * @return  string
 	 */
-	public static function stylesheet($style, $media = false, $index = false) {
+	public static function stylesheet($style, $media = false, $index = false, $imports = null) {
 		$style = (array)$style;
+		$imports = (array)$imports;
 		$compiled = array();
 
 		// Loop through styles and compile less if necessary
@@ -101,8 +103,19 @@ class less_Core extends lessc {
 				$css = $_style . '.css';
 				try {
 
+					// Check if included files have changed
+					$compile = false;
+					if (!empty($imports)) {
+						foreach ($imports as $import) {
+							if (filemtime($import) > filemtime($css)) {
+								$compile = true;
+								break;
+							}
+						}
+					}
+
 					// Compile LESS
-					if (!is_file($css) || filemtime($less) > filemtime($css)) {
+					if ($compile || !is_file($css) || filemtime($less) > filemtime($css)) {
 						$compiler = new less($less);
 						file_put_contents($css, $compiler->parse());
 					}

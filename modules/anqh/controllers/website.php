@@ -66,6 +66,13 @@ abstract class Website_Controller extends Controller {
 	protected $skin;
 
 	/**
+	 * Skin files imported in skin, check against file modification time for LESS
+	 *
+	 * @var  array
+	 */
+	protected $skin_imports;
+
+	/**
 	 * Selected tab
 	 *
 	 * @var  string
@@ -100,6 +107,7 @@ abstract class Website_Controller extends Controller {
 		// Build the main view
 		$this->template
 			->bind('skin',          $this->skin)
+			->bind('skin_imports',  $this->skin_imports)
 			->bind('stylesheets',   $this->stylesheets)
 			->bind('language',      $this->language)
 			->bind('page_id',       $this->page_id)
@@ -113,7 +121,16 @@ abstract class Website_Controller extends Controller {
 		// Init page values
 		$this->country = empty($_SESSION['country']) ? false : $_SESSION['country'];
 		$this->menu = Kohana::config('site.menu');
-		$this->skin = 'ui/' . Kohana::config('site.skin') . '/skin.less';
+
+		$skin_path = 'ui/' . Kohana::config('site.skin') . '/';
+		$this->skin = $skin_path . 'skin.less';
+		$this->skin_imports = array(
+			'ui/layout.less',
+			'ui/widget.less',
+			'ui/jquery-ui.css',
+			'ui/site.css',
+			$skin_path . 'jquery-ui.css',
+		);
 		//$this->stylesheets = array('ui/' . Kohana::config('site.skin') . '/skin', 'ui/' . Kohana::config('site.skin') . '/jquery-ui');
 		$this->breadcrumb = array(html::anchor('/', __('Home')));
 		$this->tabs = array();
