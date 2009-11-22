@@ -573,6 +573,15 @@ class Member_Controller extends Website_Controller {
 				}
 				if (!empty($member->latitude) && !empty($member->longitude)) {
 					$basic_info[__('Location')] = $member->latitude . ', ' . $member->longitude;
+					$basic_info[__('Location')] = html::anchor('#map', __('Toggle map')) . '<div id="map" style="display: none">' . __('Map loading') . '</div>';
+					$map = new Gmap('map', array('ScrollWheelZoom' => true));
+					$map->center($member->latitude, $member->longitude, 15)->controls('small')->types('G_PHYSICAL_MAP', 'add');
+					$map->add_marker(
+						$member->latitude, $member->longitude,
+						html::avatar($member->avatar, $member->username) . html::user($member)
+					);
+					widget::add('foot', html::script_source($map->render('gmaps/jquery_event')));
+					widget::add('foot', html::script_source("$('a[href*=\"#map\"]:first').click(function() { $('#map').toggle('normal', gmap_open); return false; });"));
 				}
 
 				$site_info = array(
