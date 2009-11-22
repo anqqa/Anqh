@@ -1,6 +1,9 @@
 
-<div id="<?= $id ?>" class="tab<?= isset($class) ? ' ' . $class : '' ?>">
-	<h4><?= $title ?></h4>
+<section id="<?= $id ?>" class="mod topics tab<?= isset($class) ? ' ' . $class : '' ?>">
+	<header>
+		<h4><?= $title ?></h4>
+	</header>
+
 	<?php	if (empty($topics)): ?>
 	<span class="notice"><?= __('No topics found') ?></span>
 	<?php else: ?>
@@ -12,6 +15,7 @@
 
 	</ul>
 	<?php	endif; ?>
-</div>
+
+</section>
 <?php
 widget::add('foot', html::script_source("$('#" . $id . " li').ellipsis();"));

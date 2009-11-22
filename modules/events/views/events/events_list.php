@@ -1,6 +1,9 @@
 
-<div id="<?= $id ?>" class="tab<?= isset($class) ? ' ' . $class : '' ?>">
-	<h4><?= $title ?></h4>
+<section id="<?= $id ?>" class="mod events tab<?= isset($class) ? ' ' . $class : '' ?>">
+	<header>
+		<h4><?= $title ?></h4>
+	</header>
+
 	<?php	if (!empty($events)): ?>
 	<ul class="events">
 
@@ -13,9 +16,13 @@
 		<?php endforeach; ?>
 
 	</ul>
+
 	<?php else: ?>
+
 	<span class="notice"><?= __('No events found') ?></span>
+
 	<?php	endif; ?>
-</div>
+
+</section>
 <?php
 widget::add('foot', html::script_source("$('#" . $id . " li').ellipsis();"));

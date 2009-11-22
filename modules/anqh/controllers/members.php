@@ -35,7 +35,12 @@ class Members_Controller extends Website_Controller {
 		$error = array();
 		$side_views = array();
 
+		// New users
 		$new_users = ORM::factory('user')->orderby('id', 'DESC')->limit(50)->find_all();
+		$users = array();
+		foreach ($new_users as $user) {
+			$users[date('Y-m-d', strtotime($user->created))][] = $user;
+		}
 
 		try {
 			$birthdays = Users::get_birthdays();
@@ -46,7 +51,7 @@ class Members_Controller extends Website_Controller {
 		if (empty($error)) {
 			$this->page_subtitle = __('Latest :users members', array(':users' => '<var>' . count($new_users) . '</var>'));
 
-			widget::add('main', View::factory('member/members', array('users' => $new_users, 'type' => 'new')));
+			widget::add('main', View::factory('member/members', array('users' => $users, 'type' => 'new')));
 			$side_views[] = new View('member/birthdays_list', array('birthdays' => $birthdays));
 		} else {
 			$this->page_title .= ' ' . Kohana::lang('generic.error');
