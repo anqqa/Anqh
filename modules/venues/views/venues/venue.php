@@ -64,7 +64,7 @@
 			<div id="map" style="display: none"><?= __('Map loading') ?></div>
 			<?php
 				$map = new Gmap('map', array('ScrollWheelZoom' => true));
-				$map->center($venue->latitude, $venue->longitude, 15)->controls('small')->types('G_PHYSICAL_MAP', 'add');
+				$map->center($venue->latitude, $venue->longitude, 15)->controls('small')->types();
 				$map->add_marker(
 					$venue->latitude, $venue->longitude,
 					'<strong>' . html::specialchars($venue->name) . '</strong><p>' . html::specialchars($venue->address) . '<br />' . html::specialchars($venue->zip) . ' ' . html::specialchars($venue->city_name) . '</p>'
