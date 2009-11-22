@@ -4,7 +4,7 @@
 
 	<article class="topic-<?= $topic->id ?>">
 		<header>
-			<h4><?= html::anchor(url::model($topic), text::title($topic->name), array('title' => $topic->name)) ?></h4>
+			<h4><?= html::anchor(url::model($topic) . '/page/last', text::title($topic->name), array('title' => $topic->name)) ?></h4>
 			<span class="details">
 				<?php if (isset($area)): ?>
 				<?= __('In :area.', array(

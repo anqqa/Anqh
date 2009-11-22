@@ -617,8 +617,9 @@ class Forum_Controller extends Website_Controller {
 	 *
 	 * @param  mixed   $topic_id
 	 * @param  string  $action
+	 * @param  mixed   $extra
 	 */
-	public function topic($topic_id, $action = false) {
+	public function topic($topic_id, $action = false, $extra = false) {
 
 		// Hide tabs
 		$this->tabs = null;
@@ -626,20 +627,27 @@ class Forum_Controller extends Website_Controller {
 		if ($action) {
 			switch ($action) {
 
-				// delete topic
+				// Delete topic
 				case 'delete':
 					$this->_topic_delete($topic_id);
 					return;
 
-				// edit topic
+				// Edit topic
 				case 'edit':
 					$this->_topic_edit($topic_id);
 					return;
 
-				// post to topic
+				// Post to topic
 				case 'post':
 					$this->_post_add($topic_id);
 					return;
+
+				// Go to post
+				default:
+					if (is_numeric($action)) {
+						$post_id = (int)$action;
+					}
+
 			}
 		}
 
@@ -661,11 +669,11 @@ class Forum_Controller extends Website_Controller {
 				$this->page_actions[] = array('link' => url::model($forum_topic) . '/post',   'text' => __('Reply to topic'),  'class' => 'topic-post');
 			}
 
-			// check access and proceed
+			// Check access and proceed
 			if ($forum_area->access_has($this->user, Forum_Area_Model::ACCESS_READ)) {
 				$this->breadcrumb[] = html::anchor(url::model($forum_topic), $forum_topic->name);
 
-				// update read counter
+				// Update read counter
 				$forum_topic->reads++;
 				$forum_topic->save();
 
@@ -674,12 +682,18 @@ class Forum_Controller extends Website_Controller {
 					':area' => html::anchor(url::model($forum_area), text::title($forum_area->name), array('title' => strip_tags($forum_area->description)))
 				));
 
-				// handle pagination
+				// Handle pagination
 				$per_page = $this->config['posts_per_page'];
 				$pagination = new Pagination(array(
 					'items_per_page' => $per_page,
 					'total_items'    => $forum_topic->posts,
 				));
+
+				// Go to last page?
+				if ($action == 'page' && $extra == 'last') {
+					$pagination->to_last_page();
+				}
+
 				$posts = $forum_topic->limit($per_page, $pagination->sql_offset)->forum_posts;
 				$this->page_subtitle .= __(':posts posts, page :page of :pages', array(
 					':posts' => '<var>' . num::format($forum_topic->posts) . '</var>',

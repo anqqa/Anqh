@@ -7,10 +7,10 @@
 	<?php	if (empty($topics)): ?>
 	<span class="notice"><?= __('No topics found') ?></span>
 	<?php else: ?>
-	<ul class="topics">
+	<ul>
 
 		<?php foreach ($topics as $topic): ?>
-		<li class="topic-<?= $topic->id ?>"><?= html::anchor(url::model($topic), $topic->name) ?></li>
+		<li class="topic-<?= $topic->id ?>"><?= html::anchor(url::model($topic) . '/page/last', $topic->name) ?></li>
 		<?php endforeach; ?>
 
 	</ul>
