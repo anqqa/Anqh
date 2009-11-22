@@ -151,7 +151,7 @@ class Blogs_Controller extends Website_Controller {
 
 				$comments = $entry->find_comments();
 				widget::add('main',
-					View::factory('member/comments', array(
+					View::factory('generic/comments', array(
 						'private'    => false,
 						'delete'     => '/blogs/comment/%d/delete/?token=' . csrf::token(),
 						'comments'   => $comments,

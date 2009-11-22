@@ -543,7 +543,7 @@ class Member_Controller extends Website_Controller {
 				));
 
 				widget::add('main',
-					View::factory('member/comments', array(
+					View::factory('generic/comments', array(
 						'private'    => true,
 						'delete'     => '/member/comment/%d/delete/?token=' . csrf::token(),
 						'comments'   => $comments,
