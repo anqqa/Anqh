@@ -37,7 +37,14 @@ class BB_Core extends BBCode {
 		$this->SetDetectURLs(true);
 
 		// We have our own smileys
-		$this->SetEnableSmileys(false);
+		$this->ClearSmileys();
+		$config = Kohana::config('site.smiley');
+		if (!empty($config)) {
+			$this->SetSmileyURL(url::base() . $config['dir']);
+			foreach ($config['smileys'] as $name => $smiley) {
+				$this->AddSmiley($name, $smiley['src']);
+			}
+		}
 
 		// We handle newlines with Kohana
 		$this->SetIgnoreNewlines(true);
