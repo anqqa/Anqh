@@ -24,6 +24,33 @@ class text extends text_Core {
 
 
 	/**
+	 * Return text with smileys
+	 *
+	 * @param  string  $text
+	 */
+	public static function smileys($text) {
+		static $smileys;
+
+		// Load smileys
+		if (!is_array($smileys)) {
+			$smileys = array();
+
+			$config = Kohana::config('site.smiley');
+			if (!empty($config)) {
+				$url = url::base() . $config['dir'] . '/';
+				foreach ($config['smileys'] as $name => $smiley) {
+					$smileys[$name] = html::image(array('src' => $url . $smiley['src'], 'class' => 'smiley'), $name);
+				}
+			}
+
+		}
+
+		// Smile!
+		return empty($smileys) ? $text : str_replace(array_keys($smileys), $smileys, $text);
+	}
+
+
+	/**
 	 * Formatted title text
 	 *
 	 * @param	  string  $title

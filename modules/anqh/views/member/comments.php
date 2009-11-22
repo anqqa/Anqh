@@ -64,7 +64,7 @@
 			<br />
 
 			<?= $comment->private ? '<abbr title="' . __('Private comment') . '">' . __('Priv') . '</abbr>: ' : '' ?>
-			<?= html::specialchars($comment->comment) ?>
+			<?= text::smileys(text::auto_link(html::specialchars($comment->comment))) ?>
 
 		</li>
 
