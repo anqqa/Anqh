@@ -104,7 +104,7 @@ class Venues_Controller extends Website_Controller {
 			$this->page_title = text::title($venue_category->name);
 			$this->page_subtitle = html::specialchars($venue_category->description);
 
-			if ($this->visitor->logged_in('admin', 'venue moderator')) {
+			if ($this->visitor->logged_in(array('admin', 'venue moderator'))) {
 				$this->page_actions[] = array('link' => url::model($venue_category) . '/edit', 'text' => __('Edit category'), 'class' => 'category-edit edit');
 				$this->page_actions[] = array('link' => url::model($venue_category) . '/add',  'text' => __('Add venue'),     'class' => 'venue-add add');
 			}
@@ -283,7 +283,7 @@ class Venues_Controller extends Website_Controller {
 	public function _venue_delete($venue_id) {
 
 		// For authenticated users only
-		if (!$this->visitor->logged_in('admin', 'venue moderator')) url::redirect('/venues');
+		if (!$this->visitor->logged_in(array('admin', 'venue moderator'))) url::redirect('/venues');
 
 		$venue = new Venue_Model((int)$venue_id);
 		if ($venue->id) {
@@ -304,7 +304,7 @@ class Venues_Controller extends Website_Controller {
 		$this->history = false;
 
 		// for authenticated users only
-		if (!$this->visitor->logged_in('admin', 'venue moderator')) url::redirect('/venues');
+		if (!$this->visitor->logged_in(array('admin', 'venue moderator'))) url::redirect('/venues');
 
 		$errors = $form_errors = array();
 

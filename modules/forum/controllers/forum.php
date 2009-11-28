@@ -660,7 +660,7 @@ class Forum_Controller extends Website_Controller {
 			$this->breadcrumb[] = html::anchor(url::model($forum_area), $forum_area->name);
 
 			// Admin actions
-			if ($forum_topic->is_author() || $this->visitor->logged_in('admin', 'forum moderator')) {
+			if ($forum_topic->is_author() || $this->visitor->logged_in(array('admin', 'forum moderator'))) {
 				$this->page_actions[] = array('link' => url::model($forum_topic) . '/edit',   'text' => __('Edit topic'),   'class' => 'topic-edit');
 			}
 
@@ -744,7 +744,7 @@ class Forum_Controller extends Website_Controller {
 		$this->history = false;
 
 		$forum_topic = new Forum_Topic_Model((int)$topic_id);
-		if ($this->user && $forum_topic->id && csrf::valid() && ($forum_topic->is_author() || $this->visitor->logged_in('admin', 'forum moderator'))) {
+		if ($this->user && $forum_topic->id && csrf::valid() && ($forum_topic->is_author() || $this->visitor->logged_in(array('admin', 'forum moderator')))) {
 			$forum_area = $forum_topic->forum_area;
 
 			$forum_topic->delete();
@@ -774,7 +774,7 @@ class Forum_Controller extends Website_Controller {
 		$forum_post = new Forum_Post_Model((int)$forum_topic->first_post_id);
 
 		// for authenticated users only
-		if (!$forum_topic->is_author() && !$this->visitor->logged_in('admin', 'forum moderator')) url::redirect('/forum');
+		if (!$forum_topic->is_author() && !$this->visitor->logged_in(array('admin', 'forum moderator'))) url::redirect('/forum');
 
 		if (empty($errors)) {
 
