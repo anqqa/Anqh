@@ -100,7 +100,7 @@ class Events_Controller extends Website_Controller {
 	private function _build_calendar() {
 
 		// Actions
-		if ($this->visitor->logged_in('event', 'event moderator', 'admin')) {
+		if ($this->visitor->logged_in(array('event', 'event moderator', 'admin'))) {
 			$this->page_actions[] = array('link' => 'event/add', 'text' => __('Add event'), 'class' => 'event-add');
 		}
 
@@ -326,7 +326,7 @@ class Events_Controller extends Website_Controller {
 				} else {
 					$this->page_actions[] = array('link' => url::model($event) . '/favorite',   'text' => __('Add favorite'),    'class' => 'favorite-add');
 				}
-				if ($event->is_author() || $this->visitor->logged_in('admin', 'event moderator')) {
+				if ($event->is_author() || $this->visitor->logged_in(array('admin', 'event moderator'))) {
 					$this->page_actions[] = array('link' => url::model($event) . '/edit', 'text' => __('Edit event'), 'class' => 'event-edit');
 				}
 			}
@@ -354,7 +354,7 @@ class Events_Controller extends Website_Controller {
 		$event = new Event_Model((int)$event_id);
 
 		// For authenticated users only
-		if (!$this->user || (!$event->is_author() && !$this->visitor->logged_in('admin', 'event moderator'))) {
+		if (!$this->user || (!$event->is_author() && !$this->visitor->logged_in(array('admin', 'event moderator')))) {
 			url::redirect(empty($_SESSION['history']) ? '/events' : $_SESSION['history']);
 		}
 
@@ -378,7 +378,7 @@ class Events_Controller extends Website_Controller {
 		$event = new Event_Model((int)$event_id);
 
 		// For authenticated users only
-		if (!$this->user || (!$event->is_author() && !$this->visitor->logged_in('admin', 'event moderator'))) {
+		if (!$this->user || (!$event->is_author() && !$this->visitor->logged_in(array('admin', 'event moderator')))) {
 			url::redirect(empty($_SESSION['history']) ? '/events' : $_SESSION['history']);
 		}
 
@@ -576,7 +576,7 @@ class Events_Controller extends Website_Controller {
 		$this->tab_id = 'past';
 
 		// actions
-		if ($this->visitor->logged_in('event', 'event moderator',  'admin')) {
+		if ($this->visitor->logged_in(array('event', 'event moderator',  'admin'))) {
 			$this->page_actions[] = array('link' => 'event/add', 'text' => __('Add event'), 'class' => 'event-add');
 		}
 
@@ -608,7 +608,7 @@ class Events_Controller extends Website_Controller {
 		$this->tab_id = 'upcoming';
 
 		// actions
-		if ($this->visitor->logged_in('event', 'event admin', 'admin')) {
+		if ($this->visitor->logged_in(array('event', 'event admin', 'admin'))) {
 			$this->page_actions[] = array('link' => 'event/add', 'text' => __('Add event'), 'class' => 'event-add');
 		}
 
