@@ -477,12 +477,11 @@ class User_Model extends Modeler_ORM {
 		if (is_array($roles)) {
 
 			// Multiple roles given
-			$matching_roles = array_intersect($roles, $this->data_roles);
-			$has_role = !empty($matching_roles);
+			$has_role = (bool)count(array_intersect($roles, $this->data_roles));
 
 		} else {
 
-			// Sigle role given
+			// Single role given
 			$has_role = in_array($roles, $this->data_roles);
 
 		}
