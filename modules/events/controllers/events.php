@@ -322,9 +322,9 @@ class Events_Controller extends Website_Controller {
 			// Actions
 			if ($this->visitor->logged_in()) {
 				if ($event->is_favorite($this->user)) {
-					$this->page_actions[] = array('link' => url::model($event) . '/unfavorite', 'text' => __('Remove favorite'), 'class' => 'favorite-delete');
+					$this->page_actions[] = array('link' => url::model($event) . '/unfavorite/?token=' . csrf::token(), 'text' => __('Remove favorite'), 'class' => 'favorite-delete');
 				} else {
-					$this->page_actions[] = array('link' => url::model($event) . '/favorite',   'text' => __('Add favorite'),    'class' => 'favorite-add');
+					$this->page_actions[] = array('link' => url::model($event) . '/favorite/?token=' . csrf::token(),   'text' => __('Add favorite'),    'class' => 'favorite-add');
 				}
 				if ($event->is_author() || $this->visitor->logged_in(array('admin', 'event moderator'))) {
 					$this->page_actions[] = array('link' => url::model($event) . '/edit', 'text' => __('Edit event'), 'class' => 'event-edit');
@@ -354,8 +354,8 @@ class Events_Controller extends Website_Controller {
 		$event = new Event_Model((int)$event_id);
 
 		// For authenticated users only
-		if (!$this->user || (!$event->is_author() && !$this->visitor->logged_in(array('admin', 'event moderator')))) {
-			url::redirect(empty($_SESSION['history']) ? '/events' : $_SESSION['history']);
+		if (!$this->user || !csrf::valid() || (!$event->is_author() && !$this->visitor->logged_in(array('admin', 'event moderator')))) {
+			url::back('/events');
 		}
 
 		if ($event->id) {
@@ -363,7 +363,7 @@ class Events_Controller extends Website_Controller {
 			url::redirect('/events');
 		}
 
-		url::redirect(empty($_SESSION['history']) ? '/events' : $_SESSION['history']);
+		url::back('/events');
 	}
 
 
@@ -379,7 +379,7 @@ class Events_Controller extends Website_Controller {
 
 		// For authenticated users only
 		if (!$this->user || (!$event->is_author() && !$this->visitor->logged_in(array('admin', 'event moderator')))) {
-			url::redirect(empty($_SESSION['history']) ? '/events' : $_SESSION['history']);
+			url::back('/events');
 		}
 
 		$errors = $form_errors = array();
@@ -417,7 +417,7 @@ class Events_Controller extends Website_Controller {
 				$extra['country_id'] = $city->country_id;
 			}
 
-			if ($event->validate($post, true, $extra)) {
+			if (csrf::valid() && $event->validate($post, true, $extra)) {
 
 				// Update tags
 				$event->remove(ORM::factory('tag'));
@@ -478,7 +478,7 @@ class Events_Controller extends Website_Controller {
 		/***** SHOW FORM *****/
 
 		if ($event->id) {
-			$this->page_actions[] = array('link' => url::model($event) . '/delete', 'text' => __('Delete event'), 'class' => 'event-delete');
+			$this->page_actions[] = array('link' => url::model($event) . '/delete/?token=' . csrf::token(), 'text' => __('Delete event'), 'class' => 'event-delete');
 			$this->page_title = text::title($event->name);
 			$this->page_subtitle = __('Edit event');
 			list($form_values['start_date'], $form_values['start_hour']) = explode(' ', date('Y-m-d H', strtotime($event->start_time)));
@@ -671,7 +671,7 @@ class Events_Controller extends Website_Controller {
 		$this->history = false;
 
 		// For authenticated only
-		if ($this->user) {
+		if ($this->user && csrf::valid()) {
 
 			// Require valid event
 			$this->event = new Event_Model((int)$event_id);
@@ -684,7 +684,7 @@ class Events_Controller extends Website_Controller {
 			}
 		}
 
-		url::redirect(empty($_SESSION['history']) ? '/members' : $_SESSION['history']);
+		url::back('/members');
 	}
 
 
@@ -697,7 +697,7 @@ class Events_Controller extends Website_Controller {
 		$this->history = false;
 
 		// for authenticated only
-		if ($this->user) {
+		if ($this->user && csrf::valid()) {
 
 			// require valid user
 			$this->event = new Event_Model((int)$event_id);
@@ -706,7 +706,7 @@ class Events_Controller extends Website_Controller {
 			}
 		}
 
-		url::redirect(empty($_SESSION['history']) ? '/members' : $_SESSION['history']);
+		url::back('/members');
 	}
 
 	/***** /FAVORITES *****/

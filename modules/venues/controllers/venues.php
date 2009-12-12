@@ -153,7 +153,9 @@ class Venues_Controller extends Website_Controller {
 	 */
 	public function _category_delete($category_id) {
 		// for authenticated users only
-		if (!$this->user) url::redirect('/venues');
+		if (!csrf::valid() || !$this->visitor->logged_in('admin')) {
+			url::redirect('/venues');
+		}
 
 		$venue_category = new Venue_Category_Model((int)$category_id);
 		if ($venue_category->id) {
@@ -184,7 +186,7 @@ class Venues_Controller extends Website_Controller {
 		// check post
 		if (request::method() == 'post') {
 			$post = $this->input->post();
-			if ($venue_category->validate($post, true, array('author_id' => $this->user->id))) {
+			if (csrf::valid() && $venue_category->validate($post, true, array('author_id' => $this->user->id))) {
 				url::redirect('/venues/' . url::title($venue_category->id, $venue_category->name));
 			} else {
 				$form_errors = $post->errors();
@@ -197,7 +199,7 @@ class Venues_Controller extends Website_Controller {
 			$this->page_subtitle = __('Edit category');
 
 			if ($this->visitor->logged_in('admin')) {
-				$this->page_actions[] = array('link' => url::model($venue_category) . '/delete', 'text' => __('Delete category'), 'class' => 'category-delete delete');
+				$this->page_actions[] = array('link' => url::model($venue_category) . '/delete/?token=' . csrf::token(), 'text' => __('Delete category'), 'class' => 'category-delete delete');
 			}
 
 		} else {
@@ -253,7 +255,7 @@ class Venues_Controller extends Website_Controller {
 
 			if ($this->user) {
 				$this->page_actions[] = array('link' => 'venue/' . url::title($venue->id, $venue->name) . '/edit',   'text' => __('Edit venue'),   'class' => 'venue-edit edit');
-				$this->page_actions[] = array('link' => 'venue/' . url::title($venue->id, $venue->name) . '/delete', 'text' => __('Delete venue'), 'class' => 'venue-delete delete');
+				$this->page_actions[] = array('link' => 'venue/' . url::title($venue->id, $venue->name) . '/delete/?token=' . csrf::token(), 'text' => __('Delete venue'), 'class' => 'venue-delete delete');
 			}
 
 			widget::add('main', View::factory('venues/venue', array('venue' => $venue)));
@@ -283,7 +285,9 @@ class Venues_Controller extends Website_Controller {
 	public function _venue_delete($venue_id) {
 
 		// For authenticated users only
-		if (!$this->visitor->logged_in(array('admin', 'venue moderator'))) url::redirect('/venues');
+		if (!csrf::valid() || !$this->visitor->logged_in(array('admin', 'venue moderator'))) {
+			url::back('/venues');
+		}
 
 		$venue = new Venue_Model((int)$venue_id);
 		if ($venue->id) {
@@ -321,7 +325,7 @@ class Venues_Controller extends Website_Controller {
 				list($extra['latitude'], $extra['longitude']) = Gmap::address_to_ll(implode(', ', array($post['address'], $post['zip'], $post['city_name'])));
 			}
 
-			if ($venue->validate($post, true, $extra)) {
+			if (csrf::valid() && $venue->validate($post, true, $extra)) {
 
 				// handle logo upload
 				if (isset($post->logo) && empty($post->logo['error'])) {

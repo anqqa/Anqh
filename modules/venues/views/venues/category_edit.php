@@ -1,31 +1,25 @@
-<?= form::open() ?>
 
-	<fieldset>
-		<ul>
-			<li>
-				<?= html::error($errors, 'name') ?>
-				<?= form::label('name', __('Name')) ?>
-				<?= form::input(array('name' => 'name'), $values['name']) ?>
-			</li>
+<section class="mod venue-category-edit">
+	<?= form::open() ?>
 
-			<li>
-				<?= html::error($errors, 'description') ?>
-				<?= form::label('description', __('Description')) ?>
-				<?= form::input(array('name' => 'description'), $values['description']) ?>
-			</li>
+		<fieldset>
+			<ul>
 
-			<li>
-				<?= html::error($errors, 'tag_group_id') ?>
-				<?= form::label('tag_group_id', __('Tag group')) ?>
-				<?= form::dropdown('tag_group_id', $form['tag_group_id'], $values['tag_group_id']) ?>
-			</li>
-		</ul>
-	</fieldset>
+				<?= form::input_wrap(array('name' => 'name'), $values, '', __('Name'), $errors) ?>
 
-	<fieldset>
-		<?= empty($values['id']) ? '' : form::hidden('id', $values['id']) ?>
-		<?= form::submit(false, __('Save')) ?>
-		<?= html::anchor($_SESSION['history'], __('Cancel')) ?>
-	</fieldset>
+				<?= form::input_wrap(array('name' => 'description'), $values, '', __('Description'), $errors) ?>
 
-<?= form::close() ?>
+				<?= form::dropdown_wrap('tag_group_id', $form, $values, '', __('Tag group'), $errors) ?>
+
+			</ul>
+		</fieldset>
+
+		<fieldset>
+			<?= form::csrf() ?>
+			<?= empty($values['id']) ? '' : form::hidden('id', $values['id']) ?>
+			<?= form::submit(false, __('Save')) ?>
+			<?= html::anchor($_SESSION['history'], __('Cancel')) ?>
+		</fieldset>
+
+	<?= form::close() ?>
+</section>
