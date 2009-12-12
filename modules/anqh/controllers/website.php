@@ -212,8 +212,14 @@ abstract class Website_Controller extends Controller {
 		// Foot
 		$google_analytics = Kohana::config('site.google_analytics');
 		if ($google_analytics) {
-			widget::add('foot', html::script_source('var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www."); document.write(unescape("%3Cscript src=\'" + gaJsHost + "google-analytics.com/ga.js\' type=\'text/javascript\'%3E%3C/script%3E"));'));
-			widget::add('foot', html::script_source("try { var pageTracker = _gat._getTracker('" . $google_analytics . "'); pageTracker._trackPageview(); } catch(err) {}"));
+			widget::add('head', html::script_source("
+var _gaq = _gaq || [];  _gaq.push(['_setAccount', '" . $google_analytics . "']); _gaq.push(['_trackPageview']);
+(function() {
+	var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+	ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+	(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(ga);
+})();
+"));
 		}
 
 		// Ads
