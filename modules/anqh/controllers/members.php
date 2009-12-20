@@ -36,7 +36,7 @@ class Members_Controller extends Website_Controller {
 		$side_views = array();
 
 		// New users
-		$new_users = ORM::factory('user')->orderby('id', 'DESC')->limit(50)->find_all();
+		$new_users = ORM::factory('user')->order_by('id', 'DESC')->limit(50)->find_all();
 		$users = array();
 		foreach ($new_users as $user) {
 			$users[date('Y-m-d', strtotime($user->created))][] = $user;

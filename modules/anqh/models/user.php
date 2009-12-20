@@ -13,6 +13,7 @@ class User_Model extends Modeler_ORM {
 	protected $has_many = array('favorites', 'friends', 'tokens', 'user_comments');
 	protected $has_one = array('city', 'default_image' => 'image');
 	protected $has_and_belongs_to_many = array('images', 'roles');
+	protected $foreign_key = array('default_image' => 'id');
 	protected $reload_on_wakeup = false;
 
 	// Validation
@@ -437,7 +438,7 @@ class User_Model extends Modeler_ORM {
 			} else {
 
 				// Text IDs (username, email) must be lowercased because PostgreSQL is case sensitive
-				$user = $this->where('LOWER(' . $this->table_name . '.' . $this->unique_key($id) . ') = LOWER(' . $this->db->escape($id) . ')', '', false)->find();
+				$user = $this->where(new Database_Expression('LOWER(' . $this->db->quote_table($this->table_name) . '.' . $this->unique_key($id) . ') = LOWER(' . $this->db->quote($id) . ')'))->find();
 
 			}
 

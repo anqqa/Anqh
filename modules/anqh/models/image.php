@@ -109,7 +109,7 @@ class Image_Model extends Modeler_ORM {
 		$url = '';
 
 		// the image model must be loaded
-		if ($this->loaded) {
+		if ($this->_loaded) {
 
 			$path = url::id2path($this->id);
 
