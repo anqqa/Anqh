@@ -87,7 +87,7 @@ class FB extends Facebook {
 	 * Initializes Facebook Connect
 	 */
 	public static function init() {
-		widget::add('foot', html::script(array('js/fbconnect', 'http://static.ak.connect.facebook.com/js/api_lib/v0.4/FeatureLoader.js.php/en_US')));
+		widget::add('foot', html::script(array('js/fbconnect.js', 'http://static.ak.connect.facebook.com/js/api_lib/v0.4/FeatureLoader.js.php/en_US')));
 		widget::add('foot', html::script_source("FB.init('" . FB::$config['api_key'] . "');"));
 
 		// Add logged in Facebook user id to session for easier access

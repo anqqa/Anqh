@@ -158,7 +158,7 @@
 	<!-- /FOOTER -->
 
 
-<?= html::script(array('js/jquery.autocomplete.pack', 'js/jquery.form', 'js/jquery.text-overflow')) ?>
+<?= html::script(array('js/jquery.autocomplete.pack.js', 'js/jquery.form.js', 'js/jquery.text-overflow.js')) ?>
 
 <script>
 //<![CDATA[

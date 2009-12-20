@@ -151,8 +151,8 @@ abstract class Website_Controller extends Controller {
 		widget::add('header', View::factory('generic/header'));
 
 		// Footer
-		widget::add('footer', View::factory('events/events_list', array('id' => 'footer-events-new',    'class' => 'unit size1of4', 'title' => __('New events'),    'events' => ORM::factory('event')->orderby('id', 'DESC')->find_all(10))));
-		widget::add('footer', View::factory('forum/topics_list',  array('id' => 'footer-topics-active', 'class' => 'unit size1of4', 'title' => __('Active topics'), 'topics' => ORM::factory('forum_topic')->orderby('last_post_id', 'DESC')->find_all(10))));
+		widget::add('footer', View::factory('events/events_list', array('id' => 'footer-events-new',    'class' => 'unit size1of4', 'title' => __('New events'),    'events' => ORM::factory('event')->order_by('id', 'DESC')->find_all(10))));
+		widget::add('footer', View::factory('forum/topics_list',  array('id' => 'footer-topics-active', 'class' => 'unit size1of4', 'title' => __('Active topics'), 'topics' => ORM::factory('forum_topic')->order_by('last_post_id', 'DESC')->find_all(10))));
 
 		// Dock
 		$classes = array(
@@ -165,7 +165,7 @@ abstract class Website_Controller extends Controller {
 		if (count($locales['locales'])) {
 			$languages = array();
 			foreach ($locales['locales'] as $lang => $locale) {
-				$languages[] = html::anchor('set/lang/' . $lang, html::specialchars($locale['language'][2]));
+				$languages[] = html::anchor('set/lang/' . $lang, html::chars($locale['language'][2]));
 			}
 			widget::add('dock2', ' | ' . __('Language: ') . implode(', ', $languages));
 		}
@@ -209,11 +209,11 @@ abstract class Website_Controller extends Controller {
 		// End
 		widget::add('end', View::factory('generic/end'));
 
-		// Foot
+		// Analytics
 		$google_analytics = Kohana::config('site.google_analytics');
 		if ($google_analytics) {
 			widget::add('head', html::script_source("
-var _gaq = _gaq || [];  _gaq.push(['_setAccount', '" . $google_analytics . "']); _gaq.push(['_trackPageview']);
+var _gaq = _gaq || []; _gaq.push(['_setAccount', '" . $google_analytics . "']); _gaq.push(['_trackPageview']);
 (function() {
 	var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
 	ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
@@ -250,7 +250,7 @@ var _gaq = _gaq || [];  _gaq.push(['_setAccount', '" . $google_analytics . "']);
 		$cities = array();
 		foreach ($countries->find_all() as $country) {
 			foreach ($country->cities as $city) {
-				$cities[] = "{ id: '" . $city->id . "', text: '" . html::specialchars($city->city) . "' }";
+				$cities[] = "{ id: '" . $city->id . "', text: '" . html::chars($city->city) . "' }";
 			}
 		}
 
