@@ -14,7 +14,7 @@ $config['locales'] = array(
 		'country' => 'USA',
 	),
 	'fi' => array(
-		'language' => array('fi_FI', 'Finnish_Finnish', 'Finnish'),
+		'language' => array('fi_FI', 'Finnish_Finnish', 'Suomi'),
 		'country' => 'Finland',
 	),
 );
@@ -37,7 +37,7 @@ $config['country'] = $config['locales'][$config['default']]['language'];
  * Locale timezone. Defaults to use the server timezone.
  * @see http://php.net/timezones
  */
-$config['timezone'] = '';
+$config['timezone'] = ini_get('date.timezone');
 
 /**
  * First day of the week

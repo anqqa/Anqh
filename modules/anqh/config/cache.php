@@ -38,7 +38,14 @@
 
 $config['memcache'] = array(
 	'driver'		=> 'memcache',
-	'params'		=> '',
+	'cache'     => array(
+		'servers' => array(
+			array(
+				'host' => '127.0.0.1',
+				'port' => 11211,
+			),
+		),
+	),
 	'lifetime'	=> 3600,
 	'requests'	=> 1000,
 	'prefix'		=> IN_PRODUCTION ? 'anqh' : 'dev_anqh',
