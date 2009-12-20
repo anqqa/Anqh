@@ -122,7 +122,7 @@ class less_Core extends lessc {
 					$_style = $css;
 
 				} catch (Exception $e) {
-					Kohana::log('error', __METHOD__ . ': Error compiling LESS file ' . $less . ', ' . $e->getMessage());
+					Kohana_Log::add('error', __METHOD__ . ': Error compiling LESS file ' . $less . ', ' . $e->getMessage());
 					continue;
 				}
 

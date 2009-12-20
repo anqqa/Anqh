@@ -41,7 +41,7 @@ class Visitor_Core {
 		// Save the config in the object
 		$this->config = $config;
 
-		Kohana::log('debug', 'Visitor Library loaded');
+		Kohana_Log::add('debug', 'Visitor Library loaded');
 	}
 
 
