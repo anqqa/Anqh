@@ -91,7 +91,16 @@ class date extends date_Core {
 				break;
 
 			default:
-				if (strpos($format, 'generic') === false) $format = Kohana::lang('generic.date_' . $format);
+				if (strpos($format, 'generic') === false) {
+					switch ($format) {
+						case 'DM': $format = 'j.n.'; break;
+						case 'DDMM': $format = 'd.m.'; break;
+						case 'DMYYYY': $format = 'j.n.Y'; break;
+						case 'date_DDMMYYYY': $format = 'd.m.Y'; break;
+						case 'date_DMYYYY_HM': $format = 'j.n.Y H:i'; break;
+						case 'date_HHMM': $format = 'H:i'; break;
+					}
+				}
 				break;
 
 		}
@@ -174,7 +183,7 @@ class date extends date_Core {
 		if ($difference = date::timespan($time1, $time2) AND is_array($difference)) {
 			foreach ($difference as $span => $amount)
 				if ($amount > 0)
-					return $amount . ' ' . Kohana::lang('generic.' . inflector::singular($span, $amount));
+					return $amount . ' ' . __(inflector::singular($span, $amount));
 		}
 
 		if (empty($difference)) {
