@@ -6,7 +6,7 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<title><?= strip_tags($page_title) ?><?= (!empty($page_title) ? ' | ' : '') . Kohana::config('site.site_name') ?></title>
 	<link rel="icon" type="image/png" href="/ui/favicon.png" />
-	<?= html::stylesheet(array('ui/boot', 'ui/grid', 'ui/typo', 'ui/base')) ?>
+	<?= html::stylesheet(array('ui/boot.css', 'ui/grid.css', 'ui/typo.css', 'ui/base.css')) ?>
 	<?= less::stylesheet($skin, false, false, $skin_imports) ?>
 	<!--[if IE]>
 	<?= html::script('http://html5shiv.googlecode.com/svn/trunk/html5.js'); ?>
