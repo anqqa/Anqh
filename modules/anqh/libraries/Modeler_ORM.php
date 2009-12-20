@@ -98,7 +98,7 @@ class Modeler_ORM extends ORM {
 	public function is_author($user = null) {
 
 		// Check if we even have the author id
-		if ($this->loaded && isset($this->table_columns['author_id'])) {
+		if (isset($this->table_columns['author_id'])) {
 			$author_id = $this->author_id;
 		} else {
 			return false;
@@ -204,13 +204,18 @@ class Modeler_ORM extends ORM {
 	/**
 	 * Validate form input
 	 *
-	 * @param	  array  $values e.g. $_POST
-	 * @param	  bool   $save
+	 * @param   array  $values e.g. $_POST
+	 * @param   bool   $save
 	 * @param	  array  $extra_values not to be validated
 	 * @param   array  $set instead of default $rules etc, array('rules' => 'login') -> $this->rules_login
 	 * @return  int|bool
 	 */
-	public function validate(array &$values, $save = false, $extra_values = null, $extra_functions = null, $set = null) {
+	public function validate(array &$values = null, $save = false, $extra_values = null, $extra_functions = null, $set = null) {
+
+		// Fugly hax to handle Kohana 2.4 way of validating
+		if (is_null($values)) {
+			return parent::validate();
+		}
 
 		// Create new Validation object and remove empty values
 		$values = Validation::factory($values)->pre_filter('trim')->post_filter(array($this, 'null'));
