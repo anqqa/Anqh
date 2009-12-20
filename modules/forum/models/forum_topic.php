@@ -21,7 +21,7 @@ class Forum_Topic_Model extends Modeler_ORM {
 		'forum_area_id' => array('required', 'valid::numeric'),
 		'name'          => array('required', 'length[1, 200]'),
 		'event_id'      => array('valid::numeric'),
-		'read_only'     => array('in_array[1]'),
+		'read_only'     => array('is_numeric'),
 	);
 
 	protected $url_base = 'topic';
@@ -38,9 +38,9 @@ class Forum_Topic_Model extends Modeler_ORM {
 
 		// Add area filter if necessary
 		if (!empty($this->forum_area_id)) {
-			$topics = ORM::factory('forum_topic')->orderby('last_post_id', 'DESC')->where('forum_area_id', $this->forum_area_id)->find_all($limit, ($page - 1) * $limit);
+			$topics = ORM::factory('forum_topic')->order_by('last_post_id', 'DESC')->where('forum_area_id', $this->forum_area_id)->find_all($limit, ($page - 1) * $limit);
 		} else {
-			$topics = ORM::factory('forum_topic')->orderby('last_post_id', 'DESC')->find_all($limit, ($page - 1) * $limit);
+			$topics = ORM::factory('forum_topic')->order_by('last_post_id', 'DESC')->find_all($limit, ($page - 1) * $limit);
 		}
 
 		return $topics;
@@ -58,9 +58,9 @@ class Forum_Topic_Model extends Modeler_ORM {
 
 		// Add area filter if necessary
 		if (!empty($this->forum_area_id)) {
-			$topics = ORM::factory('forum_topic')->orderby('id', 'DESC')->where('forum_area_id', $this->forum_area_id)->find_all($limit, ($page - 1) * $limit);
+			$topics = ORM::factory('forum_topic')->order_by('id', 'DESC')->where('forum_area_id', $this->forum_area_id)->find_all($limit, ($page - 1) * $limit);
 		} else {
-			$topics = ORM::factory('forum_topic')->orderby('id', 'DESC')->find_all($limit, ($page - 1) * $limit);
+			$topics = ORM::factory('forum_topic')->order_by('id', 'DESC')->find_all($limit, ($page - 1) * $limit);
 		}
 
 		return $topics;
@@ -77,13 +77,13 @@ class Forum_Topic_Model extends Modeler_ORM {
 		if ($this->loaded) {
 
 			// First post data
-			$first_post = ORM::factory('forum_post')->where('forum_topic_id', $this->id)->orderby('id', 'ASC')->find();
+			$first_post = ORM::factory('forum_post')->where('forum_topic_id', $this->id)->order_by('id', 'ASC')->find();
 			$this->first_post_id = $first_post->id;
 			$this->author_id     = $first_post->author_id;
 			$this->author_name   = $first_post->author_name;
 
 			// Last post data
-			$last_post = ORM::factory('forum_post')->where('forum_topic_id', $this->id)->orderby('id', 'DESC')->find();
+			$last_post = ORM::factory('forum_post')->where('forum_topic_id', $this->id)->order_by('id', 'DESC')->find();
 			$this->last_post_id = $last_post->id;
 			$this->last_posted  = $last_post->created;
 			$this->last_poster  = $last_post->author_name;

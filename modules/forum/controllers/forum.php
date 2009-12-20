@@ -208,7 +208,7 @@ class Forum_Controller extends Website_Controller {
 		}
 
 		if (count($errors)) {
-			$this->_error(Kohana::lang('generic.error'), $errors);
+			$this->_error(__('Errors'), $errors);
 		}
 
 		$this->_side_views();
@@ -270,7 +270,7 @@ class Forum_Controller extends Website_Controller {
 		if (empty($errors)) {
 			widget::add('main', View::factory('forum/area_edit', array('form' => $form, 'values' => $form_values, 'errors' => $form_errors)));
 		} else {
-			$this->_error(Kohana::lang('generic.error'), $errors);
+			$this->_error(__('Errors'), $errors);
 		}
 
 		$this->_side_views();
@@ -380,7 +380,7 @@ class Forum_Controller extends Website_Controller {
 		if (empty($errors)) {
 			widget::add('main', View::factory('forum/group_edit', array('form' => $forum_group->get_form(), 'values' => $form, 'errors' => $form_errors)));
 		} else {
-			$this->_error(Kohana::lang('generic.error'), $errors);
+			$this->_error(__('Errors'), $errors);
 		}
 
 		$this->_side_views();
@@ -589,7 +589,7 @@ class Forum_Controller extends Website_Controller {
 				'parent_id' => $parent_id,
 			)));
 		} else {
-			$this->_error(Kohana::lang('generic.error'), $errors);
+			$this->_error(__('Errors'), $errors);
 		}
 
 		$this->_side_views();
