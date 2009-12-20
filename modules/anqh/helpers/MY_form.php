@@ -92,6 +92,16 @@ class form extends form_Core {
 
 
 	/**
+	 * Closes an open form tag.
+	 *
+	 * @return  string
+	 */
+	public static function close() {
+		return '</form>';
+	}
+
+
+	/**
 	 * Creates CSRF token input
 	 *
 	 * @param  mixed   $id      e.g. uid

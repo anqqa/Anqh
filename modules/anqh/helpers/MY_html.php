@@ -40,9 +40,9 @@ class html extends html_Core {
 			$date = strtotime($date);
 		}
 
-		$weekday = Kohana::lang('calendar.' . strtolower(date('D', $date)));
+		$weekday = strtolower(date('D', $date));
 		$day = date('d', $date);
-		$month = Kohana::lang('calendar.' . strtolower(date('M', $date)));
+		$month = strtolower(date('M', $date));
 		if ($year) {
 			$month .= " '" . date('y', $date);
 		}
@@ -174,10 +174,6 @@ $(function() {
 
 		}
 
-		// translate
-		foreach ($error as &$string)
-			$string = Kohana::lang('form_errors.' . $string);
-
 		return empty($error) ? '' : '<span class="info">' . implode('<br />', $error). '</span>';
 	}
 
@@ -222,7 +218,7 @@ $(function() {
 		$attributes = array(
 			'width'  => $image->{$size_prefix . 'width'},
 			'height' => $image->{$size_prefix . 'height'},
-			'alt'    => Kohana::lang('generic.image_' . $size) . ' ' . Kohana::lang('generic.image_size', $image->{$size_prefix . 'width'}, $image->{$size_prefix . 'height'}),
+			'alt'    => ($size == 'thumb' ? __('Thumb') : __('Image')) . ' ' . sprintf('[%dx%d]', $image->{$size_prefix . 'width'}, $image->{$size_prefix . 'height'}),
 		);
 
 		return html::image($image->url($size), $attributes);
@@ -275,13 +271,25 @@ $(function() {
 
 
 	/**
+	 * Convert special characters to HTML entities
+	 *
+	 * @param   string   string to convert
+	 * @param   boolean  encode existing entities
+	 * @return  string
+	 */
+	public static function specialchars($str) {
+		return self::chars($str);
+	}
+
+
+	/**
 	 * Return formatted <time> tag
 	 *
 	 * @param  string        $str
 	 * @param  array|string  $attributes  handled as time if not an array
 	 * @param  boolean       $short       use only date
 	 */
-	public function time($str, $attributes = null, $short = false) {
+	public static function time($str, $attributes = null, $short = false) {
 
 		// Extract datetime
 		$datetime = (is_array($attributes)) ? arr::remove('datetime', $attributes) : $attributes;
