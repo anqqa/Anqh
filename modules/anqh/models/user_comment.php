@@ -28,7 +28,7 @@ class User_Comment_Model extends Modeler_ORM {
 	protected $ignored_columns = array('id');
 	protected $has_one    = array('author' => 'user');
 	protected $belongs_to = array('user');
-	//protected $load_with  = array('author');
+	//protected $load_with  = array('authors');
 	protected $sorting    = array('id' => 'DESC');
 	protected $reload_on_wakeup = false;
 

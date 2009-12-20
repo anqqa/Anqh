@@ -70,7 +70,7 @@ class Forum_Area_Model extends Modeler_ORM {
 	protected $has_one    = array('last_topic' => 'forum_topic');
 	protected $belongs_to = array('forum_group', 'author' => 'user');
 	protected $sorting    = array('sort' => 'ASC');
-	protected $load_with  = array('forum_group', 'last_topic');
+	protected $load_with  = array('forum_groups', 'last_topics');
 
 	// Validation
 	protected $rules = array(
@@ -130,7 +130,7 @@ class Forum_Area_Model extends Modeler_ORM {
 		if ($this->loaded) {
 
 			// first topic
-			$last_topic = ORM::factory('forum_topic')->where('forum_area_id', $this->id)->orderby('last_post_id', 'DESC')->find();
+			$last_topic = ORM::factory('forum_topic')->where('forum_area_id', $this->id)->order_by('last_post_id', 'DESC')->find();
 			$this->last_topic_id = $last_topic->id;
 
 			// counts

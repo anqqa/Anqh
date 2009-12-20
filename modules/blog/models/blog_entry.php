@@ -12,7 +12,7 @@ class Blog_Entry_Model extends Modeler_ORM {
 	// ORM
 	protected $has_many   = array('blog_comments');
 	protected $belongs_to = array('author' => 'user');
-	protected $load_with  = array('author');
+	protected $load_with  = array('authors');
 
 	// Validation
 	protected $rules = array(
@@ -47,7 +47,7 @@ class Blog_Entry_Model extends Modeler_ORM {
 	 * @return  ORM_Iterator
 	 */
 	public function find_latest($limit = 20, $page = 1) {
-		$entries = $this->orderby('id', 'DESC')->find_all($limit, ($page - 1) * $limit);
+		$entries = $this->order_by('id', 'DESC')->find_all($limit, ($page - 1) * $limit);
 
 		return $entries;
 	}

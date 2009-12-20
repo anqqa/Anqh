@@ -13,7 +13,7 @@ class Event_Model extends Modeler_ORM {
 	protected $has_and_belongs_to_many = array('tags', 'images');
 	protected $has_many  = array('favorites');
 	protected $has_one   = array('author' => 'user', 'city', 'country', 'venue', 'flyer_front_image' => 'image', 'flyer_back_image' => 'image');
-	protected $load_with = array('city');
+	protected $load_with = array('cities');
 
 	// Validation
 	protected $rules = array(
@@ -89,16 +89,16 @@ class Event_Model extends Modeler_ORM {
 	public function find_past($limit = 25, $filter = null) {
 
 		// try to fetch events for the past 7 days
-		$where = array('start_time >=' => date::unix2sql(strtotime('-6 days')), 'start_time <' => date('Y-m-d', time()));
-		if (is_array($filter)) {
-			$where = arr::merge($filter);
-		}
-		$events = ORM::factory('event')->where($where)->orderby(array('start_time' => 'DESC', 'city_name' => 'ASC'))->find_all();
+		$where = array(
+			array('start_time', '>=', date::unix2sql(strtotime('-6 days'))),
+			array('start_time', '<', date('Y-m-d', time())),
+		);
+		$events = ORM::factory('event')->where($where)->order_by(array('start_time' => 'DESC', 'city_name' => 'ASC'))->find_all();
 
 		// if no events found, fetch next n
 		if (!$events->count()) {
-			unset($where['start_time >=']);
-			$events = ORM::factory('event')->where($where)->orderby(array('start_time' => 'DESC', 'city_name' => 'ASC'))->find_all($limit);
+			unset($where[1]);
+			$events = ORM::factory('event')->where($where)->order_by(array('start_time' => 'DESC', 'city_name' => 'ASC'))->find_all($limit);
 		}
 
 		return $events;
@@ -115,16 +115,16 @@ class Event_Model extends Modeler_ORM {
 	public function find_upcoming($limit = 25, $filter = null) {
 
 		// try to fetch events for the next 7 days
-		$where = array('start_time >=' => date('Y-m-d', time()), 'start_time <=' => date::unix2sql(strtotime('+6 days')));
-		if (is_array($filter)) {
-			$where = arr::merge($filter);
-		}
-		$events = ORM::factory('event')->where($where)->orderby(array('start_time' => 'ASC', 'city_name' => 'ASC'))->find_all();
+		$where = array(
+			array('start_time', '>=', date('Y-m-d', time())),
+			array('start_time', '<=', date::unix2sql(strtotime('+6 days')))
+		);
+		$events = ORM::factory('event')->where($where)->order_by(array('start_time' => 'ASC', 'city_name' => 'ASC'))->find_all();
 
 		// if no events found, fetch next n
 		if (!$events->count()) {
-			unset($where['start_time <=']);
-			$events = ORM::factory('event')->where($where)->orderby(array('start_time' => 'ASC', 'city_name' => 'ASC'))->find_all($limit);
+			unset($where[1]);
+			$events = ORM::factory('event')->where($where)->order_by(array('start_time' => 'ASC', 'city_name' => 'ASC'))->find_all($limit);
 		}
 
 		return $events;

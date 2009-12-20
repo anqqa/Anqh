@@ -11,7 +11,7 @@ class Forum_Post_Model extends Modeler_ORM {
 
 	// ORM
 	protected $belongs_to = array('forum_area', 'forum_topic', 'author' => 'user', 'parent' => 'forum_post');
-	protected $load_with  = array('author');
+	protected $load_with  = array('authors');
 
 	// Validation
 	protected $rules = array(

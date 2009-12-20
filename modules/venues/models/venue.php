@@ -14,7 +14,7 @@ class Venue_Model extends Modeler_ORM {
 	protected $has_one    = array('city', 'default_image' => 'image');
 	protected $has_and_belongs_to_many = array('images', 'tags');
 	protected $sorting    = array('city_name' => 'ASC', 'name' => 'ASC');
-	//protected $load_with = array('city');
+	//protected $load_with = array('cities');
 
 	// Validation
 	protected $rules = array(
@@ -51,6 +51,6 @@ class Venue_Model extends Modeler_ORM {
 	 * @return  Venue_Model
 	 */
 	public function get_random_venues($limit = 2) {
-		return $this->orderby('', 'RANDOM()')->find_all($limit);
+		return $this->order_by('', 'RANDOM()')->find_all($limit);
 	}
 }
