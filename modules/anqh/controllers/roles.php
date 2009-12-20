@@ -32,7 +32,7 @@ class Roles_Controller extends Website_Controller {
 		$this->page_actions[] = array('link' => 'role/add', 'text' => __('Add new role'), 'class' => 'role-add');
 
 		$roles = new Role_Model();
-		widget::add('main', View::Factory('roles/roles', array('roles' => $roles->orderby('name', 'ASC')->find_all())));
+		widget::add('main', View::Factory('roles/roles', array('roles' => $roles->order_by('name', 'ASC')->find_all())));
 	}
 
 
