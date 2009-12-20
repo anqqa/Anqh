@@ -108,12 +108,18 @@ $config['render_stats'] = TRUE;
 $config['extension_prefix'] = 'MY_';
 
 /**
+ * An optional list of Config Drivers to use, they "fallback" to the one below them if they
+ * dont work so the first driver is tried then so on until it hits the built in "array" driver and fails
+ */
+$config['config_drivers'] = array();
+
+/**
  * Additional resource paths, or "modules". Each path can either be absolute
  * or relative to the docroot. Modules can include any resource that can exist
  * in your application directory, configuration files, controllers, views, etc.
  */
 $config['modules'] = array(
-	MODPATH . 'kohana3',  // Kohana 3 features for Kohana 2, e.g. I18n
+	MODPATH . 'postgres', // PostgreSQL support
 	MODPATH . 'gmaps',    // Google Maps integration
 
 	MODPATH . 'anqh',     // Anqh core
