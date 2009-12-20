@@ -107,7 +107,7 @@ class less_Core extends lessc {
 					$compile = false;
 					if (!empty($imports)) {
 						foreach ($imports as $import) {
-							if (filemtime($import) > filemtime($css)) {
+							if (!is_file($css) || filemtime($import) > filemtime($css)) {
 								$compile = true;
 								break;
 							}
