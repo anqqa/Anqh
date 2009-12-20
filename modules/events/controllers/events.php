@@ -113,12 +113,19 @@ class Events_Controller extends Website_Controller {
 		if ($this->country) {
 			$country = ORM::factory('country', $this->country);
 			$events = ORM::factory('event')
-				->where(array('start_time >=' => date::unix2sql($start_time), 'start_time <=' => date::unix2sql($end_time), 'country_id' => $country->id))
+				->where(array(
+					array('start_time', '>=', date::unix2sql($start_time)),
+					array('start_time', '<=', date::unix2sql($end_time)),
+					array('country_id', '=', $country->id)
+				))
 				->order_by(array('event' => 'ASC', 'city_name' => 'ASC'))
 				->find_all();
 		} else {
 			$events = ORM::factory('event')
-				->where(array('start_time >=' => date::unix2sql($start_time), 'start_time <=' => date::unix2sql($end_time)))
+				->where(array(
+					array('start_time', '>=', date::unix2sql($start_time)),
+					array('start_time', '<=', date::unix2sql($end_time))
+				))
 				->order_by(array('event' => 'ASC', 'city_name' => 'ASC'))
 				->find_all();
 		}
@@ -235,7 +242,7 @@ class Events_Controller extends Website_Controller {
 
 		// events
 		$new_events = ORM::factory('event')->order_by('id', 'DESC')->find_all(15);
-		$updated_events = ORM::factory('event')->where('modifies >', 0)->order_by('modified', 'DESC')->find_all(15);
+		$updated_events = ORM::factory('event')->where('modifies', '>', 0)->order_by('modified', 'DESC')->find_all(15);
 
 		$tabs = array();
 		$tabs[] = array('href' => '#events-new',     'title' => __('New events'),     'tab' => new View('events/events_list', array('id' => 'events-new',     'title' => __('New events'),     'events' => $new_events)));

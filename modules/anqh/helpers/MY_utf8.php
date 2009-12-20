@@ -19,4 +19,17 @@ class utf8 extends utf8_Core {
 		return mb_strtolower($str);
 	}
 
+
+	/**
+	 * UTF-8 substring
+	 *
+	 * @param   string   $str
+	 * @param   integer  $offset
+	 * @param   integer  $length
+	 * @return  string
+	 */
+	public static function substr($str, $offset, $length = NULL) {
+		return ($length === NULL) ? mb_substr($str, $offset) : mb_substr($str, $offset, $length);
+	}
+
 }
