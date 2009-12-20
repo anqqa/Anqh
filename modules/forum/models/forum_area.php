@@ -66,11 +66,12 @@ class Forum_Area_Model extends Modeler_ORM {
 	const TYPE_HIDDEN = 128;
 
 	// ORM
-	protected $has_many   = array('forum_topics');
-	protected $has_one    = array('last_topic' => 'forum_topic');
-	protected $belongs_to = array('forum_group', 'author' => 'user');
-	protected $sorting    = array('sort' => 'ASC');
-	protected $load_with  = array('forum_groups', 'last_topics');
+	protected $has_many    = array('forum_topics');
+	protected $has_one     = array('last_topic' => 'forum_topic');
+	protected $belongs_to  = array('forum_group', 'author' => 'user');
+	protected $sorting     = array('sort' => 'ASC');
+	protected $load_with   = array('forum_groups', 'last_topics');
+	protected $foreign_key = array('last_topic' => 'id');
 
 	// Validation
 	protected $rules = array(

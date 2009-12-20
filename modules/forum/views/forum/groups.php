@@ -1,5 +1,5 @@
 
-<section class="mod groups">
+<div class="mod groups">
 	<?php foreach ($groups as $group): ?>
 
 	<section class="group group-<?= $group->id ?>">
@@ -9,9 +9,9 @@
 			<p><?= html::specialchars($group->description) ?></p>
 		</header>
 
-		<?php foreach ($group->forum_areas as $area): ?>
+		<?php foreach ($group->forum_areas->find_all() as $area): ?>
 
-			<?php if ($area->access_has($this->user, Forum_Area_Model::ACCESS_READ)): ?>
+			<?php if ($area->access_has($user, Forum_Area_Model::ACCESS_READ)): ?>
 
 			<article class="area area-<?= $area->id ?>">
 				<h4>
@@ -49,4 +49,4 @@
 	</section>
 
 	<?php endforeach; ?>
-</section>
+</div>

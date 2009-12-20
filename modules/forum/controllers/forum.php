@@ -82,7 +82,7 @@ class Forum_Controller extends Website_Controller {
 			$this->page_actions[] = array('link' => 'forum/area/add',  'text' => __('New area'),  'class' => 'area-add');
 		}
 
-		widget::add('main', View::factory('forum/groups', array('groups' => ORM::factory('forum_group')->find_all())));
+		widget::add('main', View::factory('forum/groups', array('user' => $this->user, 'groups' => ORM::factory('forum_group')->find_all())));
 
 		$this->_side_views();
 	}
@@ -182,7 +182,7 @@ class Forum_Controller extends Website_Controller {
 
 				// handle pagination
 				$per_page = $this->config['topics_per_page'];
-				$page_num = (int)$this->input->get('page', 1);
+				$page_num = (int)arr::get($_GET, 'page', 1);
 				$offset = max(0, ($page_num - 1) * $per_page);
 				$pagination = new Pagination(array(
 					'style'          => 'digg',
@@ -673,10 +673,6 @@ class Forum_Controller extends Website_Controller {
 			if ($forum_area->access_has($this->user, Forum_Area_Model::ACCESS_READ)) {
 				$this->breadcrumb[] = html::anchor(url::model($forum_topic), $forum_topic->name);
 
-				// Update read counter
-				$forum_topic->reads++;
-				$forum_topic->save();
-
 				$this->page_title = ($forum_topic->read_only ? '<span class="locked">' . __('[Locked]') . '</span> ' : '') . text::title($forum_topic->name);
 				$this->page_subtitle = __('Area :area. ', array(
 					':area' => html::anchor(url::model($forum_area), text::title($forum_area->name), array('title' => strip_tags($forum_area->description)))
@@ -694,16 +690,20 @@ class Forum_Controller extends Website_Controller {
 					$pagination->to_last_page();
 				}
 
-				$posts = $forum_topic->limit($per_page, $pagination->sql_offset)->forum_posts;
+				$posts = $forum_topic->limit($per_page, $pagination->sql_offset)->forum_posts->find_all();
 				$this->page_subtitle .= __(':posts posts, page :page of :pages', array(
 					':posts' => '<var>' . num::format($forum_topic->posts) . '</var>',
 					':page'  => '<var>' . $pagination->current_page . '</var>',
 					':pages' => '<var>' . $pagination->total_pages . '</var>'
 				));
 
+				// Update read counter
+				$forum_topic->reads++;
+				$forum_topic->save();
+
 				if (count($posts)) {
 					widget::add('main', $pagination);
-					widget::add('main', View::factory('forum/topic', array('topic' => $forum_topic, 'posts' => $posts)));
+					widget::add('main', View::factory('forum/topic', array('user' => $this->user, 'topic' => $forum_topic, 'posts' => $posts)));
 					widget::add('main', $pagination);
 				} else {
 					$errors[] = __('No posts found.');

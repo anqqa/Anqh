@@ -3,7 +3,7 @@
 	<?php foreach ($posts as $post):
 
 		// Viewer's post
-		$mine = ($this->user && $post->author_id == $this->user->id);
+		$mine = ($user && $post->author_id == $user->id);
 
 		// Topic author's post
 		$owners = ($post->author_id == $topic->author_id);
@@ -66,7 +66,7 @@
 		</section>
 
 		<footer>
-			<?php if ($this->user && !$topic->read_only): ?>
+			<?php if ($user && !$topic->read_only): ?>
 
 			<span class="actions">
 				<?= html::anchor('forum/post/' . $post->id . '/reply', __('Reply'), array('class' => 'action post-reply')) ?>
