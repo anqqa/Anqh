@@ -1,1 +1,1 @@
-<p><?= Kohana::lang('generic.copyright', array(date('Y'), Kohana::config('site.site_name'))) ?> <?= Kohana::lang('core.stats_footer') ?></p>
+<p><?= sprintf('Copyright &copy; 2000&ndash;%d %s', date('Y'), Kohana::config('site.site_name')) ?></p>
