@@ -21,6 +21,17 @@ class utf8 extends utf8_Core {
 
 
 	/**
+	 * Makes a UTF-8 string uppercase.
+	 *
+	 * @param   string   mixed case string
+	 * @return  string
+	 */
+	public static function strtoupper($str) {
+		return mb_strtoupper($str);
+	}
+
+
+	/**
 	 * UTF-8 substring
 	 *
 	 * @param   string   $str
