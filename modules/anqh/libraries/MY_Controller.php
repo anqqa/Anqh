@@ -59,6 +59,13 @@ abstract class Controller extends Controller_Core {
 	protected $template = 'layout';
 
 	/**
+	 * URI library
+	 *
+	 * @var  URI
+	 */
+	protected $uri;
+
+	/**
 	 * User Model
 	 *
 	 * @var  User_Model
@@ -86,19 +93,16 @@ abstract class Controller extends Controller_Core {
 	public function __construct()	{
 		parent::__construct();
 
-		// Maybe controllers shouldn't know about cache? But still..
+		// Initialize libraries
 		$this->cache = Cache::instance();
-
-		// Initialize Input
-		$this->input = new Input;
+		$this->input = Input::instance();
+		$this->uri = URI::instance();
+		$this->visitor = Visitor::instance();
 
 		// Validate CSRF token
 		if (isset($_REQUEST['csrf'])) {
 			$this->valid_csrf = csrf::valid($_REQUEST['csrf']);
 		}
-
-		// Load current visitor for easy access
-		$this->visitor = Visitor::instance();
 
 		// Load current user for easy controller access, null if not logged
 		$this->user = &$this->visitor->get_user();
