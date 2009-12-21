@@ -1,7 +1,7 @@
 <?php
 // Get the day names
 $days = Calendar::days(2);
-array_unshift($days, Kohana::lang('generic.week_short'));
+array_unshift($days, __('wk'));
 
 // Previous and next month timestamps
 $prev = mktime(0, 0, 0, $month - 1, 1, $year);
@@ -40,7 +40,7 @@ $week_date->setISODate($year, $week_number++, 4);
 
 // check if week number looped to next year
 //if ($week_date->format('W') < $previous_week) $week_date->setISODate($year + 1, 1);
-//++$week_number; 
+//++$week_number;
 ?>
 	<tr>
 		<th><?= html::anchor('/events/' . $week_date->format('Y') . '/week/' . $week_date->format('W'), $week_date->format('W')) ?></th>

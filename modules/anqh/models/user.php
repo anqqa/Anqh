@@ -10,12 +10,12 @@
 class User_Model extends Modeler_ORM {
 
 	// ORM
-	protected $has_many         = array('favorites', 'friends', 'tokens', 'user_comments');
+	protected $has_many         = array('events', 'friends', 'tokens', 'user_comments');
+	protected $has_many_through = array('events' => 'favorites');
 	//protected $has_one          = array('city', 'default_image' => 'image');
 	protected $belongs_to       = array('default_image' => 'image');
 	protected $has_one          = array('city');
 	protected $has_and_belongs_to_many = array('images', 'roles');
-	//protected $foreign_key      = array('default_image_id' => 'id');
 	protected $reload_on_wakeup = false;
 
 	// Validation
@@ -358,7 +358,7 @@ class User_Model extends Modeler_ORM {
 	 */
 	public function find_friends($page_num = 1, $page_size = 25) {
 		$page_offset = ($page_num - 1) * $page_size;
-		$friends = ORM::factory('friend')->where('user_id', $this->id)->find_all($page_size, $page_offset);
+		$friends = ORM::factory('friend')->where('user_id', '=', $this->id)->find_all($page_size, $page_offset);
 
 		return $friends;
 	}
@@ -370,7 +370,7 @@ class User_Model extends Modeler_ORM {
 	 * @return  int
 	 */
 	public function get_friend_count() {
-		return (int)ORM::factory('friend')->where('user_id', $this->id)->count_all();
+		return (int)ORM::factory('friend')->where('user_id', '=', $this->id)->count_all();
 	}
 
 

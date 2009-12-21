@@ -464,7 +464,7 @@ class Member_Controller extends Website_Controller {
 			// Basic information
 			$this->page_title = text::title($this->member->username, false);
 
-			$favorites = $this->member->favorites;
+			$favorites = $this->member->events->order_by('start_time', 'DESC')->find_all();
 			widget::add('main', View::factory('member/favorites', array('favorites' => $favorites)));
 		}
 

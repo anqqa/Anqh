@@ -12,7 +12,8 @@ class Friend_Model extends Modeler_ORM {
 	// ORM
 	protected $belongs_to  = array('user', 'friend' => 'user');
 	protected $load_with   = array('friends');
-	protected $sorting     = array('friend.username' => 'ASC');
+	//protected $sorting     = array('friend.username' => 'ASC');
+	protected $sorting     = array('friend_id' => 'ASC');
 	//protected $primary_key = 'friend_id';
 
 }

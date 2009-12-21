@@ -74,12 +74,12 @@
 				<?php endif; ?>
 
 
-				<?php if ($event->favorites): ?>
+				<?php if ($event->users): ?>
 				<li class="favorites">
 
 					<h3><?= __('Favorites') ?></h3>
-					<?php foreach ($event->favorites as $favorite): ?>
-					<?= html::nick($favorite->user) ?>
+					<?php foreach ($event->users->order_by('username', 'ASC')->find_all() as $favorite): ?>
+					<?= html::nick($favorite) ?>
 					<?php endforeach; ?>
 
 				</li>
