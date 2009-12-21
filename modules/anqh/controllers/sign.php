@@ -40,7 +40,7 @@ class Sign_Controller extends Website_Controller {
 		}
 
 		// Add newsfeed item
-		newsfeeditem_user::login($this->visitor->get_user());
+		// newsfeeditem_user::login($this->visitor->get_user());
 
 		url::back();
 	}
