@@ -51,7 +51,8 @@ class Forum_Controller extends Website_Controller {
 			'areas' => array('href' => '#forum-areas', 'title' => __('Areas'), 'selected' => in_array($this->tab_id, array('active', 'latest')), 'tab' => new View('forum/groups_list', array(
 				'id'     => 'forum-areas',
 				'title'  => __('Forum areas'),
-				'groups' => ORM::factory('forum_group')->find_all()
+				'groups' => ORM::factory('forum_group')->find_all(),
+				'user'   => $this->user,
 			))),
 		);
 
