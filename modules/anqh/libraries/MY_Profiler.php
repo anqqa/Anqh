@@ -11,9 +11,9 @@
  */
 class Profiler extends Profiler_Core {
 
-	public function __construct() {
-		parent::__construct();
-		Event::add('profiler.run', array($this, 'cache'));
+	public static function enable() {
+		Event::add('profiler.run', array('Profiler', 'cache'));
+		parent::enable();
 	}
 
 
@@ -22,17 +22,18 @@ class Profiler extends Profiler_Core {
 	 *
 	 * @return  void
 	 */
-	public function cache() {
-		if (!$table = $this->table('cache'))
+	public static function cache() {
+		if (!Profiler::show('cache'))
 			return;
 
+		$queries = Cache::$queries;
+
+		$table = new Profiler_Table();
 		$table->add_column();
 		$table->add_column('kp-column kp-data');
 		$table->add_column('kp-column kp-data');
 		$table->add_column('kp-column kp-data');
 		$table->add_row(array('Cache', 'Gets', 'Sets', 'Deletes'), 'kp-title', 'background-color: #E0FFE0');
-
-		$queries = Cache::$queries;
 
 		text::alternate();
 		$total_gets = $total_sets = $total_deletes = 0;
@@ -54,6 +55,8 @@ class Profiler extends Profiler_Core {
 
 		$data = array('Total: ' . count($total_requests), $total_gets, $total_sets, $total_deletes);
 		$table->add_row($data, 'kp-totalrow');
+
+		Profiler::add($table);
 	}
 
 }
