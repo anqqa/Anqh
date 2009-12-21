@@ -1,0 +1,85 @@
+<?php defined('SYSPATH') OR die('No direct access allowed.');
+/**
+ * Kohana process control file, loaded by the front controller.
+ *
+ * @package    Anqh
+ * @author     Antti Qvickström
+ * @copyright  (c) 2009 Antti Qvickström
+ * @license    http://www.opensource.org/licenses/mit-license.php MIT license
+ */
+
+// Kohana benchmarks are prefixed to prevent collisions
+define('SYSTEM_BENCHMARK', 'system_benchmark');
+
+// Load benchmarking support
+require SYSPATH . 'core/Benchmark' . EXT;
+
+// Start total_execution
+Benchmark::start(SYSTEM_BENCHMARK . '_total_execution');
+
+// Start kohana_loading
+Benchmark::start(SYSTEM_BENCHMARK . '_kohana_loading');
+
+// Load core files
+require SYSPATH . 'core/Event' . EXT;
+final class Event extends Event_Core {}
+
+require SYSPATH . 'core/Kohana' . EXT;
+final class Kohana extends Kohana_Core {
+
+	/**
+	 * Migration helper for K2.3.4 -> K2.4
+	 *
+	 * @param   string  $string
+	 * @param   array   $args
+	 * @return  string
+	 */
+	public static function lang($string, $args = null) {
+		return __($string, $args);
+	}
+
+	/**
+	 * Inserts global Anqh variables into the generated output and prints it.
+	 *
+	 * @param   string  final output that will displayed
+	 * @return  void
+	 */
+	public static function render($output) {
+		if (Kohana::config('core.render_stats') === true) {
+			$queries = Database::$benchmarks;
+			$output = str_replace(array('{database_queries}'), array(count($queries)), $output);
+		}
+
+		parent::render($output);
+	}
+
+}
+
+require SYSPATH . 'core/Kohana_Exception' . EXT;
+class Kohana_Exception extends Kohana_Exception_Core {}
+
+require SYSPATH . 'core/Kohana_Config' . EXT;
+require SYSPATH . 'libraries/drivers/Config' . EXT;
+require SYSPATH . 'libraries/drivers/Config/Array' . EXT;
+final class Kohana_Config extends Kohana_Config_Core {}
+
+// Prepare the environment
+Kohana::setup();
+
+// End kohana_loading
+Benchmark::stop(SYSTEM_BENCHMARK . '_kohana_loading');
+
+// Start system_initialization
+Benchmark::start(SYSTEM_BENCHMARK . '_system_initialization');
+
+// Prepare the system
+Event::run('system.ready');
+
+// Determine routing
+Event::run('system.routing');
+
+// End system_initialization
+Benchmark::stop(SYSTEM_BENCHMARK . '_system_initialization');
+
+// Make the magic happen!
+Event::run('system.execute');
