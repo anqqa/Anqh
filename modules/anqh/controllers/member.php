@@ -407,7 +407,7 @@ class Member_Controller extends Website_Controller {
 
 				// Connect accounts
 				if ($_POST['connect'] == User_External_Model::PROVIDER_FACEBOOK && $fb_uid) {
-					if (!$external_user->loaded && $member->map_external($fb_uid, User_External_Model::PROVIDER_FACEBOOK)) {
+					if (!$external_user->loaded() && $member->map_external($fb_uid, User_External_Model::PROVIDER_FACEBOOK)) {
 
 						// Map succesful
 
@@ -549,7 +549,8 @@ class Member_Controller extends Website_Controller {
 						'comments'   => $comments,
 						'errors'     => $form_errors,
 						'values'     => $form_values,
-						'pagination' => $pagination
+						'pagination' => $pagination,
+						'user'       => $this->user,
 					))
 				);
 

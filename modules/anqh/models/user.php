@@ -11,9 +11,11 @@ class User_Model extends Modeler_ORM {
 
 	// ORM
 	protected $has_many         = array('favorites', 'friends', 'tokens', 'user_comments');
-	protected $has_one          = array('city', 'default_image' => 'image');
+	//protected $has_one          = array('city', 'default_image' => 'image');
+	protected $belongs_to       = array('default_image' => 'image');
+	protected $has_one          = array('city');
 	protected $has_and_belongs_to_many = array('images', 'roles');
-	protected $foreign_key      = array('default_image' => 'id');
+	//protected $foreign_key      = array('default_image_id' => 'id');
 	protected $reload_on_wakeup = false;
 
 	// Validation
@@ -216,7 +218,7 @@ class User_Model extends Modeler_ORM {
 
 		// Try to fetch from cache first
 		$cache_key = $this->cache->key('comments', $this->id, $page_num);
-		if (false && $page_num <= User_Comment_Model::$cache_max_pages) {
+		if ($page_num <= User_Comment_Model::$cache_max_pages) {
 			$comments = $this->cache->get($cache_key);
 		}
 

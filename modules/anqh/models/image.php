@@ -10,7 +10,8 @@
 class Image_Model extends Modeler_ORM {
 
 	// ORM
-	protected $has_one  = array('author' => 'user', 'exif');
+	protected $belongs_to = array('author' => 'user');
+	protected $has_one    = array('exif');
 	//protected $has_many = array('exifs');
 
 	// Validation
@@ -109,7 +110,7 @@ class Image_Model extends Modeler_ORM {
 		$url = '';
 
 		// the image model must be loaded
-		if ($this->_loaded) {
+		if ($this->loaded()) {
 
 			$path = url::id2path($this->id);
 
