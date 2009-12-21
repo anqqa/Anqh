@@ -96,9 +96,9 @@ class date extends date_Core {
 						case 'DM': $format = 'j.n.'; break;
 						case 'DDMM': $format = 'd.m.'; break;
 						case 'DMYYYY': $format = 'j.n.Y'; break;
-						case 'date_DDMMYYYY': $format = 'd.m.Y'; break;
-						case 'date_DMYYYY_HM': $format = 'j.n.Y H:i'; break;
-						case 'date_HHMM': $format = 'H:i'; break;
+						case 'DDMMYYYY': $format = 'd.m.Y'; break;
+						case 'DMYYYY_HM': $format = 'j.n.Y H:i'; break;
+						case 'HHMM': $format = 'H:i'; break;
 					}
 				}
 				break;
