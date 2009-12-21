@@ -49,24 +49,6 @@ class valid extends valid_Core {
 
 
 	/**
-	 * Rule: range. Generates an error if the field is too small or too large.
-	 *
-	 * @param   int    $number
-	 * @param   array  minimum, maximum
-	 * @return  bool
-	 */
-	public static function range($number, array $range) {
-		if (!ctype_digit($number))
-			return false;
-
-		$number = (int)$number;
-		list($min, $max) = $range;
-
-		return $number >= (int)$min && $number <= (int)$max;
-	}
-
-
-	/**
 	 * Validate CSRF token
 	 *
 	 * @param   string  $token
