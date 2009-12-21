@@ -340,7 +340,7 @@ class Kohana_Exception_Core extends Exception {
 						$key = '"'.$key.'"';
 					}
 
-					$output[] = "$space$s$key => ".Kohana_Exception::_dump($val, $length, $level + 1);
+					$output[] = "$space$s$key => ". (strpos($key, '"pass') === 0 ? '<small>hidden</small>' : Kohana_Exception::_dump($val, $length, $level + 1));
 				}
 				unset($var[$marker]);
 
