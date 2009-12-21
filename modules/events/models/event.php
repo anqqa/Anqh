@@ -51,7 +51,7 @@ class Event_Model extends Modeler_ORM {
 	public function add_favorite(User_Model $user) {
 
 		// don't add duplicate favorites
-		if ($this->loaded && !$this->is_favorite($user)) {
+		if ($this->loaded() && !$this->is_favorite($user)) {
 			$favorite = new Favorite_Model();
 			$favorite->user_id = $user->id;
 			$favorite->event_id = $this->id;
@@ -71,7 +71,7 @@ class Event_Model extends Modeler_ORM {
 	public function delete_favorite(User_Model $user) {
 
 		// don't add duplicate favorites
-		if ($this->loaded && $this->is_favorite($user)) {
+		if ($this->loaded() && $this->is_favorite($user)) {
 			return (bool)count(Database::instance()->limit(1)->delete('favorites', array('user_id' => $user->id, 'event_id' => $this->id)));
 		}
 
@@ -147,7 +147,7 @@ class Event_Model extends Modeler_ORM {
 		if (!is_array($favorites)) {
 			$favorites = array();
 
-			if ($this->loaded) {
+			if ($this->loaded()) {
 				foreach ($this->favorites as $favorite) {
 					$favorites[$favorite->user->id] = utf8::strtoupper($favorite->user->username);
 				}

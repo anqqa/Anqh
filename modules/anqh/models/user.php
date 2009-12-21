@@ -10,10 +10,10 @@
 class User_Model extends Modeler_ORM {
 
 	// ORM
-	protected $has_many = array('favorites', 'friends', 'tokens', 'user_comments');
-	protected $has_one = array('city', 'default_image' => 'image');
+	protected $has_many         = array('favorites', 'friends', 'tokens', 'user_comments');
+	protected $has_one          = array('city', 'default_image' => 'image');
 	protected $has_and_belongs_to_many = array('images', 'roles');
-	protected $foreign_key = array('default_image' => 'id');
+	protected $foreign_key      = array('default_image' => 'id');
 	protected $reload_on_wakeup = false;
 
 	// Validation
@@ -44,7 +44,7 @@ class User_Model extends Modeler_ORM {
 	);
 	protected $rules_password = array(
 		'password'         => array('required', 'length[5,42]'),
-		'password_confirm' => array('matches[password'),
+		'password_confirm' => array('matches[password]'),
 	);
 
 	// Cached data
@@ -155,7 +155,7 @@ class User_Model extends Modeler_ORM {
 
 			// Attempt to load the user
 			$this->find_user($array['username']);
-			if ($this->loaded) {
+			if ($this->loaded()) {
 				$login->uid = $this->id;
 				$login->username = $this->username;
 
@@ -278,7 +278,7 @@ class User_Model extends Modeler_ORM {
 	public static function find_user_by_external($id, $provider) {
 		$external_user = ORM::factory('user_external')->where(array('id' => $id, 'provider' => $provider))->find();
 
-		return ($external_user->loaded) ? $external_user->user : new User_Model();
+		return ($external_user->loaded()) ? $external_user->user : new User_Model();
 	}
 
 
@@ -293,7 +293,7 @@ class User_Model extends Modeler_ORM {
 		// Are we already connected?
 		$external_user = $this->find_external_by_id($id);
 
-		if ($this->loaded && !$external_user->loaded) {
+		if ($this->loaded() && !$external_user->loaded()) {
 			$external = new User_External_Model();
 			$external->user_id = $this->id;
 			$external->id = $id;
@@ -319,7 +319,7 @@ class User_Model extends Modeler_ORM {
 	public function add_friend(User_Model $friend) {
 
 		// don't add duplicate friends or oneself
-		if ($this->loaded && $this->id != $friend->id && !$this->is_friend($friend)) {
+		if ($this->loaded() && $this->id != $friend->id && !$this->is_friend($friend)) {
 			$friendship = new Friend_Model();
 			$friendship->user_id = $this->id;
 			$friendship->friend_id = $friend->id;
@@ -339,7 +339,7 @@ class User_Model extends Modeler_ORM {
 	public function delete_friend(User_Model $friend) {
 
 		// don't add duplicate friends or oneself
-		if ($this->loaded && $this->is_friend($friend)) {
+		if ($this->loaded() && $this->is_friend($friend)) {
 			return (bool)count(Database::instance()->limit(1)->delete('friends', array('user_id' => $this->id, 'friend_id' => $friend->id)));
 		}
 
@@ -385,7 +385,7 @@ class User_Model extends Modeler_ORM {
 		// Load friends
 		if (!is_array($this->data_friends)) {
 			$friends = array();
-			if ($this->loaded) {
+			if ($this->loaded()) {
 				foreach ($this->friends as $friendship) {
 					$friends[$friendship->friend->id] = utf8::strtolower($friendship->friend->username);
 				}
@@ -462,14 +462,14 @@ class User_Model extends Modeler_ORM {
 	public function has_role($roles) {
 
 		// Model must contain data
-		if (!$this->loaded) {
+		if (!$this->loaded()) {
 			return false;
 		}
 
 		// Load roles
 		if (!is_array($this->data_roles)) {
 			$data_roles = array();
-			foreach ($this->roles as $role) {
+			foreach ($this->roles->find_all() as $role) {
 				$data_roles[$role->id] = $role->name;
 			}
 			$this->data_roles = $data_roles;
