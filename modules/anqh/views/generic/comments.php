@@ -27,14 +27,14 @@
 	<?php foreach ($comments as $comment):
 		$classes = array('line');
 
-		if (!$comment->private || $this->user && in_array($this->user->id, array($comment->user_id, $comment->author_id))):
+		if (!$comment->private || $user && in_array($user->id, array($comment->user_id, $comment->author_id))):
 
 			if ($comment->private) {
 				$classes[] = 'private';
 			}
 
 			// Viewer's post
-			if ($this->user && $comment->author_id == $this->user->id) {
+			if ($user && $comment->author_id == $user->id) {
 				$classes[] = 'my';
 				$mine = true;
 			} else {
@@ -49,7 +49,7 @@
 
 		<li class="<?= implode(' ', $classes) ?>">
 
-			<?php if ($this->user && $comment->user_id == $this->user->id || $mine): ?>
+			<?php if ($user && $comment->user_id == $user->id || $mine): ?>
 			<span class="actions">
 				<?= html::anchor(sprintf($delete, $comment->id), __('Delete'), array('class' => 'action comment-delete')) ?>
 			</span>
@@ -64,7 +64,7 @@
 			<br />
 
 			<?= $comment->private ? '<abbr title="' . __('Private comment') . '">' . __('Priv') . '</abbr>: ' : '' ?>
-			<?= text::smileys(text::auto_link(html::specialchars($comment->comment))) ?>
+			<?= text::smileys(text::auto_link_urls(html::specialchars($comment->comment))) ?>
 
 		</li>
 

@@ -202,7 +202,7 @@ class User_Model extends Modeler_ORM {
 	 * @return  int
 	 */
 	public function get_comment_count() {
-		return (int)ORM::factory('user_comment')->where('user_id', $this->id)->count_all();
+		return (int)ORM::factory('user_comment')->where('user_id', '=', $this->id)->count_all();
 	}
 
 
@@ -216,7 +216,7 @@ class User_Model extends Modeler_ORM {
 
 		// Try to fetch from cache first
 		$cache_key = $this->cache->key('comments', $this->id, $page_num);
-		if ($page_num <= User_Comment_Model::$cache_max_pages) {
+		if (false && $page_num <= User_Comment_Model::$cache_max_pages) {
 			$comments = $this->cache->get($cache_key);
 		}
 
@@ -230,7 +230,7 @@ class User_Model extends Modeler_ORM {
 
 			// Not found from cache, load from DB
 			$page_offset = ($page_num - 1) * $page_size;
-			$comments = $this->limit($page_size, $page_offset)->user_comments;
+			$comments = $this->user_comments->find_all($page_size, $page_offset);
 
 			// cache only 3 first pages
 			if ($page_num <= User_Comment_Model::$cache_max_pages) {
