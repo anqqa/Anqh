@@ -104,12 +104,13 @@ $config['config_drivers'] = array();
  * in your application directory, configuration files, controllers, views, etc.
  */
 $config['modules'] = array(
+	MODPATH . 'anqh',     // Anqh core
+
 	MODPATH . 'postgres', // PostgreSQL support
+	MODPATH . 'event',    // Event from 2.3.4
 	MODPATH . 'calendar', // Calendar from 2.3.4
 	MODPATH . 'pagination', // Pagination from 2.3.4
 	MODPATH . 'gmaps',    // Google Maps integration
-
-	MODPATH . 'anqh',     // Anqh core
 
 	MODPATH . 'events',   // Event calendar for Anqh
 	MODPATH . 'forum',    // Forum for Anqh
