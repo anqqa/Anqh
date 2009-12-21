@@ -5,9 +5,9 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<title><?= Kohana::config('site.site_name') ?></title>
 	<link rel="icon" type="image/png" href="/ui/favicon.png" />
-	<?= html::stylesheet(array('ui/boot', 'ui/grid', 'ui/typo', 'ui/invite')); ?>
+	<?= html::stylesheet(array('ui/boot.css', 'ui/grid.css', 'ui/typo.css', 'ui/invite.css')); ?>
 	<?= html::script('http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js'); ?>
-	<?= html::script('js/jquery.form') ?>
+	<?= html::script('js/jquery.form.js') ?>
 </head>
 
 <body id="<?= $page_id ?>" class="<?= $page_class ?>">
@@ -17,7 +17,7 @@
 
 			<header id="header" class="grid-4 prefix-4">
 				<h1><?= Kohana::config('site.site_name') ?></h1>
-				<h2><?= Kohana::lang('invite.intro') ?></h2>
+				<h2><?= __('.. we are in private alpha.') ?></h2>
 			</header>
 
 			<section id="login" class="grid-2 prefix-5">

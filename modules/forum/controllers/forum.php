@@ -193,7 +193,7 @@ class Forum_Controller extends Website_Controller {
 					'total_items'    => $forum_area->topics,
 					'auto_hide'      => true,
 				));
-				$topics = $forum_area->limit($per_page, $pagination->sql_offset)->forum_topics;
+				$topics = $forum_area->forum_topics->find_all($per_page, $pagination->sql_offset);
 
 				if (count($topics)) {
 					widget::add('main', $pagination);
@@ -326,7 +326,7 @@ class Forum_Controller extends Website_Controller {
 			}
 
 			//$forum_groups = ORM::factory('forum_group')->find_all();
-			widget::add('main', View::factory('forum/groups', array('groups' => array($forum_group))));
+			widget::add('main', View::factory('forum/groups', array('user' => $this->user, 'groups' => array($forum_group))));
 			$this->_side_views();
 		}
 

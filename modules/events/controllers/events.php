@@ -135,7 +135,7 @@ class Events_Controller extends Website_Controller {
 			widget::add('main', new View('generic/filters', array('filters' => $this->_build_filters($events))));
 			widget::add('main', new View('events/events', array('events' => $this->_build_events_list($events))));
 		} else {
-			//$this->_error(false, Kohana::lang('events.error_events_not_found'));
+//			$this->_error(false, Kohana::lang('events.error_events_not_found'));
 		}
 
 		$this->_side_views();
@@ -343,7 +343,7 @@ class Events_Controller extends Website_Controller {
 			$this->page_title = text::title($event->name);
 			widget::add('main', View::factory('events/event', array('event' => $event)));
 		} else {
-			$this->_error(Kohana::lang('generic.error'), $errors);
+//			$this->_error(Kohana::lang('generic.error'), $errors);
 		}
 
 		$this->_side_views();
@@ -525,7 +525,7 @@ class Events_Controller extends Website_Controller {
 		if (empty($errors)) {
 			widget::add('main', View::factory('events/event_edit', array('form' => $form, 'values' => $form_values, 'errors' => $form_errors, 'messages' => $form_messages)));
 		} else {
-			$this->_error(Kohana::lang('generic.error'), $errors);
+//			$this->_error(Kohana::lang('generic.error'), $errors);
 		}
 
 		/***** /SHOW FORM *****/
