@@ -9,7 +9,7 @@
  */
 class City_Model extends ORM {
 
-	protected $belongs_to = array('city', 'region');
-	protected $sorting = array('city' => 'asc');
+	protected $belongs_to = array('country', 'region');
+	protected $sorting = array('city' => 'ASC');
 
 }

@@ -13,7 +13,8 @@ class Event_Model extends Modeler_ORM {
 	protected $has_and_belongs_to_many = array('tags', 'images');
 	protected $has_many  = array('users');
 	protected $has_many_through = array('users' => 'favorites');
-	protected $has_one   = array('author' => 'user', 'city', 'country', 'venue', 'flyer_front_image' => 'image', 'flyer_back_image' => 'image');
+	protected $has_one   = array('country', 'flyer_front_image' => 'image', 'flyer_back_image' => 'image');
+	protected $belongs_to = array('author' => 'user', 'city', 'country', 'venue');
 	protected $load_with = array('cities');
 
 	// Validation
@@ -149,8 +150,8 @@ class Event_Model extends Modeler_ORM {
 			$favorites = array();
 
 			if ($this->loaded()) {
-				foreach ($this->favorites as $favorite) {
-					$favorites[$favorite->user->id] = utf8::strtoupper($favorite->user->username);
+				foreach ($this->users->find_all() as $favorite) {
+					$favorites[$favorite->id] = utf8::strtoupper($favorite->username);
 				}
 			}
 		}
