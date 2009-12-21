@@ -38,6 +38,13 @@ abstract class Controller extends Controller_Core {
 	public $history = true;
 
 	/**
+	 * Input library
+	 *
+	 * @var  Input
+	 */
+	public $input;
+
+	/**
 	 * Current language
 	 *
 	 * @var  string
@@ -81,6 +88,9 @@ abstract class Controller extends Controller_Core {
 
 		// Maybe controllers shouldn't know about cache? But still..
 		$this->cache = Cache::instance();
+
+		// Initialize Input
+		$this->input = new Input;
 
 		// Validate CSRF token
 		if (isset($_REQUEST['csrf'])) {
