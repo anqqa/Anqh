@@ -17,7 +17,7 @@ class Forum_Topic_Model extends Modeler_ORM {
 	protected $reload_on_wakeup = false;
 
 	// Validation
-	protected $rules = array(
+	protected $_rules = array(
 		'forum_area_id' => array('required', 'valid::numeric'),
 		'name'          => array('required', 'length[1, 200]'),
 		'event_id'      => array('valid::numeric'),

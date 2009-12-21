@@ -17,7 +17,7 @@ class Venue_Model extends Modeler_ORM {
 	//protected $load_with = array('cities');
 
 	// Validation
-	protected $rules = array(
+	protected $_rules = array(
 		'name'              => array('required', 'length[1, 32]'),
 		'homepage'          => array('length[0, 100]', 'valid::url'),
 		'description'       => array('length[0, 250]'),

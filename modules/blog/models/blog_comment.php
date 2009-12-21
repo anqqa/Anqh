@@ -18,7 +18,7 @@ class Blog_Comment_Model extends Modeler_ORM {
 	protected $reload_on_wakeup = false;
 
 	// Validation
-	protected $rules = array(
+	protected $_rules = array(
 		'comment'       => array('required', 'length[1, 300]'),
 		'blog_entry_id' => array('required', 'valid::numeric'),
 		'user_id'       => array('required', 'valid::numeric'),

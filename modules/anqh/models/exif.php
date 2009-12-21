@@ -13,7 +13,7 @@ class Exif_Model extends Modeler_ORM {
 	protected $belongs_to = array('image');
 
 	// Validation
-	protected $rules = array(
+	protected $_rules = array(
 		'image_id'      => array('valid::digit'),
 		'make'          => array('length[0, 64]'),
 		'model'         => array('length[0, 64]'),

@@ -19,7 +19,7 @@ class User_Model extends Modeler_ORM {
 	protected $reload_on_wakeup = false;
 
 	// Validation
-	protected $rules = array(
+	protected $_rules = array(
 		'name'           => array('length[1,50]'),
 		'address_street' => array('length[0,50]'),
 		'address_zip'    => array('length[4,5]', 'valid::digit'),

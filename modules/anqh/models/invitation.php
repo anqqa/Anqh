@@ -16,7 +16,7 @@ class Invitation_Model extends Modeler_ORM {
 	protected $callbacks = array(
 		'email' => array('unique_email'),
 	);
-	protected $rules = array(
+	protected $_rules = array(
 		'email' => array('required', 'valid::email'),
 	);
 

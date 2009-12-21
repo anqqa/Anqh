@@ -15,7 +15,7 @@ class Blog_Entry_Model extends Modeler_ORM {
 	protected $load_with  = array('authors');
 
 	// Validation
-	protected $rules = array(
+	protected $_rules = array(
 		'name'  => array('required', 'length[1, 200]'),
 		'entry' => array('required', 'length[1, 8192]'),
 	);

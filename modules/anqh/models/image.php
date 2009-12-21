@@ -15,7 +15,7 @@ class Image_Model extends Modeler_ORM {
 	//protected $has_many = array('exifs');
 
 	// Validation
-	protected $rules = array(
+	protected $_rules = array(
 		'status'      => array('length[1]', 'chars[ndhv]'),
 		'description' => array('length[0, 250]'),
 	);

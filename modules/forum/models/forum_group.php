@@ -15,7 +15,7 @@ class Forum_Group_Model extends Modeler_ORM {
 	protected $sorting = array('sort' => 'ASC');
 
 	// Validation
-	protected $rules = array(
+	protected $_rules = array(
 		'name'         => array('required', 'length[1, 32]'),
 		'description'  => array('length[0, 250]'),
 		'sort'         => array('required', 'valid::digit')

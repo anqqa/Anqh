@@ -26,7 +26,7 @@ class Modeler_ORM extends ORM {
 	// Validation
 	protected $validation = array();
 	protected $filters = array();
-	protected $rules = array();
+	protected $_rules = array();
 	protected $callbacks = array();
 
 	/**
@@ -222,7 +222,7 @@ class Modeler_ORM extends ORM {
 
 		// What data to use with validation
 		$validation_filters   = isset($set['filters'])   ? 'filters_'   . $set['filters']   : 'filters';
-		$validation_rules     = isset($set['rules'])     ? 'rules_'     . $set['rules']     : 'rules';
+		$validation_rules     = isset($set['rules'])     ? 'rules_'     . $set['rules']     : '_rules';
 		$validation_callbacks = isset($set['callbacks']) ? 'callbacks_' . $set['callbacks'] : 'callbacks';
 
 		// Add filters

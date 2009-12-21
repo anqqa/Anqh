@@ -74,7 +74,7 @@ class Forum_Area_Model extends Modeler_ORM {
 	protected $foreign_key = array('last_topic' => 'id');
 
 	// Validation
-	protected $rules = array(
+	protected $_rules = array(
 		'forum_group_id' => array('required', 'valid::numeric'),
 		'name'           => array('required', 'length[1, 32]'),
 		'description'    => array('length[0, 250]'),

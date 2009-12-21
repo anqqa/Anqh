@@ -14,7 +14,7 @@ class Forum_Post_Model extends Modeler_ORM {
 	protected $load_with  = array('authors');
 
 	// Validation
-	protected $rules = array(
+	protected $_rules = array(
 		'forum_topic_id' => array('valid::numeric'),
 		'forum_area_id'  => array('required', 'valid::numeric'),
 		'post'           => array('required', 'length[1, 4096]'),

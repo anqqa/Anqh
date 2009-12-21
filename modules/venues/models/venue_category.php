@@ -18,7 +18,7 @@ class Venue_Category_Model extends Modeler_ORM {
 	protected $callbacks = array(
 		'name' => array('unique'),
 	);
-	protected $rules = array(
+	protected $_rules = array(
 		'name'         => array('required', 'length[1, 32]'),
 		'description'  => array('length[1, 250]'),
 		'tag_group_id' => array('valid::digit'),

@@ -16,7 +16,7 @@ class Event_Model extends Modeler_ORM {
 	protected $load_with = array('cities');
 
 	// Validation
-	protected $rules = array(
+	protected $_rules = array(
 		'id'          => array('valid::digit'),
 		'name'        => array('required', 'length[3,100]'),
 		'homepage'    => array('length[1,100]', 'valid::url'),

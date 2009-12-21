@@ -14,7 +14,7 @@ class Tag_Model extends Modeler_ORM {
 	protected $has_and_belongs_to_many = array('places');
 
 	// Validation
-	protected $rules = array(
+	protected $_rules = array(
 		'name'         => array('required', 'length[1, 32]'),
 		'description'  => array('length[0, 250]'),
 		'tag_group_id' => array('valid::digit'),
