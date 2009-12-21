@@ -78,7 +78,7 @@ class Modeler_ORM extends ORM {
 	public function get_defaults($form_data = 'form') {
 		$form = array();
 		foreach ($this->$form_data as $key => $data) {
-			$form[$key] = $this->loaded && isset($this->$key) ? $this->$key : '';
+			$form[$key] = $this->loaded() && isset($this->$key) ? $this->$key : '';
 		}
 
 		return $form;
@@ -98,7 +98,7 @@ class Modeler_ORM extends ORM {
 	public function is_author($user = null) {
 
 		// Check if we even have the author id
-		if (isset($this->table_columns['author_id'])) {
+		if ($this->loaded() && isset($this->table_columns['author_id'])) {
 			$author_id = $this->author_id;
 		} else {
 			return false;
@@ -247,13 +247,15 @@ class Modeler_ORM extends ORM {
 
 		// Validate
 		if ($values->validate()) {
+			$this->_valid = true;
 
 			// Set validated values to current object, skipping non-db
 			$this->set_fields($values->safe_array());
 
 			// Add extra values
-			if (!empty($extra_values))
+			if (!empty($extra_values)) {
 				$this->set_fields($extra_values);
+			}
 
 			try {
 				return $save ? $this->save() : true;
