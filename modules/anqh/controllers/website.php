@@ -52,13 +52,6 @@ abstract class Website_Controller extends Controller {
 	public $page_title = '&nbsp;';
 
 	/**
-	 * Profiler library
-	 *
-	 * @var  Profiler
-	 */
-	protected $profiler;
-
-	/**
 	 * Skin for the site
 	 *
 	 * @var  string
@@ -101,7 +94,7 @@ abstract class Website_Controller extends Controller {
 
 		// Use profiler only when an admin is logged in
 		if ($this->visitor->logged_in('admin')) {
-			$this->profiler = new Profiler;
+			Profiler::enable();
 		}
 
 		// Build the main view
