@@ -568,7 +568,7 @@ class Events_Controller extends Website_Controller {
 			$this->type = 'month';
 			$this->date->setDate($year, $month, 1);
 
-			$this->page_title = text::title(Kohana::lang('generic.month' . $this->date->format('n')) . ' ' . $this->date->format('Y'));
+			$this->page_title = text::title($this->date->format('F Y'));
 			$this->_build_calendar();
 		}
 	}
