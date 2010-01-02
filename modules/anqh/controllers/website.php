@@ -238,17 +238,23 @@ var _gaq = _gaq || []; _gaq.push(['_setAccount', '" . $google_analytics . "']); 
 	 * @param string $hidden
 	 */
 	public function _autocomplete_city($field = 'city_name', $hidden = 'city_id') {
-		$countries = ORM::factory('country')->in('country', Kohana::config('site.countries'));
+		$countries = ORM::factory('country')->where('country', 'IN', Kohana::config('site.countries'))->find_all();
 
 		$cities = array();
-		foreach ($countries->find_all() as $country) {
-			foreach ($country->cities as $city) {
+		foreach ($countries as $country) {
+			foreach ($country->cities->find_all() as $city) {
 				$cities[] = "{ id: '" . $city->id . "', text: '" . html::chars($city->city) . "' }";
 			}
 		}
 
-		widget::add('foot', html::script_source('var cities = [' . implode(', ', $cities) . '];'));
-		widget::add('foot', html::script_source("$('input#" . $field . "').autocomplete(cities, { formatItem: function(item) { return item.text; }}).result(function(event, item) { $(\"input[name='" . $hidden . "']\").val(item.id); });"));
+		widget::add('foot', html::script_source('var cities = [' . implode(', ', $cities) . "];
+$('input#" . $field . "').autocomplete(cities, {
+	formatItem: function(item) {
+		return item.text;
+	}
+}).result(function(event, item) {
+	$(\"input[name='" . $hidden . "']\").val(item.id);
+});"));
 	}
 
 

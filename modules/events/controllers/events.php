@@ -489,15 +489,16 @@ class Events_Controller extends Website_Controller {
 			$this->page_title = text::title($event->name);
 			$this->page_subtitle = __('Edit event');
 			list($form_values['start_date'], $form_values['start_hour']) = explode(' ', date('Y-m-d H', strtotime($event->start_time)));
-			if (!empty($event->end_time))
+			if (!empty($event->end_time)) {
 				list($temp, $form_values['end_hour']) = explode(' ', date('Y-m-d H', strtotime($event->end_time)));
+			}
 		} else {
 			$this->page_title = __('New event');
 		}
 
 		$form = $event->get_form();
 
-		// tags
+		// Tags
 		if ($tag_group = Kohana::config('events.tag_group')) {
 			$form['tags'] = $form_values['tags'] = array();
 			$tags = ORM::factory('tag_group', $tag_group);
@@ -507,19 +508,25 @@ class Events_Controller extends Website_Controller {
 			}
 		}
 
-		// city autocomplete
+		// City autocomplete
 		$this->_autocomplete_city('city_name');
 
-		// venue autocomplete
-		$venues = ORM::factory('venue')->where('event_host', 1)->find_all();
+		// Venue autocomplete
+		$venues = ORM::factory('venue')->where('event_host', '=', 1)->find_all();
 		$hosts = array();
 		foreach ($venues as $venue) {
-			$hosts[] = "{ id: '" . $venue->id . "', text: '" . html::specialchars($venue->name) . "' }";
+			$hosts[] = "{ id: '" . $venue->id . "', text: '" . html::chars($venue->name) . "' }";
 		}
-		widget::add('foot', html::script_source('var venues = [' . implode(', ', $hosts) . '];'));
-		widget::add('foot', html::script_source("$('input#venue').autocomplete(venues, { formatItem: function(item) { return item.text; }}).result(function(event, item) { $('input#venue_id').val(item.id); });"));
+		widget::add('foot', html::script_source('var venues = [' . implode(', ', $hosts) . "];
+$('input#venue_name').autocomplete(venues, {
+	formatItem: function(item) {
+		return item.text;
+	}
+}).result(function(event, item) {
+	$('input#venue_id').val(item.id);
+});"));
 
-		// date pickers
+		// Date pickers
 		widget::add('foot', html::script_source("$('input#start_date').datepicker({ dateFormat: 'd.m.yy', firstDay: 1, changeFirstDay: false, showOtherMonths: true, showWeeks: true, showStatus: true, showOn: 'both' });"));
 
 		if (empty($errors)) {
