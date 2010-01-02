@@ -260,7 +260,7 @@ class Modeler_ORM extends ORM {
 			try {
 				return $save ? $this->save() : true;
 			} catch (Kohana_Database_Exception $e) {
-				$values->message('error', 'saving_to_database');
+				//$values->message('error', 'saving_to_database');
 				return false;
 			}
 		}
