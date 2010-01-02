@@ -175,7 +175,7 @@ abstract class Website_Controller extends Controller {
 			}
 
 			if (Kohana::config('site.inviteonly')) {
-				widget::add('dock', ' | ' . html::anchor('sign/up', __('Send invite')));
+//				widget::add('dock', ' | ' . html::anchor('sign/up', __('Send invite')));
 			}
 
 			// Admin functions
