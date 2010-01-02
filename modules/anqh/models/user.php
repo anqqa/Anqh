@@ -339,13 +339,13 @@ class User_Model extends Modeler_ORM {
 	 * @param  User_Model  $friend
 	 */
 	public function delete_friend(User_Model $friend) {
-
-		// don't add duplicate friends or oneself
-		if ($this->loaded() && $this->is_friend($friend)) {
-			return (bool)count(Database::instance()->limit(1)->delete('friends', array('user_id' => $this->id, 'friend_id' => $friend->id)));
-		}
-
-		return false;
+		return $this->loaded()
+			&& $this->is_friend($friend)
+			&& (bool)count(db::build()
+				->delete('friends')
+				->where('user_id', '=', $this->id)
+				->where('friend_id', '=', $friend->id)
+				->execute());
 	}
 
 
@@ -388,7 +388,7 @@ class User_Model extends Modeler_ORM {
 		if (!is_array($this->data_friends)) {
 			$friends = array();
 			if ($this->loaded()) {
-				foreach ($this->friends as $friendship) {
+				foreach ($this->friends->find_all() as $friendship) {
 					$friends[$friendship->friend->id] = utf8::strtolower($friendship->friend->username);
 				}
 			}
