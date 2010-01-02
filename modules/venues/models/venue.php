@@ -10,9 +10,8 @@
 class Venue_Model extends Modeler_ORM {
 
 	// ORM
-	protected $belongs_to = array('author' => 'user', 'venue_category');
-	protected $has_one    = array('city', 'default_image' => 'image');
 	protected $has_and_belongs_to_many = array('images', 'tags');
+	protected $belongs_to = array('author' => 'user', 'venue_category', 'city', 'default_image' => 'image');
 	protected $sorting    = array('city_name' => 'ASC', 'name' => 'ASC');
 	//protected $load_with = array('cities');
 

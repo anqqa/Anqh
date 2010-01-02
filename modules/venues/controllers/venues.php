@@ -111,10 +111,10 @@ class Venues_Controller extends Website_Controller {
 
 			// organize by city
 			$cities = $this->country ? ORM::factory('country')->find($this->country)->cities->as_array() : false;
-			$venues = count($venue_category->venues);
+			$venues = $venue_category->venues->find_all();
 			$venues_by_city = array();
-			if ($venues) {
-				foreach ($venue_category->venues as $venue) {
+			if (count($venues)) {
+				foreach ($venues as $venue) {
 					if ($cities && !in_array($venue->city_id, $cities)) continue;
 					if (!isset($venues_by_city[$venue->city->city])) {
 						$venues_by_city[$venue->city->city] = array($venue);
@@ -125,13 +125,13 @@ class Venues_Controller extends Website_Controller {
 			}
 			$this->page_subtitle .= ' - '
 				. __2(':cities city',  ':cities cities', count($venues_by_city), array(':cities' => '<var>' . count($venues_by_city) . '</var>')) . ', '
-				. __2(':venues venue', ':venues venues', $venues,                array(':venues' => '<var>' . $venues . '</var>'));
+				. __2(':venues venue', ':venues venues', count($venues),         array(':venues' => '<var>' . count($venues) . '</var>'));
 
 			widget::add('main', View::factory('venues/venues', array('venues' => $venues_by_city, 'country' => $this->country)));
 		}
 
 		if (count($errors)) {
-			$this->_error(Kohana::lang('generic.error'), $errors);
+			//$this->_error(Kohana::lang('generic.error'), $errors);
 		}
 
 		$this->_side_views();

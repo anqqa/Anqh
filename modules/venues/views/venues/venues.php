@@ -6,7 +6,7 @@
 
 	<?php	foreach ($venues as $city => $city_venues): ?>
 	<li class="city clearfix">
-		<h3 id="<?= html::specialchars(utf8::strtolower($city)) ?>"><?= html::specialchars($city) ?></h3>
+		<h3 id="<?= html::specialchars(utf8::strtolower($city)) ?>"><?= html::chars($city) ?></h3>
 		<ul>
 			<?php foreach ($city_venues as $venue): ?>
 			<li class="venue venue-<?= $venue->id ?> grid-2">
