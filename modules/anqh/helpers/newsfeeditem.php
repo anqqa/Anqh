@@ -27,7 +27,7 @@ abstract class newsfeeditem_Core {
 		$item->data = $data;
 		$item->save();
 
-		return $item->saved;
+		return $item->saved();
 	}
 
 
