@@ -87,8 +87,8 @@
 
 			</ul>
 
-			<?= $event->flyer_front_image_id ? '<span class="flyer">' . html::image($event->flyer_front_image->url('thumb'), Kohana::lang('events.event_flyer_front')) . '</span>' : '' ?>
-			<?= $event->flyer_back_image_id ? '<span class="flyer">' . html::image($event->flyer_back_image->url('thumb'), Kohana::lang('events.event_flyer_back')) . '</span>' : '' ?>
+			<?= $event->flyer_front_image_id ? '<span class="flyer">' . html::img($event->flyer_front_image) . '</span>' : '' ?>
+			<?= $event->flyer_back_image_id ? '<span class="flyer">' . html::img($event->flyer_back_image) . '</span>' : '' ?>
 		</section>
 
 	</article>

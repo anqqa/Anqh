@@ -390,7 +390,6 @@ class Events_Controller extends Website_Controller {
 		}
 
 		$errors = $form_errors = array();
-		$form_messages = '';
 		$form_values = $event->as_array();
 		$form_values['start_date'] = '';
 		$form_values['start_hour'] = '';
@@ -474,7 +473,6 @@ class Events_Controller extends Website_Controller {
 				url::redirect(url::model($event));
 			} else {
 				$form_errors = $post->errors();
-				$form_messages = $post->message();
 			}
 			$form_values = arr::overwrite($form_values, $post->as_array());
 		}
@@ -530,7 +528,7 @@ $('input#venue_name').autocomplete(venues, {
 		widget::add('foot', html::script_source("$('input#start_date').datepicker({ dateFormat: 'd.m.yy', firstDay: 1, changeFirstDay: false, showOtherMonths: true, showWeeks: true, showStatus: true, showOn: 'both' });"));
 
 		if (empty($errors)) {
-			widget::add('main', View::factory('events/event_edit', array('form' => $form, 'values' => $form_values, 'errors' => $form_errors, 'messages' => $form_messages)));
+			widget::add('main', View::factory('events/event_edit', array('form' => $form, 'values' => $form_values, 'errors' => $form_errors)));
 		} else {
 //			$this->_error(Kohana::lang('generic.error'), $errors);
 		}

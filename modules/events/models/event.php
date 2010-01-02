@@ -11,11 +11,10 @@ class Event_Model extends Modeler_ORM {
 
 	// ORM
 	protected $has_and_belongs_to_many = array('tags', 'images');
-	protected $has_many  = array('users');
+	protected $has_many   = array('users');
 	protected $has_many_through = array('users' => 'favorites');
-	protected $has_one   = array('country', 'flyer_front_image' => 'image', 'flyer_back_image' => 'image');
-	protected $belongs_to = array('author' => 'user', 'city', 'country', 'venue');
-	protected $load_with = array('cities');
+	protected $belongs_to = array('author' => 'user', 'city', 'country', 'venue', 'flyer_front_image' => 'image', 'flyer_back_image' => 'image');
+	protected $load_with  = array('cities');
 
 	// Validation
 	protected $_rules = array(
@@ -71,13 +70,13 @@ class Event_Model extends Modeler_ORM {
 	 * @param  User_Model  $friend
 	 */
 	public function delete_favorite(User_Model $user) {
-
-		// don't add duplicate favorites
-		if ($this->loaded() && $this->is_favorite($user)) {
-			return (bool)count(Database::instance()->limit(1)->delete('favorites', array('user_id' => $user->id, 'event_id' => $this->id)));
-		}
-
-		return false;
+		return $this->loaded()
+			&& $this->is_favorite($user)
+			&& (bool)count(db::build()
+				->delete('favorites')
+				->where('user_id', '=', $user->id)
+				->where('event_id', '=', $this->id)
+				->execute());
 	}
 
 

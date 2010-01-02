@@ -75,8 +75,10 @@
 			<legend><?= __('Flyers') ?></legend>
 			<ul>
 
+				<?= $values['flyer_front_image_id'] ? '<li class="flyer">' . html::img(new Image_Model($values['flyer_front_image_id']), 'thumb') . '</li>' : '' ?>
 				<?= form::upload_wrap('flyer_front', null, null, __('Front'), $errors) ?>
 
+				<?= $values['flyer_back_image_id'] ? '<li class="flyer">' . html::img(new Image_Model($values['flyer_back_image_id']), 'thumb') . '</li>' : '' ?>
 				<?= form::upload_wrap('flyer_back', null, null, __('Back'), $errors) ?>
 
 			</ul>
