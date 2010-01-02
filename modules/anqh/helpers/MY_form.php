@@ -47,6 +47,15 @@ class form extends form_Core {
 		$value = is_array($value) ? arr::get($value, $name) : $value;
 		$checked = is_array($checked) ? arr::get($checked, $name) == $value : $checked;
 
+		// Add id to input if label given
+		if ($label) {
+			if (!is_array($data)) {
+				$data = array('name' => $name, 'id' => $name);
+			} else if (!isset($data['id'])) {
+				$data['id'] = $name;
+			}
+		}
+
 		$input = form::checkbox($data, $value, $checked, $extra);
 
 		return form::wrap($input, $name, $label, $error, $tip, true);
@@ -150,6 +159,15 @@ class form extends form_Core {
 		$name = is_array($data) ? arr::get($data, 'name') : $data;
 		$value = is_array($value) ? arr::get($value, $name) : $value;
 
+		// Add id to input if label given
+		if ($label) {
+			if (!is_array($data)) {
+				$data = array('name' => $name, 'id' => $name);
+			} else if (!isset($data['id'])) {
+				$data['id'] = $name;
+			}
+		}
+
 		$input = form::input($data, $value, $extra);
 
 		return form::wrap($input, $name, $label, $error, $tip);
@@ -181,6 +199,15 @@ class form extends form_Core {
 			}
 		}
 
+		// Add id to input if label given
+		if ($label) {
+			if (!is_array($data)) {
+				$data = array('name' => $name, 'id' => $name);
+			} else if (!isset($data['id'])) {
+				$data['id'] = $name;
+			}
+		}
+
 		$input = form::password($data, $value, $extra);
 
 		// Add 'Show password' ?
@@ -208,6 +235,15 @@ class form extends form_Core {
 		$name = is_array($data) ? arr::get($data, 'name') : $data;
 		$value = is_array($value) ? arr::get($value, $name) : $value;
 
+		// Add id to input if label given
+		if ($label) {
+			if (!is_array($data)) {
+				$data = array('name' => $name, 'id' => $name);
+			} else if (!isset($data['id'])) {
+				$data['id'] = $name;
+			}
+		}
+
 		$input = form::textarea($data, $value, $extra, $double_encode);
 
 		return form::wrap($input, $name, $label, $error, $tip);
@@ -228,6 +264,15 @@ class form extends form_Core {
 	public static function upload_wrap($data, $value = '', $extra = '', $label = '', $error = '', $tip = '') {
 		$name = is_array($data) ? arr::get($data, 'name') : $data;
 		$value = is_array($value) ? arr::get($value, $name) : $value;
+
+		// Add id to input if label given
+		if ($label) {
+			if (!is_array($data)) {
+				$data = array('name' => $name, 'id' => $name);
+			} else if (!isset($data['id'])) {
+				$data['id'] = $name;
+			}
+		}
 
 		$input = form::upload($data, $value, $extra);
 
