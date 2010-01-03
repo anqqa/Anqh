@@ -14,8 +14,9 @@ class Pagination extends Pagination_Core {
 	 */
 	public function to_last_page() {
 		$this->current_page       = $this->total_pages;
-		$this->current_first_item = (int) min((($this->current_page - 1) * $this->items_per_page) + 1, $this->total_items);
-		$this->current_last_item  = (int) min($this->current_first_item + $this->items_per_page - 1, $this->total_items);
+		$this->current_first_item = (int)min((($this->current_page - 1) * $this->items_per_page) + 1, $this->total_items);
+		$this->current_last_item  = (int)min($this->current_first_item + $this->items_per_page - 1, $this->total_items);
+		$this->sql_offset         = (int)($this->current_page - 1) * $this->items_per_page;
 
 		// If there is no first/last/previous/next page, relative to the
 		// current page, value is set to FALSE. Valid page number otherwise.

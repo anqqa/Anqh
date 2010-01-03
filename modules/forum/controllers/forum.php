@@ -691,7 +691,7 @@ class Forum_Controller extends Website_Controller {
 					$pagination->to_last_page();
 				}
 
-				$posts = $forum_topic->limit($per_page, $pagination->sql_offset)->forum_posts->find_all();
+				$posts = $forum_topic->forum_posts->find_all($per_page, $pagination->sql_offset);
 				$this->page_subtitle .= __(':posts posts, page :page of :pages', array(
 					':posts' => '<var>' . num::format($forum_topic->posts) . '</var>',
 					':page'  => '<var>' . $pagination->current_page . '</var>',
