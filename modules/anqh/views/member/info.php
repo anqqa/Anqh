@@ -1,11 +1,6 @@
 <div id="basic-info" class="container">
 
 	<h4><?= __('Basic Info') ?></h4>
-	<?php if (!empty($action)): ?>
-	<div class="actions">
-		<?= html::anchor($action['link'], $action['text'], array('class' => 'action')) ?>
-	</div>
-	<?php endif; ?>
 	<dl>
 		<?php if (!empty($user->name)): ?>
 		<dt><?= __('Name') ?>:</dt><dd><?= html::specialchars($user->name) ?></dd>
@@ -21,6 +16,18 @@
 		<?php endif; ?>
 		<?php if (!empty($user->latitude) && !empty($user->longitude)): ?>
 		<dt><?= __('Location') ?>:</dt><dd><?= $user->latitude ?>, <?= $user->longitude ?></dd>
+		<dd><?= html::anchor('#map', __('Toggle map')) ?></dd>
+		<dd><div id="map" style="display: none"><?= __('Map loading') ?></div></dd>
+		<?php
+			$map = new Gmap('map', array('ScrollWheelZoom' => true));
+			$map->center($user->latitude, $user->longitude, 15)->controls('small')->types('G_PHYSICAL_MAP', 'add');
+			$map->add_marker(
+				$user->latitude, $user->longitude,
+				'<strong>' . html::specialchars($user->username) . '</strong>'
+			);
+			widget::add('foot', html::script_source($map->render('gmaps/jquery_event')));
+			widget::add('foot', html::script_source("$('a[href*=\"#map\"]:first').click(function() { $('#map').toggle('normal', gmap_open); return false; });"));
+		?>
 		<?php endif; ?>
 	</dl>
 </div>

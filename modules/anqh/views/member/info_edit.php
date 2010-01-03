@@ -1,45 +1,49 @@
 
-<?= form::open_multipart() ?>
+<section class="mod settings">
 
-	<fieldset>
-		<legend><?= __('Picture') ?></legend>
-		<ul>
+	<?= form::open_multipart() ?>
 
-			<?= form::upload_wrap('image', null, null, __('Picture'), $errors) ?>
+		<fieldset>
+			<legend><?= __('Picture') ?></legend>
+			<ul>
 
-		</ul>
-	</fieldset>
+				<?= form::upload_wrap('image', null, null, __('Picture'), $errors) ?>
 
-	<fieldset>
-		<legend><?= __('Basic Info') ?></legend>
-		<ul>
+			</ul>
+		</fieldset>
 
-			<?= form::input_wrap('name', $values, 'maxlength="50"', __('Name'), $errors) ?>
+		<fieldset>
+			<legend><?= __('Basic Info') ?></legend>
+			<ul>
 
-			<?= form::input_wrap('dob', $values, 'maxlength="10"', __('Date of Birth'), $errors) ?>
+				<?= form::input_wrap('name', $values, 'maxlength="50"', __('Name'), $errors) ?>
 
-			<?= form::dropdown_wrap('gender', array('' => '', 'm' => __('Male'), 'f' => __('Female')), $values, '', __('Gender'), $errors) ?>
+				<?= form::input_wrap('dob', $values, 'maxlength="10"', __('Date of Birth'), $errors) ?>
 
-		</ul>
-	</fieldset>
+				<?= form::dropdown_wrap('gender', array('' => '', 'm' => __('Male'), 'f' => __('Female')), $values, '', __('Gender'), $errors) ?>
 
-	<fieldset>
-		<legend><?= __('Location') ?></legend>
-		<ul>
+			</ul>
+		</fieldset>
 
-			<?= form::input_wrap('address_street', $values, 'maxlength="50"', __('Address'), $errors) ?>
+		<fieldset>
+			<legend><?= __('Location') ?></legend>
+			<ul>
 
-			<?= form::input_wrap('address_city', $values, 'maxlength="50"', __('City'), $errors) ?>
+				<?= form::input_wrap('address_street', $values, 'maxlength="50"', __('Address'), $errors) ?>
 
-			<?= form::input_wrap('address_zip', $values, 'maxlength="5"', __('Zip code'), $errors) ?>
+				<?= form::input_wrap('address_city', $values, 'maxlength="50"', __('City'), $errors) ?>
 
-		</ul>
-	</fieldset>
+				<?= form::input_wrap('address_zip', $values, 'maxlength="5"', __('Zip code'), $errors) ?>
 
-	<fieldset>
-		<?= form::hidden('city_id', $values['city_id']) ?>
-		<?= form::submit(false, __('Save')) ?>
-		<?= html::anchor($_SESSION['history'], __('Cancel')) ?>
-	</fieldset>
+			</ul>
+		</fieldset>
 
-<?= form::close() ?>
+		<fieldset>
+			<?= form::hidden('city_id', $values['city_id']) ?>
+			<?= form::submit(false, __('Save')) ?>
+			<?= html::anchor(empty($_SESSION['history']) ? '/' : $_SESSION['history'], __('Cancel')) ?>
+		</fieldset>
+
+	<?= form::close() ?>
+
+</section>
