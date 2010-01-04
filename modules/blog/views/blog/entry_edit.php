@@ -7,7 +7,7 @@
 
 			<?= form::input_wrap(array('name' => 'name', 'tabindex' => 1, 'maxlength' => 100, 'title' => __('Title')), $values, '', '', $errors) ?>
 
-			<?= form::textarea_wrap(array('name' => 'entry', 'tabindex' => 2, 'rows' => 20, 'cols' => 25), $values, '', true, '', $errors) ?>
+			<?= form::textarea_wrap(array('name' => 'entry', 'id' => 'entry', 'tabindex' => 2, 'rows' => 20, 'cols' => 25), $values, '', true, '', $errors) ?>
 
 		</ul>
 	</fieldset>
