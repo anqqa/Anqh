@@ -252,7 +252,7 @@ class Blogs_Controller extends Website_Controller {
 		$form = $entry->get_form();
 
 		if (empty($errors)) {
-			widget::add('head', html::script(array('js/jquery.markitup.pack', 'js/markitup.bbcode')));
+			widget::add('head', html::script(array('js/jquery.markitup.pack.js', 'js/markitup.bbcode.js')));
 			widget::add('main',
 				View::factory('blog/entry_edit', array(
 					'form'     => $form,
