@@ -6,7 +6,7 @@
 		<legend><h3><?= __('Post') ?></h3></legend>
 		<ul>
 
-			<?= form::textarea_wrap(array('name' => 'post', 'id' => 'post'), $post, 'rows="20" cols="25"', true, '', $errors) ?>
+			<?= form::textarea_wrap(array('name' => 'post', 'id' => 'post', 'rows' => 20, 'cols' => 25), $post, '', true, '', $errors) ?>
 
 		</ul>
 	</fieldset>
