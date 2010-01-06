@@ -86,9 +86,12 @@ abstract class Website_Controller extends Controller {
 	function __construct() {
 		parent::__construct();
 
-		// AJAX requests use different controller
+		// Init page values
+		$this->country = empty($_SESSION['country']) ? false : $_SESSION['country'];
+
+		// AJAX requests output without template
 		if (request::is_ajax()) {
-			header('HTTP/1.1 403 Forbidden');
+			$this->auto_render = false;
 			return;
 		}
 
@@ -112,7 +115,6 @@ abstract class Website_Controller extends Controller {
 		$this->page_id = Router::$controller;
 
 		// Init page values
-		$this->country = empty($_SESSION['country']) ? false : $_SESSION['country'];
 		$this->menu = Kohana::config('site.menu');
 
 		$skin_path = 'ui/' . Kohana::config('site.skin') . '/';
