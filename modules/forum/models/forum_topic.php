@@ -74,7 +74,7 @@ class Forum_Topic_Model extends Modeler_ORM {
 	 * @return  boolean
 	 */
 	public function refresh($save = true) {
-		if ($this->loaded) {
+		if ($this->loaded()) {
 
 			// First post data
 			$first_post = ORM::factory('forum_post')->where('forum_topic_id', $this->id)->order_by('id', 'ASC')->find();
