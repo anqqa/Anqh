@@ -28,15 +28,25 @@
 echo html::script_source('
 $(function() {
 	$(".post-edit").click(function(e) {
-		var action = $(this);
-		var post = action.attr("href").match(/([0-9]*)\\/edit/);
+		var post = $(this).attr("href").match(/([0-9]*)\\/edit/);
 		if (post) {
 			e.preventDefault();
-			$.get(action.attr("href"), function(data) {
+			$.get($(this).attr("href"), function(data) {
 				$("#post-" + post[1] + " .post-content").html(data);
 			});
-			return;
 		}
+	});
+
+	$(".post-delete").each(function(i) {
+		var action = $(this);
+		action.data("action", function() {
+			var post = action.attr("href").match(/([0-9]*)\\/delete/);
+			if (post) {
+				$.get(action.attr("href"), function(data) {
+					$("#post-" + post[1]).fadeOut("slow");
+				});
+			}
+		});
 	});
 });
 ');

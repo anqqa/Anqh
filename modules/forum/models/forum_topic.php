@@ -77,13 +77,13 @@ class Forum_Topic_Model extends Modeler_ORM {
 		if ($this->loaded()) {
 
 			// First post data
-			$first_post = ORM::factory('forum_post')->where('forum_topic_id', $this->id)->order_by('id', 'ASC')->find();
+			$first_post = ORM::factory('forum_post')->where('forum_topic_id', '=', $this->id)->order_by('id', 'ASC')->find();
 			$this->first_post_id = $first_post->id;
 			$this->author_id     = $first_post->author_id;
 			$this->author_name   = $first_post->author_name;
 
 			// Last post data
-			$last_post = ORM::factory('forum_post')->where('forum_topic_id', $this->id)->order_by('id', 'DESC')->find();
+			$last_post = ORM::factory('forum_post')->where('forum_topic_id', '=', $this->id)->order_by('id', 'DESC')->find();
 			$this->last_post_id = $last_post->id;
 			$this->last_posted  = $last_post->created;
 			$this->last_poster  = $last_post->author_name;

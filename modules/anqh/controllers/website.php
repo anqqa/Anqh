@@ -92,6 +92,7 @@ abstract class Website_Controller extends Controller {
 		// AJAX requests output without template
 		if (request::is_ajax()) {
 			$this->auto_render = false;
+			$this->history = false;
 			return;
 		}
 

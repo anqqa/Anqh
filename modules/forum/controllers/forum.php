@@ -503,6 +503,10 @@ class Forum_Controller extends Website_Controller {
 			$forum_area = $forum_topic->forum_area;
 			$forum_area->posts -= 1;
 			$forum_area->save();
+
+			if (request::is_ajax()) {
+				return;
+			}
 		}
 
 		url::back('/forum');

@@ -191,7 +191,9 @@ $(function() {
 		e.preventDefault();
 		var action = $(this);
 		var title = action.text();
-		if (action.is('a')) {
+		if (action.data('action')) {
+			confirm_delete(title, function() { action.data('action')(); });
+		} else if (action.is('a')) {
 			confirm_delete(title, function() { window.location = action.attr('href'); });
 		} else {
 			confirm_delete(title, function() { action.parent('form').submit(); });
