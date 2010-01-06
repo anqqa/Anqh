@@ -79,6 +79,14 @@ DATE;
 	}
 
 
+	/**
+	 * UI button
+	 *
+	 * @param   string  $uri
+	 * @param   string  $title
+	 * @param   array   $attributes
+	 * @return  string
+	 */
 	public static function button($uri, $title, $attributes = null) {
 		if (empty($attributes)) {
 			$attributes = array('class' => 'button');
@@ -88,52 +96,6 @@ DATE;
 		$attributes['class'] .= ' medium';
 
 		return html::anchor($uri, $title, $attributes);
-	}
-
-
-	/**
-	 * Confirm dialog
-	 *
-	 * @param  string  $selector
-	 * @param  string  $dialog_id
-	 * @param  string  $title
-	 * @param  string  $text
-	 * @param  string  $ok      text for OK
-	 * @param  string  $cancel  text for Cancel
-	 */
-	public static function confirm($selector, $dialog_id, $title, $text, $ok = 'OK', $cancel = 'Cancel') {
-		$dialog_id = 'dialog-' . $dialog_id;
-		ob_start();
-?>
-$(function() {
-
-	$("#<?= $dialog_id ?>").dialog({
-		autoOpen: false,
-		modal: true,
-		buttons: {
-			'<?= $ok ?>': function() {
-				var action = $('<?= $selector ?>');
-				if (action.is('a')) {
-					window.location = action.attr('href');
-				} else if (action.is('button') || action.is('input')) {
-					action.parent('form').submit();
-				}
-			},
-			'<?= $cancel ?>': function() {
-				$(this).dialog('close');
-			}
-		}
-	});
-
-	$('<?= $selector ?>').click(function() {
-		$('#<?= $dialog_id ?>').dialog('open');
-		return false;
-	});
-
-});
-<?php
-		widget::add('foot', html::script_source(ob_get_clean()));
-		widget::add('foot', '<div id="' . $dialog_id . '" title="' . self::specialchars($title) . '">' . $text . '</div>');
 	}
 
 
@@ -264,7 +226,7 @@ $(function() {
 			foreach ($source as $script)
 				$compiled .= html::script_source($script);
 		} else {
-			$compiled = implode("\n", array('<script>', '//<![CDATA[', $source, '//]]>', '</script>'));
+			$compiled = implode("\n", array('<script>', /*'// <![CDATA[',*/ trim($source), /*'// ]]>',*/ '</script>'));
 		}
 		return $compiled;
 	}

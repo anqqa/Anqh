@@ -187,10 +187,10 @@ class date extends date_Core {
 		}
 
 		if (empty($difference)) {
-			return '0 ' . Kohana::lang('generic.seconds');
+			return '0 ' . __('seconds');
 		}
 
-		return Kohana::lang('generic.unknown_span');
+		return __('some time');
 	}
 
 
