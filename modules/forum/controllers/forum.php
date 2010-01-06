@@ -28,6 +28,8 @@ class Forum_Controller extends Website_Controller {
 			'latest' => array('link' => 'forum/latest', 'text' => __('New topics')),
 			'areas'  => array('link' => 'forum/areas',  'text' => __('Forum areas')),
 		);
+
+		widget::add('head', html::script(array('js/jquery.markitup.pack.js', 'js/markitup.bbcode.js')));
 	}
 
 
@@ -425,6 +427,38 @@ class Forum_Controller extends Website_Controller {
 			}
 		}
 
+		// AJAX request for single post?
+		if (request::is_ajax()) {
+			$forum_post = new Forum_Post_Model((int)$post_id);
+			if ($forum_post->id) {
+				$forum_topic = $forum_post->forum_topic;
+
+				// Check access and proceed
+				$forum_area  = $forum_topic->forum_area;
+				if ($forum_area->access_has($this->user, Forum_Area_Model::ACCESS_READ)) {
+					echo View::factory('forum/post', array(
+						'topic' => $forum_topic,
+						'post'  => $forum_post,
+						'user'  => $this->user,
+					));
+
+					// AJAX hooks
+					echo html::script_source('
+						$("#post-' . $forum_post->id . ' .post-edit").click(function(e) {
+							e.preventDefault();
+							$.get($(this).attr("href"), function(data) {
+								$("#post-' . $forum_post->id . ' .post-content").html(data);
+							});
+							return;
+						});
+					');
+				}
+			} else {
+				echo __('Post not found');
+			}
+			return;
+		}
+
 		url::redirect('/forum');
 	}
 
@@ -448,7 +482,7 @@ class Forum_Controller extends Website_Controller {
 		$this->history = false;
 
 		$forum_post = new Forum_Post_Model((int)$post_id);
-		if ($this->user && csrf::valid() && $forum_post->id && $forum_post->author_id == $this->user->id) {
+		if (csrf::valid() && $forum_post->id && $forum_post->is_author($this->user)) {
 			$forum_topic = $forum_post->forum_topic;
 			$is_first_post = $forum_topic->first_post_id == $forum_post->id;
 			$is_last_post = $forum_topic->last_post_id == $forum_post->id;
@@ -565,6 +599,12 @@ class Forum_Controller extends Website_Controller {
 							newsfeeditem_forum::reply($this->user, $forum_post);
 						}
 
+						// Display post if AJAX
+						if (request::is_ajax()) {
+							$this->post($forum_post->id);
+							return;
+						}
+
 						URL::redirect(url::model($forum_topic));
 					} else {
 						$form_errors = $post->errors();
@@ -582,19 +622,29 @@ class Forum_Controller extends Website_Controller {
 
 		// show form
 		if (empty($errors)) {
-			widget::add('head', html::script(array('js/jquery.markitup.pack.js', 'js/markitup.bbcode.js')));
-			widget::add('main', View::factory('forum/post_edit', array(
-				'topic'     => $form_values_topic,
-				'post'      => $form_values_post,
-				'errors'    => $form_errors,
-				'parent_id' => $parent_id,
-			)));
+			$view_editor = View::factory('forum/post_edit', array(
+					'topic'     => $form_values_topic,
+					'post'      => $form_values_post,
+					'errors'    => $form_errors,
+					'parent_id' => $parent_id,
+				));
+			if (request::is_ajax()) {
+
+				// AJAX requests show immediately
+				echo $view_editor;
+				return;
+
+			} else {
+
+				// Normal requests add to template
+				widget::add('main', $view_editor);
+
+			}
 		} else {
 			$this->_error(__('Errors'), $errors);
 		}
 
 		$this->_side_views();
-
 	}
 
 
@@ -685,22 +735,25 @@ class Forum_Controller extends Website_Controller {
 					'items_per_page' => $per_page,
 					'total_items'    => $forum_topic->posts,
 				));
-
-				// Go to last page?
 				if ($action == 'page' && $extra == 'last') {
 					$pagination->to_last_page();
 				}
 
 				$posts = $forum_topic->forum_posts->find_all($per_page, $pagination->sql_offset);
-				$this->page_subtitle .= __(':posts posts, page :page of :pages', array(
-					':posts' => '<var>' . num::format($forum_topic->posts) . '</var>',
-					':page'  => '<var>' . $pagination->current_page . '</var>',
-					':pages' => '<var>' . $pagination->total_pages . '</var>'
-				));
+				$this->page_subtitle .= 
+					__2(':posts post', ':posts posts', $forum_topic->posts, array(
+						':posts' => '<var>' . num::format($forum_topic->posts) . '</var>'
+					)) . ', '
+					. __('page :page of :pages', array(
+						':page'  => '<var>' . $pagination->current_page . '</var>',
+						':pages' => '<var>' . $pagination->total_pages . '</var>'
+					));
 
-				// Update read counter
-				$forum_topic->reads++;
-				$forum_topic->save();
+				// Update read counter if not owner
+				if (!$forum_topic->is_author($this->user)) {
+					$forum_topic->reads++;
+					$forum_topic->save();
+				}
 
 				if (count($posts)) {
 					widget::add('main', $pagination);
@@ -710,11 +763,13 @@ class Forum_Controller extends Website_Controller {
 					$errors[] = __('No posts found.');
 				}
 
-			// no access
 			} else {
+
+				// No access
 				$this->page_title = text::title($forum_area->name);
 				$this->page_subtitle = html::specialchars($forum_area->description) . '&nbsp;';
 				$errors[] = __('Access denied.');
+
 			}
 		}
 
