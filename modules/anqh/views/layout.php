@@ -167,6 +167,7 @@ $(function() {
 	// Hook form input hints
 	$('input:text, textarea, input:password').hint('hint');
 
+
 	// Hook delete confirmations
 	function confirm_delete(title, action) {
 		if (title === undefined) title = '<?= __('Are you sure you want to do this?') ?>';
@@ -178,7 +179,7 @@ $(function() {
 				close: function(ev, ui) { $(this).remove(); },
 				buttons: {
 					'<?= __('No, cancel') ?>': function() { $(this).dialog('close'); },
-					'<?= __('Yes, delete') ?>': function() { $(this).dialog('close'); action(); }
+					'<?= __('Yes, do it!') ?>': function() { $(this).dialog('close'); action(); }
 				}
 			});
 		} else {
