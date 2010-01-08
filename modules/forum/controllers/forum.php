@@ -525,7 +525,9 @@ class Forum_Controller extends Website_Controller {
 		$this->history = false;
 
 		// For authenticated users only
-		if (!$this->user) url::redirect('/forum');
+		if (!$this->user) {
+			url::back('/forum');
+		}
 
 		// Load parent post if requested
 		$parent_post = ($parent_id) ? new Forum_Post_Model((int)$parent_id) : false;
@@ -535,6 +537,9 @@ class Forum_Controller extends Website_Controller {
 
 		// Load post or start new
 		$forum_post = new Forum_Post_Model((int)$post_id);
+		if ($forum_post->loaded() && !($forum_post->is_author($this->user) || $this->visitor->logged_in(array('admin', 'forum moderator')))) {
+			url::back('/forum');
+		}
 		$forum_topic = $forum_post->id ? $forum_post->forum_topic : new Forum_Topic_Model((int)$topic_id);
 		$errors = $forum_topic->id ? array() : __('Topic not found');
 
@@ -744,7 +749,7 @@ class Forum_Controller extends Website_Controller {
 				}
 
 				$posts = $forum_topic->forum_posts->find_all($per_page, $pagination->sql_offset);
-				$this->page_subtitle .= 
+				$this->page_subtitle .=
 					__2(':posts post', ':posts posts', $forum_topic->posts, array(
 						':posts' => '<var>' . num::format($forum_topic->posts) . '</var>'
 					)) . ', '
@@ -828,13 +833,18 @@ class Forum_Controller extends Website_Controller {
 	public function _topic_edit($topic_id, $area_id = false) {
 		$this->history = false;
 
+		// For authenticated users only
+		if (!$this->user) {
+			url::back('/forum');
+		}
+
 		$forum_topic = new Forum_Topic_Model((int)$topic_id);
+		if (!$this->user || $forum_topic->loaded() && !($forum_topic->is_author($this->user) || $this->visitor->logged_in(array('admin', 'forum moderator')))) {
+			url::back('/forum');
+		}
 		$forum_area = $forum_topic->id ? $forum_topic->forum_area : new Forum_Area_Model((int)$area_id);
 		$errors = $forum_area->id ? array() : __('Area :area not found', array(':area' => $area_id));
 		$forum_post = new Forum_Post_Model((int)$forum_topic->first_post_id);
-
-		// for authenticated users only
-		if (!$forum_topic->is_author() && !$this->visitor->logged_in(array('admin', 'forum moderator'))) url::redirect('/forum');
 
 		if (empty($errors)) {
 
