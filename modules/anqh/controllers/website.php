@@ -192,7 +192,11 @@ abstract class Website_Controller extends Controller {
 
 			// Admin functions
 			if ($this->visitor->logged_in('admin')) {
-				widget::add('dock2', ' | ' . __('Admin: ') . html::anchor('roles', __('Roles')) . ', ' . html::anchor('tags', __('Tags')));
+				widget::add('dock2', ' | ' . __('Admin: ')
+					. html::anchor('roles', __('Roles')) . ', '
+					. html::anchor('tags', __('Tags')) . ', '
+					. html::anchor('#kohana-profiler', __('Profiler'), array('onclick' => '$("#kohana-profiler").toggle();'))
+				);
 			}
 
 		} else {
