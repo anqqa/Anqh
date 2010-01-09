@@ -103,24 +103,25 @@ class BB_Core extends BBCode {
 
 		// Add parent post
 		if (isset($post) && $post->id) {
-			$quote = '<blockquote cite="' . url::model($post->forum_topic) . '/' . $post->id . '#post-' . $post->id . '"><p>';
+			$quote = '<blockquote cite="' . url::model($post->forum_topic) . '/' . $post->id . '#post-' . $post->id . '">';
 
 			// Override author
 			$author = $post->author;
 		} else {
-			$quote = '<blockquote><p>';
+			$quote = '<blockquote>';
 		}
 
-		$quote .= trim($content);
+		$quote .= '<p>' . trim($content) . '</p>';
 
 		// Post author
 		if (isset($author) && $author->id) {
-			$quote .= '</p><p class="author">' . __('-- :author', array(':author' => html::user($author)));
+			$quote .= '<cite>' . __('-- :author', array(':author' => html::user($author))) . '</cite>';
 		} else if (isset($author_name)) {
-			$quote .= '</p><p class="author">' . __('-- :author', array(':author' => html::specialchars($author_name)));
+			$quote .= '<cite>' . __('-- :author', array(':author' => html::specialchars($author_name))) . '</cite>';
 		}
 
-		$quote .= '</p></blockquote>';
+		$quote .= '</blockquote>';
+
 		return $quote;
 	}
 
