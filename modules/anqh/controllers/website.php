@@ -52,6 +52,13 @@ abstract class Website_Controller extends Controller {
 	public $page_title = '&nbsp;';
 
 	/**
+	 * Page width setting, 'fixed' or 'liquid'
+	 *
+	 * @var  string
+	 */
+	protected $page_width = 'fixed';
+
+	/**
 	 * Skin for the site
 	 *
 	 * @var  string
@@ -87,7 +94,7 @@ abstract class Website_Controller extends Controller {
 		parent::__construct();
 
 		// Init page values
-		$this->country = empty($_SESSION['country']) ? false : $_SESSION['country'];
+		$this->country = Session::instance()->get('country', false);
 
 		// AJAX requests output without template
 		if (request::is_ajax()) {
@@ -107,6 +114,7 @@ abstract class Website_Controller extends Controller {
 			->bind('skin_imports',  $this->skin_imports)
 			->bind('stylesheets',   $this->stylesheets)
 			->bind('language',      $this->language)
+			->bind('page_width',    $this->page_width)
 			->bind('page_id',       $this->page_id)
 			->bind('page_class',    $this->page_class)
 			->bind('page_title',    $this->page_title)
@@ -127,6 +135,7 @@ abstract class Website_Controller extends Controller {
 			'ui/site.css',
 			$skin_path . 'jquery-ui.css',
 		);
+		$this->page_width = Session::instance()->get('page_width', 'fixed');
 		//$this->stylesheets = array('ui/' . Kohana::config('site.skin') . '/skin', 'ui/' . Kohana::config('site.skin') . '/jquery-ui');
 		$this->breadcrumb = array(html::anchor('/', __('Home')));
 		$this->tabs = array();
@@ -152,8 +161,8 @@ abstract class Website_Controller extends Controller {
 
 		// Dock
 		$classes = array(
-			'<a href="#fixed" onclick="$(\'body\').addClass(\'fixed\').removeClass(\'liquid\'); return false;">' . __('Narrow') . '</a>',
-			'<a href="#liquid" onclick="$(\'body\').addClass(\'liquid\').removeClass(\'fixed\'); return false;">' . __('Wide') . '</a>',
+			html::anchor('set/width/narrow', __('Narrow'), array('onclick' => '$("body").addClass("fixed").removeClass("liquid"); $.get(this.href); return false;')),
+			html::anchor('set/width/wide', __('Wide'), array('onclick' => '$("body").addClass("liquid").removeClass("narrow"); $.get(this.href); return false;')),
 		);
 		widget::add('dock2', __('Layout: ') . implode(', ', $classes));
 

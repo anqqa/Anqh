@@ -9,6 +9,13 @@
  */
 class Set_Controller extends Controller {
 
+	/**
+	 * Session
+	 *
+	 * @var  Session
+	 */
+	protected $session;
+
 
 	/**
 	 * Init setter
@@ -17,6 +24,8 @@ class Set_Controller extends Controller {
 		parent::__construct();
 
 		$this->history = false;
+		$this->auto_render = false;
+		$this->session = Session::instance();
 	}
 
 
@@ -26,14 +35,21 @@ class Set_Controller extends Controller {
 	 * @param  string  $country
 	 */
 	public function country($country) {
+		if (in_array($country, Kohana::config('site.countries')))	{
+			if ($this->session->get('country') == $country) {
 
-		$countries = Kohana::config('site.countries');
+				// Clear country if same as given
+				$this->session->delete('country');
 
-		// set country or clear
-		if (in_array($country, $countries))	$_SESSION['country'] = !empty($_SESSION['country']) && $_SESSION['country'] == $country ? null : $country;
+			} else {
 
-		$return = empty($_SESSION['history']) ? '/' : $_SESSION['history'];
-		url::redirect($return);
+				// Set country
+				$this->session->set('country', $country);
+
+			}
+		}
+
+		url::back();
 	}
 
 
@@ -43,15 +59,28 @@ class Set_Controller extends Controller {
 	 * @param  string  $language
 	 */
 	public function lang($language) {
-		$this->history = false;
-
 		$locale = Kohana::config('locale');
 		if (isset($locale['locales'][$language])) {
-			$_SESSION['language'] = $locale['locales'][$language]['language'][0];
+			$this->session->set('language', $locale['locales'][$language]['language'][0]);
 		}
 
-		$return = empty($_SESSION['history']) ? '/' : $_SESSION['history'];
-		url::redirect($return);
+		url::back();
+	}
+
+
+	/**
+	 * Set page width
+	 *
+	 * @param  string  $width
+	 */
+	public function width($width) {
+		$this->session->set('page_width', $width == 'wide' ? 'liquid' : 'fixed');
+
+		if (request::is_ajax()) {
+			return;
+		}
+
+		url::back();
 	}
 
 }

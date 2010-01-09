@@ -17,7 +17,7 @@
 <?= widget::get('head') ?>
 </head>
 
-<body id="<?= $page_id ?>" class="fixed <?= $page_class ?>">
+<body id="<?= $page_id ?>" class="<?= $page_width ?> <?= $page_class ?>">
 
 	<!-- HEADER -->
 
