@@ -14,42 +14,49 @@ abstract class Website_Controller extends Controller {
 	 *
 	 * @var  array
 	 */
-	public $breadcrumb;
+	protected $breadcrumb;
 
 	/**
 	 * Actions for current page
 	 *
 	 * @var  array
 	 */
-	public $page_actions = array();
-
-	/**
-	 * Current page id
-	 *
-	 * @var  string
-	 */
-	public $page_id = 'page';
+	protected $page_actions = array();
 
 	/**
 	 * Current page class
 	 *
 	 * @var  string
 	 */
-	public $page_class = '';
+	protected $page_class = '';
+
+	/**
+	 * Current page id
+	 *
+	 * @var  string
+	 */
+	protected $page_id = 'page';
+
+	/**
+	 * Page main content position
+	 *
+	 * @var  string
+	 */
+	protected $page_main = 'left';
 
 	/**
 	 * Current page subtitle
 	 *
 	 * @var  string
 	 */
-	public $page_subtitle = '&nbsp;';
+	protected $page_subtitle = '&nbsp;';
 
 	/**
 	 * Current page title
 	 *
 	 * @var  string
 	 */
-	public $page_title = '&nbsp;';
+	protected $page_title = '&nbsp;';
 
 	/**
 	 * Page width setting, 'fixed' or 'liquid'
@@ -115,6 +122,7 @@ abstract class Website_Controller extends Controller {
 			->bind('stylesheets',   $this->stylesheets)
 			->bind('language',      $this->language)
 			->bind('page_width',    $this->page_width)
+			->bind('page_main',     $this->page_main)
 			->bind('page_id',       $this->page_id)
 			->bind('page_class',    $this->page_class)
 			->bind('page_title',    $this->page_title)
@@ -136,6 +144,7 @@ abstract class Website_Controller extends Controller {
 			$skin_path . 'jquery-ui.css',
 		);
 		$this->page_width = Session::instance()->get('page_width', 'fixed');
+		$this->page_main = Session::instance()->get('page_main', 'left');
 		//$this->stylesheets = array('ui/' . Kohana::config('site.skin') . '/skin', 'ui/' . Kohana::config('site.skin') . '/jquery-ui');
 		$this->breadcrumb = array(html::anchor('/', __('Home')));
 		$this->tabs = array();
@@ -162,7 +171,9 @@ abstract class Website_Controller extends Controller {
 		// Dock
 		$classes = array(
 			html::anchor('set/width/narrow', __('Narrow'), array('onclick' => '$("body").addClass("fixed").removeClass("liquid"); $.get(this.href); return false;')),
-			html::anchor('set/width/wide', __('Wide'), array('onclick' => '$("body").addClass("liquid").removeClass("narrow"); $.get(this.href); return false;')),
+			html::anchor('set/width/wide',   __('Wide'),   array('onclick' => '$("body").addClass("liquid").removeClass("narrow"); $.get(this.href); return false;')),
+			html::anchor('set/main/left',    __('Left'),   array('onclick' => '$("body").addClass("left").removeClass("right"); $.get(this.href); return false;')),
+			html::anchor('set/main/right',   __('Right'),  array('onclick' => '$("body").addClass("right").removeClass("left"); $.get(this.href); return false;')),
 		);
 		widget::add('dock2', __('Layout: ') . implode(', ', $classes));
 

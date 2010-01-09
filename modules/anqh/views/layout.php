@@ -17,7 +17,7 @@
 <?= widget::get('head') ?>
 </head>
 
-<body id="<?= $page_id ?>" class="<?= $page_width ?> <?= $page_class ?>">
+<body id="<?= $page_id ?>" class="<?= $page_width ?> <?= $page_main ?> <?= $page_class ?>">
 
 	<!-- HEADER -->
 
@@ -110,12 +110,12 @@
 
 	<div id="dock">
 		<div class="section">
-			<div class="unit size1of2">
+			<div class="unit size2of5">
 
 <?= widget::get('dock') ?>
 
 			</div>
-			<div class="unit size1of2 lastunit extra-actions">
+			<div class="unit size3of5 extra-actions">
 
 <?= widget::get('dock2') ?>
 

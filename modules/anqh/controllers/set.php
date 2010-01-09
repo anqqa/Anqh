@@ -69,6 +69,22 @@ class Set_Controller extends Controller {
 
 
 	/**
+	 * Set page main content position
+	 *
+	 * @param  string  $width
+	 */
+	public function main($position) {
+		$this->session->set('page_main', $position == 'right' ? 'right' : 'left');
+
+		if (request::is_ajax()) {
+			return;
+		}
+
+		url::back();
+	}
+
+
+	/**
 	 * Set page width
 	 *
 	 * @param  string  $width
