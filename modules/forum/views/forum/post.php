@@ -6,7 +6,7 @@ $mine = ($user && $post->author_id == $user->id);
 $owners = ($post->author_id == $topic->author_id);
 ?>
 
-	<article id="post-<?= $post->id ?>" class="post post-<?= $post->id ?> <?= ($owners ? 'owner ' : '') . ($mine ? 'my ' : '') . text::alternate('', 'alt') ?>">
+	<article id="post-<?= $post->id ?>" class="mod post <?= ($owners ? 'owner ' : '') . ($mine ? 'my ' : '') . text::alternate('', 'alt') ?>">
 		<header>
 
 			<?= html::avatar($post->author->avatar, $post->author->username) ?>

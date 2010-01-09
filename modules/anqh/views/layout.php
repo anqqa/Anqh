@@ -54,9 +54,10 @@
 
 		<div class="section">
 
+
 			<!-- SIDE ADS -->
 
-			<section id="side-ads">
+			<section id="side-ads" class="unit size1of6">
 
 <?= widget::get('side_ads') ?>
 
@@ -65,9 +66,9 @@
 			<!-- /SIDE ADS -->
 
 
-			<!-- CONTENT -->
+			<!-- MAIN CONTENT -->
 
-			<div id="content">
+			<section id="main" class="unit size1of2">
 
 				<header id="title" class="line">
 
@@ -80,36 +81,22 @@
 
 				</header>
 
-				<div class="line">
-
-
-					<!-- MAIN CONTENT -->
-
-					<section id="center" class="unit size3of5">
-
 <?= widget::get('main') ?>
 
-					</section>
+			</section>
 
-					<!-- /MAIN CONTENT -->
+			<!-- /MAIN CONTENT -->
 
 
-					<!-- SIDE CONTENT -->
+			<!-- SIDE CONTENT -->
 
-					<aside id="side" class="unit size2of5">
+			<aside id="side" class="unit size1of3">
 
 <?= widget::get('side') ?>
 
-					</aside>
+			</aside>
 
-					<!-- /SIDE CONTENT -->
-
-
-				</div>
-
-			</div>
-
-			<!-- /CONTENT -->
+			<!-- /SIDE CONTENT -->
 
 
 		</div>

@@ -153,7 +153,8 @@
 
 /***** OOCSS *****/
 
-.mod,
+.divider,
+.mod                                   { margin: 2px; padding: 8px; position: relative; }
 .section                               { margin: 0 auto; position: relative; width: 100%; }
 .mod,
 .section,

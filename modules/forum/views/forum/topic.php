@@ -1,5 +1,5 @@
 
-<section class="mod topic topic-<?= $topic->id ?>">
+<!--<section class="mod topic topic-<?= $topic->id ?>">-->
 	<?php foreach ($posts as $post):
 
 		// Time difference between posts
@@ -8,7 +8,7 @@
 		if ($difference['years'] || $difference['months']):
 	?>
 
-	<aside class="post-old"><?= __('Previous post over :ago ago', array(':ago' => date::timespan_short($current, $previous))) ?></aside>
+	<div class="divider post-old"><?= __('Previous post over :ago ago', array(':ago' => date::timespan_short($current, $previous))) ?></div>
 
 	<?php
 		endif;
@@ -21,7 +21,7 @@
 		));
 
 	endforeach; ?>
-</section>
+<!--</section>-->
 <?php
 
 // AJAX hooks

@@ -145,8 +145,6 @@ table.calendar .today { font-weight: bold; }
 
 /***** forum *****/
 
-#forum .topics h4        { margin-top: 0; }
-
 #forum .post section             { clear: both; }
 #forum .post footer .actions           { margin-top: -0.883em; }
 
