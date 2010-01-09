@@ -30,7 +30,7 @@ $("#post-' . $post['id'] . ' .post-edit form").submit(function(e) {
 $("#post-' . $post['id'] . ' .post-edit a").click(function(e) {
 	e.preventDefault();
 	$.get($(this).attr("href"), function(data) {
-		$("#post-' . $post['id'] . '").html(data);
+		$("#post-' . $post['id'] . '").replaceWith(data);
 	});
 });
 '); ?>
