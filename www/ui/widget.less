@@ -65,7 +65,7 @@ a.action:hover                         { opacity: 0.9; text-decoration: none; }
 .ui-widget .ui-dialog-buttonpane .ui-state-default:active,
 button:active,
 input[type="submit"]:active,
-a.action:active                        { top: 1px; }
+a.action:active                        { outline: 0; top: 1px; }
 section article .actions,
 .tab .actions,
 .container .actions,
@@ -94,6 +94,20 @@ section article:hover .actions a[class*="-delete"],
 li.line:hover .actions a[class*="-delete"],
 ul.contentlist li:hover .actions a[class*="-delete"],
 a[class*="-delete"]                    { background-color: @negative-color; }
+.ui-widget .ui-dialog-buttonpane .ui-state-default:hover,
+/*section article:hover .actions a.action:hover,
+.container:hover .actions a.action:hover,
+li.line:hover .actions a.action:hover,*/
+button:hover,
+input[type="submit"]:hover,
+a.action:hover                         { box-shadow: 0 0 15px @link-color; -moz-box-shadow: 0 0 15px @link-color; -webkit-box-shadow: 0 0 15px @link-color; }
+section article:hover .actions a[class*="-add"]:hover,
+li.line:hover .actions a[class*="-add"]:hover,
+a[class*="-add"]:hover                 { box-shadow: 0 0 15px @link-color; -moz-box-shadow: 0 0 15px @link-color; -webkit-box-shadow: 0 0 15px @positive-color; }
+section article:hover .actions a[class*="-delete"]:hover,
+li.line:hover .actions a[class*="-delete"]:hover,
+a[class*="-delete"]:hover              { box-shadow: 0 0 15px @link-color; -moz-box-shadow: 0 0 15px @link-color; -webkit-box-shadow: 0 0 15px @negative-color; }
+
 
 form .buttons                          { display: block; margin-bottom: 1em; margin-top: 1em; text-align: center; }
 

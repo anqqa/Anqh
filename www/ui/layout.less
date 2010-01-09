@@ -52,6 +52,8 @@ body                                   { background: @body-background-color @bod
 /***** BODY *****/
 
 #side-ads                              { float: right; _margin-left: -3px; text-align: center; }
+body.left #main                        { float: left; }
+body.right #main                       { float: right; }
 
 #body .section                         { background: @section-background; }
 
@@ -71,7 +73,7 @@ body                                   { background: @body-background-color @bod
 section article:hover,
 .container:hover,
 li.line:hover,
-ul.contentlist li:hover                { background: @section-background-alt; }
+ul.contentlist li:hover                { box-shadow: 0 0 10px rgba(255, 255, 255, 0.1); -moz-box-shadow: 0 0 10px rgba(255, 255, 255, 0.1); -webkit-box-shadow: 0 0 10px rgba(255, 255, 255, 0.1); /*background: @section-background-alt;*/ }
 
 /*section article + aside,
 section article + article,
