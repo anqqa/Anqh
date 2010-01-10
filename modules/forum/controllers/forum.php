@@ -4,7 +4,7 @@
  *
  * @package    Forum
  * @author     Antti Qvickström
- * @copyright  (c) 2009 Antti Qvickström
+ * @copyright  (c) 2009-2010 Antti Qvickström
  * @license    http://www.opensource.org/licenses/mit-license.php MIT license
  */
 class Forum_Controller extends Website_Controller {
@@ -35,26 +35,28 @@ class Forum_Controller extends Website_Controller {
 
 	/***** INTERNAL *****/
 
-	private function _side_views($extra_views = array()) {
-		widget::add('side', implode("\n", $extra_views));
+	private function _side_views() {
 
 		// Initialize tabs
 		$tabs = array(
 			'active' => array('href' => '#topics-active', 'title' => __('Active'), 'tab' => new View('forum/topics_list', array(
 				'id'     => 'topics-active',
 				'title'  => __('Active topics'),
-				'topics' => ORM::factory('forum_topic')->find_active($this->config['topics_per_list'])
+				'topics' => ORM::factory('forum_topic')->find_active($this->config['topics_per_list']),
+				'class'  => 'tab',
 			))),
 			'latest' => array('href' => '#topics-new', 'title' => __('New'), 'tab' => new View('forum/topics_list', array(
 				'id'     => 'topics-new',
 				'title'  => __('New topics'),
-				'topics' => ORM::factory('forum_topic')->find_latest($this->config['topics_per_list'])
+				'topics' => ORM::factory('forum_topic')->find_latest($this->config['topics_per_list']),
+				'class'  => 'tab',
 			))),
 			'areas' => array('href' => '#forum-areas', 'title' => __('Areas'), 'selected' => in_array($this->tab_id, array('active', 'latest')), 'tab' => new View('forum/groups_list', array(
 				'id'     => 'forum-areas',
 				'title'  => __('Forum areas'),
 				'groups' => ORM::factory('forum_group')->find_all(),
 				'user'   => $this->user,
+				'class'  => 'tab',
 			))),
 		);
 

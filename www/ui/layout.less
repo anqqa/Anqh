@@ -1,7 +1,7 @@
 /*
  * Layout LESS styles. Generic layout elements: header, body, footer, dock etc.
  *
- * Copyright 2009 Anqh
+ * Copyright 2009 - 2010 Anqh
  */
 
 /***** PAGE *****/
@@ -58,6 +58,7 @@ body.right #main                       { float: right; }
 #body .section                         { background: @section-background; }
 
 .mod                                   { background: @mod-background; }
+.tab                                   { background: none; margin: 0; padding: 0; }
 
 #title                                 { background: #111; border-bottom: 1px solid #222; margin-bottom: -1px; padding: 0 10px; }
 #title .actions                        { margin-top: 10px; }
@@ -87,11 +88,10 @@ section aside + article                { padding-top: 0.8333em; }
 /***** FOOTER *****/
 
 #footer                                { background: url(../black50.png); border-top: 1px solid #333; border-bottom: 1px solid #333; color: #f2f2f2; margin-top: 2em; min-height: 150px; }
-#footer .mod                           { background: none; }
 #footer p,
 #footer nav ul                         { text-align: center; }
 #footer nav li                         { display: inline; padding: 0 6px; }
-#footer .tab                           { float: left; margin-bottom: 1em; }
-#footer .tab li                        { overflow: hidden; text-overflow: ellipsis; -o-text-overflow: ellipsis; white-space: nowrap; }
+#footer .mod                           { background: none; float: left; margin-bottom: 1em; }
+#footer .mod li                        { overflow: hidden; text-overflow: ellipsis; -o-text-overflow: ellipsis; white-space: nowrap; }
 
 /***** /FOOTER *****/

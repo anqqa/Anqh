@@ -1,5 +1,5 @@
 
-<section class="mod tabs" id="<?= $id ?>">
+<section id="<?= $id ?>" class="mod tabs">
 	<ul>
 		<?php	$t = 0; $selected = 0; foreach ($tabs as $tab): $selected = !empty($tab['selected']) ? $t : $selected; $t++; ?>
 		<li><?= html::anchor($tab['href'], $tab['title']) ?></li>
@@ -10,5 +10,4 @@
 <?php
 // Initialize tabs immediately to aviod ugly jumping
 echo html::script_source('$("#' . $id . '").tabs({ selected: ' . $selected . ', collapsible: true, fx: { height: "toggle", opacity: "toggle", duration: "fast" } });');
-// widget::add('foot', html::script_source('$(function() { $("#' . $id . '").tabs({ selected: ' . $selected . ', collapsible: true, fx: { height: "toggle", opacity: "toggle", duration: "fast" } }); });'));
-// widget::add('foot', html::script_source('$(function() { $("#' . $id . ' ul").tabs("#' . $id . ' > div", { initialIndex: ' . $selected . ', effect: "fade" }); });'));
+//echo html::script_source('$("#' . $id . ' > ul").tabs("#' . $id . ' .tab", { initialIndex: ' . $selected . ', effect: "fade" });');

@@ -1,5 +1,5 @@
 
-<section id="<?= $id ?>" class="mod topics tab<?= isset($class) ? ' ' . $class : '' ?>">
+<section id="<?= $id ?>" class="mod topics<?= isset($class) ? ' ' . $class : '' ?>">
 	<header>
 		<h4><?= $title ?></h4>
 	</header>

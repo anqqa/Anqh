@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2008 - 2009 Anqh
+ * Copyright (c) 2008 - 2010 Anqh
  *
  * Based on 960 Grid System by Nathan Smith, see official site for more info: http://960.gs/
  * Based on Object Oriented CSS Framework by Nicole Sullivan, see official site for more info: http://github.com/stubbornella/oocss/tree/master/css/
@@ -154,7 +154,7 @@
 /***** OOCSS *****/
 
 .divider,
-.mod                                   { margin: 2px; padding: 8px; position: relative; }
+.mod                                   { margin: 1px; padding: 9px; position: relative; }
 .section                               { margin: 0 auto; position: relative; width: 100%; }
 .mod,
 .section,

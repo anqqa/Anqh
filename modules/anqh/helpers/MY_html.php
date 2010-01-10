@@ -4,7 +4,7 @@
  *
  * @package    Anqh
  * @author     Antti Qvickström
- * @copyright  (c) 2009 Antti Qvickström
+ * @copyright  (c) 2009-2010 Antti Qvickström
  * @license    http://www.opensource.org/licenses/mit-license.php MIT license
  */
 class html extends html_Core {
@@ -164,7 +164,7 @@ DATE;
 	 *
 	 * @param   Image_Model|int  $image  or image_id
 	 * @param   string           $size   thumb|normal
-	 * @param   string|array     $alt
+	 * @param   string|array     $alt    alt attribute or array of attributes
 	 * @return  string
 	 */
 	public static function img($image = null, $size = 'normal', $alt = null) {
@@ -177,10 +177,11 @@ DATE;
 			case 'normal':   $size_prefix = '';          break;
 			case 'thumb':    $size_prefix = 'thumb_';    break;
 		}
-		$attributes = array(
+
+		$attributes = is_array($alt) ? $alt : array(
 			'width'  => $image->{$size_prefix . 'width'},
 			'height' => $image->{$size_prefix . 'height'},
-			'alt'    => ($size == 'thumb' ? __('Thumb') : __('Image')) . ' ' . sprintf('[%dx%d]', $image->{$size_prefix . 'width'}, $image->{$size_prefix . 'height'}),
+			'alt'    => is_string($alt) ? $alt : (($size == 'thumb' ? __('Thumb') : __('Image')) . ' ' . sprintf('[%dx%d]', $image->{$size_prefix . 'width'}, $image->{$size_prefix . 'height'})),
 		);
 
 		return html::image($image->url($size), $attributes);

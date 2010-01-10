@@ -4,7 +4,7 @@
  *
  * @package    Anqh
  * @author     Antti Qvickström
- * @copyright  (c) 2009 Antti Qvickström
+ * @copyright  (c) 2009-2010 Antti Qvickström
  * @license    http://www.opensource.org/licenses/mit-license.php MIT license
  */
 abstract class Website_Controller extends Controller {
@@ -115,7 +115,7 @@ abstract class Website_Controller extends Controller {
 			Profiler::enable();
 		}
 
-		// Build the main view
+		// Bind the generic page variables
 		$this->template
 			->bind('skin',          $this->skin)
 			->bind('skin_imports',  $this->skin_imports)
@@ -270,18 +270,21 @@ var _gaq = _gaq || []; _gaq.push(['_setAccount', '" . $google_analytics . "']); 
 		$cities = array();
 		foreach ($countries as $country) {
 			foreach ($country->cities->find_all() as $city) {
-				$cities[] = "{ id: '" . $city->id . "', text: '" . html::chars($city->city) . "' }";
+				$cities[] = array(
+					'id'   => $city->id,
+					'text' => html::chars($city->city)
+				);
 			}
 		}
 
-		widget::add('foot', html::script_source('var cities = [' . implode(', ', $cities) . "];
-$('input#" . $field . "').autocomplete(cities, {
+		widget::add('foot', html::script_source('var cities = ' . json_encode($cities) /*implode(', ', $cities)*/ . ';
+$("input#' . $field . '").autocomplete(cities, {
 	formatItem: function(item) {
 		return item.text;
 	}
 }).result(function(event, item) {
-	$(\"input[name='" . $hidden . "']\").val(item.id);
-});"));
+	$("input[name=' . $hidden . ']").val(item.id);
+});'));
 	}
 
 
