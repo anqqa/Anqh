@@ -82,9 +82,18 @@ class Member_Controller extends Website_Controller {
 				$this->frienddelete($username);
 				break;
 
-			// View profile
 			default:
-				$this->view($username);
+				if (request::is_ajax()) {
+
+					// View peepbox
+					$this->_peepbox($username);
+
+				} else {
+
+					// View profile
+					$this->view($username);
+
+				}
 				break;
 
 		}
@@ -473,6 +482,24 @@ class Member_Controller extends Website_Controller {
 		}
 
 		$this->_side_views($side_views);
+	}
+
+
+	/**
+	 * User peepbox
+	 *
+	 * @param  string  $username
+	 */
+	public function _peepbox($username) {
+		$member = ORM::factory('user')->find_user($username);
+
+		if (!$member->id) {
+			echo __('Member not found');
+		} else {
+			echo View::factory('member/peepbox', array('member' => $member));
+		}
+
+		return;
 	}
 
 

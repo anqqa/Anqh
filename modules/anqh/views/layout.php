@@ -12,8 +12,11 @@
 	<?= html::script('http://html5shiv.googlecode.com/svn/trunk/html5.js'); ?>
 	<![endif]-->
 	<script src="http://www.google.com/jsapi?key=<?= Kohana::config('site.google_api_key') ?>"></script>
-	<?= html::script('http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js'); ?>
-	<?= html::script('http://ajax.googleapis.com/ajax/libs/jqueryui/1.7.2/jquery-ui.min.js') ?>
+	<?= html::script(array(
+		'http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js',
+		'http://ajax.googleapis.com/ajax/libs/jqueryui/1.7.2/jquery-ui.min.js',
+		'js/jquery.tools.min.js',
+	)) ?>
 <?= widget::get('head') ?>
 </head>
 
@@ -151,11 +154,11 @@
 //<![CDATA[
 $(function() {
 
-	// Hook form input hints
+	// Form input hints
 	$('input:text, textarea, input:password').hint('hint');
 
 
-	// Hook delete confirmations
+	// Delete confirmations
 	function confirm_delete(title, action) {
 		if (title === undefined) title = '<?= __('Are you sure you want to do this?') ?>';
 		if (action === undefined) action = function() { return true; }
@@ -184,6 +187,34 @@ $(function() {
 			confirm_delete(title, function() { window.location = action.attr('href'); });
 		} else {
 			confirm_delete(title, function() { action.parent('form').submit(); });
+		}
+	});
+
+	// Peepbox
+	if ($('#peepbox').length == 0) {
+		$('body').append('<div id="peepbox"></div>');
+	}
+
+	function peepbox(href, $tip) {
+		if ($tip.data('last') != href) {
+			$tip.text('<?= __('Loading...') ?>');
+			$.get(href, function(response) {
+				$tip.html(response);
+			});
+		}
+		$tip.data('last', href);
+	}
+
+	$('a.user').tooltip({
+		tip: '#peepbox',
+		position: 'top right',
+		onBeforeShow: function() {
+			peepbox(this.getTrigger().attr('href'), this.getTip());
+		}
+	}).dynamic({
+		borrom: {
+			direction: 'down',
+			bounce: true,
 		}
 	});
 
