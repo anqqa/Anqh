@@ -4,7 +4,7 @@
 		<h4><?= $title ?></h4>
 	</header>
 
-	<ul class="article forum">
+	<ul class="forum">
 	<?php	foreach ($groups as $group): ?>
 
 		<li class="group">
