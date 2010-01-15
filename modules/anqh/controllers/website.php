@@ -158,15 +158,14 @@ abstract class Website_Controller extends Controller {
 		widget::add('actions',    View::factory('generic/actions')->bind('actions', $this->page_actions));
 		widget::add('breadcrumb', View::factory('generic/breadcrumb')->bind('breadcrumb', $this->breadcrumb));
 		widget::add('navigation', View::factory('generic/navigation')->bind('items', $this->menu)->bind('selected', $this->page_id));
-		widget::add('tabs',       View::factory('generic/tabs_side')->bind('tabs', $this->tabs)->bind('selected', $this->tab_id));
 		widget::add('search',     View::factory('generic/search', array('providers' => array('members' => __('Members'), 'forum' => __('Forum'))/*Search::instance()->get_provider_list()*/)));
 
 		// Header
 		widget::add('header', View::factory('generic/header'));
 
 		// Footer
-		widget::add('footer', View::factory('events/events_list', array('id' => 'footer-events-new',    'class' => 'unit size1of4', 'title' => __('New events'),    'events' => ORM::factory('event')->order_by('id', 'DESC')->find_all(10))));
-		widget::add('footer', View::factory('forum/topics_list',  array('id' => 'footer-topics-active', 'class' => 'unit size1of4', 'title' => __('Active topics'), 'topics' => ORM::factory('forum_topic')->order_by('last_post_id', 'DESC')->find_all(10))));
+		widget::add('footer', View::factory('events/events_list', array('id' => 'footer-events-new',    'class' => 'unit size1of4', 'title' => __('New events'), 'events' => ORM::factory('event')->order_by('id', 'DESC')->find_all(10))));
+		widget::add('footer', View::factory('forum/topics_list',  array('id' => 'footer-topics-active', 'class' => 'unit size1of4', 'title' => __('New posts'),  'topics' => ORM::factory('forum_topic')->order_by('last_post_id', 'DESC')->find_all(10))));
 
 		// Dock
 		$classes = array(
