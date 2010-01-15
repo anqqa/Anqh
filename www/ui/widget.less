@@ -17,7 +17,7 @@ input[type="radio"] + label,
 
 input,
 textarea,
-select                                 { background: @input-background; border: 1px solid @input-border-color; border-radius: 5px; -moz-border-radius: 5px; -webkit-border-radius: 5px; color: @input-color; margin: 0 -3px; padding: 2px 3px 4px; }
+select                                 { background: @input-background; border: 1px solid @input-border-color; .border-radius(5px); color: @input-color; margin: 0 -3px; padding: 2px 3px 4px; }
 input:hover,
 select:hover,
 textarea:hover                         { border-color: @input-border-hover-color; }
@@ -37,7 +37,7 @@ input.private                          { border-color: @private-color; }
 fieldset a                             { vertical-align: middle; }
 
 form .notice .info,
-form .error .info                      { float: right; border-radius: 4px 4px 0 0; -moz-border-radius: 4px 4px 0 0; -webkit-border-radius: 4px 4px 0 0; padding: 0 0.5em; }
+form .error .info                      { float: right; .border-radius(4px 4px 0 0); padding: 0 0.5em; }
 form .notice input,
 form .error input                      { border-top-right-radius: 0; -moz-border-radius-topright: 0; -webkit-border-top-right-radius: 0; }
 form .error .info                      { background: @error-background; color: @error-color; }
@@ -55,7 +55,7 @@ a.action                               { margin-left: 5px; }
 .ui-widget .ui-dialog-buttonpane .ui-state-default,
 button,
 input[type="submit"],
-a.action                               { background: @action-background; border-bottom: 1px solid rgba(0,0,0,0.25); border-radius: 5px; -moz-border-radius: 5px; -webkit-border-radius: 5px; -moz-box-shadow: 0 1px 3px rgba(0,0,0,0.5); -webkit-box-shadow: 0 1px 3px rgba(0,0,0,0.5); display: inline-block; color: #fff; cursor: pointer; font-weight: bold; line-height: 1; padding: 4px 1em 3px; position: relative; text-shadow: 0 -1px 1px rgba(0,0,0,0.25); }
+a.action                               { background: @action-background; border-bottom: 1px solid rgba(0,0,0,0.25); .border-radius(5px); .box-shadow(0 1px 3px rgba(0,0,0,0.5)); display: inline-block; color: #fff; cursor: pointer; font-weight: bold; line-height: 1; padding: 4px 1em 3px; position: relative; text-shadow: 0 -1px 1px rgba(0,0,0,0.25); }
 .ui-widget .ui-dialog-buttonpane .ui-state-default,
 input[type="submit"]                   { border-width: 0 0 1px 0; padding: 1px 1em 0; }
 .ui-widget .ui-dialog-buttonpane .ui-state-hover,
@@ -90,30 +90,32 @@ section article:hover .actions a[class*="-add"],
 li.line:hover .actions a[class*="-add"],
 ul.contentlist li:hover .actions a[class*="-add"],
 a[class*="-add"]                       { background-color: @positive-color; }
+.confirm-delete .ui-dialog-buttonpane button:first-of-type,
 section article:hover .actions a[class*="-delete"],
 li.line:hover .actions a[class*="-delete"],
 ul.contentlist li:hover .actions a[class*="-delete"],
 a[class*="-delete"]                    { background-color: @negative-color; }
 .ui-widget .ui-dialog-buttonpane .ui-state-default:hover,
-/*section article:hover .actions a.action:hover,
-.container:hover .actions a.action:hover,
-li.line:hover .actions a.action:hover,*/
+section article.edit,
 button:hover,
 input[type="submit"]:hover,
-a.action:hover                         { box-shadow: 0 0 15px @link-color; -moz-box-shadow: 0 0 15px @link-color; -webkit-box-shadow: 0 0 15px @link-color; }
+a.action:hover                         { .box-shadow(0 0 10px @link-color); }
 section article:hover .actions a[class*="-add"]:hover,
 li.line:hover .actions a[class*="-add"]:hover,
-a[class*="-add"]:hover                 { box-shadow: 0 0 15px @positive-color; -moz-box-shadow: 0 0 15px @positive-color; -webkit-box-shadow: 0 0 15px @positive-color; }
+a[class*="-add"]:hover                 { .box-shadow(0 0 10px @positive-color); }
+.confirm-delete,
+.confirm-delete .ui-dialog-buttonpane button:first-of-type:hover,
+section article.delete,
 section article:hover .actions a[class*="-delete"]:hover,
 li.line:hover .actions a[class*="-delete"]:hover,
-a[class*="-delete"]:hover              { box-shadow: 0 0 15px @negative-color; -moz-box-shadow: 0 0 15px @negative-color; -webkit-box-shadow: 0 0 15px @negative-color; }
+a[class*="-delete"]:hover              { .box-shadow(0 0 10px @negative-color); }
 
 
 form .buttons                          { display: block; margin-bottom: 1em; margin-top: 1em; text-align: center; }
 
 .pills                                 { margin-bottom: 1.6667em; }
 .pills li                              { display: inline; }
-.pills li label                        { background: @input-background; color: @text-color; cursor: pointer; display: inline; border-radius: 5px; -moz-border-radius: 5px; -webkit-border-radius: 5px; padding: 0 0.5em; }
+.pills li label                        { background: @input-background; .border-radius(5px); color: @text-color; cursor: pointer; display: inline; padding: 0 0.5em; }
 .pills li label:hover                  { background: @link-hover-color; color: @action-link-color; }
 .pills li input[type="checkbox"]       { display: none; }
 .pills li input[type="checkbox"]:checked + label { background: @positive-color; color: @action-link-color; }
@@ -163,8 +165,8 @@ a.user                                 { font-weight: bold; }
 .step,
 .date .day                             { color: @subheader-color; font-family: Georgia, serif; font-size: 2em; line-height: 0.833em; }
 .date span                             { background: @badge-background; }
-.date .weekday                         { background: @badge-background-alt; border-radius: 5px 0 0 0; -moz-border-radius: 5px 0 0 0; -webkit-border-radius: 5px 0 0 0; }
-.date .month                           { border-radius: 0 0 5px 5px; -moz-border-radius: 0 0 5px 5px; -webkit-border-radius: 0 0 5px 5px; text-transform: uppercase; }
+.date .weekday                         { background: @badge-background-alt; .border-radius(5px 0 0 0); }
+.date .month                           { .border-radius(0 0 5px 5px); text-transform: uppercase; }
 .date.today .weekday                   { background: @subheader-color; color: @action-link-color; }
 
 /***** /BADGES *****/
