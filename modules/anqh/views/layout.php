@@ -13,7 +13,7 @@
 	<![endif]-->
 	<script src="http://www.google.com/jsapi?key=<?= Kohana::config('site.google_api_key') ?>"></script>
 	<?= html::script(array(
-		'http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js',
+		'http://ajax.googleapis.com/ajax/libs/jquery/1.4/jquery.min.js',
 		'http://ajax.googleapis.com/ajax/libs/jqueryui/1.7.2/jquery-ui.min.js',
 		'js/jquery.tools.min.js',
 	)) ?>
@@ -165,11 +165,12 @@ $(function() {
 		if ($('#dialog-confirm').length == 0) {
 			$('body').append('<div id="dialog-confirm" title="' + title + '"><?= __('Are you sure?') ?></div>');
 			$('#dialog-confirm').dialog({
+				dialogClass: 'confirm-delete',
 				modal: true,
 				close: function(ev, ui) { $(this).remove(); },
 				buttons: {
-					'<?= __('No, cancel') ?>': function() { $(this).dialog('close'); },
-					'<?= __('Yes, do it!') ?>': function() { $(this).dialog('close'); action(); }
+					'<?= __('Yes, do it!') ?>': function() { $(this).dialog('close'); action(); },
+					'<?= __('No, cancel') ?>': function() { $(this).dialog('close'); }
 				}
 			});
 		} else {
@@ -177,18 +178,33 @@ $(function() {
 		}
 	}
 
-	$('a[class*="-delete"]').click(function(e) {
+	$('a[class*="-delete"]').live('click', function(e) {
 		e.preventDefault();
 		var action = $(this);
-		var title = action.text();
 		if (action.data('action')) {
-			confirm_delete(title, function() { action.data('action')(); });
+			confirm_delete(action.text(), function() { action.data('action')(); });
 		} else if (action.is('a')) {
-			confirm_delete(title, function() { window.location = action.attr('href'); });
+			confirm_delete(action.text(), function() { window.location = action.attr('href'); });
 		} else {
-			confirm_delete(title, function() { action.parent('form').submit(); });
+			confirm_delete(action.text(), function() { action.parent('form').submit(); });
 		}
 	});
+
+	$('.mod a[class*="-delete"]')
+		.live('mouseenter', function () {
+			$(this).closest('article').addClass('delete');
+		})
+		.live('mouseleave', function () {
+			$(this).closest('article').removeClass('delete');
+		});
+
+	$('.mod a[class*="-edit"]')
+		.live('mouseenter', function () {
+			$(this).closest('article').addClass('edit');
+		})
+		.live('mouseleave', function () {
+			$(this).closest('article').removeClass('edit');
+		});
 
 	// Peepbox
 	if ($('#peepbox').length == 0) {
@@ -207,7 +223,7 @@ $(function() {
 
 	$('a.user').tooltip({
 		tip: '#peepbox',
-		position: 'top right',
+		position: 'bottom right',
 		onBeforeShow: function() {
 			peepbox(this.getTrigger().attr('href'), this.getTip());
 		}
