@@ -158,6 +158,7 @@ abstract class Website_Controller extends Controller {
 		widget::add('actions',    View::factory('generic/actions')->bind('actions', $this->page_actions));
 		widget::add('breadcrumb', View::factory('generic/breadcrumb')->bind('breadcrumb', $this->breadcrumb));
 		widget::add('navigation', View::factory('generic/navigation')->bind('items', $this->menu)->bind('selected', $this->page_id));
+		widget::add('tabs',       View::factory('generic/tabs_top')->bind('tabs', $this->tabs)->bind('selected', $this->tab_id));
 		widget::add('search',     View::factory('generic/search', array('providers' => array('members' => __('Members'), 'forum' => __('Forum'))/*Search::instance()->get_provider_list()*/)));
 
 		// Header
