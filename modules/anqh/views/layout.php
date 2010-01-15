@@ -26,14 +26,14 @@
 
 	<header id="header">
 
-		<div class="section header">
+		<div class="content header">
 
 <h1><?= html::anchor('/', Kohana::config('site.site_name')) ?></h1>
 <?= widget::get('header') ?>
 <?= widget::get('navigation') ?>
 
 		</div>
-		<div class="section breadcrumb">
+		<div class="content breadcrumb">
 			<div class="unit size3of5">
 
 <?= widget::get('breadcrumb') ?>
@@ -55,7 +55,7 @@
 
 	<div id="body">
 
-		<div class="section">
+		<div class="content">
 
 
 			<!-- SIDE ADS -->
@@ -112,7 +112,7 @@
 	<!-- DOCK -->
 
 	<div id="dock">
-		<div class="section">
+		<div class="content">
 			<div class="unit size2of5">
 
 <?= widget::get('dock') ?>
@@ -132,13 +132,13 @@
 	<!-- FOOTER -->
 
 	<footer id="footer">
-		<div class="section">
+		<div class="content">
 
 <?= widget::get('navigation') ?>
 <?= widget::get('footer') ?>
 
 		</div>
-		<div id="end" class="section">
+		<div id="end" class="content">
 
 <?= widget::get('end') ?>
 

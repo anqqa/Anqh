@@ -4,8 +4,8 @@
 
 /***** TEMPLATE *****/
 
-.fixed .section                        { width: 960px; }
-.liquid .section                       { margin: 0 25px; width: auto; }
+.fixed .content                        { width: 960px; }
+.liquid .content                       { margin: 0 25px; width: auto; }
 
 /***** /TEMPLATE *****/
 

@@ -157,12 +157,12 @@
 .mod                                   { position: relative; }
 .mod > .article,
 .mod > article                         { margin: 1px; padding: 9px; }
-.section                               { margin: 0 auto; position: relative; width: 100%; }
+.content                               { margin: 0 auto; position: relative; width: 100%; }
 .mod,
-.section,
+.content,
 .line                                  { *zoom: 1; }
 .mod:after,
-.section:after,
+.content:after,
 .line:after                            { clear: both; content: "."; display: block; height: 0; visibility: hidden; }
 .lastunit                              { display: table-cell; *display: block; float: none; _left: -3px; _margin-right: -3px; _position: relative; width: auto; *zoom: 1; }
 .lastunit:after                        { clear: both; content: " . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . "; display:block; height:0 !important; line-height: 0; visibility: hidden; }
