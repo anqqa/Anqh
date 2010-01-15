@@ -157,6 +157,8 @@ $(function() {
 	// Form input hints
 	$('input:text, textarea, input:password').hint('hint');
 
+	// Ellipsis ...
+	$('.cut li').ellipsis();
 
 	// Delete confirmations
 	function confirm_delete(title, action) {

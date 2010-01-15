@@ -58,6 +58,7 @@ body.right #main                       { float: right; }
 #body .content                         { background: @section-background; }
 
 .mod                                   { background: @mod-background; }
+.cut li                                { overflow: hidden; text-overflow: ellipsis; -o-text-overflow: ellipsis; white-space: nowrap; }
 .tab                                   { background: none; margin: 0; padding: 0; }
 
 #title                                 { background: #111; border-bottom: 1px solid #222; margin-bottom: -1px; padding: 0 10px; }
@@ -88,7 +89,6 @@ section aside + article                { padding-top: 0.8333em; }
 #footer p,
 #footer nav ul                         { text-align: center; }
 #footer nav li                         { display: inline; padding: 0 6px; }
-#footer .mod                           { background: none; float: left; margin-bottom: 1em; }
-#footer .mod li                        { overflow: hidden; text-overflow: ellipsis; -o-text-overflow: ellipsis; white-space: nowrap; }
+#footer .article                       { background: none; float: left; margin-bottom: 1em; }
 
 /***** /FOOTER *****/
