@@ -24,7 +24,7 @@ class Forum_Controller extends Website_Controller {
 		$this->page_title = __('Forum');
 
 		$this->tabs = array(
-			'active' => array('link' => 'forum',        'text' => __('Active topics')),
+			'active' => array('link' => 'forum',        'text' => __('New posts')),
 			'latest' => array('link' => 'forum/latest', 'text' => __('New topics')),
 			'areas'  => array('link' => 'forum/areas',  'text' => __('Forum areas')),
 		);
@@ -39,13 +39,13 @@ class Forum_Controller extends Website_Controller {
 
 		// Initialize tabs
 		$tabs = array(
-			'active' => array('href' => '#topics-active', 'title' => __('Active'), 'tab' => new View('forum/topics_list', array(
+			'active' => array('href' => '#topics-active', 'title' => __('New posts'), 'tab' => new View('forum/topics_list', array(
 				'id'     => 'topics-active',
-				'title'  => __('Active topics'),
+				'title'  => __('New posts'),
 				'topics' => ORM::factory('forum_topic')->find_active($this->config['topics_per_list']),
 				'class'  => 'tab',
 			))),
-			'latest' => array('href' => '#topics-new', 'title' => __('New'), 'tab' => new View('forum/topics_list', array(
+			'latest' => array('href' => '#topics-new', 'title' => __('New topics'), 'tab' => new View('forum/topics_list', array(
 				'id'     => 'topics-new',
 				'title'  => __('New topics'),
 				'topics' => ORM::factory('forum_topic')->find_latest($this->config['topics_per_list']),
