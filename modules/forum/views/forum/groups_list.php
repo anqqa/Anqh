@@ -1,10 +1,10 @@
 
-<section id="<?= $id ?>" class="article areas<?= isset($class) ? ' ' . $class : '' ?>">
+<section id="<?= $id ?>" class="mod areas<?= isset($class) ? ' ' . $class : '' ?>">
 	<header>
 		<h4><?= $title ?></h4>
 	</header>
 
-	<ul class="forum">
+	<ul class="article forum">
 	<?php	foreach ($groups as $group): ?>
 
 		<li class="group">

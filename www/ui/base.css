@@ -109,7 +109,7 @@ table.calendar td            { padding: 0; }
 
 /***** JQUERY *****/
 
-#side .ui-tabs-panel h4                { display: none; }
+#side .ui-tabs-panel header            { display: none; }
 
 /***** /JQUERY *****/
 

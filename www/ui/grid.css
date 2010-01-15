@@ -156,6 +156,10 @@
 .divider,
 .mod                                   { position: relative; }
 .mod > .article,
+.mod > header,
+.mod > .header,
+.mod > footer,
+.mod > .footer,
 .mod > article                         { margin: 1px; padding: 9px; }
 .content                               { margin: 0 auto; position: relative; width: 100%; }
 .mod,

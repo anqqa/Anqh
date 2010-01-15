@@ -165,8 +165,18 @@ abstract class Website_Controller extends Controller {
 		widget::add('header', View::factory('generic/header'));
 
 		// Footer
-		widget::add('footer', View::factory('events/events_list', array('id' => 'footer-events-new',    'class' => 'unit size1of4', 'title' => __('New events'), 'events' => ORM::factory('event')->order_by('id', 'DESC')->find_all(10))));
-		widget::add('footer', View::factory('forum/topics_list',  array('id' => 'footer-topics-active', 'class' => 'unit size1of4', 'title' => __('New posts'),  'topics' => ORM::factory('forum_topic')->order_by('last_post_id', 'DESC')->find_all(10))));
+		widget::add('footer', View::factory('events/events_list', array(
+			'id'     => 'footer-events-new',
+			'class'  => 'mod unit size1of4',
+			'title'  => __('New events'),
+			'events' => ORM::factory('event')->order_by('id', 'DESC')->find_all(10)
+		)));
+		widget::add('footer', View::factory('forum/topics_list', array(
+			'id'     => 'footer-topics-active',
+			'class'  => 'mod unit size1of4',
+			'title'  => __('New posts'),
+			'topics' => ORM::factory('forum_topic')->order_by('last_post_id', 'DESC')->find_all(10)
+		)));
 
 		// Dock
 		$classes = array(

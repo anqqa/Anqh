@@ -1,11 +1,11 @@
 
-<section id="<?= $id ?>" class="article cut events<?= isset($class) ? ' ' . $class : '' ?>">
+<section id="<?= $id ?>" class="mod events<?= isset($class) ? ' ' . $class : '' ?>">
 	<header>
 		<h4><?= $title ?></h4>
 	</header>
 
 	<?php	if (!empty($events)): ?>
-	<ul class="events">
+	<ul class="article cut events">
 
 		<?php foreach ($events as $event): ?>
 		<li class="event event-<?= $event->id ?>">
