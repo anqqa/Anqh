@@ -154,13 +154,10 @@
 /***** OOCSS *****/
 
 .divider,
-.mod                                   { position: relative; }
+.mod                                   { margin: 0 1px 1px 0; padding: 10px 9px 9px 10px; position: relative; }
 .mod > .article,
-.mod > header,
-.mod > .header,
-.mod > footer,
-.mod > .footer,
-.mod > article                         { margin: 1px; padding: 9px; }
+.mod > article                         { padding: 10px; }
+.mod > article + article               { margin-top: 10px; }
 .content                               { margin: 0 auto; position: relative; width: 100%; }
 .mod,
 .content,

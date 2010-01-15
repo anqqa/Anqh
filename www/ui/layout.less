@@ -36,9 +36,9 @@ body                                   { background: @body-background-color @bod
 #header li:hover                       { background: @mainmenu-link-hover-background; }
 #header li a                           { color: @mainmenu-color; display: block; font-variant: small-caps; height: 1em; padding: 1.6667em 2.5em 0.8333em 0.8333em; vertical-align: middle; }
 #header li a:hover                     { color: @mainmenu-hover-color; text-decoration: none; }
-#header li.selected                    { background: @section-background; border-bottom: 1px solid @section-background;  margin-bottom: -1px; }
+#header li.selected                    { background: @mainmenu-background; border-bottom: 1px solid @mainmenu-background;  margin-bottom: -1px; }
 #header li.selected a                  { color: @header-color; }
-#header .content.breadcrumb            { background: @section-background; }
+#header .content.breadcrumb            { background: @mainmenu-background; }
 #header .breadcrumb                    { line-height: 2em; margin-bottom: 1px; margin-top: 1px; padding-bottom: 0.75em; padding-top: 0.75em; }
 #header .breadcrumb nav                { display: inline; padding-left: 10px; }
 
@@ -61,7 +61,7 @@ body.right #main                       { float: right; }
 .cut li                                { overflow: hidden; text-overflow: ellipsis; -o-text-overflow: ellipsis; white-space: nowrap; }
 .tab                                   { background: none; margin: 0; padding: 0; }
 
-#title                                 { background: #111; border-bottom: 1px solid #222; margin-bottom: -1px; padding: 0 10px; }
+#title                                 { background: #111; border-bottom: 1px solid #222; margin: 0 1px -1px 0; padding: 0 9px 0 10px; }
 #title .actions                        { margin-top: 10px; }
 #title nav li                          { background: black; border-right: 1px solid #111; float: left; }
 #title nav li a                        { display: block; padding: 0.8333em 1em; }
@@ -72,6 +72,8 @@ body.right #main                       { float: right; }
 
 .actions                               { float: right; }
 
+section .article,
+section article                        { background: @section-background-alt; }
 section article:hover                  { .box-shadow(0 0 10px rgba(255, 255, 255, 0.25)); /*background: @section-background-alt;*/ }
 
 /*section article + aside,
@@ -85,7 +87,7 @@ section aside + article                { padding-top: 0.8333em; }
 
 /***** FOOTER *****/
 
-#footer                                { background: url(../black50.png); border-top: 1px solid #333; border-bottom: 1px solid #333; color: #f2f2f2; margin-top: 2em; min-height: 150px; }
+#footer                                { background: black; border-top: 1px solid #333; color: #f2f2f2; margin-top: 2em; min-height: 150px; }
 #footer .mod                           { background: none; margin-bottom: 1em; }
 #footer p,
 #footer nav ul                         { text-align: center; }

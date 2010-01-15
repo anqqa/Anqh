@@ -1,28 +1,31 @@
-
 <?php if (!empty($filters)): ?>
-<?= form::open(null, array('class' => 'filters pills')) ?>
 
-	<?php foreach ($filters as $type => $filter): ?>
-	<fieldset>
-		<!-- <legend><?= html::specialchars($filter['name']) ?>:</legend>-->
-		<ul>
-			<li>
-				<?= form::checkbox(array('name' => 'filter[]', 'id' => 'all-' . $type), 'all', true) ?>
-				<?= form::label('all-' . $type, __('All')) ?>
-			</li>
-			<?php foreach ($filter['filters'] as $key => $name): ?>
-			<li>
-				<?= form::checkbox(array('name' => 'filter[]', 'id' => $type . '-' . $key), $type . '-' . $key) ?>
-				<?= form::label($type . '-' . $key, $name) ?>
-			</li>
-			<?php endforeach; ?>
-		</ul>
-	</fieldset>
-	<?php endforeach ?>
+<section class="mod filters">
+	<?= form::open(null, array('class' => 'filters pills')) ?>
 
-<?= form::close() ?>
-<?php endif; ?>
-<?php widget::add('footer', html::script_source("
+		<?php foreach ($filters as $type => $filter): ?>
+		<fieldset>
+			<!-- <legend><?= html::specialchars($filter['name']) ?>:</legend>-->
+			<ul>
+				<li>
+					<?= form::checkbox(array('name' => 'filter[]', 'id' => 'all-' . $type), 'all', true) ?>
+					<?= form::label('all-' . $type, __('All')) ?>
+				</li>
+				<?php foreach ($filter['filters'] as $key => $name): ?>
+				<li>
+					<?= form::checkbox(array('name' => 'filter[]', 'id' => $type . '-' . $key), $type . '-' . $key) ?>
+					<?= form::label($type . '-' . $key, $name) ?>
+				</li>
+				<?php endforeach; ?>
+			</ul>
+		</fieldset>
+		<?php endforeach ?>
+
+	<?= form::close() ?>
+</section>
+
+<?php
+	widget::add('footer', html::script_source("
 function filters(all) {
 	if (all) {
 
@@ -84,4 +87,5 @@ $(function() {
 
 	});
 });
-")); ?>
+"));
+endif;

@@ -8,7 +8,7 @@
 		if ($difference['years'] || $difference['months']):
 	?>
 
-	<div class="article post-old"><?= __('Previous post over :ago ago', array(':ago' => date::timespan_short($current, $previous))) ?></div>
+	<div class="divider post-old"><?= __('Previous post over :ago ago', array(':ago' => date::timespan_short($current, $previous))) ?></div>
 
 	<?php
 		endif;

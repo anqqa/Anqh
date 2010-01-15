@@ -19,10 +19,10 @@
  * H6 14px
  */
 
-body                                   { font-family: Lucida Grande, Lucida Sans Unicode, sans-serif; font-size: 75%; font-size-adjust: none; font-style: normal; font-variant: normal; font-weight: normal; line-height: 1.6667em; }
+body                                   { font-family: Lucida Grande, Lucida Sans Unicode, sans-serif; font-size: 75%; font-size-adjust: none; font-style: normal; font-variant: normal; font-weight: normal; line-height: 1.665em; }
 
-p                                      { font-weight: 300; padding: 0 0 1.6667em 0; }
-p + p                                  { text-indent: 1.667em; }
+p                                      { font-weight: 300; padding: 0 0 1.666em 0; }
+p + p                                  { text-indent: 1.666em; }
 p.first:first-letter                   { float: left; font-family: Baskerville, Palatino Linotype, serif; font-size: 3em; font-weight: 700; line-height: 1em; padding: 0.2em 0.1em 0 0; }
 p img                                  { float: left; margin: 0.5em 0.833em 0.833em 0; padding: 0; }
 p img.right                            { float: right; margin: 0.5em 0 0.833em 0.833em }
@@ -34,7 +34,7 @@ h3,
 h4,
 h5,
 h6                                     { font-weight: normal; font-family: Georgia, serif; }
-h1                                     { font-size: 2em; line-height: 1.6667em; margin-top: 0.833em; }
+h1                                     { font-size: 2em; line-height: 1.666em; margin-top: 0.833em; }
 h2                                     { font-size: 1.75em; line-height: 1.9048em; /*margin-top: 0.952em;*/ }
 legend                                 { font-size: 1.5em; line-height: 1.1111em; padding-top: 1.111em; }
 h3                                     { font-size: 1.5em; line-height: 1.1111em; margin-top: 1.111em; }
@@ -43,7 +43,7 @@ h5,
 h6                                     { font-size: 1.1667em; line-height: 1.4286em; margin-top: 1.4286em; }
 h1 span                                { font-size: 0.5em; }
 h2 span                                { font-size: 0.571em; }
-h3 span                                { font-size: 0.667em; }
+h3 span                                { font-size: 0.666em; }
 h4 span                                { font-size: 0.75em; }
 h5 span,
 h6 span                                { font-size: 0.857em; }

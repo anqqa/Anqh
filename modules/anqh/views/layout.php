@@ -225,6 +225,7 @@ $(function() {
 
 	$('a.user').tooltip({
 		tip: '#peepbox',
+		lazy: false,
 		position: 'bottom right',
 		onBeforeShow: function() {
 			peepbox(this.getTrigger().attr('href'), this.getTip());

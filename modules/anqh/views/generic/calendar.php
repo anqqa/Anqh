@@ -15,8 +15,8 @@ $next = '/events/' . date('Y/m', $next);
 $previous_padding = true;
 $next_padding = false;
 ?>
-<section class="mod">
-	<table class="calendar">
+<section class="mod calendar">
+	<table>
 		<thead>
 			<tr>
 				<td class="prev"><?= html::anchor($prev, '&laquo;') ?></td>

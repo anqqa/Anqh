@@ -125,13 +125,14 @@ table.calendar td            { padding: 0; }
 
 /***** calendar *****/
 
-table.calendar        { width: 100%; }
-table.calendar th,
-table.calendar td     { text-align: right; width: 12.5%; }
-table.calendar .prev  { text-align: left; }
-table.calendar .month { text-align: center; }
-table.calendar .inactive { opacity: 0.50; }
-table.calendar .today { font-weight: bold; }
+
+.calendar table                        { width: 100%; }
+.calendar table th,
+.calendar table td                     { padding: 0; text-align: right; width: 12.5%; }
+.calendar table .prev                  { text-align: left; }
+.calendar table .month                 { text-align: center; }
+.calendar table .inactive              { opacity: 0.50; }
+.calendar table .today                 { font-weight: bold; }
 
 #events section.day                    { padding: 0.8333em 10px; }
 #events .date                          { margin-right: 10px; }

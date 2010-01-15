@@ -2,13 +2,13 @@
 <section class="mod calendar">
 <?php foreach ($events as $date => $cities): ?>
 
-	<section class="line day">
+	<div class="line day">
 
 		<header class="unit size1of6">
 			<?= html::box_day($date) ?>
 		</header>
 
-		<section class="unit size5of6 lastunit cities">
+		<div class="unit size5of6 lastunit cities">
 			<?php foreach ($cities as $city => $events): ?>
 
 			<section class="city city-<?= url::title($city) ?>">
@@ -58,9 +58,9 @@
 			</section><!-- city -->
 
 			<?php endforeach; ?>
-		</section><!-- cities -->
+		</div><!-- cities -->
 
-	</section><!-- day -->
+	</div><!-- day -->
 
 <?php endforeach; ?>
 </section>
