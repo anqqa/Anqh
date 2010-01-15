@@ -1,8 +1,8 @@
 
-<!--<section class="mod topics">-->
+<section class="mod topics">
 	<?php foreach ($topics as $topic): ?>
 
-	<article class="mod topic-<?= $topic->id ?>">
+	<article class="topic-<?= $topic->id ?>">
 		<header>
 			<h4><?= html::anchor(url::model($topic) . '/page/last', text::title($topic->name), array('title' => $topic->name)) ?></h4>
 			<span class="details">
@@ -22,4 +22,4 @@
 	</article>
 
 	<?php endforeach; ?>
-<!--</section> /mod -->
+</section><!-- /mod -->

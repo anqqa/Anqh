@@ -443,17 +443,6 @@ class Forum_Controller extends Website_Controller {
 						'post'  => $forum_post,
 						'user'  => $this->user,
 					));
-
-					// AJAX hooks
-					echo html::script_source('
-						$("#post-' . $forum_post->id . ' .post-edit").click(function(e) {
-							e.preventDefault();
-							$.get($(this).attr("href"), function(data) {
-								$("#post-' . $forum_post->id . ' .post-content").html(data);
-							});
-							return;
-						});
-					');
 				}
 			} else {
 				echo __('Post not found');

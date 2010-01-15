@@ -15,32 +15,8 @@
 		<?= form::csrf() ?>
 		<?= empty($post['id']) ? '' : form::hidden('id', $post['id']) ?>
 		<?= empty($parent_id) ? '' : form::hidden('parent_id', $parent_id) ?>
-		<?php if (request::is_ajax()): ?>
-
-			<?= form::submit(false, __('Save')) ?>
-			<?= html::anchor('forum/post/' . $post['id'], __('Cancel')) ?>
-			<?= html::script_source('
-$("#post-' . $post['id'] . ' .post-edit form").submit(function(e) {
-	e.preventDefault();
-	$.post($(this).attr("action"), $(this).serialize(), function(data) {
-		$("#post-' . $post['id'] . '").replaceWith(data);
-	});
-});
-
-$("#post-' . $post['id'] . ' .post-edit a").click(function(e) {
-	e.preventDefault();
-	$.get($(this).attr("href"), function(data) {
-		$("#post-' . $post['id'] . '").replaceWith(data);
-	});
-});
-'); ?>
-
-		<?php else: ?>
-
-			<?= form::submit(false, __('Save')) ?>
-			<?= html::anchor($_SESSION['history'], __('Cancel')) ?>
-
-		<?php endif; ?>
+		<?= form::submit(false, __('Save')) ?>
+		<?= html::anchor(request::is_ajax() ? 'forum/post/' . $post['id'] : $_SESSION['history'], __('Cancel')) ?>
 	</fieldset>
 
 	<?= form::close() ?>
