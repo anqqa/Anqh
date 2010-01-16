@@ -15,7 +15,7 @@
 			<?= form::checkbox_wrap('private', '1', $values, "onchange=\"$('input[name=comment]').toggleClass('private', this.checked)\"", '<abbr class="private" title="' . __('Private comment') . '">' . __('Priv') . '</abbr>') ?>
 			<?php endif; ?>
 
-			<?= form::input_wrap('comment', '', 'maxlength="300"', '', $errors) ?>
+			<?= form::input_wrap(array('name' => 'comment', 'id' => 'comment', 'maxlength' => 300), '', '', '', $errors) ?>
 
 			<li><?= form::submit(false, __('Comment')) ?></li>
 		</ul>

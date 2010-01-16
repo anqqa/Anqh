@@ -116,9 +116,7 @@ table.calendar td            { padding: 0; }
 
 /***** profile ******/
 
-#member .comments #comment { width: 300px; }
-#member .comments p        { margin-top: 1.667em; }
-#member .commentor         { text-align: right; }
+#member .comments #comment             { width: 300px; }
 
 /***** /profile *****/
 
