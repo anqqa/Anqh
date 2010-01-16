@@ -34,10 +34,10 @@ class User_Comment_Model extends Modeler_ORM {
 
 	// Validation
 	protected $rules = array(
-		'comment'   => array('required', 'length[1, 300]'),
-		'user_id'   => array('required', 'valid::numeric'),
-		'author_id' => array('required', 'valid::numeric'),
-		'private'   => array('in_array[1]'),
+		'comment'   => array('rules' => array('required', 'length[1, 300]'), 'pre_filter' => 'trim'),
+		'user_id'   => array('rules' => array('required', 'valid::numeric')),
+		'author_id' => array('rules' => array('required', 'valid::numeric')),
+		'private'   => array('rules' => array('in_array[0,1]')),
 	);
 
 

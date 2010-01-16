@@ -82,8 +82,9 @@ class Member_Controller extends Website_Controller {
 				$this->frienddelete($username);
 				break;
 
+			// View profile
 			default:
-				if (request::is_ajax()) {
+				if (request::is_ajax() && isset($_REQUEST['peep'])) {
 
 					// View peepbox
 					$this->_peepbox($username);
@@ -523,19 +524,19 @@ class Member_Controller extends Website_Controller {
 			$owner = ($this->user && $member->id == $this->user->id);
 
 			// Actions
-			if ($owner) {
+			if ($member->has_access(User_Model::ACCESS_EDIT)) {
 				$this->page_actions[] = array('link' => url::user($this->member) . '/edit', 'text' => __('Settings'), 'class' => 'settings');
 			}
 
-			// basic information
+			// Basic information
 			$this->page_title = text::title($member->username, false);
 			if (!empty($member->title)) $this->template->subtitle = html::specialchars($member->title);
 
-			// picture
+			// Picture
 			widget::add('main', View::factory('member/member', array('user' => $member)));
 
-			// comments
-			if ($this->visitor->logged_in()) {
+			// Comments
+			if ($member->has_access(User_Model::ACCESS_COMMENT)) {
 
 				$comment = new User_Comment_Model();
 				$form_values = $comment->as_array();
@@ -543,10 +544,15 @@ class Member_Controller extends Website_Controller {
 
 				// check post
 				if ($post = $this->input->post()) {
-					$post['author_id'] = $this->user->id;
-					$post['user_id'] = $member->id;
-					if (csrf::valid() && $comment->validate($post, true, array())) {
-						$member->clear_comment_cache();
+					$comment->user_id = $member->id;
+					$comment->author_id = $this->user->id;
+					$comment->comment = $post['comment'];
+					if (isset($post['private'])) {
+						$comment->private = 1;
+					}
+					if (csrf::valid() && $comment->save()) {
+						$member->newcomments += 1;
+						$member->save();
 						$this->user->commentsleft += 1;
 						$this->user->save();
 						url::redirect(url::current());
@@ -562,7 +568,7 @@ class Member_Controller extends Website_Controller {
 				$page_offset = ($page_num - 1) * $per_page;
 
 				$total_comments = $member->get_comment_count();
-				$comments = $member->find_comments($page_num, $per_page);
+				$comments = $member->find_comments($page_num, $per_page, $this->user);
 
 				$pagination = new Pagination(array(
 					'items_per_page' => $per_page,

@@ -9,6 +9,21 @@
  */
 class User_Model extends Modeler_ORM {
 
+	/**
+	 * Access to leave comments
+	 */
+	const ACCESS_COMMENT = 'comment';
+
+	/**
+	 * Access to edit user
+	 */
+	const ACCESS_EDIT = 'edit';
+
+	/**
+	 * Access to view profile
+	 */
+	const ACCESS_VIEW = 'view';
+
 	// ORM
 	protected $has_many         = array('events', 'friends', 'tokens', 'user_comments');
 	protected $has_many_through = array('events' => 'favorites');
@@ -211,12 +226,15 @@ class User_Model extends Modeler_ORM {
 	/**
 	 * Get user's comments
 	 *
-	 * @param  int  $page_num
-	 * @param  int  $page_size
+	 * @param  int    $page_num
+	 * @param  int    $page_size
+	 * @param  mixed  $user  Viewer
 	 */
-	public function find_comments($page_num, $page_size = 25) {
+	public function find_comments($page_num, $page_size = 25, $user = null) {
+		$user = self::find_user($user);
 
 		// Try to fetch from cache first
+		/*
 		$cache_key = $this->cache->key('comments', $this->id, $page_num);
 		if ($page_num <= User_Comment_Model::$cache_max_pages) {
 			$comments = $this->cache->get($cache_key);
@@ -229,16 +247,34 @@ class User_Model extends Modeler_ORM {
 			$comments = unserialize($comments);
 
 		} else {
+		*/
 
 			// Not found from cache, load from DB
 			$page_offset = ($page_num - 1) * $page_size;
-			$comments = $this->user_comments->find_all($page_size, $page_offset);
+			if ($user && $user->id == $this->id) {
 
+				// All comments, my profile
+				$comments = $this->user_comments->find_all($page_size, $page_offset);
+
+			} else if ($user) {
+
+				// Public and my comments
+				$comments = $this->user_comments->and_open()->where('private', '=', 0)->or_where('author_id', '=', $user->id)->close()->find_all($page_size, $page_offset);
+
+			} else {
+
+				// Only public comments
+				$comments = $this->user_comments->where('private', '=', 0)->find_all($page_size, $page_offset);
+
+			}
+
+			/*
 			// cache only 3 first pages
 			if ($page_num <= User_Comment_Model::$cache_max_pages) {
 				$this->cache->set($cache_key, serialize($comments->as_array()), null, User_Comment_Model::$cache_max_age);
 			}
 		}
+			*/
 
 		return $comments;
 	}
@@ -468,6 +504,46 @@ class User_Model extends Modeler_ORM {
 		}
 
 		return $user;
+	}
+
+
+	/**
+	 * Check if user has access to the user
+	 *
+	 * @param  string          $type  'read', 'write' etc
+	 * @param  int|User_Model  $user  current user on false
+	 */
+	public function has_access($type, $user = false) {
+		static $cache = array();
+
+		$user = ORM::factory('user')->find_user($user);
+		$cache_id = sprintf('%d_%s_%d', $this->id, $type, $user ? $user->id : 0);
+
+		if (!isset($cache[$cache_id])) {
+			$access = false;
+			switch ($type) {
+
+				// Access to comment
+				case self::ACCESS_COMMENT:
+					$access = ($user !== null);
+					break;
+
+				// Access to edit profile
+				case self::ACCESS_EDIT:
+					$access = ($user && $user->id == $this->id);
+					break;
+
+				// Access to view profile
+				case self::ACCESS_VIEW:
+					// TODO: ignore
+					$access = true;
+					break;
+
+			}
+			$cache[$cache_id] = $access;
+		}
+
+		return $cache[$cache_id];
 	}
 
 

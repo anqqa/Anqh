@@ -12,7 +12,7 @@
 	<fieldset class="horizontal">
 		<ul>
 			<?php if ($private): ?>
-			<?= form::checkbox_wrap('private', '1', $values, "onchange=\"$('#comment').toggleClass('private', this.checked)\"", '<abbr class="private" title="' . __('Private comment') . '">' . __('Priv') . '</abbr>') ?>
+			<?= form::checkbox_wrap('private', '1', $values, "onchange=\"$('input[name=comment]').toggleClass('private', this.checked)\"", '<abbr class="private" title="' . __('Private comment') . '">' . __('Priv') . '</abbr>') ?>
 			<?php endif; ?>
 
 			<?= form::input_wrap('comment', '', 'maxlength="300"', '', $errors) ?>
@@ -27,24 +27,22 @@
 	<?php foreach ($comments as $comment):
 		$classes = array('line');
 
-		if (!$comment->private || $user && in_array($user->id, array($comment->user_id, $comment->author_id))):
+		if ($comment->private) {
+			$classes[] = 'private';
+		}
 
-			if ($comment->private) {
-				$classes[] = 'private';
-			}
+		// Viewer's post
+		if ($user && $comment->author_id == $user->id) {
+			$classes[] = 'my';
+			$mine = true;
+		} else {
+			$mine = false;
+		}
 
-			// Viewer's post
-			if ($user && $comment->author_id == $user->id) {
-				$classes[] = 'my';
-				$mine = true;
-			} else {
-				$mine = false;
-			}
-
-			// Topic author's post
-			if ($comment->author_id == $comment->user_id) {
-				$classes[] = 'owner';
-			}
+		// Topic author's post
+		if ($comment->author_id == $comment->user_id) {
+			$classes[] = 'owner';
+		}
  	?>
 
 		<li class="<?= implode(' ', $classes) ?>">
@@ -68,7 +66,7 @@
 
 		</li>
 
-	<?php endif; endforeach; ?>
+	<?php endforeach; ?>
 	</ul>
 
 	<footer>
