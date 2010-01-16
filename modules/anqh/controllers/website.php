@@ -167,15 +167,21 @@ abstract class Website_Controller extends Controller {
 		// Footer
 		widget::add('footer', View::factory('events/events_list', array(
 			'id'     => 'footer-events-new',
-			'class'  => 'mod unit size1of4',
+			'class'  => 'unit size1of4',
 			'title'  => __('New events'),
 			'events' => ORM::factory('event')->order_by('id', 'DESC')->find_all(10)
 		)));
 		widget::add('footer', View::factory('forum/topics_list', array(
 			'id'     => 'footer-topics-active',
-			'class'  => 'mod unit size1of4',
+			'class'  => 'unit size1of4',
 			'title'  => __('New posts'),
 			'topics' => ORM::factory('forum_topic')->order_by('last_post_id', 'DESC')->find_all(10)
+		)));
+		widget::add('footer', View::factory('blog/entries_list', array(
+			'id'     => 'footer-blog-entries',
+			'class'  => 'unit size1of4',
+			'title'  => __('New blogs'),
+			'entries' => ORM::factory('blog_entry')->find_latest(10),
 		)));
 
 		// Dock
