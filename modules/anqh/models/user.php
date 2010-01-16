@@ -407,49 +407,64 @@ class User_Model extends Modeler_ORM {
 
 	/**
 	 * Load one user.
-	 * Numeric id will be fetched from cache, string from db.
 	 *
-	 * @param  mixed  $id
+	 * @param   mixed  $user  user_id, username, email, User_Model or false for current session
+	 * @return  User_Model
 	 */
-	public function find_user($id) {
+	public function find_user($id = false) {
+		static $session = false;
 
-		$id = (is_numeric($id) || empty($id)) ? (int)$id : utf8::strtolower($id);
+		$user = null;
+		$cache = false;
 
-		// Look from local cache first
-		$user = isset(self::$users[$id]) ? self::$users[$id] : null;
+		// Try user models first (User_Model, session)
+		if ($id instanceof User_Model) {
 
-		// If not found, look from global cache
-		if (is_null($user) && is_int($id)) {
-			if ($user = $this->cache->get($this->cache->key('user', $id))) {
+			// User_Model
+			$user = $id;
+
+		} else if ($id === false) {
+
+			// Current session, fetch only once
+			if ($session === false) {
+				$session = Visitor::instance()->get_user();
+			}
+			$user = $session;
+
+		}
+
+		// Then try others (user_id, username, email)
+		if (!$user && $id !== true && !empty($id)) {
+			$id = (is_numeric($id) || empty($id)) ? (int)$id : mb_strtolower($id);
+			if (isset(self::$users[$id])) {
+
+				// Found from static cache
+				return self::$users[$id];
+
+			} else if ($user = $this->cache->get($this->cache->key('user', $id))) {
+
+				// Found from cache
 				$user = unserialize($user);
 
-				// Found from global cache, add to local cache
-				self::$users[$user->id] = self::$users[utf8::strtolower($user->username)] = self::$users[utf8::strtolower($user->email)] = $user;
+			} else {
+
+				// Not found from caches, try db
+				if (is_int($id)) {
+					$user = $this->find($id);
+				} else {
+					$user = $this->where(new Database_Expression('LOWER(' . $this->db->quote_table($this->table_name) . '.' . $this->unique_key($id) . ') = LOWER(' . $this->db->quote($id) . ')'))->find();
+				}
+				$cache = true;
 
 			}
 		}
 
-		// If still not found, get from db
-		if (is_null($user)) {
-
-			if (is_int($id)) {
-
-				// Numeric IDs are safe to fetch with the usual way
-				$user = $this->find((int)$id);
-
-			} else {
-
-				// Text IDs (username, email) must be lowercased because PostgreSQL is case sensitive
-				$user = $this->where(new Database_Expression('LOWER(' . $this->db->quote_table($this->table_name) . '.' . $this->unique_key($id) . ') = LOWER(' . $this->db->quote($id) . ')'))->find();
-
-			}
-
-			// If found from db, add to local and global cache
-			if ($user) {
-				self::$users[$user->id] = self::$users[utf8::strtolower($user->username)] = self::$users[utf8::strtolower($user->email)] = $user;
+		// If user found, add to cache(s)
+		if ($user && $user->loaded()) {
+			self::$users[$user->id] = self::$users[mb_strtolower($user->username)] = self::$users[mb_strtolower($user->email)] = $user;
+			if ($cache) {
 				$this->cache->set($this->cache->key('user', $user->id), serialize($user), null, self::$cache_max_age);
 			}
-
 		}
 
 		return $user;
