@@ -42,7 +42,7 @@ $config['cookie_name'] = 'autologin';
  * Username restrictions
  */
 $config['username'] = array(
-	'chars'      => 'a-zA-Z0-9_\-',
+	'chars'      => 'a-zA-Z0-9_\-\^\. ',
 	'length_min' => 3,
 	'length_max' => 20,
 );
