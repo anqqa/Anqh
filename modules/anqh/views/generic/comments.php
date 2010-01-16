@@ -49,7 +49,7 @@
 		<?php if ($user && $comment->user_id == $user->id || $mine): ?>
 		<span class="actions">
 			<?php if ($private && !$comment->private): ?>
-			<?= html::anchor(sprintf($setprivate, $comment->id), __('Set as private'), array('class' => 'action comment-private')) ?>
+			<?= html::anchor(sprintf($private, $comment->id), __('Set as private'), array('class' => 'action comment-private')) ?>
 			<?php endif; ?>
 			<?= html::anchor(sprintf($delete, $comment->id), __('Delete'), array('class' => 'action comment-delete')) ?>
 		</span>
@@ -86,10 +86,10 @@ $(function() {
 	$("a.comment-delete").each(function(i) {
 		var action = $(this);
 		action.data("action", function() {
-			var post = action.attr("href").match(/([0-9]*)\\/delete/);
-			if (post) {
-				$.get(action.attr("href"), function(data) {
-					$("#comment-" + post[1]).slideUp();
+			var comment = action.attr("href").match(/([0-9]*)\\/delete/);
+			if (comment) {
+				$.get(action.attr("href"), function() {
+					$("#comment-" + comment[1]).slideUp();
 				});
 			}
 		});
@@ -97,12 +97,24 @@ $(function() {
 
 	$("a.comment-private").live("click", function(e) {
 		e.preventDefault();
-		var comment = $(this).fadeOut().attr("href").match(/([0-9]*)\\/private/);
+		var href = $(this).attr("href");
+		var comment = href.match(/([0-9]*)\\/private/);
+		$(this).fadeOut()
 		if (comment) {
-			$.get($(this).attr("href"), function(data) {
+			$.get(href, function() {
 				$("#comment-" + comment[1]).addClass("private");
 			});
 		}
+		return false;
+	});
+
+	$("section.comments form").live("submit", function(e) {
+		e.preventDefault();
+		var comment = $(this).closest("section.comments");
+		$.post($(this).attr("action"), $(this).serialize(), function(data) {
+			comment.replaceWith(data);
+		});
+		return false;
 	});
 
 });

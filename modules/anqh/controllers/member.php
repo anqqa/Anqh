@@ -4,7 +4,7 @@
  *
  * @package    Anqh
  * @author     Antti Qvickström
- * @copyright  (c) 2009 Antti Qvickström
+ * @copyright  (c) 2009-2010 Antti Qvickström
  * @license    http://www.opensource.org/licenses/mit-license.php MIT license
  */
 class Member_Controller extends Website_Controller {
@@ -147,8 +147,8 @@ class Member_Controller extends Website_Controller {
 	/**
 	 * Comment action
 	 *
-	 * @param  int     $comment_id
-	 * @param  string  $action
+	 * @param  integer  $comment_id
+	 * @param  string   $action
 	 */
 	public function comment($comment_id, $action = false) {
 		$this->history = false;
@@ -161,7 +161,7 @@ class Member_Controller extends Website_Controller {
 					$this->_comment_delete($comment_id);
 					return;
 
-				// Set comment as privat
+				// Set comment as private
 				case 'private':
 					$this->_comment_private($comment_id);
 					return;
@@ -176,48 +176,52 @@ class Member_Controller extends Website_Controller {
 	/**
 	 * Delete comment
 	 *
-	 * @param  int  $comment_id
+	 * @param  integer  $comment_id
 	 */
 	public function _comment_delete($comment_id) {
 		$this->history = false;
 
 		$comment = new User_Comment_Model((int)$comment_id);
-		if (csrf::valid() && $comment->loaded() && $comment->has_access(User_Comment_Model::ACCESS_DELETE)) {
+		if (csrf::valid() && $comment->loaded() && $comment->has_access(Comment_Model::ACCESS_DELETE)) {
 			$member = $comment->user;
 			$comment->delete();
 
 			if (request::is_ajax()) {
 				return;
+			} else {
+				url::redirect(url::user($member));
 			}
-
-			url::redirect(url::user($member));
 		}
 
-		url::back('members');
+		if (!request::is_ajax()) {
+			url::back('members');
+		}
 	}
 
 
 	/**
 	 * Set comment as private
 	 *
-	 * @param  int  $comment_id
+	 * @param  integer  $comment_id
 	 */
 	public function _comment_private($comment_id) {
 		$this->history = false;
 
 		$comment = new User_Comment_Model((int)$comment_id);
-		if (csrf::valid() && $comment->loaded() && !$comment->private && $comment->has_access(User_Comment_Model::ACCESS_PRIVATE)) {
+		if (csrf::valid() && $comment->loaded() && !$comment->private && $comment->has_access(Comment_Model::ACCESS_PRIVATE)) {
 			$comment->private = 1;
 			$comment->save();
 
 			if (request::is_ajax()) {
 				return;
+			} else {
+				url::redirect(url::user($member));
 			}
-
-			url::redirect(url::user($member));
 		}
 
-		url::back('members');
+		if (!request::is_ajax()) {
+			url::back('members');
+		}
 	}
 
 	/***** /COMMENTS *****/
@@ -585,7 +589,9 @@ class Member_Controller extends Website_Controller {
 						}
 						$this->user->commentsleft += 1;
 						$this->user->save();
-						url::redirect(url::current());
+						if (!request::is_ajax()) {
+							url::redirect(url::current());
+						}
 					} else {
 						$form_errors = $post->errors();
 						$form_values = arr::overwrite($form_values, $post->as_array());
@@ -605,19 +611,20 @@ class Member_Controller extends Website_Controller {
 					'total_items'    => $total_comments,
 				));
 
-				widget::add('main',
-					View::factory('generic/comments', array(
-						'private'    => true,
-						'delete'     => '/member/comment/%d/delete/?token=' . csrf::token(),
-						'setprivate' => '/member/comment/%d/private/?token=' . csrf::token(),
-						'comments'   => $comments,
-						'errors'     => $form_errors,
-						'values'     => $form_values,
-						'pagination' => $pagination,
-						'user'       => $this->user,
-					))
-				);
-
+				$view = View::factory('generic/comments', array(
+					'delete'     => '/member/comment/%d/delete/?token=' . csrf::token(),
+					'private'    => '/member/comment/%d/private/?token=' . csrf::token(),
+					'comments'   => $comments,
+					'errors'     => $form_errors,
+					'values'     => $form_values,
+					'pagination' => $pagination,
+					'user'       => $this->user,
+				));
+				if (request::is_ajax()) {
+					echo $view;
+					return;
+				}
+				widget::add('main', $view);
 
 				// Basic info
 				$basic_info = array();

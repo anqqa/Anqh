@@ -4,7 +4,7 @@
  *
  * @package    Blog
  * @author     Antti Qvickström
- * @copyright  (c) 2009 Antti Qvickström
+ * @copyright  (c) 2009-2010 Antti Qvickström
  * @license    http://www.opensource.org/licenses/mit-license.php MIT license
  */
 class Blogs_Controller extends Website_Controller {
@@ -32,45 +32,75 @@ class Blogs_Controller extends Website_Controller {
 		if ($action) {
 			switch ($action) {
 
-				// delete comment
+				// Delete comment
 				case 'delete':
-					$this->commentdelete($comment_id);
+					$this->_comment_delete($comment_id);
+					return;
+
+				// Set comment as private
+				case 'private':
+					$this->_comment_private($comment_id);
 					return;
 
 			}
 		}
 
-		url::redirect(empty($_SESSION['history']) ? '/blogs' : $_SESSION['history']);
+		url::back('blogs');
 	}
 
 
 	/**
 	 * Delete comment
 	 *
-	 * @param  int  $comment_id
+	 * @param  integer  $comment_id
 	 */
-	public function commentdelete($comment_id) {
+	public function _comment_delete($comment_id) {
 		$this->history = false;
 
-		// for authenticated users only
-		if (!$this->user || !csrf::valid()) url::redirect(empty($_SESSION['history']) ? '/members' : $_SESSION['history']);
-
 		$comment = new Blog_Comment_Model((int)$comment_id);
-		if ($comment->id) {
+		if (csrf::valid() && $comment->loaded() && $comment->has_access(Comment_Model::ACCESS_DELETE)) {
+			$entry = $comment->blog_entry;
+			$entry->comments--;
+			$entry->save();
+			$comment->delete();
 
-			// allow only to delete one's own comments
-			if (in_array($this->user->id, array($comment->author_id, $comment->user_id))) {
-				$entry = $comment->blog_entry;
-				$entry->comments--;
-				$entry->save();
-				$comment->delete();
-
-				url::redirect(url::model($entry));
+			if (request::is_ajax()) {
 				return;
+			} else {
+				url::redirect(url::model($entry));
 			}
 		}
 
-		url::redirect(empty($_SESSION['history']) ? '/blogs' : $_SESSION['history']);
+		if (!request::is_ajax()) {
+			url::back('blogs');
+		}
+	}
+
+
+	/**
+	 * Set comment as private
+	 *
+	 * @param  integer  $comment_id
+	 */
+	public function _comment_private($comment_id) {
+		$this->history = false;
+
+		$comment = new Blog_Comment_Model((int)$comment_id);
+		if (csrf::valid() && $comment->loaded() && !$comment->private && $comment->has_access(Comment_Model::ACCESS_PRIVATE)) {
+			$entry = $comment->blog_entry;
+			$comment->private = 1;
+			$comment->save();
+
+			if (request::is_ajax()) {
+				return;
+			} else {
+				url::redirect(url::model($entry));
+			}
+		}
+
+		if (!request::is_ajax()) {
+			url::back('blogs');
+		}
 	}
 
 
@@ -119,11 +149,6 @@ class Blogs_Controller extends Website_Controller {
 				$this->page_actions[] = array('link' => url::model($entry) . '/edit', 'text' => __('Edit entry'), 'class' => 'entry-edit');
 			}
 
-			if (!$entry->is_author()) {
-				$entry->views++;
-				$entry->save();
-			}
-
 			widget::add('main', View::factory('blog/entry', array('entry' => $entry)));
 
 			// Blog comments
@@ -135,14 +160,20 @@ class Blogs_Controller extends Website_Controller {
 
 				// check post
 				if ($post = $this->input->post()) {
-					$post['blog_entry_id'] = $entry->id;
-					$post['author_id'] = $this->user->id;
-					$post['user_id'] = $entry->author->id;
-					if ($comment->validate($post, true, array())) {
+					$comment->blog_entry_id = $entry->id;
+					$comment->user_id = $entry->author->id;
+					$comment->author_id = $this->user->id;
+					$comment->comment = $post['comment'];
+					if (isset($post['private'])) {
+						$comment->private = 1;
+					}
+					if (csrf::valid() && $comment->save()) {
 						$entry->comments++;
 						$entry->newcomments++;
 						$entry->save();
-						url::redirect(url::current());
+						if (!request::is_ajax()) {
+							url::redirect(url::current());
+						}
 					} else {
 						$form_errors = $post->errors();
 						$form_values = arr::overwrite($form_values, $post->as_array());
@@ -150,16 +181,25 @@ class Blogs_Controller extends Website_Controller {
 				}
 
 				$comments = $entry->find_comments();
-				widget::add('main',
-					View::factory('generic/comments', array(
-						'private'    => false,
-						'delete'     => '/blogs/comment/%d/delete/?token=' . csrf::token(),
-						'comments'   => $comments,
-						'errors'     => $form_errors,
-						'values'     => $form_values,
-						'pagination' => null
-					))
-				);
+				$view = View::factory('generic/comments', array(
+					'delete'     => '/blogs/comment/%d/delete/?token=' . csrf::token(),
+					'private'    => '/blogs/comment/%d/private/?token=' . csrf::token(),
+					'comments'   => $comments,
+					'errors'     => $form_errors,
+					'values'     => $form_values,
+					'pagination' => null,
+					'user'       => $this->user,
+				));
+				if (request::is_ajax()) {
+					echo $view;
+					return;
+				}
+				widget::add('main', $view);
+			}
+
+			if (!$entry->is_author()) {
+				$entry->views++;
+				$entry->save();
 			}
 		}
 

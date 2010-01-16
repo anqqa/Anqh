@@ -33,7 +33,7 @@ class Blog_Entry_Model extends Modeler_ORM {
 
 		// Not found from cache, load from DB
 		$page_offset = ($page_num - 1) * $page_size;
-		$comments = $this->limit($page_size, $page_offset)->blog_comments;
+		$comments = $this->blog_comments->find_all($page_size, $page_offset);
 
 		return $comments;
 	}
