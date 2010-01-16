@@ -43,7 +43,7 @@ $(function() {
 			var post = action.attr("href").match(/([0-9]*)\\/delete/);
 			if (post) {
 				$.get(action.attr("href"), function(data) {
-					$("#post-" + post[1]).fadeOut("slow");
+					$("#post-" + post[1]).slideUp();
 				});
 			}
 		});
