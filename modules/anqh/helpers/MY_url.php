@@ -4,7 +4,7 @@
  *
  * @package    Anqh
  * @author     Antti Qvickström
- * @copyright  (c) 2009 Antti Qvickström
+ * @copyright  (c) 2009-2010 Antti Qvickström
  * @license    http://www.opensource.org/licenses/mit-license.php MIT license
  */
 class url extends url_Core {
@@ -61,7 +61,7 @@ class url extends url_Core {
 	 * @param  bool    $return   only return url
 	 */
 	public static function back($default = '/', $return = false) {
-		$url = empty($_SESSION['history']) ? $default : $_SESSION['history'];
+		$url = Session::instance()->get('history', $default);
 
 		if ($return) {
 			return $url;
@@ -79,6 +79,7 @@ class url extends url_Core {
 	 */
 	public static function title() {
 		$title = func_get_args();
+
 		return parent::title(implode(' ', $title));
 	}
 
