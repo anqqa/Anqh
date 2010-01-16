@@ -216,7 +216,7 @@ $(function() {
 	function peepbox(href, $tip) {
 		if ($tip.data('last') != href) {
 			$tip.text('<?= __('Loading...') ?>');
-			$.get(href, function(response) {
+			$.get(href + '?peep', function(response) {
 				$tip.html(response);
 			});
 		}
