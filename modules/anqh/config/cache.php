@@ -33,7 +33,7 @@
 	'params'		=> '',
 	'lifetime'	=> 3600,
 	'requests'	=> 1000,
-	'prefix'		=> IN_PRODUCTION ? 'anqh' : 'dev_anqh',
+	'prefix'		=> IN_PRODUCTION ? 'anqh_' : 'dev_anqh_',
 );
 
 $config['memcache'] = array(
@@ -48,7 +48,7 @@ $config['memcache'] = array(
 	),
 	'lifetime'	=> 3600,
 	'requests'	=> 1000,
-	'prefix'		=> IN_PRODUCTION ? 'anqh' : 'dev_anqh',
+	'prefix'		=> IN_PRODUCTION ? 'anqh_' : 'dev_anqh_',
 );
 
 $config['default'] = $config['memcache'];
