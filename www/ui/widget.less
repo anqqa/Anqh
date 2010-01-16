@@ -95,11 +95,18 @@ section article:hover .actions a[class*="-delete"],
 li.line:hover .actions a[class*="-delete"],
 ul.contentlist li:hover .actions a[class*="-delete"],
 a[class*="-delete"]                    { background-color: @negative-color; }
+section article:hover .actions a[class*="-private"],
+li.line:hover .actions a[class*="-private"],
+ul.contentlist li:hover .actions a[class*="-private"],
+a[class*="-private"]                   { background-color: @private-color; }
 .ui-widget .ui-dialog-buttonpane .ui-state-default:hover,
 section article.edit,
 button:hover,
 input[type="submit"]:hover,
 a.action:hover                         { .box-shadow(0 0 10px @link-color); }
+section article:hover .actions a[class*="-private"]:hover,
+li.line:hover .actions a[class*="-private"]:hover,
+a[class*="-private"]:hover             { .box-shadow(0 0 10px @private-color); }
 section article:hover .actions a[class*="-add"]:hover,
 li.line:hover .actions a[class*="-add"]:hover,
 a[class*="-add"]:hover                 { .box-shadow(0 0 10px @positive-color); }
@@ -248,3 +255,11 @@ ul.contentlist ul.bbcode_list li + li  { border-top: none; padding-top: 0; }
 #peepbox h4                            { margin-top: 0; }
 
 /***** /PEEPBOX *****/
+
+
+/***** COMMENTS *****/
+
+.comments #comment                     { width: 300px; }
+.comments form                         { margin-bottom: 10px; }
+
+/***** /COMMENTS *****/

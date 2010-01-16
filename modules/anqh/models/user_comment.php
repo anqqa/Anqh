@@ -10,6 +10,16 @@
 class User_Comment_Model extends Modeler_ORM {
 
 	/**
+	 * Access to delete comment
+	 */
+	const ACCESS_DELETE = 'delete';
+
+	/**
+	 * Access to set comment as private
+	 */
+	const ACCESS_PRIVATE = 'private';
+
+	/**
 	 * Number of pages to cache
 	 *
 	 * @var  int
@@ -47,6 +57,38 @@ class User_Comment_Model extends Modeler_ORM {
 		} else {
 			return parent::__get($key);
 		}
+	}
+
+
+	/**
+	 * Check if user has access to the comment
+	 *
+	 * @param  string          $type  'read', 'write' etc
+	 * @param  int|User_Model  $user  current user on false
+	 */
+	public function has_access($type, $user = false) {
+		static $cache = array();
+
+		$user = ORM::factory('user')->find_user($user);
+		$cache_id = sprintf('%d_%s_%d', $this->id, $type, $user ? $user->id : 0);
+
+		if (!isset($cache[$cache_id])) {
+			$access = false;
+			switch ($type) {
+
+				// Access to delete comment
+				case self::ACCESS_DELETE:
+
+				// Access to set comment as private
+				case self::ACCESS_PRIVATE:
+					$access = ($user && in_array($user->id, array($this->user_id, $this->author_id)));
+					break;
+
+			}
+			$cache[$cache_id] = $access;
+		}
+
+		return $cache[$cache_id];
 	}
 
 }

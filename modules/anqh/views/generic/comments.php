@@ -23,9 +23,8 @@
 	</fieldset>
 	<?= form::close() ?>
 
-	<ul>
 	<?php foreach ($comments as $comment):
-		$classes = array('line');
+		$classes = array();
 
 		if ($comment->private) {
 			$classes[] = 'private';
@@ -45,29 +44,31 @@
 		}
  	?>
 
-		<li class="<?= implode(' ', $classes) ?>">
+	<article id="comment-<?= $comment->id ?>" class="<?= implode(' ', $classes) ?>">
 
-			<?php if ($user && $comment->user_id == $user->id || $mine): ?>
-			<span class="actions">
-				<?= html::anchor(sprintf($delete, $comment->id), __('Delete'), array('class' => 'action comment-delete')) ?>
-			</span>
+		<?php if ($user && $comment->user_id == $user->id || $mine): ?>
+		<span class="actions">
+			<?php if ($private && !$comment->private): ?>
+			<?= html::anchor(sprintf($setprivate, $comment->id), __('Set as private'), array('class' => 'action comment-private')) ?>
 			<?php endif; ?>
+			<?= html::anchor(sprintf($delete, $comment->id), __('Delete'), array('class' => 'action comment-delete')) ?>
+		</span>
+		<?php endif; ?>
 
-			<?= html::avatar($comment->author->avatar, $comment->author->username) ?>
+		<?= html::avatar($comment->author->avatar, $comment->author->username) ?>
 
-			<?= html::nick($comment->author_id, $comment->author->username) ?>,
-			<?= __(':ago ago', array(
-				':ago' => html::time(date::timespan_short($comment->created), $comment->created))
-			) ?>
-			<br />
+		<?= html::nick($comment->author_id, $comment->author->username) ?>,
+		<?= __(':ago ago', array(
+			':ago' => html::time(date::timespan_short($comment->created), $comment->created))
+		) ?>
+		<br />
 
-			<?= $comment->private ? '<abbr title="' . __('Private comment') . '">' . __('Priv') . '</abbr>: ' : '' ?>
-			<?= text::smileys(text::auto_link_urls(html::specialchars($comment->comment))) ?>
-
-		</li>
+		<?= $comment->private ? '<abbr title="' . __('Private comment') . '">' . __('Priv') . '</abbr>: ' : '' ?>
+		<?= text::smileys(text::auto_link_urls(html::specialchars($comment->comment))) ?>
+		<br clear="all" />
+	</article>
 
 	<?php endforeach; ?>
-	</ul>
 
 	<footer>
 
@@ -75,4 +76,34 @@
 
 	</footer>
 
-</section
+</section>
+<?php
+
+// AJAX hooks
+echo html::script_source('
+$(function() {
+
+	$("a.comment-delete").each(function(i) {
+		var action = $(this);
+		action.data("action", function() {
+			var post = action.attr("href").match(/([0-9]*)\\/delete/);
+			if (post) {
+				$.get(action.attr("href"), function(data) {
+					$("#comment-" + post[1]).slideUp();
+				});
+			}
+		});
+	});
+
+	$("a.comment-private").live("click", function(e) {
+		e.preventDefault();
+		var comment = $(this).fadeOut().attr("href").match(/([0-9]*)\\/private/);
+		if (comment) {
+			$.get($(this).attr("href"), function(data) {
+				$("#comment-" + comment[1]).addClass("private");
+			});
+		}
+	});
+
+});
+');

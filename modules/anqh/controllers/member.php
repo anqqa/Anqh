@@ -156,15 +156,20 @@ class Member_Controller extends Website_Controller {
 		if ($action) {
 			switch ($action) {
 
-				// delete comment
+				// Delete comment
 				case 'delete':
-					$this->commentdelete($comment_id);
+					$this->_comment_delete($comment_id);
+					return;
+
+				// Set comment as privat
+				case 'private':
+					$this->_comment_private($comment_id);
 					return;
 
 			}
 		}
 
-		url::redirect(empty($_SESSION['history']) ? '/members' : $_SESSION['history']);
+		url::back('members');
 	}
 
 
@@ -173,27 +178,46 @@ class Member_Controller extends Website_Controller {
 	 *
 	 * @param  int  $comment_id
 	 */
-	public function commentdelete($comment_id) {
+	public function _comment_delete($comment_id) {
 		$this->history = false;
 
-		// For authenticated users only
-		if (!$this->user || !csrf::valid()) url::redirect(empty($_SESSION['history']) ? '/members' : $_SESSION['history']);
-
 		$comment = new User_Comment_Model((int)$comment_id);
-		if ($comment->id) {
+		if (csrf::valid() && $comment->loaded() && $comment->has_access(User_Comment_Model::ACCESS_DELETE)) {
+			$member = $comment->user;
+			$comment->delete();
 
-			// allow only to delete one's own comments
-			if (in_array($this->user->id, array($comment->author_id, $comment->user_id))) {
-				$user = $comment->user;
-				$comment->delete();
-				$user->clear_comment_cache();
-
-				url::redirect('/member/' . urlencode($user->username));
+			if (request::is_ajax()) {
 				return;
 			}
+
+			url::redirect(url::user($member));
 		}
 
-		url::redirect(empty($_SESSION['history']) ? '/members' : $_SESSION['history']);
+		url::back('members');
+	}
+
+
+	/**
+	 * Set comment as private
+	 *
+	 * @param  int  $comment_id
+	 */
+	public function _comment_private($comment_id) {
+		$this->history = false;
+
+		$comment = new User_Comment_Model((int)$comment_id);
+		if (csrf::valid() && $comment->loaded() && !$comment->private && $comment->has_access(User_Comment_Model::ACCESS_PRIVATE)) {
+			$comment->private = 1;
+			$comment->save();
+
+			if (request::is_ajax()) {
+				return;
+			}
+
+			url::redirect(url::user($member));
+		}
+
+		url::back('members');
 	}
 
 	/***** /COMMENTS *****/
@@ -522,6 +546,10 @@ class Member_Controller extends Website_Controller {
 
 		if (empty($errors)) {
 			$owner = ($this->user && $member->id == $this->user->id);
+			if ($owner && $this->user->newcomments) {
+				$this->user->newcomments = 0;
+				$this->user->save();
+			}
 
 			// Actions
 			if ($member->has_access(User_Model::ACCESS_EDIT)) {
@@ -551,8 +579,10 @@ class Member_Controller extends Website_Controller {
 						$comment->private = 1;
 					}
 					if (csrf::valid() && $comment->save()) {
-						$member->newcomments += 1;
-						$member->save();
+						if (!$owner) {
+							$member->newcomments += 1;
+							$member->save();
+						}
 						$this->user->commentsleft += 1;
 						$this->user->save();
 						url::redirect(url::current());
@@ -562,7 +592,7 @@ class Member_Controller extends Website_Controller {
 					}
 				}
 
-				// handle pagination
+				// Handle pagination
 				$per_page    = 25;
 				$page_num    = $this->uri->segment('page') ? $this->uri->segment('page') : 1;
 				$page_offset = ($page_num - 1) * $per_page;
@@ -579,6 +609,7 @@ class Member_Controller extends Website_Controller {
 					View::factory('generic/comments', array(
 						'private'    => true,
 						'delete'     => '/member/comment/%d/delete/?token=' . csrf::token(),
+						'setprivate' => '/member/comment/%d/private/?token=' . csrf::token(),
 						'comments'   => $comments,
 						'errors'     => $form_errors,
 						'values'     => $form_values,
@@ -588,7 +619,7 @@ class Member_Controller extends Website_Controller {
 				);
 
 
-				// Side
+				// Basic info
 				$basic_info = array();
 				if (!empty($member->name)) {
 					$basic_info[__('Name')] = html::specialchars($member->name);
