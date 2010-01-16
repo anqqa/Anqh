@@ -171,6 +171,8 @@ class Blogs_Controller extends Website_Controller {
 						$entry->comments++;
 						$entry->newcomments++;
 						$entry->save();
+
+						newsfeeditem_blog::comment($this->user, $entry);
 						if (!request::is_ajax()) {
 							url::redirect(url::current());
 						}
