@@ -10,9 +10,10 @@
 class Forum_Group_Model extends Modeler_ORM {
 
 	// ORM
-	protected $has_many = array('forum_areas');
+	protected $has_many   = array('forum_areas');
 	protected $belongs_to = array('author' => 'user');
-	protected $sorting = array('sort' => 'ASC');
+	protected $sorting    = array('sort' => 'ASC');
+	protected $load_with  = array('forum_areas');
 
 	// Validation
 	protected $_rules = array(

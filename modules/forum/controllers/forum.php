@@ -87,7 +87,7 @@ class Forum_Controller extends Website_Controller {
 			$this->page_actions[] = array('link' => 'forum/area/add',  'text' => __('New area'),  'class' => 'area-add');
 		}
 
-		widget::add('main', View::factory('forum/groups', array('user' => $this->user, 'groups' => ORM::factory('forum_group')->find_all())));
+		widget::add('main', View::factory('forum/groups', array('groups' => ORM::factory('forum_group')->find_all())));
 
 		$this->_side_views();
 	}
@@ -178,12 +178,12 @@ class Forum_Controller extends Website_Controller {
 			}
 
 			// Logged user actions
-			if ($this->visitor->logged_in()) {
+			if ($forum_area->has_access(Forum_Area_Model::ACCESS_WRITE)) {
 				$this->page_actions[] = array('link' => url::model($forum_area) . '/post', 'text' => __('New topic'), 'class' => 'topic-add');
 			}
 
 			// check access and proceed
-			if ($forum_area->access_has($this->user, Forum_Area_Model::ACCESS_READ)) {
+			if ($forum_area->has_access(Forum_Area_Model::ACCESS_READ)) {
 
 				// handle pagination
 				$per_page = $this->config['topics_per_page'];
@@ -538,7 +538,7 @@ class Forum_Controller extends Website_Controller {
 
 			// Check access and proceed
 			$forum_area = $forum_topic->forum_area;
-			if ($forum_area->access_has($this->user, Forum_Area_Model::ACCESS_WRITE)) {
+			if ($forum_topic->has_access(Forum_Topic_Model::ACCESS_WRITE)) {
 
 				$this->page_title = text::title($forum_topic->name);
 				$this->page_subtitle = __('Area :area.', array(
@@ -711,17 +711,17 @@ class Forum_Controller extends Website_Controller {
 			$this->breadcrumb[] = html::anchor(url::model($forum_area), $forum_area->name);
 
 			// Admin actions
-			if ($forum_topic->is_author() || $this->visitor->logged_in(array('admin', 'forum moderator'))) {
+			if ($forum_topic->has_access(Forum_Topic_Model::ACCESS_EDIT)) {
 				$this->page_actions[] = array('link' => url::model($forum_topic) . '/edit',   'text' => __('Edit topic'),   'class' => 'topic-edit');
 			}
 
 			// Logged user actions
-			if ($this->user) {
+			if ($forum_topic->has_access(Forum_Topic_Model::ACCESS_WRITE)) {
 				$this->page_actions[] = array('link' => url::model($forum_topic) . '/post',   'text' => __('Reply to topic'),  'class' => 'topic-post');
 			}
 
 			// Check access and proceed
-			if ($forum_area->access_has($this->user, Forum_Area_Model::ACCESS_READ)) {
+			if ($forum_area->has_access(Forum_Area_Model::ACCESS_READ)) {
 				$this->breadcrumb[] = html::anchor(url::model($forum_topic), $forum_topic->name);
 
 				$this->page_title = ($forum_topic->read_only ? '<span class="locked">' . __('[Locked]') . '</span> ' : '') . text::title($forum_topic->name);
@@ -830,7 +830,7 @@ class Forum_Controller extends Website_Controller {
 		}
 
 		$forum_topic = new Forum_Topic_Model((int)$topic_id);
-		if (!$this->user || $forum_topic->loaded() && !($forum_topic->is_author($this->user) || $this->visitor->logged_in(array('admin', 'forum moderator')))) {
+		if (!$this->user || $forum_topic->loaded() && !$forum_topic->has_access(Forum_Topic_Model::ACCESS_EDIT)) {
 			url::back('/forum');
 		}
 		$forum_area = $forum_topic->id ? $forum_topic->forum_area : new Forum_Area_Model((int)$area_id);
@@ -839,8 +839,7 @@ class Forum_Controller extends Website_Controller {
 
 		if (empty($errors)) {
 
-			// check for write access
-			if ($forum_area->access_has($this->user, Forum_Area_Model::ACCESS_WRITE)) {
+			if ($forum_area->has_access(Forum_Area_Model::ACCESS_WRITE)) {
 				$form_errors = array();
 
 				$this->page_title = $forum_topic->id ? text::title($forum_topic->name) : __('New topic');

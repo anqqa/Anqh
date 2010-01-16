@@ -14,14 +14,14 @@ class Forum_Area_Model extends Modeler_ORM {
 	 *
 	 * @var  string
 	 */
-	const ACCESS_READ = 'r';
+	const ACCESS_READ = 'read';
 
 	/**
-	 * Area write access
+	 * Area write access (= new topic)
 	 *
 	 * @var  string
 	 */
-	const ACCESS_WRITE = 'w';
+	const ACCESS_WRITE = 'write';
 
 	/**
 	 * Normal area
@@ -70,7 +70,7 @@ class Forum_Area_Model extends Modeler_ORM {
 	protected $has_one     = array('last_topic' => 'forum_topic');
 	protected $belongs_to  = array('forum_group', 'author' => 'user');
 	protected $sorting     = array('sort' => 'ASC');
-	protected $load_with   = array('forum_groups', 'last_topics');
+	protected $load_with   = array('forum_groups');
 	protected $foreign_key = array('last_topic' => 'id');
 
 	// Validation
@@ -90,35 +90,59 @@ class Forum_Area_Model extends Modeler_ORM {
 	 * @param   mixed  $user
 	 * @param   int    $type
 	 * @return  bool
+	 *
+	 * @deprecated  in favor of has_access
 	 */
 	public function access_has($user, $type = self::ACCESS_READ) {
-		$access = false;
+		return $this->has_access($type, $user);
+	}
 
-		switch ($type) {
 
-			// read access to area
-			case self::ACCESS_READ:
-				$mask = self::TYPE_HIDDEN;
+	/**
+	 * Check if user has access to the forum area
+	 *
+	 * @param  string          $type  'read', 'write' etc
+	 * @param  int|User_Model  $user  current user on false
+	 */
+	public function has_access($type, $user = false) {
+		static $cache = array();
 
-				// non-logged has more restrictions
-				if (!$user) $mask |= self::TYPE_LOGGED | self::TYPE_PRIVATE;
+		$user = ORM::factory('user')->find_user($user);
+		$cache_id = sprintf('%d_%s_%d', $this->id, $type, $user ? $user->id : 0);
 
-				// mask fits, no access
-				if (!($this->access & $mask)) $access = true;
-				break;
+		if (!isset($cache[$cache_id])) {
+			$access = false;
+			switch ($type) {
 
-			// write access to area (= new topic)
-			case self::ACCESS_WRITE:
-				$mask = self::TYPE_READONLY;
+				// Read access to area
+				case self::ACCESS_READ:
+					$mask = self::TYPE_HIDDEN;
 
-				// mask fits, no access
-				if (!($this->access & $mask)) $access = true;
+					// Non-logged has more restrictions
+					if (!$user) $mask |= self::TYPE_LOGGED | self::TYPE_PRIVATE;
 
-				// non-logged can't never write
-				if (!$user) $access = false;
-				break;
+					// Mask fits, no access
+					if (!($this->access & $mask)) $access = true;
+					break;
+
+				// Write access to area (= new topic)
+				case self::ACCESS_WRITE:
+
+					// Non-logged can't never write
+					if ($user) {
+						$mask = self::TYPE_READONLY;
+
+						// Mask fits, no access
+						if (!($this->access & $mask)) $access = true;
+
+					}
+					break;
+
+			}
+			$cache[$cache_id] = $access;
 		}
-		return $access;
+
+		return $cache[$cache_id];
 	}
 
 

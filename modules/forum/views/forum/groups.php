@@ -11,7 +11,7 @@
 
 		<?php foreach ($group->forum_areas->find_all() as $area): ?>
 
-			<?php if ($area->access_has($user, Forum_Area_Model::ACCESS_READ)): ?>
+			<?php if ($area->has_access(Forum_Area_Model::ACCESS_READ)): ?>
 
 			<article class="area area-<?= $area->id ?>">
 				<h4>

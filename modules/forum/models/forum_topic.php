@@ -9,6 +9,27 @@
  */
 class Forum_Topic_Model extends Modeler_ORM {
 
+	/**
+	 * Topic edit access
+	 *
+	 * @var  string
+	 */
+	const ACCESS_EDIT = 'edit';
+
+	/**
+	 * Topic read access
+	 *
+	 * @var  string
+	 */
+	const ACCESS_READ = 'read';
+
+	/**
+	 * Topic write access (= reply)
+	 *
+	 * @var  string
+	 */
+	const ACCESS_WRITE = 'write';
+
 	// ORM
 	protected $belongs_to = array('forum_area', 'author' => 'user');
 	protected $has_many   = array('forum_posts');
@@ -64,6 +85,45 @@ class Forum_Topic_Model extends Modeler_ORM {
 		}
 
 		return $topics;
+	}
+
+
+	/**
+	 * Check if user has access to the forum area
+	 *
+	 * @param  string          $type  'read', 'write' etc
+	 * @param  int|User_Model  $user  current user on false
+	 */
+	public function has_access($type, $user = false) {
+		static $cache = array();
+
+		$user = ORM::factory('user')->find_user($user);
+		$cache_id = sprintf('%d_%s_%d', $this->id, $type, $user ? $user->id : 0);
+
+		if (!isset($cache[$cache_id])) {
+			$access = false;
+			switch ($type) {
+
+				// Edit access to topic
+				case self::ACCESS_EDIT:
+					$access = ($user && ($this->is_author($user) || $user->has_role('admin', 'forum moderator')));
+					break;
+
+				// Read access to topic
+				case self::ACCESS_READ:
+					$access = $this->forum_area->has_access(Forum_Area_Model::ACCESS_READ, $user);
+					break;
+
+				// Write access to topic
+				case self::ACCESS_WRITE:
+					$access = ($user && !$this->read_only);
+					break;
+
+			}
+			$cache[$cache_id] = $access;
+		}
+
+		return $cache[$cache_id];
 	}
 
 

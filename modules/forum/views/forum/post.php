@@ -51,7 +51,7 @@ $owners = ($post->author_id == $topic->author_id);
 		</section>
 
 		<footer>
-			<?php if ($user && !$topic->read_only): ?>
+			<?php if ($topic->has_access(Forum_Topic_Model::ACCESS_WRITE)): ?>
 
 			<span class="actions">
 				<?= html::anchor('forum/post/' . $post->id . '/reply', __('Reply'), array('class' => 'action post-reply')) ?>
