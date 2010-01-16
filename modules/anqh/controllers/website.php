@@ -198,13 +198,25 @@ abstract class Website_Controller extends Controller {
 		if ($this->user) {
 
 			// Authenticated view
-			widget::add('dock', __('Welcome, :user!', array(':user' => html::nick($this->user->id, $this->user->username))));
+			widget::add('dock', __('[#:id] :user', array(':id' => $this->user->id, ':user' => html::nick($this->user->id, $this->user->username))));
+
+			$new_messages = array();
+			if ($this->user->newcomments) {
+				$new_messages[] = html::anchor(
+					url::user($this->user),
+					__(':commentsC', array(':comments' => $this->user->newcomments)),
+					array('title' => __('New comments'), 'class' => 'new-comments')
+				);
+			}
+			if (!empty($new_messages)) {
+				widget::add('dock', ' - ' . __('New messages: ') . implode(' ', $new_messages));
+			}
 
 			// Logout also from Facebook
 			if (FB::enabled() && Visitor::instance()->get_provider()) {
-				widget::add('dock', ' ' . html::anchor('sign/out', FB::icon() . __('Sign out'), array('onclick' => "FB.Connect.logoutAndRedirect('/sign/out'); return false;")));
+				widget::add('dock', ' - ' . html::anchor('sign/out', FB::icon() . __('Sign out'), array('onclick' => "FB.Connect.logoutAndRedirect('/sign/out'); return false;")));
 			} else {
-				widget::add('dock', ' ' . html::anchor('sign/out', __('Sign out')));
+				widget::add('dock', ' - ' . html::anchor('sign/out', __('Sign out')));
 			}
 
 			if (Kohana::config('site.inviteonly')) {
