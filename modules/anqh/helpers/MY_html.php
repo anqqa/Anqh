@@ -290,17 +290,14 @@ DATE;
 	public static function user($user, $nick = null, $class = null) {
 		$class = $class ? array($class, 'user') : array('user');
 
-		if (empty($nick)) {
-			if (!($user instanceof User_Model)) {
-				$user = ORM::factory('user')->find_user($user);
-			}
+		if (empty($nick) && $user = ORM::factory('user')->find_user($user)) {
 			$nick = $user->username;
 			if ($user->gender) {
 				$class[] = $user->gender == 'f' ? 'female' : 'male';
 			}
 		}
 
-		return html::anchor(url::user($nick), $nick, array('class' => implode(' ', $class)));
+		return empty($nick) ? __('Unknown') : html::anchor(url::user($nick), $nick, array('class' => implode(' ', $class)));
 	}
 
 }
