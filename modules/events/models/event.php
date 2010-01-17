@@ -88,21 +88,14 @@ class Event_Model extends Modeler_ORM {
 	 * @return  ORM_Iterator
 	 */
 	public function find_past($limit = 25, $filter = null) {
-
-		// try to fetch events for the past 7 days
 		$where = array(
-			array('start_time', '>=', date::unix2sql(strtotime('-6 days'))),
-			array('start_time', '<', date('Y-m-d', time())),
+			array('start_time', '<', date('Y-m-d', time()))
 		);
-		$events = ORM::factory('event')->where($where)->order_by(array('start_time' => 'DESC', 'city_name' => 'ASC'))->find_all();
-
-		// if no events found, fetch next n
-		if (!$events->count()) {
-			unset($where[1]);
-			$events = ORM::factory('event')->where($where)->order_by(array('start_time' => 'DESC', 'city_name' => 'ASC'))->find_all($limit);
+		if ($filter) {
+			$where[] = $filter;
 		}
 
-		return $events;
+		return ORM::factory('event')->where($where)->limit($limit)->order_by(array('start_time' => 'DESC', 'city_name' => 'ASC'))->find_all();
 	}
 
 
@@ -110,25 +103,18 @@ class Event_Model extends Modeler_ORM {
 	 * Get upcoming events
 	 *
 	 * @param   int    $limit
-	 * @param   array  $filter  field => value, field => value
+	 * @param   array  $filter  where
 	 * @return  ORM_Iterator
 	 */
 	public function find_upcoming($limit = 25, $filter = null) {
-
-		// try to fetch events for the next 7 days
 		$where = array(
 			array('start_time', '>=', date('Y-m-d', time())),
-			array('start_time', '<=', date::unix2sql(strtotime('+6 days')))
 		);
-		$events = ORM::factory('event')->where($where)->order_by(array('start_time' => 'ASC', 'city_name' => 'ASC'))->find_all();
-
-		// if no events found, fetch next n
-		if (!$events->count()) {
-			unset($where[1]);
-			$events = ORM::factory('event')->where($where)->order_by(array('start_time' => 'ASC', 'city_name' => 'ASC'))->find_all($limit);
+		if ($filter) {
+			$where[] = $filter;
 		}
 
-		return $events;
+		return ORM::factory('event')->where($where)->limit($limit)->order_by(array('start_time' => 'ASC', 'city_name' => 'ASC'))->find_all();
 	}
 
 
