@@ -34,8 +34,7 @@
 			<dd>
 				<address>
 					<?= html::chars($venue->address) ?><br />
-					<?= html::chars($venue->zip) ?><br />
-					<?= html::chars($venue->city_name) ?><br />
+					<?= html::chars($venue->city_name) ?> <?= html::chars($venue->zip) ?>
 				</address>
 			</dd>
 

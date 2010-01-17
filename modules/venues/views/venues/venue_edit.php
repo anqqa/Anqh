@@ -37,6 +37,7 @@
 			<ul>
 
 				<?= form::upload_wrap('logo', '', '', __('Logo'), $errors) ?>
+				<?= $values['default_image_id'] ? '<li>' . html::img(new Image_Model($values['default_image_id']), 'thumb') . '</li>' : '' ?>
 
 				<?= form::input_wrap(array('name' => 'description', 'maxlength' => 250), $values, '', __('Short description'), $errors) ?>
 

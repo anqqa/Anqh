@@ -147,9 +147,9 @@ class Venues_Controller extends Website_Controller {
 			$venues = $venue_category->find_venues($this->country);
 			$num_cities = count($venues);
 			$num_venues = count($venues, COUNT_RECURSIVE) - $num_cities;
-			$this->page_subtitle .= ' - '
-				. __2(':cities city',  ':cities cities', $num_cities, array(':cities' => '<var>' . $num_cities . '</var>')) . ', '
-				. __2(':venues venue', ':venues venues', $num_venues, array(':venues' => '<var>' . $num_venues . '</var>'));
+			$this->page_subtitle .=
+				__2(':cities city',  ':cities cities', $num_cities, array(':cities' => '<var>' . $num_cities . '</var>')) . ', ' .
+				__2(':venues venue', ':venues venues', $num_venues, array(':venues' => '<var>' . $num_venues . '</var>'));
 
 			// Add city filters if more than 1 city
 			if ($num_cities > 1) {
@@ -272,7 +272,7 @@ class Venues_Controller extends Website_Controller {
 		}
 
 		$venue = new Venue_Model((int)$venue_id);
-		$errors = $venue->id ? array() : array('venues.error_venue_not_found');
+		$errors = $venue->id ? array() : array(__('Venue not found'));
 
 		if (empty($errors)) {
 			$venue_category = $venue->venue_category;
@@ -288,10 +288,27 @@ class Venues_Controller extends Website_Controller {
 				$this->page_actions[] = array('link' => 'venue/' . url::title($venue->id, $venue->name) . '/edit', 'text' => __('Edit venue'), 'class' => 'venue-edit');
 			}
 
-			//widget::add('main', View::factory('venues/venue', array('venue' => $venue)));
+			$events = ORM::factory('event')->find_upcoming(10, array('venue_id', '=', $venue->id));
+			if ($events->count()) {
+				widget::add('main', View::factory('events/events_list', array(
+					'id'     => 'venue-upcoming-events',
+					'title'  => __('Upcoming events'),
+					'events' => $events)
+				));
+			}
+
+			$events = ORM::factory('event')->find_past(10, array('venue_id', '=', $venue->id));
+			if ($events->count()) {
+				widget::add('main', View::factory('events/events_list', array(
+					'id'     => 'venue-past-events',
+					'title'  => __('Past events'),
+					'events' => $events)
+				));
+			}
+
 			widget::add('side', View::factory('venues/venue_info', array('venue' => $venue)));
 		} else {
-			$this->_error(Kohana::lang('generic.error'), $errors);
+			$this->_error(__('Uh oh!'), $errors);
 		}
 
 		$this->_side_views();
