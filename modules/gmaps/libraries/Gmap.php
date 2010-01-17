@@ -10,7 +10,7 @@
  * @license    http://kohanaphp.com/license.html
  */
 class Gmap_Core {
-	
+
 	// Map settings
 	protected $id;
 	protected $options;
@@ -25,7 +25,7 @@ class Gmap_Core {
 	(
 		'G_NORMAL_MAP','G_SATELLITE_MAP','G_HYBRID_MAP','G_PHYSICAL_MAP'
 	);
-	
+
 	// Markers icons
 	protected $icons = array();
 
@@ -109,11 +109,11 @@ class Gmap_Core {
 		static $cache;
 
 		// Load Cache
-		if ($cache === NULL) 
+		if ($cache === NULL)
 		{
 			$cache = Cache::instance();
 		}
-		
+
 		// Address cache key
 		$key = 'gmap-address-'.sha1($address);
 
@@ -143,7 +143,7 @@ class Gmap_Core {
 				if (is_object($xml) AND ($xml instanceof SimpleXMLElement) AND (int) $xml->Response->Status->code === 200)
 				{
 					// Cache the XML
-					$cache->set($key, $xml->asXML(), array('gmaps'), 86400);
+					$cache->set($key, $xml->asXML(), null, 86400);
 
 					// Since the geocode was successful, theres no need to try again
 					$remaining_retries = 0;
@@ -299,7 +299,7 @@ class Gmap_Core {
 
 		return $this;
 	}
-	
+
 	/**
 	 * Create a custom marker icon
 	 *
@@ -369,7 +369,7 @@ class Gmap_Core {
 
 		// Map centering
 		$center = 'map.setCenter(new google.maps.LatLng('.$lat.', '.$lon.'), '.$zoom.', '.$default_type.');';
-		
+
 		$data = array_merge($extra, array
 			(
 				'map' => $map,
