@@ -17,7 +17,7 @@ class Roles_Controller extends Website_Controller {
 
 		// Allow only admin access
 		if (!$this->visitor->logged_in('admin')) {
-			url::redirect();
+			url::back();
 		}
 
 		$this->breadcrumb[] = html::anchor('roles', __('Roles'));
@@ -46,7 +46,7 @@ class Roles_Controller extends Website_Controller {
 		if ($action) {
 			switch ($action) {
 
-				// delete role
+				// Delete role
 				case 'delete':
 					$this->_role_delete($role_id);
 					return;
@@ -60,15 +60,17 @@ class Roles_Controller extends Website_Controller {
 		$form_values = $role->as_array();
 		$form_errors = $errors = array();
 
-		// check post
-		if (request::method() == 'post') {
-			$post = $this->input->post();
-			if ($role->validate($post, true)) {
+		// Check post
+		if ($post = $this->input->post()) {
+			$role->name = $post['name'];
+			$role->description = $post['description'];
+			try {
+				$role->save();
 				url::redirect('/roles');
-			} else {
-				$form_errors = $post->errors();
+			} catch (ORM_Validation_Exception $e) {
+				$form_errors = $e->validation->errors();
 			}
-			$form_values = arr::overwrite($form_values, $post->as_array());
+			$form_values = arr::overwrite($form_values, $post);
 		}
 
 		// show form
