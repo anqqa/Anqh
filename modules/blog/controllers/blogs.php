@@ -153,13 +153,12 @@ class Blogs_Controller extends Website_Controller {
 
 			// Blog comments
 			if ($this->visitor->logged_in()) {
-
 				$comment = new Blog_Comment_Model();
 				$form_values = $comment->as_array();
 				$form_errors = array();
 
 				// check post
-				if ($post = $this->input->post()) {
+				if (csrf::valid() && $post = $this->input->post()) {
 					$comment->blog_entry_id = $entry->id;
 					$comment->user_id = $entry->author->id;
 					$comment->author_id = $this->user->id;
@@ -167,7 +166,9 @@ class Blogs_Controller extends Website_Controller {
 					if (isset($post['private'])) {
 						$comment->private = 1;
 					}
-					if (csrf::valid() && $comment->save()) {
+
+					try {
+						$comment->save();
 						$entry->comments++;
 						$entry->newcomments++;
 						$entry->save();
@@ -179,9 +180,9 @@ class Blogs_Controller extends Website_Controller {
 						if (!request::is_ajax()) {
 							url::redirect(url::current());
 						}
-					} else {
-						$form_errors = $post->errors();
-						$form_values = arr::overwrite($form_values, $post->as_array());
+					} catch (ORM_Validation_Exception $e) {
+						$form_errors = $e->validation->errors();
+						$form_values = arr::overwrite($form_values, $post);
 					}
 				}
 

@@ -575,14 +575,16 @@ class Member_Controller extends Website_Controller {
 				$form_errors = array();
 
 				// check post
-				if ($post = $this->input->post()) {
+				if (csrf::valid() && $post = $this->input->post()) {
 					$comment->user_id = $member->id;
 					$comment->author_id = $this->user->id;
 					$comment->comment = $post['comment'];
 					if (isset($post['private'])) {
 						$comment->private = 1;
 					}
-					if (csrf::valid() && $comment->save()) {
+
+					try {
+						$comment->save();
 						if (!$owner) {
 							$member->newcomments += 1;
 							$member->save();
@@ -592,9 +594,9 @@ class Member_Controller extends Website_Controller {
 						if (!request::is_ajax()) {
 							url::redirect(url::current());
 						}
-					} else {
-						$form_errors = $post->errors();
-						$form_values = arr::overwrite($form_values, $post->as_array());
+					} catch (ORM_Validation_Exception $e) {
+						$form_errors = $e->validation->errors();
+						$form_values = arr::overwrite($form_values, $post);
 					}
 				}
 
