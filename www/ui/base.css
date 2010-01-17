@@ -155,7 +155,7 @@ table.calendar td            { padding: 0; }
 
 /***** venues *****/
 
-body#venues .venue ol                 { margin-top: 2em; }
+#venues .venues .venue footer          { position: absolute; right: 10px; top: 10px; }
 
 /***** /venues *****/
 

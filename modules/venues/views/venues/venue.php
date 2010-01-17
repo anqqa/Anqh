@@ -1,5 +1,5 @@
 
-<div class="venue venue-<?= $venue->id ?>">
+<section class="mod venue venue-<?= $venue->id ?>">
 
 	<?= $venue->default_image_id ? html::image($venue->default_image->url('thumb'), __('Logo')) : '' ?>
 
@@ -7,7 +7,6 @@
 
 		<?php	if ($venue->description || $venue->info || $venue->hours || $venue->tags): ?>
 		<li class="information">
-			<h3><?= __('What?') ?></h3>
 			<dl>
 				<?= empty($venue->description) ? '' : '<dt>' . __('Description')   . '</dt><dd>' . html::specialchars($venue->description) . '</dd>' ?>
 				<?= empty($venue->info)        ? '' : '<dt>' . __('Extra info')    . '</dt><dd>' . html::specialchars($venue->info) . '</dd>' ?>
@@ -77,4 +76,4 @@
 
 	</ul>
 
-</div>
+</section>

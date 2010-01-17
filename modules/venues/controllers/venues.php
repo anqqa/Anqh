@@ -4,7 +4,7 @@
  *
  * @package    Venues
  * @author     Antti Qvickström
- * @copyright  (c) 2009 Antti Qvickström
+ * @copyright  (c) 2009-2010 Antti Qvickström
  * @license    http://www.opensource.org/licenses/mit-license.php MIT license
  */
 class Venues_Controller extends Website_Controller {
@@ -40,8 +40,40 @@ class Venues_Controller extends Website_Controller {
 
 	/***** INTERNAL *****/
 
-	private function _side_views() {
+	/**
+	 * Build filter items
+	 *
+	 * @param   array  $venues
+	 * @return  array
+	 */
+	public function _build_filters(array $venues = null) {
+		$filters = array();
+		if (count($venues))	{
+			$cities = array();
+			foreach (array_keys($venues) as $city) {
+				$cities[url::title($city)] = utf8::ucfirst(mb_strtolower($city));
+			}
+
+			// Drop empty to last
+			ksort($cities);
+			if (isset($cities[''])) {
+				$cities[url::title(__('Elsewhere'))] = utf8::ucfirst(mb_strtolower(__('Elsewhere')));
+				unset($cities['']);
+			}
+
+			// Build city filter
+			$filters['city'] = array(
+				'name'    => __('City'),
+				'filters' => $cities,
+			);
+
+		}
+
+		return $filters;
 	}
+
+
+	private function _side_views() { }
 
 	/***** /INTERNAL *****/
 
@@ -70,7 +102,7 @@ class Venues_Controller extends Website_Controller {
 	 */
 	public function category($category_id, $action = null) {
 
-		// new category
+		// New category
 		if ($category_id == 'add') {
 			$this->_category_add();
 			return;
@@ -78,17 +110,17 @@ class Venues_Controller extends Website_Controller {
 		} else if ($action) {
 			switch ($action) {
 
-				// add venue
+				// Add venue
 				case 'add':
 					$this->_venue_add($category_id);
 					return;
 
-				// delete category
+				// Delete category
 				case 'delete':
 					$this->_category_delete($category_id);
 					return;
 
-				// edit category
+				// Edit category
 				case 'edit':
 					$this->_category_edit($category_id);
 					return;
@@ -100,34 +132,30 @@ class Venues_Controller extends Website_Controller {
 		$errors = $venue_category->id ? array() : array('venues.error_venue_category_not_found');
 
 		if (empty($errors)) {
-			$this->breadcrumb[] = html::anchor(url::model($venue_category), $venue_category->name);
-			$this->page_title = text::title($venue_category->name);
+			$this->breadcrumb[]  = html::anchor(url::model($venue_category), $venue_category->name);
+			$this->page_title    = text::title($venue_category->name);
 			$this->page_subtitle = html::specialchars($venue_category->description);
 
-			if ($this->visitor->logged_in(array('admin', 'venue moderator'))) {
+			if ($venue_category->has_access(Venue_Category_Model::ACCESS_EDIT)) {
 				$this->page_actions[] = array('link' => url::model($venue_category) . '/edit', 'text' => __('Edit category'), 'class' => 'category-edit edit');
+			}
+			if ($venue_category->has_access(Venue_Category_Model::ACCESS_VENUE)) {
 				$this->page_actions[] = array('link' => url::model($venue_category) . '/add',  'text' => __('Add venue'),     'class' => 'venue-add add');
 			}
 
-			// organize by city
-			$cities = $this->country ? ORM::factory('country')->find($this->country)->cities->as_array() : false;
-			$venues = $venue_category->venues->find_all();
-			$venues_by_city = array();
-			if (count($venues)) {
-				foreach ($venues as $venue) {
-					if ($cities && !in_array($venue->city_id, $cities)) continue;
-					if (!isset($venues_by_city[$venue->city->city])) {
-						$venues_by_city[$venue->city->city] = array($venue);
-					} else {
-						$venues_by_city[$venue->city->city][] = $venue;
-					}
-				}
-			}
+			// Organize by city
+			$venues = $venue_category->find_venues($this->country);
+			$num_cities = count($venues);
+			$num_venues = count($venues, COUNT_RECURSIVE) - $num_cities;
 			$this->page_subtitle .= ' - '
-				. __2(':cities city',  ':cities cities', count($venues_by_city), array(':cities' => '<var>' . count($venues_by_city) . '</var>')) . ', '
-				. __2(':venues venue', ':venues venues', count($venues),         array(':venues' => '<var>' . count($venues) . '</var>'));
+				. __2(':cities city',  ':cities cities', $num_cities, array(':cities' => '<var>' . $num_cities . '</var>')) . ', '
+				. __2(':venues venue', ':venues venues', $num_venues, array(':venues' => '<var>' . $num_venues . '</var>'));
 
-			widget::add('main', View::factory('venues/venues', array('venues' => $venues_by_city, 'country' => $this->country)));
+			// Add city filters if more than 1 city
+			if ($num_cities > 1) {
+				widget::add('main', View::factory('generic/filters', array('filters' => $this->_build_filters($venues))));
+			}
+			widget::add('main', View::factory('venues/venues', array('venues' => $venues)));
 		}
 
 		if (count($errors)) {
@@ -230,12 +258,12 @@ class Venues_Controller extends Website_Controller {
 		if ($action) {
 			switch ($action) {
 
-				// delete venue
+				// Delete venue
 				case 'delete':
 					$this->_venue_delete($venue_id);
 					return;
 
-				// add venue
+				// Add venue
 				case 'edit':
 					$this->_venue_edit($venue_id);
 					return;
@@ -252,13 +280,16 @@ class Venues_Controller extends Website_Controller {
 			$this->breadcrumb[] = html::anchor('/venue/' . url::title($venue->id, $venue->name), $venue->name);
 			$this->page_class = 'venue-' . (int)$venue->id;
 			$this->page_title = text::title($venue->name);
+			$this->page_subtitle = __('Category :category', array(
+				':category' => html::anchor(url::model($venue->venue_category), $venue->venue_category->name, array('title' => $venue->venue_category->description))
+			));
 
-			if ($this->user) {
-				$this->page_actions[] = array('link' => 'venue/' . url::title($venue->id, $venue->name) . '/edit',   'text' => __('Edit venue'),   'class' => 'venue-edit edit');
-				$this->page_actions[] = array('link' => 'venue/' . url::title($venue->id, $venue->name) . '/delete/?token=' . csrf::token(), 'text' => __('Delete venue'), 'class' => 'venue-delete delete');
+			if ($venue->has_access(Venue_Model::ACCESS_EDIT)) {
+				$this->page_actions[] = array('link' => 'venue/' . url::title($venue->id, $venue->name) . '/edit', 'text' => __('Edit venue'), 'class' => 'venue-edit');
 			}
 
-			widget::add('main', View::factory('venues/venue', array('venue' => $venue)));
+			//widget::add('main', View::factory('venues/venue', array('venue' => $venue)));
+			widget::add('side', View::factory('venues/venue_info', array('venue' => $venue)));
 		} else {
 			$this->_error(Kohana::lang('generic.error'), $errors);
 		}
@@ -283,18 +314,21 @@ class Venues_Controller extends Website_Controller {
 	 * @param  integer|string  $venue_id
 	 */
 	public function _venue_delete($venue_id) {
+		$this->history = false;
 
 		// For authenticated users only
-		if (!csrf::valid() || !$this->visitor->logged_in(array('admin', 'venue moderator'))) {
-			url::back('/venues');
+		if (!csrf::valid()) {
+			url::back('venues');
 		}
 
 		$venue = new Venue_Model((int)$venue_id);
-		if ($venue->id) {
-			$return_id = $venue->venue_category_id;
+		if ($venue->loaded() && $venue->has_access(Venue_Model::ACCESS_DELETE)) {
+			$category = $venue->venue_category;
 			$venue->delete();
+			url::redirect(url::model($category));
 		}
-		url::redirect('/venues/' . $return_id);
+
+		url::back('venues');
 	}
 
 
@@ -307,12 +341,17 @@ class Venues_Controller extends Website_Controller {
 	public function _venue_edit($venue_id = false, $category_id = false) {
 		$this->history = false;
 
-		// for authenticated users only
-		if (!$this->visitor->logged_in(array('admin', 'venue moderator'))) url::redirect('/venues');
+		$venue = new Venue_Model((int)$venue_id);
+
+		// Check access
+		if (
+			!($venue->loaded() && $venue->has_access(Venue_Model::ACCESS_EDIT)) &&
+			!(!$venue->loaded() && $this->visitor->logged_in(array('admin', 'venue moderator', 'venue')))
+		) {
+			url::back('venues');
+		}
 
 		$errors = $form_errors = array();
-
-		$venue = new Venue_Model((int)$venue_id);
 		$form_values = $venue->as_array();
 
 		// check post
@@ -356,7 +395,7 @@ class Venues_Controller extends Website_Controller {
 					}
 				}
 
-				url::redirect('/venue/' . url::title($venue->id, $venue->name));
+				url::redirect(url::model($venue));
 			} else {
 				$form_errors = $post->errors();
 			}
@@ -365,6 +404,10 @@ class Venues_Controller extends Website_Controller {
 
 		// editing old?
 		if ($venue_id) {
+			if ($venue->has_access(Venue_Model::ACCESS_DELETE)) {
+				$this->page_actions[] = array('link' => 'venue/' . url::title($venue->id, $venue->name) . '/delete/?token=' . csrf::token(), 'text' => __('Delete venue'), 'class' => 'venue-delete');
+			}
+
 			$this->page_subtitle = __('Edit venue');
 			if (!$venue->id) {
 				$errors = array('venues.error_venue_not_found');
@@ -382,6 +425,7 @@ class Venues_Controller extends Website_Controller {
 				}
 			}
 		}
+		$this->page_actions[] = array('link' => 'venue/' . url::title($venue->id, $venue->name), 'text' => __('Cancel'), 'class' => 'cancel');
 
 		$this->breadcrumb[] = html::anchor('/venues/' . url::title($venue_category->id, $venue_category->name), $venue_category->name);
 		if ($venue->id) {

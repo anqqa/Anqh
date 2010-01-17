@@ -94,6 +94,7 @@ a[class*="-add"]                       { background-color: @positive-color; }
 section article:hover .actions a[class*="-delete"],
 li.line:hover .actions a[class*="-delete"],
 ul.contentlist li:hover .actions a[class*="-delete"],
+a.action.close,
 a[class*="-delete"]                    { background-color: @negative-color; }
 section article:hover .actions a[class*="-private"],
 li.line:hover .actions a[class*="-private"],
@@ -115,6 +116,7 @@ a[class*="-add"]:hover                 { .box-shadow(0 0 10px @positive-color); 
 section article.delete,
 section article:hover .actions a[class*="-delete"]:hover,
 li.line:hover .actions a[class*="-delete"]:hover,
+a.action.close:hover,
 a[class*="-delete"]:hover              { .box-shadow(0 0 10px @negative-color); }
 
 form .buttons                          { display: block; margin-bottom: 1em; margin-top: 1em; text-align: center; }
@@ -141,6 +143,8 @@ h4 span,
 h5 span,
 h6 span                                { color: @text-color; }
 h2                                     { color: @header-color; }
+article > header > h3,
+article > header > h4                  { margin-top: 0; }
 legend,
 h3,
 h4,
@@ -185,11 +189,33 @@ a.user                                 { font-weight: bold; }
 a img                                  { opacity: .9; }
 a:hover img                            { opacity: 1; }
 
-#map                                   { height: 200px; width: 300px; }
+#map                                   { height: 200px; width: 280px; }
 
-.logo                                  { float: right; }
+/*.logo                                  { float: right; }*/
 
 /***** /MEDIA *****/
+
+
+/***** LIGHTBOX *****/
+
+.lightbox                              { background: @section-background; .box-shadow(0 0 90px black); display: none; min-height: 200px; width: 675px; z-index: 10000; }
+.lightbox .close                       { background: @link-color; cursor: pointer; position: absolute; right: 10px; top: 10px; }
+.lightbox .next,
+.lightbox .prev                        { background: @section-background; cursor: pointer; display: block; font-size: 1.5em; padding: 10px 20px; position: absolute; top: 40%; .border-radius(5px) }
+.lightbox .prev                        { left: 10px; }
+.lightbox .next                        { right: 10px; }
+.lightbox .disabled                    { visibility: hidden; }
+.lightbox .next,
+.lightbox .prev,
+.lightbox .info                        { background: #222; background: rgba(0, 0, 0, 0.6); }
+.lightbox .next:hover,
+.lightbox .prev:hover                  { text-decoration: none; }
+.lightbox .info                        { bottom: 0; left: 0; padding: 10px; position: absolute; }
+.lightbox .info strong                 { display: block; }
+.lightbox .progress                    { display: none; left: 50%; position: absolute; top: 45%; }
+.lightboxed a.active img               { outline: 1px solid @link-color; position: relative; z-index: 9999; }
+
+/***** /LIGHTBOX *****/
 
 
 /***** AUTO COMPLETE *****/
