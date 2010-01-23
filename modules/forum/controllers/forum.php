@@ -239,19 +239,22 @@ class Forum_Controller extends Website_Controller {
 	public function _area_edit($area_id = false, $group_id = false) {
 		$this->history = false;
 
-		// For authenticated users only
-		if (!$this->visitor->logged_in('admin')) url::redirect('/forum');
-
-		$errors = $form_errors = array();
-
 		$forum_area = new Forum_Area_Model((int)$area_id);
-		if ($forum_area->id) {
-			$forum_group = $forum_area->forum_group;
+		if (!$forum_area->has_access(Forum_Area_Model::ACCESS_EDIT)) {
+			url::back('forum');
 		}
+
+		$form_errors = array();
 		$form_values = $forum_area->as_array();
+		if ($forum_area->loaded()) {
+			$forum_group = $forum_area->forum_group;
+		} else if ($group_id) {
+			$forum_group = new Forum_Group_Model((int)$group_id);
+			$form_values['forum_group_id'] = $forum_group->id;
+		}
 
 		// Check post
-		if ($post = $this->input->post()) {
+		if (csrf::valid() && $post = $this->input->post()) {
 
 			// Basic settings
 			$forum_area->forum_group_id = $post['forum_group_id'];
@@ -274,9 +277,14 @@ class Forum_Controller extends Website_Controller {
 		// Show form
 		if ($forum_area->loaded()) {
 			$this->page_actions[] = array('link' => url::model($forum_area) . '/delete/?token=' . csrf::token(), 'text' => __('Delete area'), 'class' => 'area-delete');
-			$this->template->subtitle = __('Edit area');
+			$this->page_subtitle = __('Edit area');
 		} else {
-			$this->template->subtitle = __('New area');
+			$this->page_subtitle = __('New area');
+		}
+
+		if (isset($forum_group)) {
+			$this->page_title = text::title($forum_group->name);
+			$this->breadcrumb[] = html::anchor(url::model($forum_group), $forum_group->name);
 		}
 
 		$form = $forum_area->get_form();
@@ -292,11 +300,7 @@ class Forum_Controller extends Website_Controller {
 		}
 		$form['bind'] = array(0 => __('None')) + Forum_Area_Model::binds(true);
 
-		if (empty($errors)) {
-			widget::add('main', View::factory('forum/area_edit', array('form' => $form, 'values' => $form_values, 'errors' => $form_errors)));
-		} else {
-			$this->_error(__('Errors'), $errors);
-		}
+		widget::add('main', View::factory('forum/area_edit', array('form' => $form, 'values' => $form_values, 'errors' => $form_errors)));
 
 		$this->_side_views();
 	}
@@ -383,8 +387,7 @@ class Forum_Controller extends Website_Controller {
 		$form = $forum_group->get_defaults();
 
 		// check post
-		if (request::method() == 'post') {
-			$post = $this->input->post();
+		if (csrf::valid() && $post = $this->input->post()) {
 			$extra = array('author_id' => $this->user->id);
 			if ($forum_group->validate($post, true, $extra)) {
 				URL::redirect('/forum');

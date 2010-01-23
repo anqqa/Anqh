@@ -21,6 +21,7 @@
 		</fieldset>
 
 		<fieldset>
+			<?= form::csrf() ?>
 			<?= empty($values['id']) ? '' : form::hidden('id', $values['id']) ?>
 			<?= form::submit(false, __('Save')) ?>
 			<?= html::anchor($_SESSION['history'], __('Cancel')) ?>

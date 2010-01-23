@@ -222,7 +222,7 @@ class Forum_Area_Model extends Modeler_ORM {
 
 				// Write access to area (= new topic)
 				case self::ACCESS_WRITE:
-					if (!$this->is_type(self::TYPE_HIDDEN && $user)) {
+					if (!$this->is_type(self::TYPE_HIDDEN) && $user) {
 						$access = (!$this->is_type(self::TYPE_READONLY | self::TYPE_BIND) || $user->has_role('admin', 'forum moderator'));
 					}
 					break;
