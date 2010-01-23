@@ -78,7 +78,7 @@
 <?= widget::get('actions') ?>
 
 					<h2><?= $page_title ?></h2>
-					<p class="subtitle"><?= $page_subtitle ?></p>
+					<?= !empty($page_subtitle) ? '<p class="subtitle">' . $page_subtitle . '</p>' : '' ?>
 
 <?= widget::get('tabs') ?>
 
@@ -157,8 +157,10 @@ $(function() {
 	// Form input hints
 	$('input:text, textarea, input:password').hint('hint');
 
+
 	// Ellipsis ...
 	$('.cut li').ellipsis();
+
 
 	// Delete confirmations
 	function confirm_delete(title, action) {
@@ -208,22 +210,27 @@ $(function() {
 			$(this).closest('article').removeClass('edit');
 		});
 
+
 	// Peepbox
 	if ($('#peepbox').length == 0) {
 		$('body').append('<div id="peepbox"></div>');
+		$('#peepbox').data('cache', []);
 	}
 
 	function peepbox(href, $tip) {
-		if ($tip.data('last') != href) {
+		var cache = $tip.data('cache');
+		if (!cache[href]) {
 			$tip.text('<?= __('Loading...') ?>');
 			$.get(href + '?peep', function(response) {
-				$tip.html(response);
+				$tip.html(cache[href] = response);
 			});
+			$tip.data('cache', cache);
+			return;
 		}
-		$tip.data('last', href);
+		$tip.html(cache[href]);
 	}
 
-	$('a.user').tooltip({
+	$('a.user,.avatar a').tooltip({
 		tip: '#peepbox',
 		lazy: false,
 		position: 'bottom right',
