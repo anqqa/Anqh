@@ -10,7 +10,7 @@
 	<ul>
 
 		<?php foreach ($topics as $topic): ?>
-		<li class="topic-<?= $topic->id ?>"><?= html::anchor(url::model($topic) . '/page/last', $topic->name) ?></li>
+		<li class="topic-<?= $topic->id ?>"><?= html::anchor(url::model($topic) . '/page/last#last', $topic->name) ?></li>
 		<?php endforeach; ?>
 
 	</ul>

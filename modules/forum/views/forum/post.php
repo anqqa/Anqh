@@ -7,7 +7,7 @@ $owners = ($post->author_id == $topic->author_id);
 ?>
 
 	<article id="post-<?= $post->id ?>" class="post <?= ($owners ? 'owner ' : '') . ($mine ? 'my ' : '') . text::alternate('', 'alt') ?>">
-		<header>
+		<header<?= $post->id == $topic->last_post_id ? ' id="last"' : '' ?>>
 
 			<?= html::avatar($post->author->avatar, $post->author->username) ?>
 
