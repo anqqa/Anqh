@@ -4,7 +4,7 @@
  *
  * @package    Anqh
  * @author     Antti Qvickström
- * @copyright  (c) 2009 Antti Qvickström
+ * @copyright  (c) 2009-2010 Antti Qvickström
  * @license    http://www.opensource.org/licenses/mit-license.php MIT license
  */
 class Exif_Model extends Modeler_ORM {
@@ -21,7 +21,7 @@ class Exif_Model extends Modeler_ORM {
 		'program'       => array('length[0, 16]'),
 		'aperture'      => array('length[0, 10]'),
 		'focal'         => array('length[0, 10]'),
-		'iso'           => array('valid::digit'),
+		'iso'           => array('valid::digit', 'length[0, 6]'),
 		'taken'         => array('valid::date'),
 		'metering'      => array('length[0, 64]'),
 	  'flash'         => array('length[0, 64]'),

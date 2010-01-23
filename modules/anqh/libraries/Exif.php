@@ -6,8 +6,8 @@ include_once(Kohana::find_file('lib', 'exif/exif'));
  *
  * @package    Anqh
  * @author     Antti Qvickström
- * @copyright  (c) 2009 Antti Qvickström
- * @license    MIT
+ * @copyright  (c) 2009-2010 Antti Qvickström
+ * @license    http://www.opensource.org/licenses/mit-license.php MIT license
  */
 class Exif_Core {
 
@@ -62,7 +62,7 @@ class Exif_Core {
 
 
 	/**
-	 * Create new Exif object and initialize our own settings
+	 * Create new EXIF object and initialize our own settings
 	 *
 	 * @param  string  $filename
 	 */
@@ -70,18 +70,26 @@ class Exif_Core {
 		if (!empty($filename)) {
 
 			// does the file exists
-			if (!is_file($filename))
+			if (!is_file($filename)) {
 				throw new Kohana_Exception('image.file_not_found', $filename);
+			}
 
 			// is it readable
-			if (!is_readable($filename))
+			if (!is_readable($filename)) {
 				throw new Kohana_Exception('image.file_unreadable', $filename);
+			}
 
 			$this->filename = $filename;
 		}
 	}
 
 
+	/**
+	 * Get EXIF property
+	 *
+	 * @param   string  $property
+	 * @return  mixed
+	 */
 	public function __get($property) {
 		if (isset($this->exif[$property])) {
 			return $this->exif[$property];
@@ -92,7 +100,6 @@ class Exif_Core {
 	/**
 	 * Creates and returns new Exif object
 	 *
-	 * @chainable
 	 * @param   string  $filename
 	 * @return  Exif
 	 */
@@ -109,7 +116,7 @@ class Exif_Core {
 	public function read() {
 		$exif = array();
 
-		// read raw exif data
+		// Read raw EXIF data
 		$exif_raw = read_exif_data_raw($this->filename, false);
 		$this->exif_raw = $exif_raw;
 		if (isset($exif_raw['ValidEXIFData'])) {
