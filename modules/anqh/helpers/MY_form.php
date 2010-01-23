@@ -4,7 +4,7 @@
  *
  * @package    Anqh
  * @author     Antti Qvickström
- * @copyright  (c) 2009 Antti Qvickström
+ * @copyright  (c) 2009-2010 Antti Qvickström
  * @license    http://www.opensource.org/licenses/mit-license.php MIT license
  */
 class form extends form_Core {
@@ -89,7 +89,7 @@ class form extends form_Core {
 			foreach ($checkboxes as $checkbox_id => $checkbox_name) {
 				$internal_id = $singular . $checkbox_id;
 				$input .= '<li>';
-				$input .= form::checkbox(array('id' => $internal_id, 'name' => $name . '[' . $checkbox_id . ']'), $checkbox_name, isset($values[$checkbox_id]));
+				$input .= form::checkbox(array('id' => $internal_id, 'name' => $name . '[' . $checkbox_id . ']'), 1, isset($values[$checkbox_id]));
 				$input .= form::label($internal_id, $checkbox_name);
 				$input .= "</li>\n";
 			}
