@@ -6,7 +6,7 @@
 		<ul>
 
 			<?php if ($topics === false): ?>
-			<?= form::input_wrap(array('name' => 'name', 'maxlength' => 100), $topic, '', '', $errors) ?>
+			<?= form::input_wrap(array('name' => 'name', 'maxlength' => 100), $topic, '', __('Topic'), $errors) ?>
 			<?php else: ?>
 			<?= form::dropdown_wrap('bind_id', $topics, $topic, '', __('Topic'), $errors) ?>
 			<?php endif; ?>
