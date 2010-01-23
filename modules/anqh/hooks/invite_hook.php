@@ -16,12 +16,6 @@ class invite_hook {
 
 		// Hook only if enabled in config
 		if (Kohana::config('site.inviteonly')) {
-
-			// Stop execution if ajax, ie. expired session and trying to do ajax call
-			if (request::is_ajax()) {
-				exit;
-			}
-
 			Event::add('system.routing', array($this, 'login'));
 		}
 	}
@@ -35,9 +29,17 @@ class invite_hook {
 
 		// Redirect to invite page if not logged or signing in
 		if (!in_array($uri->string(), array('invite', 'sign/in')) && strpos($uri->string(), 'sign/up') !== 0 && !Visitor::instance()->logged_in()) {
+
+			// Stop execution if ajax, ie. expired session and trying to do ajax call
+			if (request::is_ajax()) {
+				exit;
+			}
+
 			url::redirect('invite');
 		}
+
 	}
+
 }
 
 new invite_hook();
