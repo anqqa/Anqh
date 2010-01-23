@@ -1,8 +1,45 @@
 /*
  * Widget LESS styles. Generic UI widgets: buttons, inputs etc
  *
- * Copyright 2009 Anqh
+ * Copyright (c) 2009-2010 Anqh
  */
+
+/***** TEXT *****/
+
+a,
+a *                                    { color: @link-color; }
+a:hover *,
+a:hover                                { color: @link-hover-color; }
+
+h2 span,
+h3 span,
+h4 span,
+h5 span,
+h6 span                                { color: @text-color; }
+h2                                     { color: @header-color; }
+article > header > h3,
+article > header > h4                  { margin-top: 0; }
+aside article > header > h3            { margin-bottom: 1.111em; }
+legend,
+h3,
+h4,
+h5,
+h3 a,
+label,
+dt,
+h5 a                                   { color: @subheader-color; }
+time[title],
+abbr[title]                            { border-bottom: 1px dotted @separator-color; margin-bottom: -1px; }
+
+a.user                                 { font-weight: bold; }
+
+.tip                                   { color: @tip-color; font-size: 0.9em; font-style: italic; line-height: 1.552em; }
+.my                                    { color: @my-color; }
+.owner                                 { color: @owner-color; }
+.private                               { color: @private-color; }
+
+/***** /TEXT *****/
+
 
 /***** INPUTS *****/
 
@@ -25,7 +62,7 @@ input:focus,
 select:focus,
 textarea:focus                         { border-color: @input-border-focus-color; }
 input[type="checkbox"],
-input[type="radio"]                    { color: @text-color; margin: 0; }
+input[type="radio"]                    { color: @text-color; margin: 0; width: 20px; }
 input[type="text"],
 input[type="password"],
 input[type="file"],
@@ -41,6 +78,8 @@ form .error .info                      { float: right; .border-radius(4px 4px 0 
 form .notice input,
 form .error input                      { border-top-right-radius: 0; -moz-border-radius-topright: 0; -webkit-border-top-right-radius: 0; }
 form .error .info                      { background: @error-background; color: @error-color; }
+form .error select,
+form .error textarea,
 form .error input                      { border-color: @error-background; }
 form .notice .info                     { background: @info-background; color: @info-color; }
 form .notice input                     { border-color: @info-background; }
@@ -128,42 +167,6 @@ form .buttons                          { display: block; margin-bottom: 1em; mar
 .pills li input[type="checkbox"]:checked + label { background: @positive-color; color: @action-link-color; }
 
 /***** /BUTTONS *****/
-
-
-/***** TEXT *****/
-
-a,
-a *                                    { color: @link-color; }
-a:hover *,
-a:hover                                { color: @link-hover-color; }
-
-h2 span,
-h3 span,
-h4 span,
-h5 span,
-h6 span                                { color: @text-color; }
-h2                                     { color: @header-color; }
-article > header > h3,
-article > header > h4                  { margin-top: 0; }
-legend,
-h3,
-h4,
-h5,
-h3 a,
-label,
-dt,
-h5 a                                   { color: @subheader-color; }
-time[title],
-abbr[title]                            { border-bottom: 1px dotted @separator-color; margin-bottom: -1px; }
-
-a.user                                 { font-weight: bold; }
-
-.tip                                   { color: @tip-color; font-size: 0.9em; font-style: italic; line-height: 1.552em; }
-.my                                    { color: @my-color; }
-.owner                                 { color: @owner-color; }
-.private                               { color: @private-color; }
-
-/***** /TEXT *****/
 
 
 /***** BADGES *****/
