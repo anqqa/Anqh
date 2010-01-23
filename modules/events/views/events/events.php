@@ -4,11 +4,11 @@
 
 	<div class="line day">
 
-		<header class="unit size1of6">
+		<header>
 			<?= html::box_day($date) ?>
 		</header>
 
-		<div class="unit size5of6 lastunit cities">
+		<div class="cities">
 			<?php foreach ($cities as $city => $events): ?>
 
 			<section class="city city-<?= url::title($city) ?>">

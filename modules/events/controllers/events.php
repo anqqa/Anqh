@@ -4,7 +4,7 @@
  *
  * @package    Events
  * @author     Antti Qvickström
- * @copyright  (c) 2009 Antti Qvickström
+ * @copyright  (c) 2009-2010 Antti Qvickström
  * @license    http://www.opensource.org/licenses/mit-license.php MIT license
  */
 class Events_Controller extends Website_Controller {
@@ -290,7 +290,9 @@ class Events_Controller extends Website_Controller {
 	 */
 	public function event($event_id, $action = false) {
 
-		// add new event
+		$this->tabs = null;
+
+		// Add new event
 		if ($event_id == 'add') {
 			$this->_event_edit();
 			return;
@@ -298,22 +300,22 @@ class Events_Controller extends Website_Controller {
 		} else if ($action){
 			switch ($action) {
 
-				// delete event
+				// Delete event
 				case 'delete':
 					$this->_event_delete($event_id);
 					return;
 
-				// edit event
+				// Edit event
 				case 'edit':
 					$this->_event_edit($event_id);
 					return;
 
-				// add to favorites
+				// Add to favorites
 				case 'favorite':
 					$this->_favorite_add($event_id);
 					return;
 
-				// remove from favorites
+				// Remove from favorites
 				case 'unfavorite':
 					$this->_favorite_delete($event_id);
 					return;
@@ -321,7 +323,7 @@ class Events_Controller extends Website_Controller {
 		}
 
 		$event = new Event_Model((int)$event_id);
-		$errors = !$event->id ? array('events.error_event_not_found') : array();
+		$errors = !$event->id ? array(__('Event not found')) : array();
 
 		if (empty($errors)) {
 			$this->breadcrumb[] = html::anchor(url::model($event), $event->name);
@@ -341,12 +343,30 @@ class Events_Controller extends Website_Controller {
 			list($year, $month, $day) = explode('-', date('Y-m-d', strtotime($event->start_time)));
 			$this->date->setDate($year, $month, $day);
 			$this->page_title = text::title($event->name);
+			$this->page_subtitle = html::time(date('l ', strtotime($event->start_time)) . date::format('DDMMYYYY', $event->start_time), $event->start_time, true);
+			$venue = array();
+			if ($event->venue_id) {
+				$venue[] = html::anchor(url::model($event->venue), $event->venue->name);
+				$venue[] = html::specialchars($event->venue->city_name);
+			} else if ($event->venue_name) {
+				$venue[] = $event->venue_url ? html::anchor($event->venue_url, $event->venue_name) : html::specialchars($event->venue_name);
+				if ($event->city_name) {
+					$venue[] = html::specialchars($event->city_name);
+				}
+			} else if ($event->city_name) {
+				$venue[] = html::specialchars($event->city_name);
+			}
+			if (count($venue)) {
+				$this->page_subtitle .= ' @ ' . implode(', ', $venue);
+			}
+
+			widget::add('side', View::factory('events/event_info', array('event' => $event)));
 			widget::add('main', View::factory('events/event', array('event' => $event)));
 		} else {
-//			$this->_error(Kohana::lang('generic.error'), $errors);
+			$this->_error(__('Error'), $errors);
 		}
 
-		$this->_side_views();
+		//$this->_side_views();
 	}
 
 
@@ -447,28 +467,8 @@ class Events_Controller extends Website_Controller {
 				}
 
 				if (!$editing) {
-
-					// News feed event
 					newsfeeditem_events::event($this->user, $event);
-
 				}
-				/*// handle flyer uploads
-				if (isset($post->flyer_front) && empty($post->flyer_front['error'])) {
-					$flyer = Image_Model::factory($post->flyer_front, false, Kohana::config('events.flyer_normal'), Kohana::config('events.flyer_thumb'), $this->user->id);
-					if ($flyer->id) {
-						$event->add($flyer);
-						$event->flyer_front_image_id = $flyer->id;
-						$event->save();
-					}
-				}
-				if (isset($post->flyer_back) && empty($post->flyer_back['error'])) {
-					$flyer = Image_Model::factory($post->flyer_back, false, Kohana::config('events.flyer_normal'), Kohana::config('events.flyer_thumb'), $this->user->id);
-					if ($flyer->id) {
-						$event->add($flyer);
-						$event->flyer_back_image_id = $flyer->id;
-						$event->save();
-					}
-				}*/
 
 				url::redirect(url::model($event));
 			} else {
@@ -516,12 +516,12 @@ class Events_Controller extends Website_Controller {
 			$hosts[] = "{ id: '" . $venue->id . "', text: '" . html::chars($venue->name) . "' }";
 		}
 		widget::add('foot', html::script_source('var venues = [' . implode(', ', $hosts) . "];
-$('input#venue_name').autocomplete(venues, {
+$('input[name=venue_name]').autocomplete(venues, {
 	formatItem: function(item) {
 		return item.text;
 	}
 }).result(function(event, item) {
-	$('input#venue_id').val(item.id);
+	$('input[name=venue_id]').val(item.id);
 });"));
 
 		// Date pickers
