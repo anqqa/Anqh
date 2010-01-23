@@ -3,10 +3,13 @@
 	<?= form::open() ?>
 
 	<fieldset>
-		<legend><h3><?= __('Topic') ?></h3></legend>
 		<ul>
 
+			<?php if ($topics === false): ?>
 			<?= form::input_wrap(array('name' => 'name', 'maxlength' => 100), $topic, '', '', $errors) ?>
+			<?php else: ?>
+			<?= form::dropdown_wrap('bind_id', $topics, $topic, '', __('Topic'), $errors) ?>
+			<?php endif; ?>
 
 			<?= form::textarea_wrap(array('name' => 'post', 'id' => 'post', 'rows' => 20, 'cols' => 25), $topic, '', true, __('Post'), $errors) ?>
 

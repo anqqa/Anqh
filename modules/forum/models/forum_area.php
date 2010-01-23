@@ -256,19 +256,21 @@ class Forum_Area_Model extends Modeler_ORM {
 	 * @return  bool
 	 */
 	public function refresh($save = true) {
-		if ($this->loaded) {
+		if ($this->loaded()) {
 
 			// first topic
-			$last_topic = ORM::factory('forum_topic')->where('forum_area_id', $this->id)->order_by('last_post_id', 'DESC')->find();
+			$last_topic = ORM::factory('forum_topic')->where('forum_area_id', '=', $this->id)->order_by('last_post_id', 'DESC')->find();
 			$this->last_topic_id = $last_topic->id;
 
 			// counts
 			$num_topics = count($this->forum_topics);
 			$this->topics = $num_topics;
-			$num_posts = $this->db->where('forum_area_id', $this->id)->count_records('forum_posts');
+			$num_posts = $this->db->where('forum_area_id', '=', $this->id)->count_records('forum_posts');
 			$this->posts = $num_posts;
 
-			if ($save) $this->save();
+			if ($save) {
+				$this->save();
+			}
 			return true;
 		}
 		return false;

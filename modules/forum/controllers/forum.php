@@ -847,109 +847,147 @@ class Forum_Controller extends Website_Controller {
 	public function _topic_edit($topic_id, $area_id = false) {
 		$this->history = false;
 
-		// For authenticated users only
-		if (!$this->user) {
-			url::back('/forum');
-		}
+		$errors = array();
 
 		$forum_topic = new Forum_Topic_Model((int)$topic_id);
-		if (!$this->user || $forum_topic->loaded() && !$forum_topic->has_access(Forum_Topic_Model::ACCESS_EDIT)) {
-			url::back('/forum');
+		$forum_area = $forum_topic->loaded() ? $forum_topic->forum_area : new Forum_Area_Model((int)$area_id);
+		if ($forum_topic->loaded()) {
+
+			// Editing topic
+			$editing = true;
+			if (!$forum_topic->has_access(Forum_Topic_Model::ACCESS_EDIT)) {
+				url::back('forum');
+			}
+
+		} else if ($forum_area->loaded()) {
+
+			// New topic
+			$editing = false;
+			if (!$forum_area->has_access(Forum_Area_Model::ACCESS_WRITE)) {
+				url::back('forum');
+			}
+
+		} else {
+
+			// New topic in unknown area
+			$errors[] = __('Area :area or topic :topic not found', array(':area' => (int)$area_id, ':topic' => (int)$topic_id));
+
 		}
-		$forum_area = $forum_topic->id ? $forum_topic->forum_area : new Forum_Area_Model((int)$area_id);
-		$errors = $forum_area->id ? array() : __('Area :area not found', array(':area' => $area_id));
-		$forum_post = new Forum_Post_Model((int)$forum_topic->first_post_id);
 
 		if (empty($errors)) {
 
-			if ($forum_area->has_access(Forum_Area_Model::ACCESS_WRITE)) {
-				$form_errors = array();
+			$forum_post        = new Forum_Post_Model((int)$forum_topic->first_post_id);
+			$form_errors       = array();
+			$form_values_topic = $forum_topic->as_array();
+			$form_values_post  = $forum_post->as_array();
+			$form_topics       = false;
 
-				$this->page_title = $forum_topic->id ? text::title($forum_topic->name) : __('New topic');
-				$this->page_subtitle = __('Area :area', array(
-					':area' => html::anchor(url::model($forum_area), text::title($forum_area->name), array('title' => strip_tags($forum_area->description)))
-				));
+			// Bound area?
+			if ($forum_area->is_type(Forum_Area_Model::TYPE_BIND)) {
 
-				// Admin actions
-				if ($forum_topic->id) {
-					$this->page_actions[] = array('link' => url::model($forum_topic) . '/delete/?token=' . csrf::token(), 'text' => __('Delete topic'), 'class' => 'topic-delete');
-				}
+				// Get bind config and load topics
+				$bind = Forum_Area_Model::binds($forum_area->bind);
+				if ($editing) {
 
-				$form_values_topic = $forum_topic->as_array();
-				$form_values_post = $forum_post->as_array();
-				$editing = (bool)$forum_post->id;
+					// Can't edit bound topic
+					$form_topics = array($forum_topic->bind_id => $forum_topic->name);
 
-				// check post
-				if (request::method() == 'post') {
-					$post = $this->input->post();
-					$post['forum_area_id'] = $forum_area->id;
-					$topic = $post;
-					$post_extra = $topic_extra = array(
-						'author_id'   => $this->user->id,
-						'author_name' => $this->user->username
-					);
-					if ($editing) {
-						$post_extra['modifies'] = (int)$forum_post->modifies + 1;
-						$post_extra['modified'] = date::unix2sql(time());
-					}
-					$post_extra['author_ip'] = $this->input->ip_address();
-					$post_extra['author_host'] = $this->input->host_name();
+				} else {
 
-					// validate post first and save topic if ok
-					if (csrf::valid() && $forum_post->validate($post, false, $post_extra) && $forum_topic->validate($topic, true, $topic_extra)) {
-
-						// post
-						$forum_post->forum_topic_id = $forum_topic->id;
-						$forum_post->save();
-
-						if (!$editing) {
-							// topic
-							$forum_topic->first_post_id = $forum_post->id;
-							$forum_topic->last_post_id = $forum_post->id;
-							$forum_topic->last_poster = $this->user->username;
-							$forum_topic->last_posted = date::unix2sql(time());
-							$forum_topic->posts = 1;
-							$forum_topic->save();
-
-							// area
-							$forum_area->last_topic_id = $forum_topic->id;
-							$forum_area->posts += 1;
-							$forum_area->topics += 1;
-							$forum_area->save();
-
-							// user
-							$this->user->posts += 1;
-							$this->user->save();
-
-							// News feed
-							newsfeeditem_forum::topic($this->user, $forum_topic);
-						}
-
-						// redirect back to topic
-						URL::redirect(url::model($forum_topic));
-					} else {
-						$form_errors = array_merge($post->errors(), is_object($topic) ? $topic->errors() : array());
+					// Try to load options from configured model
+					try {
+						$bind_topics = ORM::factory($bind['model'])->find_bind_topics($forum_area->bind);
+						$form_topics = array(0 => __('Choose..')) + $bind_topics;
+					} catch (Kohana_Exception $e) {
+						$form_topics = array();
 					}
 
-					$form_values_topic = arr::overwrite($form_values_topic, is_object($topic) ? $topic->as_array() : $topic);
-					$form_values_post = arr::overwrite($form_values_post, $post->as_array());
 				}
 
-			// no access
-			} else {
-				$this->page_title = text::title($forum_area->name);
-				$this->page_subtitle = html::specialchars($forum_area->description) . '&nbsp;';
-				$errors[] = __('Access denied');
+			}
+
+			// Admin actions
+			if ($editing && $forum_topic->has_access(Forum_Topic_Model::ACCESS_DELETE)) {
+				$this->page_actions[] = array('link' => url::model($forum_topic) . '/delete/?token=' . csrf::token(), 'text' => __('Delete topic'), 'class' => 'topic-delete');
+			}
+
+			// Check post
+			if ($post = $this->input->post()) {
+				$post['forum_area_id'] = $forum_area->id;
+				$topic = $post;
+				if (isset($bind_topics)) {
+					$topic['name'] = arr::get($bind_topics, (int)$topic['bind_id'], '');
+				}
+				$post_extra = $topic_extra = array(
+					'author_id'   => $this->user->id,
+					'author_name' => $this->user->username
+				);
+				if ($editing) {
+					$post_extra['modifies'] = (int)$forum_post->modifies + 1;
+					$post_extra['modified'] = date::unix2sql(time());
+				}
+				$post_extra['author_ip'] = $this->input->ip_address();
+				$post_extra['author_host'] = $this->input->host_name();
+
+				// validate post first and save topic if ok
+				if (csrf::valid() && $forum_post->validate($post, false, $post_extra) && $forum_topic->validate($topic, true, $topic_extra)) {
+
+					// post
+					$forum_post->forum_topic_id = $forum_topic->id;
+					$forum_post->save();
+
+					if (!$editing) {
+						// topic
+						$forum_topic->first_post_id = $forum_post->id;
+						$forum_topic->last_post_id = $forum_post->id;
+						$forum_topic->last_poster = $this->user->username;
+						$forum_topic->last_posted = date::unix2sql(time());
+						$forum_topic->posts = 1;
+						$forum_topic->save();
+
+						// area
+						$forum_area->last_topic_id = $forum_topic->id;
+						$forum_area->posts += 1;
+						$forum_area->topics += 1;
+						$forum_area->save();
+
+						// user
+						$this->user->posts += 1;
+						$this->user->save();
+
+						// News feed
+						newsfeeditem_forum::topic($this->user, $forum_topic);
+					}
+
+					// redirect back to topic
+					URL::redirect(url::model($forum_topic));
+				} else {
+					$form_errors = array_merge($post->errors(), is_object($topic) ? $topic->errors() : array());
+				}
+
+				$form_values_topic = arr::overwrite($form_values_topic, is_object($topic) ? $topic->as_array() : $topic);
+				$form_values_post = arr::overwrite($form_values_post, $post->as_array());
 			}
 
 		}
 
-		// show form
+		// Show form
 		if (empty($errors)) {
+			$this->breadcrumb[] = html::anchor(url::model($forum_area), text::title($forum_area->name));
+			$this->page_title = $editing ? text::title($forum_topic->name) : __('New topic');
+			$this->page_subtitle = __('Area :area', array(
+				':area' => html::anchor(url::model($forum_area), text::title($forum_area->name), array('title' => strip_tags($forum_area->description)))
+			));
+
 			widget::add('head', html::script(array('js/jquery.markitup.pack', 'js/markitup.bbcode')));
-			widget::add('main', View::factory('forum/topic_edit', array('topic' => $form_values_topic, 'post' => $form_values_post, 'errors' => $form_errors)));
+			widget::add('main', View::factory('forum/topic_edit', array(
+				'topic'  => $form_values_topic,
+				'topics' => $form_topics,
+				'post'   => $form_values_post,
+				'errors' => $form_errors,
+			)));
 		} else {
-			$this->_error(Kohana::lang('generic.error'), $errors);
+			$this->_error(__('Error'), $errors);
 		}
 
 		$this->_side_views();

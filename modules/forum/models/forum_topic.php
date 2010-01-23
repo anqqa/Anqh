@@ -4,29 +4,28 @@
  *
  * @package    Forum
  * @author     Antti Qvickström
- * @copyright  (c) 2009 Antti Qvickström
+ * @copyright  (c) 2009-2010 Antti Qvickström
  * @license    http://www.opensource.org/licenses/mit-license.php MIT license
  */
 class Forum_Topic_Model extends Modeler_ORM {
 
 	/**
-	 * Topic edit access
-	 *
-	 * @var  string
+	 * Access to delete topic
+	 */
+	const ACCESS_DELETE = 'delete';
+
+	/**
+	 * Acces to edit topic
 	 */
 	const ACCESS_EDIT = 'edit';
 
 	/**
-	 * Topic read access
-	 *
-	 * @var  string
+	 * Access to read topic
 	 */
 	const ACCESS_READ = 'read';
 
 	/**
-	 * Topic write access (= reply)
-	 *
-	 * @var  string
+	 * Access to reply to topic
 	 */
 	const ACCESS_WRITE = 'write';
 
@@ -41,7 +40,7 @@ class Forum_Topic_Model extends Modeler_ORM {
 	protected $_rules = array(
 		'forum_area_id' => array('required', 'valid::numeric'),
 		'name'          => array('required', 'length[1, 200]'),
-		'event_id'      => array('valid::numeric'),
+		'bind_id'      => array('valid::numeric'),
 		'read_only'     => array('is_numeric'),
 	);
 
@@ -103,6 +102,13 @@ class Forum_Topic_Model extends Modeler_ORM {
 		if (!isset($cache[$cache_id])) {
 			$access = false;
 			switch ($type) {
+
+				// Delete access to topic
+				case self::ACCESS_DELETE:
+
+					// Users can delete their topic if there are no replies, ie. accidental topics
+					$access = ($user && (($this->posts == 1 && $this->is_author($user)) || $user->has_role('admin', 'forum moderator')));
+					break;
 
 				// Edit access to topic
 				case self::ACCESS_EDIT:

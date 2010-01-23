@@ -4,10 +4,10 @@
  *
  * @package    Events
  * @author     Antti Qvickström
- * @copyright  (c) 2009 Antti Qvickström
+ * @copyright  (c) 2009-2010 Antti Qvickström
  * @license    http://www.opensource.org/licenses/mit-license.php MIT license
  */
-class Event_Model extends Modeler_ORM {
+class Event_Model_Core extends Modeler_ORM {
 
 	// ORM
 	protected $has_and_belongs_to_many = array('tags', 'images');
@@ -77,6 +77,39 @@ class Event_Model extends Modeler_ORM {
 				->where('user_id', '=', $user->id)
 				->where('event_id', '=', $this->id)
 				->execute());
+	}
+
+
+	/**
+	 * Get bind forum topics
+	 *
+	 * @param   string  $bind
+	 * @return  array
+	 */
+	public function find_bind_topics($bind) {
+		$topics = array();
+		switch ($bind) {
+
+			// Upcoming events
+			case 'events_upcoming':
+				$events = $this->find_upcoming(100);
+				break;
+
+			// Past events
+			case 'events_past':
+				$events = $this->find_past(100);
+				break;
+
+		}
+
+		// Build human readable list
+		if (!empty($events)) {
+			foreach ($events as $event) {
+				$topics[$event->id] = $event->name . ' ' . date::format('DDMMYYYY', $event->start_time);
+			}
+		}
+
+		return $topics;
 	}
 
 
