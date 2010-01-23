@@ -61,6 +61,16 @@ class Forum_Area_Model extends Modeler_ORM {
 	protected $load_with   = array('forum_groups');
 
 	// Validation
+	protected $rules = array(
+		'*'              => array('pre_filter' => 'trim'),
+		'forum_group_id' => array('rules' => array('required', 'digit')),
+		'name'           => array('rules' => array('required', 'length[1, 64]')),
+		'description'    => array('rules' => array('length[0, 250]')),
+		'sort'           => array('rules' => array('required', 'digit', 'range[0, 999]')),
+		'access'         => array('rules' => array('required', 'digit', 'range[0, 255]')),
+		'bind'           => array('rules' => array('length[0, 32]'), 'callbacks' => array('Forum_Area_Model::bind_config')),
+	);
+
 	protected $_rules = array(
 		'forum_group_id' => array('required', 'valid::numeric'),
 		'name'           => array('required', 'length[1, 32]'),
@@ -70,6 +80,34 @@ class Forum_Area_Model extends Modeler_ORM {
 	);
 
 	protected $url_base = 'forum';
+
+
+	/**
+	 * Handles setting of all model values, and tracks changes between values.
+	 *
+	 * @param   string  column name
+	 * @param   mixed   column value
+	 * @return  void
+	 */
+	public function __set($column, $value) {
+		switch ($column) {
+
+			// Set access type
+			case 'area_type':
+				$types = self::area_types();
+				if (!isset($types[$value])) {
+					throw new Kohana_Exception('The area type :type does not exist in the :class class', array(':type' => $value, ':class' => get_class($this)));
+				}
+
+				$old_access = $this->__get('access');
+				parent::__set('access', $old_access | $value);
+				break;
+
+			default:
+				parent::__set($column, $value);
+
+		}
+	}
 
 
 	/**
@@ -84,8 +122,73 @@ class Forum_Area_Model extends Modeler_ORM {
 			self::TYPE_LOGGED   => __('Members only, only logged in members can read topics'),
 			self::TYPE_PRIVATE  => __('Private area, uses different db (deprecated?)'),
 			self::TYPE_BIND     => __('Bound area, topics are bound to other models'),
-			self::TYPE_HIDDEN   => __('Hidden area, nobody can see'),
+			self::TYPE_HIDDEN   => __('Hidden area'),
 		);
+	}
+
+
+	/**
+	 * Check if bind config is OK
+	 *
+	 * @see    $callbacks
+	 * @param  Validation  $array
+	 * @param  string      $field
+	 */
+	public static function bind_config(Validation $array, $field) {
+		if ($array['access'] & self::TYPE_BIND) {
+
+			if (!isset($array[$field]) || !$array[$field]) {
+
+				// Bind config is required is area type bind is set
+				$array->add_error($field, 'required');
+
+			} else if (!in_array($array[$field], array_keys(self::area_types()))) {
+
+				// Invalid bind config, this should not happen(tm)
+				$array->add_error($field, 'invalid');
+
+			}
+
+		} else {
+			$array[$field] = null;
+		}
+	}
+
+
+	/**
+	 * Get list of possible model bindings
+	 *
+	 * @param   boolean|string  true = short list, false = full list, string = specific bind
+	 * @return  array
+	 */
+	public static function binds($bind = true) {
+		static $config;
+
+		// Load bind config
+		if (!is_array($config)) {
+			$config = (array)Kohana_Config::instance()->get('forum.bind');
+		}
+
+		if ($bind === true) {
+
+			// Short list for selects etc
+			$list = array();
+			foreach ($config as $type => $data) {
+				$list[$type] = $data['name'];
+			}
+			return $list;
+
+		} else if ($bind === false) {
+
+			// Full bind config
+			return $config;
+
+		} else if (is_string($bind)) {
+
+			// Specific config
+			return $config[$bind];
+
+		}
 	}
 
 
@@ -135,15 +238,15 @@ class Forum_Area_Model extends Modeler_ORM {
 	/**
 	 * Is the area of area type
 	 *
-	 * @param  integer  $access_type
+	 * @param  integer  $area_type
 	 * @see    TYPE_NORMAL
 	 * @see    TYPE_READONLY
 	 * @see    TYPE_LOGGED
 	 * @see    TYPE_PRIVATE
 	 * @see    TYPE_BIND
 	 */
-	public function is_type($access_type) {
-		return $access_type == self::TYPE_NORMAL ? ($this->access === 0) : (bool)($this->access & $access_type);
+	public function is_type($area_type) {
+		return $area_type == self::TYPE_NORMAL ? ($this->access === 0) : (bool)($this->access & $area_type);
 	}
 
 

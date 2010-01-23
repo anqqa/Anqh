@@ -170,10 +170,10 @@ class Forum_Controller extends Website_Controller {
 
 			$this->breadcrumb[] = html::anchor(url::model($forum_area), $forum_area->name);
 			$this->page_title = text::title($forum_area->name);
-			$this->page_subtitle = html::specialchars($forum_area->description) . '&nbsp;';
+			$this->page_subtitle = $forum_area->description;
 
 			// Admin actions
-			if ($this->visitor->logged_in('admin')) {
+			if ($forum_area->has_access(Forum_Area_Model::ACCESS_EDIT)) {
 				$this->page_actions[] = array('link' => url::model($forum_area) . '/edit', 'text' => __('Edit area'), 'class' => 'area-edit');
 			}
 
@@ -239,30 +239,41 @@ class Forum_Controller extends Website_Controller {
 	public function _area_edit($area_id = false, $group_id = false) {
 		$this->history = false;
 
-		// for authenticated users only
+		// For authenticated users only
 		if (!$this->visitor->logged_in('admin')) url::redirect('/forum');
 
 		$errors = $form_errors = array();
 
 		$forum_area = new Forum_Area_Model((int)$area_id);
-		if ($forum_area->id) $forum_group = $forum_area->forum_group;
+		if ($forum_area->id) {
+			$forum_group = $forum_area->forum_group;
+		}
 		$form_values = $forum_area->as_array();
 
-		// check post
-		if (request::method() == 'post') {
-			$post = $this->input->post();
-			$extra = array('author_id' => $this->user->id);
-			if ($forum_area->validate($post, true, $extra)) {
-				url::redirect('/forum/' . url::title($forum_area->id, $forum_area->name));
-			} else {
-				$form_errors = $post->errors();
+		// Check post
+		if ($post = $this->input->post()) {
+
+			// Basic settings
+			$forum_area->forum_group_id = $post['forum_group_id'];
+			$forum_area->name           = $post['name'];
+			$forum_area->description    = $post['description'];
+			$forum_area->sort           = $post['sort'];
+			$forum_area->author_id      = $this->user->id;
+			$forum_area->access         = isset($post['area_type']) ? array_sum(array_keys($post['area_type'])) : Forum_Area_Model::TYPE_NORMAL;
+			$forum_area->bind           = $post['bind'];
+
+			try {
+				$forum_area->save();
+				url::redirect(url::model($forum_area));
+			} catch (ORM_Validation_Exception $e) {
+				$form_errors = $e->validation->errors();
 			}
-			$form_values = arr::overwrite($form_values, $post->as_array());
+			$form_values = arr::overwrite($form_values, $post);
 		}
 
-		// show form
-		if ($forum_area->id) {
-			$this->page_actions[] = array('link' => url::model($forum_area) . '/delete', 'text' => __('Delete area'), 'class' => 'area-delete');
+		// Show form
+		if ($forum_area->loaded()) {
+			$this->page_actions[] = array('link' => url::model($forum_area) . '/delete/?token=' . csrf::token(), 'text' => __('Delete area'), 'class' => 'area-delete');
 			$this->template->subtitle = __('Edit area');
 		} else {
 			$this->template->subtitle = __('New area');
@@ -271,6 +282,15 @@ class Forum_Controller extends Website_Controller {
 		$form = $forum_area->get_form();
 		$forum_groups = ORM::factory('forum_group')->find_all()->select_list('id', 'name');
 		$form['forum_group_id'] = $forum_groups;
+		$form['area_type'] = Forum_Area_Model::area_types();
+		unset($form['area_type'][0]);
+		$form_values['area_type'] = array();
+		foreach (array_keys($form['area_type']) as $area_type) {
+			if ($forum_area->is_type($area_type)) {
+				$form_values['area_type'][$area_type] = true;
+			}
+		}
+		$form['bind'] = array(0 => __('None')) + Forum_Area_Model::binds(true);
 
 		if (empty($errors)) {
 			widget::add('main', View::factory('forum/area_edit', array('form' => $form, 'values' => $form_values, 'errors' => $form_errors)));
@@ -330,7 +350,7 @@ class Forum_Controller extends Website_Controller {
 			}
 
 			//$forum_groups = ORM::factory('forum_group')->find_all();
-			widget::add('main', View::factory('forum/groups', array('user' => $this->user, 'groups' => array($forum_group))));
+			widget::add('main', View::factory('forum/groups', array('groups' => array($forum_group))));
 			$this->_side_views();
 		}
 
@@ -377,7 +397,7 @@ class Forum_Controller extends Website_Controller {
 		// show form
 		if ($forum_group->id) {
 			$this->page_subtitle = __('Edit group');
-			$this->page_actions[] = array('link' => url::model($forum_group) . '/delete', 'text' => __('Delete group'), 'class' => 'group-delete');
+			$this->page_actions[] = array('link' => url::model($forum_group) . '/delete/?token=' . csrf::token(), 'text' => __('Delete group'), 'class' => 'group-delete');
 		} else {
 			$this->page_subtitle = __('New group');
 		}
@@ -437,7 +457,7 @@ class Forum_Controller extends Website_Controller {
 
 				// Check access and proceed
 				$forum_area  = $forum_topic->forum_area;
-				if ($forum_area->access_has($this->user, Forum_Area_Model::ACCESS_READ)) {
+				if ($forum_area->has_access(Forum_Area_Model::ACCESS_READ)) {
 					echo View::factory('forum/post', array(
 						'topic' => $forum_topic,
 						'post'  => $forum_post,
