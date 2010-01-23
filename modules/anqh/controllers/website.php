@@ -49,7 +49,7 @@ abstract class Website_Controller extends Controller {
 	 *
 	 * @var  string
 	 */
-	protected $page_subtitle = '&nbsp;';
+	protected $page_subtitle = '';
 
 	/**
 	 * Current page title
@@ -345,6 +345,7 @@ $("input#' . $field . '").autocomplete(cities, {
 	 */
 	public function _error($title = '', $errors = false) {
 		$this->page_title = $title;
+
 		widget::add('main', '<div class="error">' . (is_array($errors) ? implode('<br />', $errors) : $errors) . '</div>');
 	}
 
