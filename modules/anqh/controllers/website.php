@@ -146,7 +146,7 @@ abstract class Website_Controller extends Controller {
 		$this->page_width = Session::instance()->get('page_width', 'fixed');
 		$this->page_main = Session::instance()->get('page_main', 'left');
 		//$this->stylesheets = array('ui/' . Kohana::config('site.skin') . '/skin', 'ui/' . Kohana::config('site.skin') . '/jquery-ui');
-		$this->breadcrumb = array(html::anchor('/', __('Home')));
+		$this->breadcrumb = array(); //html::anchor('/', __('Home')));
 		$this->tabs = array();
 
 		// If a country is seleced, add custom stylesheet
