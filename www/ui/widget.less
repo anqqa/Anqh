@@ -28,7 +28,7 @@ h3 a,
 label,
 dt,
 h5 a                                   { color: @subheader-color; }
-time[title],
+time[title]:not([class*="unit"]),
 abbr[title]                            { border-bottom: 1px dotted @separator-color; margin-bottom: -1px; }
 
 a.user                                 { font-weight: bold; }
@@ -177,8 +177,8 @@ form .buttons                          { display: block; margin-bottom: 1em; mar
 .step,
 .date .day                             { color: @subheader-color; font-family: Georgia, serif; font-size: 2em; line-height: 0.833em; }
 .date span                             { background: @badge-background; }
-.date .weekday                         { background: @badge-background-alt; .border-radius(5px 0 0 0); }
-.date .month                           { .border-radius(0 0 5px 5px); text-transform: uppercase; }
+.date .weekday                         { background: @badge-background-alt; /*.border-radius(5px 0 0 0);*/ font-family: Lucida Grande, Lucida Sans Unicode, sans-serif; }
+.date .month                           { /*.border-radius(0 0 5px 5px);*/ text-transform: uppercase; font-family: Lucida Grande, Lucida Sans Unicode, sans-serif; }
 .date.today .weekday                   { background: @subheader-color; color: @action-link-color; }
 
 /***** /BADGES *****/

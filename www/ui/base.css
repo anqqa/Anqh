@@ -129,10 +129,13 @@ table.calendar td            { padding: 0; }
 .calendar table .inactive              { opacity: 0.50; }
 .calendar table .today                 { font-weight: bold; }
 
-#events section.day                    { padding: 0.8333em 10px; }
+.calendar ol.days                      { list-style: none; }
+
+
+/*#events section.day                    { padding: 0.8333em 10px; }*/
 #events .date                          { margin-right: 10px; }
-#events .city h3                       { margin-top: 0; }
-#events .events article                { padding: 0.8333em 0; }
+/*#events .city h3                       { margin-top: 0; }
+#events .events article                { padding: 0.8333em 0; }*/
 #events .calendar .events              { margin-top: -1px; }
 #events .tab .events li                { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; -o-text-overflow: ellipsis; }
 

@@ -1,17 +1,25 @@
 
 <section class="mod calendar">
-<?php foreach ($events as $date => $cities): ?>
+	<ol class="days">
 
-	<div class="line day">
+<?php foreach ($events as $date => $cities):
+	$sunrise = date_sunrise(strtotime($date), null, 60.182, 24.954);
+	$sunset = date_sunset(strtotime($date), null, 60.182, 24.954); ?>
+		<li class="day">
 
-		<header>
-			<?= html::box_day($date) ?>
-		</header>
+			<header class="line">
+				<?= html::box_day($date, false, 'unit size1of6') ?>
+				<span class="details">
+					<?= __('Sun rises at :sunrise, sun sets at :sunset', array(
+						':sunrise' => html::time(date::format('HHMM', $sunrise), $sunrise),
+						':sunset' => html::time(date::format('HHMM', $sunset), $sunset)
+					)) ?>
+				</span>
+			</header>
 
-		<div class="cities">
 			<?php foreach ($cities as $city => $events): ?>
 
-			<section class="city city-<?= url::title($city) ?>">
+			<div class="city city-<?= url::title($city) ?>">
 				<?php if (!empty($city)): ?>
 
 				<header>
@@ -19,48 +27,41 @@
 				</header>
 				<?php endif; ?>
 
-				<section class="events">
-					<?php	foreach ($events as $event): ?>
+				<?php	foreach ($events as $event): ?>
 
-					<article class="event event-<?= $event->id ?>">
+				<article class="event event-<?= $event->id ?>">
 
-						<header>
-							<h4><?= html::anchor(url::model($event), text::title($event->name)) ?></h4>
+					<header>
+						<h4><?= html::anchor(url::model($event), text::title($event->name)) ?></h4>
+					</header>
 
-							<?php if ($event->price !== null && $event->price != -1): ?>
-							<span class="details price"><?= ($event->price == 0 ? __('Free entry') : '<var>' . $event->price . html::specialchars(Kohana::config('locale.currency.symbol')) . '</var>') ?></span>
-							<?php endif; ?>
+					<?php if ($event->price !== null && $event->price != -1): ?>
+					<span class="details price"><?= ($event->price == 0 ? __('Free entry') : '<var>' . $event->price . html::specialchars(Kohana::config('locale.currency.symbol')) . '</var>') ?></span>
+					<?php endif; ?>
 
-							<?php if ($event->venue_id): ?>
-							<span class="details venue">@ <?= html::anchor(url::model($event->venue), $event->venue->name) ?></span>
-							<?php elseif ($event->venue_name): ?>
-							<span class="details venue">@ <?= html::specialchars($event->venue_name) ?></span>
-							<?php endif; ?>
+					<?php if ($event->venue_id): ?>
+					<span class="details venue">@ <?= html::anchor(url::model($event->venue), $event->venue->name) ?></span>
+					<?php elseif ($event->venue_name): ?>
+					<span class="details venue">@ <?= html::specialchars($event->venue_name) ?></span>
+					<?php endif; ?>
 
-							<?php if ($event->age && $event->age != -1): ?>
-							<span class="details age">(<?= __('Age limit :limit', array(':limit' => '<var>' . $event->age . '</var>')) ?>)</span>
-							<?php endif; ?>
-						</header>
+					<?php if ($event->age && $event->age != -1): ?>
+					<span class="details age">(<?= __('Age limit :limit', array(':limit' => '<var>' . $event->age . '</var>')) ?>)</span>
+					<?php endif; ?>
 
-						<?php if ($event->dj): ?>
+					<?php if ($event->dj): ?>
+					<div class="dj"><?= html::specialchars($event->dj) ?></div>
+					<?php endif; ?>
 
-						<section>
-							<p class="dj"><?= html::specialchars($event->dj) ?></p>
-						</section>
+				</article><!-- /event -->
 
-						<?php endif; ?>
+				<?php endforeach; ?>
 
-					</article>
-
-					<?php endforeach; ?>
-				</section><!-- event -->
-
-			</section><!-- city -->
-
+			</div><!-- /city -->
 			<?php endforeach; ?>
-		</div><!-- cities -->
 
-	</div><!-- day -->
-
+		</li><!-- /day -->
 <?php endforeach; ?>
+
+	</ol><!-- /days -->
 </section>
