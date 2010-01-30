@@ -53,8 +53,8 @@
 			<dt><?= __('Tickets') ?></dt><dd><?= __('Free entry') ?></dd>
 			<?php elseif ($event->price > 0): ?>
 			<dt><?= __('Tickets') ?></dt>
-			<dd><?= __(':price by the door', array(':price' => '<var>' . $event->price . html::specialchars(Kohana::config('locale.currency.symbol')) . '</var>')) ?></dd>
-			<?= $event->price2 !== null ? '<dd>' . __('presale :price', array(':price' => '<var>' . $event->price2 . html::specialchars(Kohana::config('locale.currency.symbol')) . '</var>')) . '</dd>' : '' ?>
+			<dd><?= __(':price by the door', array(':price' => '<var>' . format::money($event->price, $event->country->currencycode) . '</var>')) ?></dd>
+			<?= $event->price2 !== null ? '<dd>' . __('presale :price', array(':price' => '<var>' . format::money($event->price2) . '</var>')) . '</dd>' : '' ?>
 			<?php endif; ?>
 
 			<?php if (count($event->tags->find_all())): ?>

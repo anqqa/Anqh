@@ -9,16 +9,40 @@
  */
 class text extends text_Core {
 
+
+	/**
+	 * Return currency
+	 *
+	 * @param   string  $currency
+	 * @param   string  $type  'symbol', 'short', 'long', 'code'
+	 * @return  string
+	 */
+	public static function currency($currency, $type) {
+		$currencies = Kohana::config('locale.currencies');
+		if (isset($currencies[strtoupper($currency)])) {
+			switch ($type) {
+				case 'symbol': $currency = $currencies[strtoupper($currency)][0]; break;
+				case 'short':  $currency = $currencies[strtoupper($currency)][1]; break;
+				case 'long':   $currency = $currencies[strtoupper($currency)][2]; break;
+				case 'code':   strtoupper($currency);
+			}
+		}
+
+		return $currency;
+	}
+
+
 	/**
 	 * Kohana::lang output depending on plural
 	 *
-	 * @param		string		$one
-	 * @param		string		$many
-	 * @param		int|array	$n
-	 * @return	string
+	 * @param   string         $one
+	 * @param   string         $many
+	 * @param   integer|array  $n
+	 * @return  string
 	 */
 	public static function nlang($one, $many, $n) {
 		$n = (int)$n;
+
 		return Kohana::lang($n == 1 ? $one : $many, $n);
 	}
 

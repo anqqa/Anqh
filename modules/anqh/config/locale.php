@@ -11,18 +11,9 @@
 /**
  * Available languages
  */
-$config['default_language'] = 'en';
 $config['languages'] = array(
 	'en' => array('en_US', 'English_United States', 'English'),
 	'fi' => array('fi_FI', 'Finnish_Finnish', 'Suomi'),
-);
-
-/**
- * Available countries
- */
-$config['default_country'] = 'fi';
-$config['countries'] = array(
-	'fi' => array('fi_FI', 'Finland'),
 );
 
 /**
@@ -31,12 +22,37 @@ $config['countries'] = array(
  * for OS's that don't support the first (e.g. Windows). The first valid locale in the array will be used.
  * @see http://php.net/setlocale
  */
+$config['default_language'] = 'en';
 $config['language'] = $config['languages'][$config['default_language']];
+
+/**
+ * Available countries
+ *
+ * shortcode => locale, name, currency
+ */
+$config['countries'] = array(
+	'fi' => array('fi_FI', 'Finland', 'EUR'),
+);
 
 /**
  * Default country locale.
  */
+$config['default_country'] = 'fi';
 $config['country'] = $config['countries'][$config['default_country']];
+
+/**
+ * Available currencies
+ *
+ * code => symbol, short, long
+ */
+$config['currencies'] = array(
+	'EUR' => array('&euro;', 'Eur', 'Euro'),
+);
+
+/**
+ * Default country locale.
+ */
+$config['currency'] = $config['currencies'][$config['country'][2]];
 
 /**
  * Locale timezone. Defaults to use the server timezone.
@@ -50,12 +66,3 @@ $config['timezone'] = ini_get('date.timezone');
 $config['start_monday'] = true;
 /*$config['firstdayofweek'] = 1;
 $config['firstdayofweek_name'] = 'monday';*/
-
-/**
- * Currency
- */
-$config['currency'] = array(
-	'long'   => 'Euro',
-	'short'  => 'Eur',
-	'symbol' => '€',
-);
