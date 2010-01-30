@@ -193,14 +193,16 @@ abstract class Website_Controller extends Controller {
 		);
 		widget::add('dock2', __('Layout: ') . implode(', ', $classes));
 
-		$locales = Kohana::config('locale');
-		if (count($locales['locales'])) {
+		// Language selection
+		$available_languages  = Kohana::config('locale.languages');
+		if (count($available_languages)) {
 			$languages = array();
-			foreach ($locales['locales'] as $lang => $locale) {
-				$languages[] = html::anchor('set/lang/' . $lang, html::chars($locale['language'][2]));
+			foreach ($available_languages as $lang => $locale) {
+				$languages[] = html::anchor('set/lang/' . $lang, html::chars($locale[2]));
 			}
 			widget::add('dock2', ' | ' . __('Language: ') . implode(', ', $languages));
 		}
+
 		if ($this->user) {
 
 			// Authenticated view
@@ -293,7 +295,11 @@ var _gaq = _gaq || []; _gaq.push(['_setAccount', '" . $google_analytics . "']); 
 	 * @param string $hidden
 	 */
 	public function _autocomplete_city($field = 'city_name', $hidden = 'city_id') {
-		$countries = ORM::factory('country')->where('country', 'IN', Kohana::config('site.countries'))->find_all();
+		$countries = array();
+		foreach (Kohana::config('locale.countries') as $country) {
+			$countries[] = $country[1];
+		}
+		$countries = ORM::factory('country')->where('country', 'IN', $countries)->find_all();
 
 		$cities = array();
 		foreach ($countries as $country) {
@@ -305,14 +311,16 @@ var _gaq = _gaq || []; _gaq.push(['_setAccount', '" . $google_analytics . "']); 
 			}
 		}
 
-		widget::add('foot', html::script_source('var cities = ' . json_encode($cities) /*implode(', ', $cities)*/ . ';
+		widget::add('foot', html::script_source('
+var cities = ' . json_encode($cities) . ';
 $("input#' . $field . '").autocomplete(cities, {
 	formatItem: function(item) {
 		return item.text;
 	}
 }).result(function(event, item) {
 	$("input[name=' . $hidden . ']").val(item.id);
-});'));
+});
+'));
 	}
 
 

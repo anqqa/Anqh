@@ -4,21 +4,26 @@
  *
  * @package    Anqh
  * @author     Antti Qvickström
- * @copyright  (c) 2009 Antti Qvickström
+ * @copyright  (c) 2009-2010 Antti Qvickström
  * @license    http://www.opensource.org/licenses/mit-license.php MIT license
  */
 
-$config['locales'] = array(
-	'en' => array(
-		'language' => array('en_US', 'English_United States', 'English'),
-		'country' => 'USA',
-	),
-	'fi' => array(
-		'language' => array('fi_FI', 'Finnish_Finnish', 'Suomi'),
-		'country' => 'Finland',
-	),
+/**
+ * Available languages
+ */
+$config['default_language'] = 'en';
+$config['languages'] = array(
+	'en' => array('en_US', 'English_United States', 'English'),
+	'fi' => array('fi_FI', 'Finnish_Finnish', 'Suomi'),
 );
-$config['default'] = 'en';
+
+/**
+ * Available countries
+ */
+$config['default_country'] = 'fi';
+$config['countries'] = array(
+	'fi' => array('fi_FI', 'Finland'),
+);
 
 /**
  * Default language locale name(s).
@@ -26,12 +31,12 @@ $config['default'] = 'en';
  * for OS's that don't support the first (e.g. Windows). The first valid locale in the array will be used.
  * @see http://php.net/setlocale
  */
-$config['language'] = $config['locales'][$config['default']]['language'];
+$config['language'] = $config['languages'][$config['default_language']];
 
 /**
  * Default country locale.
  */
-$config['country'] = $config['locales'][$config['default']]['language'];
+$config['country'] = $config['countries'][$config['default_country']];
 
 /**
  * Locale timezone. Defaults to use the server timezone.

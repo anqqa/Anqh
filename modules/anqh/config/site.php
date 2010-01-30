@@ -53,11 +53,6 @@ $config = array(
 	'skin' => 'dark',
 
 	/**
-	 * Array of supported countries
-	 */
-	'countries' => array('Finland'),
-
-	/**
 	 * Ad zones
 	 */
 	'ads' => array(
