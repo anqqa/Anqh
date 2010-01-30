@@ -42,8 +42,6 @@ class Event_Model_Core extends Modeler_ORM {
 	);
 
 
-	/***** FAVORITES *****/
-
 	/**
 	 * Create favorite
 	 *
@@ -133,6 +131,28 @@ class Event_Model_Core extends Modeler_ORM {
 
 
 	/**
+	 * Get users who have added event as their favorite
+	 *
+	 * @return  array
+	 */
+	public function find_favorites() {
+		static $favorites;
+
+		if (!is_array($favorites)) {
+			$favorites = array();
+			if ($this->loaded()) {
+				$users = db::build()->select('user_id')->from('favorites')->where('event_id', '=', $this->id)->execute()->as_array();
+				foreach ($users as $user) {
+					$favorites[(int)$user['user_id']] = (int)$user['user_id'];
+				}
+			}
+		}
+
+		return $favorites;
+	}
+
+
+	/**
 	 * Get upcoming events
 	 *
 	 * @param   int    $limit
@@ -154,33 +174,20 @@ class Event_Model_Core extends Modeler_ORM {
 	/**
 	 * Check for favorite
 	 *
-	 * @param  mixed  $user  id, username, User_Model
+	 * @param  mixed  $user  id, User_Model
 	 */
 	public function is_favorite($user) {
-		static $favorites;
-
 		if (empty($user)) {
 			return false;
-		}
-
-		// load favored people
-		if (!is_array($favorites)) {
-			$favorites = array();
-
-			if ($this->loaded()) {
-				foreach ($this->users->find_all() as $favorite) {
-					$favorites[$favorite->id] = utf8::strtoupper($favorite->username);
-				}
-			}
 		}
 
 		if ($user instanceof User_Model) {
 			$user = $user->id;
 		}
 
-		return is_numeric($user) ? isset($favorites[$user]) : in_array(utf8::strtoupper($user), $favorites);
-	}
+		$favorites = $this->find_favorites();
 
-	/***** /FAVORITES *****/
+		return isset($favorites[(int)$user]);
+	}
 
 }

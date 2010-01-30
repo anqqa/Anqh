@@ -360,8 +360,8 @@ class Events_Controller extends Website_Controller {
 				$this->page_subtitle .= ' @ ' . implode(', ', $venue);
 			}
 
-			widget::add('side', View::factory('events/event_info', array('event' => $event)));
 			widget::add('main', View::factory('events/event', array('event' => $event)));
+			widget::add('side', View::factory('events/event_info', array('user' => $this->user, 'event' => $event)));
 		} else {
 			$this->_error(__('Error'), $errors);
 		}

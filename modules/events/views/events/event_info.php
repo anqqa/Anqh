@@ -67,4 +67,15 @@
 		</dl>
 	</article>
 
+	<?php if ($event->find_favorites()): ?>
+	<article>
+		<header>
+			<h3><?= __('Favorites') ?></h3>
+		</header>
+
+		<?= View::factory('generic/users', array('viewer' => $user, 'users' => $event->find_favorites())) ?>
+
+	</article>
+	<?php endif; ?>
+
 </section>
