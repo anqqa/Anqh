@@ -32,40 +32,30 @@ class html extends html_Core {
 	 * Prints date box
 	 *
 	 * @param   string|integer  $date
-	 * @param   boolean         $year
+	 * @param   boolean         $show_year
+	 * @param   string          $class
 	 * @return  string
 	 */
-	public static function box_day($date, $year = false) {
-		if (!is_numeric($date)) {
-			$date = strtotime($date);
-		}
+	public static function box_day($date, $show_year = false, $class = '') {
 
-		$weekday = strtolower(date('D', $date));
-		$day = date('d', $date);
-		$month = strtolower(date('M', $date));
-		if ($year) {
-			$month .= " '" . date('y', $date);
+		// Get date elements
+		$date = !is_numeric($date) ? strtotime($date) : (int)$date;
+		list($weekday, $day, $month, $year) = split(' ', date('D d M y', $date));
+		if ($show_year) {
+			$month .= " '" . $year;
 		}
 
 		// Today?
 		if (date('Y-m-d', $date) == date('Y-m-d')) {
+			$class .= ' date today';
 			$weekday = __('Today');
-			return <<<DATE
-<div class="date today">
-	<span class="weekday">$weekday</span>
-	<span class="day">$day</span>
-	<span class="month">$month</span>
-</div>
-DATE;
 		} else {
-			return <<<DATE
-<div class="date">
-	<span class="weekday">$weekday</span>
-	<span class="day">$day</span>
-	<span class="month">$month</span>
-</div>
-DATE;
+			$class .= ' date';
 		}
+
+		$template = '<span class="weekday">%s</span><span class="day">%s</span><span class="month">%s</span>';
+
+		return self::time(sprintf($template, $weekday, $day, $month), array('class' => trim($class), 'datetime' => $date), true);
 	}
 
 
@@ -288,10 +278,21 @@ DATE;
 	 * @return  string
 	 */
 	public static function user($user, $nick = null, $class = null) {
+		static $viewer;
+
+		// Load current user for friend styling
+		if (is_null($viewer)) {
+			$viewer = Visitor::instance()->get_user();
+			if (!$viewer) $viewer = false;
+		}
+
 		$class = $class ? array($class, 'user') : array('user');
 
-		if (empty($nick) && $user = ORM::factory('user')->find_user($user)) {
+		if ($user instanceof User_Model || $user = ORM::factory('user')->find_user($user)) {
 			$nick = $user->username;
+			if ($viewer && $viewer->is_friend($user)) {
+				$class[] = 'friend';
+			}
 			if ($user->gender) {
 				$class[] = $user->gender == 'f' ? 'female' : 'male';
 			}
