@@ -230,7 +230,8 @@ $(function() {
 		$tip.html(cache[href]);
 	}
 
-	$('a.user,.avatar a').tooltip({
+	$('a.user, .avatar a').tooltip({
+		predelay: 500,
 		tip: '#peepbox',
 		lazy: false,
 		position: 'bottom right',
