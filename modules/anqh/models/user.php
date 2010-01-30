@@ -413,7 +413,7 @@ class User_Model extends Modeler_ORM {
 	/**
 	 * Check for friendship
 	 *
-	 * @param  mixed  $friend  id, username, User_Model
+	 * @param  mixed  $friend  id, User_Model
 	 */
 	public function is_friend($friend) {
 		if (empty($friend)) {
@@ -424,8 +424,9 @@ class User_Model extends Modeler_ORM {
 		if (!is_array($this->data_friends)) {
 			$friends = array();
 			if ($this->loaded()) {
-				foreach ($this->friends->find_all() as $friendship) {
-					$friends[$friendship->friend->id] = utf8::strtolower($friendship->friend->username);
+				$users = db::build()->select('friend_id')->from('friends')->where('user_id', '=', $this->id)->execute()->as_array();
+				foreach ($users as $user) {
+					$friends[(int)$user['friend_id']] = (int)$user['friend_id'];
 				}
 			}
 			$this->data_friends = $friends;
@@ -435,7 +436,7 @@ class User_Model extends Modeler_ORM {
 			$friend = $friend->id;
 		}
 
-		return is_numeric($friend) ? isset($friends[$friend]) : in_array(utf8::strtolower($friend), $this->friends);
+		return isset($this->data_friends[(int)$friend]);
 	}
 
 	/***** /FRIENDS *****/
