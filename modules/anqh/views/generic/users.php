@@ -31,7 +31,7 @@
 	<?php endif; ?>
 
 	<?php if (count($long)): ?>
-	<?= __('and') ?> <?= html::anchor('#users', sprintf(__2('%d other', '%d others', count($long)), count($long)), array('class' => 'expander', 'title' => __('Show all'), 'onclick' => '$(".users .long").toggle(); return false;')) ?>
+	<?= __('and') ?> <?= html::anchor('#users', sprintf(__2('%d other', '%d others', count($long)), count($long)), array('class' => 'expander', 'title' => __('Show/hide'), 'onclick' => '$(".users .long").toggle(); return false;')) ?>
 	<div class="long">
 	<?= implode(', ', $long) ?>
 	</div>

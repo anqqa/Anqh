@@ -647,7 +647,7 @@ class Member_Controller extends Website_Controller {
 				}
 				if (!empty($member->latitude) && !empty($member->longitude)) {
 					$basic_info[__('Location')] = $member->latitude . ', ' . $member->longitude;
-					$basic_info[__('Location')] = html::anchor('#map', __('Toggle map')) . '<div id="map" style="display: none">' . __('Map loading') . '</div>';
+					$basic_info[__('Location')] = html::anchor('#map', __('Toggle map'), array('class' => 'expander', 'title' => __('Show/hide'))) . '<div id="map" style="display: none">' . __('Map loading') . '</div>';
 					$map = new Gmap('map', array('ScrollWheelZoom' => true));
 					$map->center($member->latitude, $member->longitude, 15)->controls('small')->types();
 					$map->add_marker(
