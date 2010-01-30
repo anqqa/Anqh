@@ -46,26 +46,28 @@
 
 	<article id="comment-<?= $comment->id ?>" class="<?= implode(' ', $classes) ?>">
 
-		<?php if ($user && $comment->user_id == $user->id || $mine): ?>
-		<span class="actions">
-			<?php if ($private && !$comment->private): ?>
-			<?= html::anchor(sprintf($private, $comment->id), __('Set as private'), array('class' => 'action comment-private')) ?>
-			<?php endif; ?>
-			<?= html::anchor(sprintf($delete, $comment->id), __('Delete'), array('class' => 'action comment-delete')) ?>
-		</span>
-		<?php endif; ?>
-
 		<?= html::avatar($comment->author->avatar, $comment->author->username) ?>
 
-		<?= html::nick($comment->author_id, $comment->author->username) ?>,
-		<?= __(':ago ago', array(
-			':ago' => html::time(date::timespan_short($comment->created), $comment->created))
-		) ?>
-		<br />
+		<header>
+			<?php if ($user && $comment->user_id == $user->id || $mine): ?>
+			<span class="actions">
+				<?php if ($private && !$comment->private): ?>
+				<?= html::anchor(sprintf($private, $comment->id), __('Set as private'), array('class' => 'action comment-private')) ?>
+				<?php endif; ?>
+				<?= html::anchor(sprintf($delete, $comment->id), __('Delete'), array('class' => 'action comment-delete')) ?>
+			</span>
+			<?php endif; ?>
 
-		<?= $comment->private ? '<abbr title="' . __('Private comment') . '">' . __('Priv') . '</abbr>: ' : '' ?>
-		<?= text::smileys(text::auto_link_urls(html::specialchars($comment->comment))) ?>
-		<br clear="all" />
+			<?= html::nick($comment->author_id, $comment->author->username) ?>,
+			<?= __(':ago ago', array(
+				':ago' => html::time(date::timespan_short($comment->created), $comment->created))
+			) ?>
+		</header>
+
+		<p>
+			<?= $comment->private ? '<abbr title="' . __('Private comment') . '">' . __('Priv') . '</abbr>: ' : '' ?>
+			<?= text::smileys(text::auto_link_urls(html::specialchars($comment->comment))) ?>
+		</p>
 	</article>
 
 	<?php endforeach; ?>

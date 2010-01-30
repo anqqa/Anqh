@@ -1,28 +1,24 @@
 
 <section class="mod event event-<?= $event->id ?>">
-
-	<?php	if ($event->dj): ?>
 	<article>
+
+		<?php	if ($event->dj): ?>
 		<header>
 			<h3><?= __('Artists') ?></h3>
 		</header>
 
 		<?= html::specialchars($event->dj) ?>
-	</article>
-	<?php	endif; ?>
+		<?php	endif; ?>
 
-	<?php if ($event->info): ?>
-	<article>
+		<?php if ($event->info): ?>
 		<header>
 			<h3><?= __('Extra info') ?></h3>
 		</header>
 
 		<?= BB::factory($event->info)->render() ?>
-	</article>
-	<?php endif; ?>
+		<?php endif; ?>
 
-	<?php if ($event->users): ?>
-	<article>
+		<?php if ($event->users): ?>
 		<header>
 			<h3><?= __('Favorites') ?></h3>
 		</header>
@@ -31,7 +27,7 @@
 		<?= html::nick($favorite) ?>
 		<?php endforeach; ?>
 
-	</article>
-	<?php endif; ?>
+		<?php endif; ?>
 
+	</article>
 </section>

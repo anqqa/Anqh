@@ -17,8 +17,8 @@ h4 span,
 h5 span,
 h6 span                                { color: @text-color; }
 h2                                     { color: @header-color; }
-article > header > h3,
-article > header > h4                  { margin-top: 0; }
+article header:first-child h3,
+article header:first-child h4          { margin-top: 0; }
 aside article > header > h3            { margin-bottom: 1.111em; }
 legend,
 h3,
@@ -28,7 +28,7 @@ h3 a,
 label,
 dt,
 h5 a                                   { color: @subheader-color; }
-time[title]:not([class*="unit"]),
+time[title]:not([class*="date"]),
 abbr[title]                            { border-bottom: 1px dotted @separator-color; margin-bottom: -1px; }
 
 a.user                                 { font-weight: bold; }
@@ -173,13 +173,14 @@ form .buttons                          { display: block; margin-bottom: 1em; mar
 
 .step                                  { font-family: Georgia, serif; font-size: 3em; line-height: 1.5em; }
 .step,
-.date *                                { display: block; text-align: center; }
+time.date                              { display: block; width: 70px; }
+time.date *                            { display: block; text-align: center; }
 .step,
-.date .day                             { color: @subheader-color; font-family: Georgia, serif; font-size: 2em; line-height: 0.833em; }
-.date span                             { background: @badge-background; }
-.date .weekday                         { background: @badge-background-alt; /*.border-radius(5px 0 0 0);*/ font-family: Lucida Grande, Lucida Sans Unicode, sans-serif; }
-.date .month                           { /*.border-radius(0 0 5px 5px);*/ text-transform: uppercase; font-family: Lucida Grande, Lucida Sans Unicode, sans-serif; }
-.date.today .weekday                   { background: @subheader-color; color: @action-link-color; }
+time.date .day                         { color: @subheader-color; font-family: Georgia, serif; font-size: 2em; line-height: 0.833em; }
+time.date span                         { background: @badge-background; }
+time.date .weekday                     { background: @badge-background-alt; /*.border-radius(5px 0 0 0);*/ font-family: Lucida Grande, Lucida Sans Unicode, sans-serif; }
+time.date .month                       { /*.border-radius(0 0 5px 5px);*/ text-transform: uppercase; font-family: Lucida Grande, Lucida Sans Unicode, sans-serif; }
+time.date.today .weekday               { background: @subheader-color; color: @action-link-color; }
 
 /***** /BADGES *****/
 
@@ -290,5 +291,7 @@ ul.contentlist ul.bbcode_list li + li  { border-top: none; padding-top: 0; }
 
 .comments #comment                     { width: 300px; }
 .comments form                         { margin-bottom: 10px; }
+.comments article header,
+.comments article p                    { padding-left: 60px; }
 
 /***** /COMMENTS *****/

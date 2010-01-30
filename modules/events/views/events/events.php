@@ -2,19 +2,11 @@
 <section class="mod calendar">
 	<ol class="days">
 
-<?php foreach ($events as $date => $cities):
-	$sunrise = date_sunrise(strtotime($date), null, 60.182, 24.954);
-	$sunset = date_sunset(strtotime($date), null, 60.182, 24.954); ?>
+<?php foreach ($events as $date => $cities): ?>
 		<li class="day">
 
-			<header class="line">
-				<?= html::box_day($date, false, 'unit size1of6') ?>
-				<span class="details">
-					<?= __('Sun rises at :sunrise, sun sets at :sunset', array(
-						':sunrise' => html::time(date::format('HHMM', $sunrise), $sunrise),
-						':sunset' => html::time(date::format('HHMM', $sunset), $sunset)
-					)) ?>
-				</span>
+			<header>
+				<?= html::box_day($date) ?>
 			</header>
 
 			<?php foreach ($cities as $city => $events): ?>
@@ -22,9 +14,9 @@
 			<div class="city city-<?= url::title($city) ?>">
 				<?php if (!empty($city)): ?>
 
-				<header>
+				<!--<header>
 					<h3><?= text::title($city) ?></h3>
-				</header>
+				</header>-->
 				<?php endif; ?>
 
 				<?php	foreach ($events as $event): ?>
@@ -36,13 +28,13 @@
 					</header>
 
 					<?php if ($event->price !== null && $event->price != -1): ?>
-					<span class="details price"><?= ($event->price == 0 ? __('Free entry') : '<var>' . $event->price . html::specialchars(Kohana::config('locale.currency.symbol')) . '</var>') ?></span>
+					<span class="details price"><?= ($event->price == 0 ? __('Free entry') : '<var>' . format::money($event->price, $event->country->currencycode) . '</var>') ?></span>
 					<?php endif; ?>
 
 					<?php if ($event->venue_id): ?>
-					<span class="details venue">@ <?= html::anchor(url::model($event->venue), $event->venue->name) ?></span>
-					<?php elseif ($event->venue_name): ?>
-					<span class="details venue">@ <?= html::specialchars($event->venue_name) ?></span>
+					<span class="details venue">@ <?= html::anchor(url::model($event->venue), $event->venue->name) ?>, <?= html::chars($event->venue->city->name) ?></span>
+					<?php elseif ($event->venue_name || $event->city_name): ?>
+					<span class="details venue">@ <?= html::chars($event->venue_name) . ($event->venue_name && $event->city_name ? ', ' : '') . html::chars($event->city_name) ?></span>
 					<?php endif; ?>
 
 					<?php if ($event->age && $event->age != -1): ?>
@@ -60,6 +52,7 @@
 			</div><!-- /city -->
 			<?php endforeach; ?>
 
+			<br clear="all" />
 		</li><!-- /day -->
 <?php endforeach; ?>
 

@@ -132,10 +132,9 @@ table.calendar td            { padding: 0; }
 .calendar ol.days                      { list-style: none; }
 
 
-/*#events section.day                    { padding: 0.8333em 10px; }*/
-#events .date                          { margin-right: 10px; }
-/*#events .city h3                       { margin-top: 0; }
-#events .events article                { padding: 0.8333em 0; }*/
+#events .day time.date                 { float: left; }
+#events .day .city                     { margin-left: 80px; margin-bottom: 0.8333em; }
+#events .day .city h3                  { margin-top: 0; }
 #events .calendar .events              { margin-top: -1px; }
 #events .tab .events li                { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; -o-text-overflow: ellipsis; }
 
