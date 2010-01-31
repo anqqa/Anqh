@@ -288,7 +288,7 @@ class html extends html_Core {
 
 		$class = $class ? array($class, 'user') : array('user');
 
-		if ($user instanceof User_Model || $user = ORM::factory('user')->find_user($user)) {
+		if ($user instanceof User_Model || $user && $user = ORM::factory('user')->find_user($user)) {
 			$nick = $user->username;
 			if ($viewer && $viewer->is_friend($user)) {
 				$class[] = 'friend';
