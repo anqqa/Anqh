@@ -23,11 +23,13 @@ class Forum_Controller extends Website_Controller {
 		$this->breadcrumb[] = html::anchor('forum', __('Forum'));
 		$this->page_title = __('Forum');
 
+		/*
 		$this->tabs = array(
 			'active' => array('link' => 'forum',        'text' => __('New posts')),
 			'latest' => array('link' => 'forum/latest', 'text' => __('New topics')),
 			'areas'  => array('link' => 'forum/areas',  'text' => __('Forum areas')),
 		);
+		*/
 
 		widget::add('head', html::script(array('js/jquery.markitup.pack.js', 'js/markitup.bbcode.js')));
 	}
@@ -81,6 +83,7 @@ class Forum_Controller extends Website_Controller {
 	 */
 	public function areas() {
 		$this->tab_id = 'areas';
+		$this->page_id_sub = 'areas';
 
 		if ($this->visitor->logged_in('admin')) {
 			$this->page_actions[] = array('link' => 'forum/group/add', 'text' => __('New group'), 'class' => 'group-add');
@@ -98,6 +101,7 @@ class Forum_Controller extends Website_Controller {
 	 */
 	public function active() {
 		$this->tab_id = 'active';
+		$this->page_id_sub = 'newposts';
 
 		widget::add('main', View::factory('forum/topics', array(
 			'topics' => ORM::factory('forum_topic')->find_active($this->config['topics_per_list']),
@@ -113,6 +117,7 @@ class Forum_Controller extends Website_Controller {
 	 */
 	public function latest() {
 		$this->tab_id = 'latest';
+		$this->page_id_sub = 'newtopics';
 
 		widget::add('main', View::factory('forum/topics', array(
 			'topics' => ORM::factory('forum_topic')->find_latest($this->config['topics_per_list']),

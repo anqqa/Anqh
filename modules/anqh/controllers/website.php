@@ -38,6 +38,13 @@ abstract class Website_Controller extends Controller {
 	protected $page_id = 'page';
 
 	/**
+	 * Current sub page id
+	 *
+	 * @var  string
+	 */
+	protected $page_id_sub = '';
+
+	/**
 	 * Page main content position
 	 *
 	 * @var  string
@@ -156,10 +163,9 @@ abstract class Website_Controller extends Controller {
 
 		// Generic views
 		widget::add('actions',    View::factory('generic/actions')->bind('actions', $this->page_actions));
-		widget::add('breadcrumb', View::factory('generic/breadcrumb')->bind('breadcrumb', $this->breadcrumb));
-		widget::add('navigation', View::factory('generic/navigation')->bind('items', $this->menu)->bind('selected', $this->page_id));
+		// widget::add('breadcrumb', View::factory('generic/breadcrumb')->bind('breadcrumb', $this->breadcrumb));
+		widget::add('navigation', View::factory('generic/navigation')->bind('items', $this->menu)->bind('selected', $this->page_id)->bind('selected_sub', $this->page_id_sub));
 		widget::add('tabs',       View::factory('generic/tabs_top')->bind('tabs', $this->tabs)->bind('selected', $this->tab_id));
-		widget::add('search',     View::factory('generic/search', array('providers' => array('members' => __('Members'), 'forum' => __('Forum'))/*Search::instance()->get_provider_list()*/)));
 
 		// Header
 		widget::add('header', View::factory('generic/header'));

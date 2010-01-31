@@ -22,30 +22,17 @@
 
 <body id="<?= $page_id ?>" class="<?= $page_width ?> <?= $page_main ?> <?= $page_class ?>">
 
+
 	<!-- HEADER -->
 
 	<header id="header">
-
-		<div class="content header">
+		<div class="content">
 
 <h1><?= html::anchor('/', Kohana::config('site.site_name')) ?></h1>
 <?= widget::get('header') ?>
 <?= widget::get('navigation') ?>
 
 		</div>
-		<div class="content breadcrumb">
-			<div class="unit size3of5">
-
-<?= widget::get('breadcrumb') ?>
-
-			</div>
-			<div class="unit size2of5 last-unit">
-
-<?= widget::get('search') ?>
-
-			</div>
-		</div>
-
 	</header>
 
 	<!-- /HEADER -->
