@@ -38,7 +38,7 @@ class newsfeeditem_forum extends newsfeeditem {
 			case self::TYPE_REPLY:
 				$topic = new Forum_Topic_Model($item->data['topic_id']);
 				if ($topic->id) {
-					$text = __('replied to topic :topic', array(':topic' => html::anchor(url::model($topic), text::title($topic->name), array('title' => $topic->name))));
+					$text = __('replied to topic :topic', array(':topic' => html::anchor(url::model($topic) . '/page/last#last', text::title($topic->name), array('title' => $topic->name))));
 				}
 				break;
 
