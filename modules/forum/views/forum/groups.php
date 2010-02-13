@@ -26,8 +26,8 @@
 					<?php if ($area->topics > 0): ?>
 					<?= __('Last post in :area by :user :ago ago', array(
 						':area' => html::anchor(url::model($area->last_topic) . '/page/last#last', text::limit_chars(text::title($area->last_topic->name), 20, '&hellip;', true), array('title' => html::specialchars($area->last_topic->name))),
-						':user' => html::nick(null, $area->last_topic->last_poster),
-						':ago'  => '<abbr title="' . date::format('DMYYYY_HM', $area->last_topic->last_posted) . '">' . date::timespan_short($area->last_topic->last_posted) . '</abbr>',
+						':user' => html::user(null, $area->last_topic->last_poster),
+						':ago'  => html::time(date::timespan_short($area->last_topic->last_posted), $area->last_topic->last_posted),
 					)) ?>
 					<?php else: ?>
 					<sup><?= __('No topics found') ?></sup>

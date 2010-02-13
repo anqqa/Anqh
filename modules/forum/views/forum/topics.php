@@ -13,7 +13,7 @@
 				<?php endif; ?>
 				<?= __('Last post by :user :ago ago. :posts posts, :views views.', array(
 					':user'  => html::nick(false, $topic->last_poster),
-					':ago'   => '<abbr title="' . date::format('DMYYYY_HM', $topic->last_posted) . '">' . date::timespan_short($topic->last_posted) . '</abbr>',
+					':ago'   => html::time(date::timespan_short($topic->last_posted), $topic->last_posted),
 					':posts' => '<var>' . num::format($topic->posts) . '</var>',
 					':views' => '<var>' . num::format($topic->reads) . '</var>',
 				)) ?>
