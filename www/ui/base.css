@@ -38,7 +38,8 @@ ul.contentlist li:hover .hidden        { visibility: visible; }
 .mod.settings                { padding: 0 10px; }
 
 /*.subtitle { margin-bottom: 1.6667em; }*/
-.ad       { text-align: center; }
+.ad                                    { text-align: center; }
+.mod.ad728x90                          { background: transparent; margin: 0; max-height: 90px; max-width: 728px; padding: 0; }
 
 .extra-actions { text-align: right; }
 

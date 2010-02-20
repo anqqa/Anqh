@@ -27,18 +27,16 @@ body                                   { background: @body-background-color @bod
 
 /***** HEADER *****/
 
-#header                                { padding-top: 35px; margin-bottom: 1px; }
-#header .content                       { height: 190px; }
+#header                                { margin-top: 40px; margin-bottom: 10px; }
+#header .content                       { /*height: 190px;*/ }
 #header h1 a                           { display: block; }
 
-#header nav ul                         { bottom: 0; display: block; height: 80px; left: 0; position: absolute; width: 100%; }
-#header nav ul li                      { display: block; float: left; }
-#header nav > ul > li                  { background: @mainmenu-link-background; margin-right: 1px; }
-#header nav > ul > li:hover,
-#header nav > ul > li.selected         { background: @mainmenu-background; border-bottom: 1px solid @mainmenu-background;  margin-bottom: -1px; }
-#header nav > ul > li.unhover          { background: @mainmenu-link-hover-background; border-bottom: 0; margin-bottom: 0; }
-#header nav > ul > li > a              { color: @mainmenu-color; display: block; font-size: 1.1667em; font-variant: small-caps; height: 1em; padding: 1.1667em 2.5em 0.7em 0.7em; vertical-align: middle; }
-#header nav > ul > li > a:hover        { color: @mainmenu-hover-color; text-decoration: none; }
+#header nav ul                         { display: block; float: right; }
+#header nav ul li                      { background: @mainmenu-link-background; display: block; float: left; margin-right: 1px; }
+#header nav ul li:hover,
+#header nav ul li.selected             { background: @mainmenu-background;  }
+#header nav ul li a                    { color: @mainmenu-color; display: block; font-size: 1.1667em; height: 1em; padding: 1.8883em 2.5em 0.7em 0.7em; vertical-align: middle; }
+#header nav ul li a:hover              { color: @mainmenu-hover-color; text-decoration: none; }
 #header nav ul ul                      { background: @mainmenu-background; bottom: 0; display: none; height: 39px; margin-top: 1px; }
 #header nav li.selected ul,
 #header nav li:hover ul                { display: block; }

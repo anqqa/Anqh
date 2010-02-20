@@ -29,7 +29,6 @@
 		<div class="content">
 
 <h1><?= html::anchor('/', Kohana::config('site.site_name')) ?></h1>
-<?= widget::get('header') ?>
 <?= widget::get('navigation') ?>
 
 		</div>
@@ -37,6 +36,7 @@
 
 	<!-- /HEADER -->
 
+<?= widget::get('ad_top') ?>
 
 	<!-- BODY -->
 
@@ -49,7 +49,7 @@
 
 			<section id="side-ads" class="unit size1of6">
 
-<?= widget::get('side_ads') ?>
+<?= widget::get('ad_side') ?>
 
 			</section>
 
