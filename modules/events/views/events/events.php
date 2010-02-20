@@ -32,7 +32,7 @@
 					<?php endif; ?>
 
 					<?php if ($event->venue_id): ?>
-					<span class="details venue">@ <?= html::anchor(url::model($event->venue), $event->venue->name) ?>, <?= html::chars($event->venue->city->name) ?></span>
+					<span class="details venue">@ <?= html::anchor(url::model($event->venue), $event->venue->name) ?>, <?= html::chars($event->venue->city->city) ?></span>
 					<?php elseif ($event->venue_name || $event->city_name): ?>
 					<span class="details venue">@ <?= html::chars($event->venue_name) . ($event->venue_name && $event->city_name ? ', ' : '') . html::chars($event->city_name) ?></span>
 					<?php endif; ?>
