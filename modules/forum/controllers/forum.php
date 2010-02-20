@@ -26,7 +26,7 @@ class Forum_Controller extends Website_Controller {
 		$this->tabs = array(
 			'active' => array('link' => 'forum',        'text' => __('New posts')),
 			'latest' => array('link' => 'forum/latest', 'text' => __('New topics')),
-			'areas'  => array('link' => 'forum/areas',  'text' => __('Forum areas')),
+			'areas'  => array('link' => 'forum/areas',  'text' => __('Areas')),
 		);
 
 		widget::add('head', html::script(array('js/jquery.markitup.pack.js', 'js/markitup.bbcode.js')));

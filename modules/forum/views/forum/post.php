@@ -11,15 +11,6 @@ $owners = ($post->author_id == $topic->author_id);
 
 			<?= html::avatar($post->author->avatar, $post->author->username) ?>
 
-			<?php if ($mine): ?>
-
-			<span class="actions">
-				<?= html::anchor('forum/post/' . $post->id . '/edit', __('Edit'), array('class' => 'action post-edit')) ?>
-				<?= html::anchor('forum/post/' . $post->id . '/delete/?token=' . csrf::token(), __('Delete'), array('class' => 'action post-delete')) ?>
-			</span>
-
-			<?php endif; ?>
-
 			<span class="details">
 			<?= __('Written by :user :ago ago',
 				array(
@@ -51,6 +42,16 @@ $owners = ($post->author_id == $topic->author_id);
 		</section>
 
 		<footer>
+
+			<?php if ($mine): ?>
+
+			<span class="actions alt">
+				<?= html::anchor('forum/post/' . $post->id . '/edit', __('Edit'), array('class' => 'action post-edit')) ?>
+				<?= html::anchor('forum/post/' . $post->id . '/delete/?token=' . csrf::token(), __('Delete'), array('class' => 'action post-delete')) ?>
+			</span>
+
+			<?php endif; ?>
+
 			<?php if ($topic->has_access(Forum_Topic_Model::ACCESS_WRITE)): ?>
 
 			<span class="actions">
@@ -59,5 +60,6 @@ $owners = ($post->author_id == $topic->author_id);
 			</span>
 
 			<?php endif; ?>
+
 		</footer>
 	</article>
