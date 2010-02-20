@@ -62,11 +62,10 @@
 
 				<header id="title" class="line">
 
-<?= widget::get('actions') ?>
-
 					<h2><?= $page_title ?></h2>
 					<?= !empty($page_subtitle) ? '<p class="subtitle">' . $page_subtitle . '</p>' : '' ?>
 
+<?= widget::get('actions') ?>
 <?= widget::get('tabs') ?>
 
 				</header>

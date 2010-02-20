@@ -18,8 +18,8 @@ h5 span,
 h6 span                                { color: @text-color; }
 h2                                     { color: @header-color; }
 article header:first-child h3,
-article header:first-child h4          { margin-top: 0; }
-aside article > header > h3            { margin-bottom: 1.111em; }
+article header:first-child h4          { padding-top: 0; }
+aside article > header > h3            { padding-bottom: 1.111em; }
 legend,
 h3,
 h4,
@@ -108,36 +108,30 @@ a.action:active                        { outline: none; top: 1px; }
 section article .actions,
 .tab .actions,
 .container .actions,
-li.line .actions,
-ul.contentlist li .actions             { opacity: 0.1; }
+li.line .actions                       { opacity: 0.1; }
 .ui-widget .ui-dialog-buttonpane .ui-state-hover,
 section article:hover .actions,
 .tab .actions:hover,
 .container .actions:hover,
-li.line:hover .actions,
-ul.contentlist li .actions:hover       { opacity: 1; }
+li.line:hover .actions                 { opacity: 1; }
 .ui-widget .ui-dialog-buttonpane .ui-state-default,
 section article:hover .actions a.action,
 .tab:hover .actions a.action,
 .container:hover .actions a.action,
 li.line:hover .actions a.action,
-ul.contentlist li:hover .actions a.action,
 button,
 input[type="submit"],
 a.action                               { background-color: @link-color; }
 section article:hover .actions a[class*="-add"],
 li.line:hover .actions a[class*="-add"],
-ul.contentlist li:hover .actions a[class*="-add"],
 a[class*="-add"]                       { background-color: @positive-color; }
 .confirm-delete .ui-dialog-buttonpane button:first-of-type,
 section article:hover .actions a[class*="-delete"],
 li.line:hover .actions a[class*="-delete"],
-ul.contentlist li:hover .actions a[class*="-delete"],
 a.action.close,
 a[class*="-delete"]                    { background-color: @negative-color; }
 section article:hover .actions a[class*="-private"],
 li.line:hover .actions a[class*="-private"],
-ul.contentlist li:hover .actions a[class*="-private"],
 a[class*="-private"]                   { background-color: @private-color; }
 .ui-widget .ui-dialog-buttonpane .ui-state-default:hover,
 section article.edit,
@@ -239,11 +233,9 @@ a:hover img                            { opacity: 1; }
 
 /***** BBCODE *****/
 
-ul.contentlist ul.bbcode_list,
 ul.bbcode_list                         { list-style: disc; padding: 0 1.667em; }
-ul.contentlist ul.bbcode_list li,
 ul.bbcode_list li                      { margin-left: 0; margin-right: 0; padding: 0; }
-ul.contentlist ul.bbcode_list li + li  { border-top: none; padding-top: 0; }
+ul.bbcode_list li + li                 { border-top: none; padding-top: 0; }
 .smiley,
 .bbcode_smiley                         { float: none; margin: 0; padding: 0; vertical-align: baseline; }
 

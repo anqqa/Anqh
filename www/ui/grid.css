@@ -162,6 +162,7 @@
 .mod,
 .content,
 .line                                  { *zoom: 1; }
+footer:after,
 .mod:after,
 .content:after,
 .line:after                            { clear: both; content: "."; display: block; height: 0; visibility: hidden; }

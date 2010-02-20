@@ -17,17 +17,11 @@ ul.grouped li.group + li.group         { padding-top: 1.6667em; }
 /*section .mod,*/
 li.line,
 section article                        { padding: 0.8333em 10px; }
-ul.contentlist li                      { padding-top: 0.8333em; padding-bottom: 0.883em; }
-.groups .group,
-ul.contentlist li.group                { border: none; min-height: 5em; padding-bottom: 0; padding-top: 0; }
-section article .details,
-ul.contentlist li .details             { opacity: .5; }
-section article:hover .details,
-ul.contentlist li:hover .details       { opacity: 1; }
-section article .hidden,
-ul.contentlist li .hidden              { float: right; visibility: hidden; }
-section article:hover .hidden,
-ul.contentlist li:hover .hidden        { visibility: visible; }
+.groups .group                         { border: none; min-height: 5em; padding-bottom: 0; padding-top: 0; }
+section article .details               { opacity: .5; }
+section article:hover .details         { opacity: 1; }
+section article .hidden                { float: right; visibility: hidden; }
+section article:hover .hidden          { visibility: visible; }
 
 
 /***** /AREAS *****/
@@ -145,8 +139,9 @@ table.calendar td            { padding: 0; }
 
 /***** forum *****/
 
-#forum .post section             { clear: both; }
-#forum .post footer .actions           { margin-top: -0.883em; }
+#forum .post section                   { clear: both; }
+#forum .post footer                    { padding-top: 0.8333em; }
+#forum .post footer .actions.my        { float: left; }
 
 
 #forum .tab .topics li   { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; -o-text-overflow: ellipsis; }
@@ -160,10 +155,3 @@ table.calendar td            { padding: 0; }
 #venues .venues .venue footer          { position: absolute; right: 10px; top: 10px; }
 
 /***** /venues *****/
-
-
-/***** members *****/
-
-#members ul.contentlist li { padding-top: 0; padding-bottom: 0; }
-
-/***** /members *****/
