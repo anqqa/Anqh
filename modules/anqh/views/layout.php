@@ -40,7 +40,7 @@
 
 	<!-- BODY -->
 
-	<div id="body">
+	<section id="body">
 
 		<div class="content">
 
@@ -91,14 +91,14 @@
 
 		</div>
 
-	</div>
+	</section>
 
 	<!-- /BODY -->
 
 
 	<!-- DOCK -->
 
-	<div id="dock">
+	<section id="dock">
 		<div class="content">
 			<div class="unit size2of5">
 
@@ -111,7 +111,7 @@
 
 			</div>
 		</div>
-	</div>
+	</section>
 
 	<!-- /DOCK -->
 

@@ -13,7 +13,7 @@ body                                   { background: @body-background-color @bod
 
 /***** DOCK *****/
 
-#dock                                  { background: @dock-background; border-bottom: @dock-border; padding: 0.4116em 0; left: 0; position: fixed; right: 0; top: 0; z-index: 100; }
+#dock                                  { background: @dock-background; border-bottom: @dock-border; .box-shadow(0 0 10px @dock-background); padding: 0.4116em 0; left: 0; position: fixed; right: 0; top: 0; z-index: 100; }
 #dock label,
 #dock div                              { color: @dock-color; }
 #dock form                             { float: left; }
@@ -34,15 +34,10 @@ body                                   { background: @body-background-color @bod
 #header nav ul                         { display: block; float: right; }
 #header nav ul li                      { background: @mainmenu-link-background; display: block; float: left; margin-right: 1px; }
 #header nav ul li:hover,
-#header nav ul li.selected             { background: @mainmenu-background;  }
-#header nav ul li a                    { color: @mainmenu-color; display: block; font-size: 1.1667em; height: 1em; padding: 1.8883em 2.5em 0.7em 0.7em; vertical-align: middle; }
+#header nav ul li.selected             { background: @mainmenu-background; .box-shadow(0 0 10px @mainmenu-background); }
+#header nav ul li a                    { color: @mainmenu-color; display: block; font-family: 'ColaborateLightRegular', Arial, sans-serif; font-size: 1.333em; height: 1em; padding: 1.5em 2.1875em 0.625em 0.625em; vertical-align: middle; }
+#header nav ul li.selected a           { color: @header-color; }
 #header nav ul li a:hover              { color: @mainmenu-hover-color; text-decoration: none; }
-#header nav ul ul                      { background: @mainmenu-background; bottom: 0; display: none; height: 39px; margin-top: 1px; }
-#header nav li.selected ul,
-#header nav li:hover ul                { display: block; }
-#header nav li:hover ul                { display: block; z-index: 2; }
-#header nav ul ul li                   { display: inline; padding: 0.75em 0.8333em; }
-#header nav ul ul li.selected          { font-weight: bold; }
 
 /***** /HEADER *****/
 
@@ -85,7 +80,7 @@ section aside + article                { padding-top: 0.8333em; }
 
 /***** FOOTER *****/
 
-#footer                                { background: black; border-top: 1px solid #333; color: #f2f2f2; margin-top: 2em; min-height: 150px; }
+#footer                                { background: @footer-background; .box-shadow(0 0 10px @footer-background); margin-top: 2em; }
 #footer .mod                           { background: none; margin-bottom: 1em; }
 #footer p,
 #footer nav ul                         { text-align: center; }
