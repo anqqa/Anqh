@@ -37,21 +37,11 @@ $config = array(
 	 */
 	'menu' => array(
 		'home'    => array('url' => '',        'text' => __('Home')),
-		'events'  => array('url' => 'events',  'text' => __('Events'), 'submenu' => array(
-			'upcoming'  => array('url' => 'events/upcoming', 'text' => __('Upcoming events')),
-			'past'      => array('url' => 'events/past',     'text' => __('Past events')),
-			'calendar'  => array('url' => 'events/calendar', 'text' => __('Browse calendar'))
-		)),
+		'events'  => array('url' => 'events',  'text' => __('Events')),
 		'venues'  => array('url' => 'venues',  'text' => __('Venues')),
-		'photos'  => array('url' => 'photos',  'text' => __('Photos')),
 		'music'   => array('url' => 'music',   'text' => __('Music')),
-		'forum'   => array('url' => 'forum',   'text' => __('Forum'), 'submenu' => array(
-			'newposts'  => array('url' => 'forum',           'text' => __('New posts')),
-			'newtopics' => array('url' => 'forum/latest',    'text' => __('New topics')),
-			'areas'     => array('url' => 'forum/areas',     'text' => __('Forum areas'))
-		)),
+		'forum'   => array('url' => 'forum',   'text' => __('Forum')),
 		'blogs'   => array('url' => 'blogs',   'text' => __('Blogs')),
-		'groups'  => array('url' => 'groups',  'text' => __('Groups')),
 		'members' => array('url' => 'members', 'text' => __('Members')),
 	),
 
@@ -64,7 +54,7 @@ $config = array(
 	 * Ad zones
 	 */
 	'ads' => array(
-		'enabled' => true,
+		'enabled' => false,
 		'slots' => array(
 			'header' => 'head',
 			'side'   => 'side_ads',
