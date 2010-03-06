@@ -1,7 +1,7 @@
 <?php defined('SYSPATH') OR die('No direct access allowed.');
 /**
  * XCache-based Cache driver.
- * 
+ *
  * $Id: Memcache.php 4605 2009-09-14 17:22:21Z kiall $
  *
  * @package    Cache
@@ -48,9 +48,9 @@ class Cache_Xcache_Driver extends Cache_Driver {
 
 		foreach ($keys as $key)
 		{
-			if (xcache_isset($id))
+			if (xcache_isset($key))
 			{
-				$items[$key] = xcache_get($id);
+				$items[$key] = xcache_get($key);
 			}
 			else
 			{
