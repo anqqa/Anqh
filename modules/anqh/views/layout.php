@@ -32,17 +32,68 @@
 <?= widget::get('navigation') ?>
 
 		</div>
-	</header>
+	</header><!-- #header -->
 
 	<!-- /HEADER -->
 
+
 <?= widget::get('ad_top') ?>
+
 
 	<!-- BODY -->
 
 	<section id="body">
-
 		<div class="content">
+
+
+			<!-- CONTENT -->
+
+			<section id="content" class="unit size5of6">
+
+				<header id="title" class="line">
+
+<?= widget::get('actions') ?>
+
+					<h2><?= $page_title ?></h2>
+					<?= !empty($page_subtitle) ? '<p class="subtitle">' . $page_subtitle . '</p>' : '' ?>
+
+<?= widget::get('tabs') ?>
+
+				</header><!-- #title -->
+
+
+				<!-- MAIN CONTENT -->
+
+				<section id="wide" class="unit size1of1">
+
+<?= widget::get('wide') ?>
+
+				</section><!-- #wide -->
+
+
+				<section id="main" class="unit size3of5">
+
+<?= widget::get('main') ?>
+
+				</section><!-- #main -->
+
+				<!-- /MAIN CONTENT -->
+
+
+				<!-- SIDE CONTENT -->
+
+				<aside id="side" class="unit size2of5">
+
+<?= widget::get('side') ?>
+
+				</aside><!-- #side -->
+
+				<!-- /SIDE CONTENT -->
+
+
+			</section><!-- #content -->
+
+			<!-- /CONTENT -->
 
 
 			<!-- SIDE ADS -->
@@ -51,46 +102,13 @@
 
 <?= widget::get('ad_side') ?>
 
-			</section>
+			</section><!-- #side-ads -->
 
 			<!-- /SIDE ADS -->
 
 
-			<!-- MAIN CONTENT -->
-
-			<section id="main" class="unit size1of2">
-
-				<header id="title" class="line">
-
-					<h2><?= $page_title ?></h2>
-					<?= !empty($page_subtitle) ? '<p class="subtitle">' . $page_subtitle . '</p>' : '' ?>
-
-<?= widget::get('actions') ?>
-<?= widget::get('tabs') ?>
-
-				</header>
-
-<?= widget::get('main') ?>
-
-			</section>
-
-			<!-- /MAIN CONTENT -->
-
-
-			<!-- SIDE CONTENT -->
-
-			<aside id="side" class="unit size1of3">
-
-<?= widget::get('side') ?>
-
-			</aside>
-
-			<!-- /SIDE CONTENT -->
-
-
 		</div>
-
-	</section>
+	</section><!-- #body -->
 
 	<!-- /BODY -->
 
@@ -110,7 +128,7 @@
 
 			</div>
 		</div>
-	</section>
+	</section><!-- #dock -->
 
 	<!-- /DOCK -->
 
@@ -129,7 +147,7 @@
 <?= widget::get('end') ?>
 
 		</div>
-	</footer>
+	</footer><!-- #footer -->
 
 	<!-- /FOOTER -->
 
