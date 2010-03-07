@@ -34,7 +34,8 @@ section article:hover .hidden          { visibility: visible; }
 /*.subtitle { margin-bottom: 1.6667em; }*/
 .mod.ad                                { background: transparent; text-align: center; }
 .mod.ad728x90                          { padding: 0; margin: 0; }
-.ad728x90 object                       { margin-bottom: 10px; max-height: 90px; max-width: 728px; }
+.ad728x90 .content *                   { margin: 0 auto 10px auto; margin-bottom: 10px; max-height: 90px; max-width: 728px; }
+.ad140x350                             { }
 
 .extra-actions { text-align: right; }
 
@@ -148,6 +149,16 @@ table.calendar td            { padding: 0; }
 .forum .ui-tabs-panel h4               { display: none; }
 
 /***** /forum *****/
+
+
+/***** galleries *****/
+
+#galleries .galleries li               { margin-bottom: 1em; }
+#galleries .galleries li h4            { padding-top: 0; }
+#galleries .galleries li .thumb,
+#galleries .gallery li .thumb          { height: 100px; text-align: center; }
+
+/***** /galleries *****/
 
 
 /***** venues *****/
