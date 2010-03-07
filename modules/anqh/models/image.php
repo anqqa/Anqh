@@ -9,10 +9,30 @@
  */
 class Image_Model extends Modeler_ORM {
 
+	/**
+	 * Deleted image 'd'
+	 */
+	const DELETED = 'd';
+
+	/**
+	 * Hidden image 'h'
+	 */
+	const HIDDEN = 'h';
+
+	/**
+	 * Not accepted (yet) 'n'
+	 */
+	const NOT_ACCEPTED = 'n';
+
+	/**
+	 * Visible image 'v'
+	 */
+	const VISIBLE = 'v';
+
 	// ORM
 	protected $belongs_to = array('author' => 'user');
 	protected $has_one    = array('exif');
-	//protected $has_many = array('exifs');
+	protected $has_many   = array('image_comments');
 
 	// Validation
 	protected $_rules = array(
@@ -77,7 +97,7 @@ class Image_Model extends Modeler_ORM {
 				}
 
 				// image filename is based on the type
-				$size_filename = $path . $filename . '_' . $type . '.' . $extension;
+				$size_filename = $path . $filename . '_' . ($type == 'normal' ? 'n' : 't') . '.' . $extension;
 
 				$image->save($size_filename);
 				$image_info = getimagesize($size_filename);
@@ -101,9 +121,25 @@ class Image_Model extends Modeler_ORM {
 
 
 	/**
+	 * Get image comments
+	 *
+	 * @param  int  $page_num
+	 * @param  int  $page_size
+	 */
+	public function find_comments($page_num = 1, $page_size = 25) {
+
+		// Not found from cache, load from DB
+		$page_offset = ($page_num - 1) * $page_size;
+		$comments = $this->image_comments->find_all($page_size, $page_offset);
+
+		return $comments;
+	}
+
+
+	/**
 	 * Build image URL
 	 *
-	 * @param   string  $size    normal, thumb, original etc
+	 * @param   string  $size  normal, thumb, original etc
 	 * @return  string
 	 */
 	public function url($size = 'normal') {
@@ -115,7 +151,7 @@ class Image_Model extends Modeler_ORM {
 			$path = url::id2path($this->id);
 
 			// if size is found from sizes array, add postfix, otherwise use original id filename
-			$postfix = in_array($size, array('normal', 'thumb')) ? '_' . $size : '';
+			$postfix = in_array($size, array('normal', 'thumb')) ? '_' . substr($size, 0, 1) : '';
 			$filename = $this->id . $postfix . '.' . $this->format;
 			$url = 'http://' . Kohana::config('site.image_server') . '/' . $path . '/' . $filename;
 		}
