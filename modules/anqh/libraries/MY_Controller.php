@@ -52,6 +52,13 @@ abstract class Controller extends Controller_Core {
 	public $language = 'en';
 
 	/**
+	 * Loaded modules
+	 *
+	 * @var  array
+	 */
+	protected $modules;
+
+	/**
 	 * Template view name
 	 *
 	 * @var  string
@@ -92,6 +99,9 @@ abstract class Controller extends Controller_Core {
 	 */
 	public function __construct()	{
 		parent::__construct();
+
+		// Get loaded modules
+		$this->modules = Kohana_Config::instance()->get('core.modules');
 
 		// Initialize libraries
 		$this->cache = Cache::instance();
