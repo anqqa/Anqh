@@ -83,7 +83,7 @@ class Gallery_Model_Core extends Modeler_ORM {
 		$months = array();
 
 		// Build counts
-		$galleries = ORM::factory('gallery')->find_all();
+		$galleries = ORM::factory('gallery')->where('image_count', '>', 0)->find_all();
 		foreach ($galleries as $gallery) {
 			list($year, $month) = explode(' ', date('Y n', strtotime($gallery->event_date)));
 

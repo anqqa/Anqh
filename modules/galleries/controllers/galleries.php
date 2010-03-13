@@ -42,11 +42,14 @@ class Galleries_Controller extends Website_Controller {
 	public function browse($year = false, $month = false) {
 		$this->tab_id = 'browse';
 
-		// Default to this month
+		$months = Gallery_Model::find_months();
+
+		// Default to last month
 		if (!$year) {
-			list($year, $month) = explode(' ', date('Y n'));
+			$year = max(array_keys($months));
+			$month = max(array_keys($months[$year]));
 		} else if (!$month) {
-			$month = 1;
+			$month = isset($months[$year]) ? min(array_keys($months[$year])) : 1;
 		}
 
 		$year = min($year, date('Y'));
@@ -55,7 +58,7 @@ class Galleries_Controller extends Website_Controller {
 		$this->page_title .= ' - ' . text::title(date('F Y', mktime(null, null, null, $month, 1, $year)));
 
 		// Month browser
-		widget::add('wide', View::factory('galleries/month_browser', array('year' => $year, 'month' => $month, 'months' => Gallery_Model::find_months())));
+		widget::add('wide', View::factory('galleries/month_browser', array('year' => $year, 'month' => $month, 'months' => $months)));
 
 		// Galleries
 		$galleries = Gallery_Model::find_by_year($year, $month);
