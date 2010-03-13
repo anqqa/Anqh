@@ -34,6 +34,13 @@
 	<?= html::anchor(url::model($gallery), html::image('http://' . Kohana::config('site.image_server') . '/kuvat/' . $gallery->dir . '/pieni_' . $image->legacy_filename), array('title' => __('Back to gallery'))) ?>
 	<?php endif ?>
 
+	<?php if ($image->description): ?>
+		<?php $names = array(); foreach (explode(',', $image->description) as $name) $names[] = html::user(trim($name)); ?>
+	<footer>
+		<?= __('In picture: :users', array(':users' => implode(', ', $names))) ?>
+	</footer>
+	<?php endif ?>
+
 </section>
 <?php
 echo html::script_source('
@@ -44,7 +51,7 @@ echo html::script_source('
 				case 37: var link = $(".gallery-image a.prev").first().attr("href"); break;
 				case 39: var link = $(".gallery-image a.next").first().attr("href"); break;
 			}
-			if (link !== null) {
+			if (link) {
 				window.location = link;
 			}
 		}

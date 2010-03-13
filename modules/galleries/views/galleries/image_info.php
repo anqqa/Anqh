@@ -22,7 +22,7 @@
 
 		<dt><?= __('Statistics') ?></dt>
 			<dd><?= __('Comments: :comments', array(':comments' => '<var>' . $image->comments . '</var>')) ?></dd>
-			<dd><?= __('Votes: :votes', array(':votes' => '<var>' . $image->votes . '</var>')) ?></dd>
+			<dd><?= __2('Score: :score (:votes vote)', 'Score: :score (:votes votes)', $image->votes, array(':score' => '<var>' . $image->score . '</var>', ':votes' => '<var>' . $image->votes . '</var>')) ?></dd>
 			<dd><?= __('Views: :views', array(':views' => '<var>' . $image->views . '</var>')) ?></dd>
 
 		<?php if ($image->exif): ?>

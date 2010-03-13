@@ -37,6 +37,23 @@ class Gallery_Model_Core extends Modeler_ORM {
 
 
 	/**
+	 * Find galleries by year and month
+	 *
+	 * @param   integer  $year
+	 * @param   integer  $month
+	 * @return  ORM_Iterator
+	 */
+	public static function find_by_year($year, $month) {
+		return ORM::factory('gallery')
+			->where('image_count', '>', 0)
+			->where(new Database_Expression('EXTRACT(MONTH FROM event_date) = ' . (int)$month))
+			->where(new Database_Expression('EXTRACT(YEAR FROM event_date) = ' . (int)$year))
+			->order_by('event_date', 'DESC')
+			->find_all();
+	}
+
+
+	/**
 	 * Find images for loaded gallery
 	 *
 	 * @return  ORM_Iterator
@@ -52,8 +69,41 @@ class Gallery_Model_Core extends Modeler_ORM {
 	 * @param   integer  $limit
 	 * @return  ORM_Iterator
 	 */
-	public function find_latest($limit = 10) {
+	public static function find_latest($limit = 10) {
 		return ORM::factory('gallery')->where('image_count', '>', 0)->limit($limit)->order_by('updated', 'DESC')->find_all();
+	}
+
+
+	/**
+	 * Find months with galleries
+	 *
+	 * @return  array  year => month => count
+	 */
+	public static function find_months() {
+		$months = array();
+
+		// Build counts
+		$galleries = ORM::factory('gallery')->find_all();
+		foreach ($galleries as $gallery) {
+			list($year, $month) = explode(' ', date('Y n', strtotime($gallery->event_date)));
+
+			if (!isset($months[$year])) {
+				$months[$year] = array();
+			}
+			if (!isset($months[$year][$month])) {
+				$months[$year][$month] = 1;
+			} else {
+				$months[$year][$month]++;
+			}
+		}
+
+		// Sort years
+		krsort($months);
+		foreach ($months as &$year) {
+			krsort($year);
+		}
+
+		return $months;
 	}
 
 }

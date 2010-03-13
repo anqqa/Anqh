@@ -10,10 +10,59 @@
 class Galleries_Controller extends Website_Controller {
 
 	/**
+	 * New gallery controller
+	 */
+	public function __construct() {
+		parent::__construct();
+
+		$this->breadcrumb[] = html::anchor('galleries', __('Galleries'));
+		$this->page_title = __('Galleries');
+
+		$this->tabs = array(
+			'latest' => array('link' => 'galleries',        'text' => __('Latest updates')),
+			'browse' => array('link' => 'galleries/browse', 'text' => __('Browse galleries')),
+		);
+	}
+
+
+	/**
 	 * Galleries front page
 	 */
 	public function index() {
 		return $this->latest();
+	}
+
+
+	/**
+	 * Browse galleries
+	 *
+	 * @param  integer  $year
+	 * @param  integer  $month
+	 */
+	public function browse($year = false, $month = false) {
+		$this->tab_id = 'browse';
+
+		// Default to this month
+		if (!$year) {
+			list($year, $month) = explode(' ', date('Y n'));
+		} else if (!$month) {
+			$month = 1;
+		}
+
+		$year = min($year, date('Y'));
+		$month = min(12, max(1, $month));
+
+		$this->page_title .= ' - ' . text::title(date('F Y', mktime(null, null, null, $month, 1, $year)));
+
+		// Month browser
+		widget::add('wide', View::factory('galleries/month_browser', array('year' => $year, 'month' => $month, 'months' => Gallery_Model::find_months())));
+
+		// Galleries
+		$galleries = Gallery_Model::find_by_year($year, $month);
+		if ($galleries->count()) {
+			widget::add('wide', new View('galleries/galleries', array('galleries' => $galleries)));
+		}
+
 	}
 
 
@@ -124,6 +173,10 @@ class Galleries_Controller extends Website_Controller {
 		$gallery = new Gallery_Model((int)$gallery_id);
 
 		if ($gallery->loaded()) {
+			$this->tab_id = 'gallery';
+			$this->tabs['browse']['link'] = 'galleries/browse/' . date('Y/n/', strtotime($gallery->event_date));
+			$this->tabs['gallery'] = array('link' => url::model($gallery), 'text' => __('Gallery'));
+
 			$this->page_title = text::title($gallery->name);
 			$this->page_subtitle = html::time(date::format('DMYYYY', $gallery->event_date), $gallery->event_date, true);
 
@@ -147,6 +200,10 @@ class Galleries_Controller extends Website_Controller {
 	public function image($image_id) {
 		$gallery = Gallery_Model::find_by_image($image_id);
 		if ($gallery->loaded()) {
+			$this->tab_id = 'gallery';
+			$this->tabs['browse']['link'] = 'galleries/browse/' . date('Y/n/', strtotime($gallery->event_date));
+			$this->tabs['gallery'] = array('link' => url::model($gallery), 'text' => __('Gallery'));
+
 			$i = 0;
 			$images = $gallery->find_images();
 
@@ -256,7 +313,7 @@ class Galleries_Controller extends Website_Controller {
 	 * Galleries with latest updates
 	 */
 	public function latest() {
-		$this->page_title = __('Galleries');
+		$this->tab_id = 'latest';
 
 		$galleries = ORM::factory('gallery')->find_latest(10);
 
