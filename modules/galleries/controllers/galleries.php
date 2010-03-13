@@ -145,8 +145,9 @@ class Galleries_Controller extends Website_Controller {
 	 * @param  integer  $image_id
 	 */
 	public function image($image_id) {
-		$gallery = Gallery_Model::find_by_image($image_id);// new Gallery_Model((int)$gallery_id);
+		$gallery = Gallery_Model::find_by_image($image_id);
 		if ($gallery->loaded()) {
+			$i = 0;
 			$images = $gallery->find_images();
 
 			// Find current, previous and next images
@@ -156,6 +157,7 @@ class Galleries_Controller extends Website_Controller {
 
 					// Current was found last round
 					$next = $image;
+					$i--;
 
 				} else if ($image->id == $image_id) {
 
@@ -168,6 +170,7 @@ class Galleries_Controller extends Website_Controller {
 					$previous = $image;
 
 				}
+				$i++;
 				$images->next();
 			}
 
@@ -177,7 +180,16 @@ class Galleries_Controller extends Website_Controller {
 			if (!is_null($current)) {
 
 				// Image
-				widget::add('wide', new View('galleries/image', array('gallery' => $gallery, 'image' => $current)));
+				$current->views++;
+				$current->save();
+				widget::add('wide', new View('galleries/image', array(
+					'gallery'  => $gallery,
+					'images'   => count($images),
+					'current'  => $i,
+					'image'    => $current,
+					'next'     => $next,
+					'previous' => $previous,
+				)));
 
 
 				// Image comments

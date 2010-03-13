@@ -158,6 +158,8 @@ table.calendar td            { padding: 0; }
 #galleries .galleries li .thumb,
 #galleries .gallery li .thumb          { height: 100px; text-align: center; }
 .gallery-image                         { text-align: center; }
+.gallery-image a img                   { opacity: 1; }
+
 
 /***** /galleries *****/
 
