@@ -17,7 +17,7 @@
 $config['default'] = array
 (
 	'directory'      => 'pagination',
-	'style'          => 'digg',
+	'style'          => 'anqh',
 	'uri_segment'    => 'page',
 	'query_string'   => '',
 	'items_per_page' => 20,
