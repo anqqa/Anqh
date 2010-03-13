@@ -157,6 +157,7 @@ table.calendar td            { padding: 0; }
 #galleries .galleries li h4            { padding-top: 0; }
 #galleries .galleries li .thumb,
 #galleries .gallery li .thumb          { height: 100px; text-align: center; }
+.gallery-image                         { text-align: center; }
 
 /***** /galleries *****/
 

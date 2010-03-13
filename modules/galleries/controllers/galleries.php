@@ -232,6 +232,8 @@ class Galleries_Controller extends Website_Controller {
 
 				} // image comments
 
+				widget::add('side', View::factory('galleries/image_info', array('image' => $current)));
+
 			} // image
 
 		} // gallery
