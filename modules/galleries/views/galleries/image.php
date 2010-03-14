@@ -10,37 +10,38 @@
 ?>
 
 <section class="mod gallery-image">
-	<nav>
+	<div>
+		<nav>
 
-		<?php if ($previous): ?>
-		<?= html::anchor(url::model($gallery) . '/' . $previous->id, '&laquo; ' . __('Previous'), array('title' => __('Previous image'), 'class' => 'prev')) ?>
-		<?php else: ?>
-		&laquo; <?= __('Previous') ?>
-		<?php endif ?>
+			<?php if ($previous): ?>
+			<?= html::anchor(url::model($gallery) . '/' . $previous->id, '&laquo; ' . __('Previous'), array('title' => __('Previous image'), 'class' => 'prev')) ?>
+			<?php else: ?>
+			&laquo; <?= __('Previous') ?>
+			<?php endif ?>
 
-		<?= __(':current of :total', array(':current' => $current, ':total' => $images)) ?>
+			<?= __(':current of :total', array(':current' => $current, ':total' => $images)) ?>
+
+			<?php if ($next): ?>
+			<?= html::anchor(url::model($gallery) . '/' . $next->id, __('Next') . ' &raquo;', array('title' => __('Next image'), 'class' => 'next')) ?>
+			<?php else: ?>
+			<?= __('Next') ?> &raquo;
+			<?php endif ?>
+
+		</nav>
 
 		<?php if ($next): ?>
-		<?= html::anchor(url::model($gallery) . '/' . $next->id, __('Next') . ' &raquo;', array('title' => __('Next image'), 'class' => 'next')) ?>
+		<?= html::anchor(url::model($gallery) . '/' . $next->id, html::image('http://' . Kohana::config('site.image_server') . '/kuvat/' . $gallery->dir . '/pieni_' . $image->legacy_filename), array('title' => __('Next image'))) ?>
 		<?php else: ?>
-		<?= __('Next') ?> &raquo;
+		<?= html::anchor(url::model($gallery), html::image('http://' . Kohana::config('site.image_server') . '/kuvat/' . $gallery->dir . '/pieni_' . $image->legacy_filename), array('title' => __('Back to gallery'))) ?>
 		<?php endif ?>
 
-	</nav>
-
-	<?php if ($next): ?>
-	<?= html::anchor(url::model($gallery) . '/' . $next->id, html::image('http://' . Kohana::config('site.image_server') . '/kuvat/' . $gallery->dir . '/pieni_' . $image->legacy_filename), array('title' => __('Next image'))) ?>
-	<?php else: ?>
-	<?= html::anchor(url::model($gallery), html::image('http://' . Kohana::config('site.image_server') . '/kuvat/' . $gallery->dir . '/pieni_' . $image->legacy_filename), array('title' => __('Back to gallery'))) ?>
-	<?php endif ?>
-
-	<?php if ($image->description): ?>
-		<?php $names = array(); foreach (explode(',', $image->description) as $name) $names[] = html::user(trim($name)); ?>
-	<footer>
-		<?= __('In picture: :users', array(':users' => implode(', ', $names))) ?>
-	</footer>
-	<?php endif ?>
-
+		<?php if ($image->description): ?>
+			<?php $names = array(); foreach (explode(',', $image->description) as $name) $names[] = html::user(trim($name)); ?>
+		<footer>
+			<?= __('In picture: :users', array(':users' => implode(', ', $names))) ?>
+		</footer>
+		<?php endif ?>
+	</div>
 </section>
 <?php
 echo html::script_source('

@@ -1,4 +1,3 @@
-
 <section id="<?= $id ?>" class="mod tabs">
 	<ul>
 		<?php	$t = 0; $selected = 0; foreach ($tabs as $tab): $selected = !empty($tab['selected']) ? $t : $selected; $t++; ?>

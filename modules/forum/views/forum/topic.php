@@ -1,30 +1,35 @@
+<?php
+/**
+ * Forum topic
+ *
+ * @package    Forum
+ * @author     Antti Qvickström
+ * @copyright  (c) 2010 Antti Qvickström
+ * @license    http://www.opensource.org/licenses/mit-license.php MIT license
+ */
+?>
 
 <section class="mod topic topic-<?= $topic->id ?>">
-	<?php foreach ($posts as $post):
+	<div>
+		<?php foreach ($posts as $post):
 
-		// Time difference between posts
-		$current = strtotime($post->created);
-		$difference = (isset($previous)) ? date::timespan($current, $previous, 'years,months') : array('years' => 0, 'months' => 0);
-		if ($difference['years'] || $difference['months']):
-	?>
+			// Time difference between posts
+			$current = strtotime($post->created);
+			$difference = (isset($previous)) ? date::timespan($current, $previous, 'years,months') : array('years' => 0, 'months' => 0);
+			if ($difference['years'] || $difference['months']):
+		?>
 
-	<div class="divider post-old"><?= __('Previous post over :ago ago', array(':ago' => date::timespan_short($current, $previous))) ?></div>
+		<div class="divider post-old"><?= __('Previous post over :ago ago', array(':ago' => date::timespan_short($current, $previous))) ?></div>
 
-	<?php
-		endif;
-		$previous = $current;
+		<?php endif;
+			$previous = $current;
 
-		echo View::factory('forum/post', array(
-			'topic' => $topic,
-			'post'  => $post,
-			'user'  => $user,
-		));
+			echo View::factory('forum/post', array('topic' => $topic, 'post'  => $post, 'user'  => $user));
 
-	endforeach; ?>
+		endforeach; ?>
+	</div>
 </section>
 <?php
-
-// AJAX hooks
 echo html::script_source('
 $(function() {
 	$("a.post-edit").live("click", function(e) {

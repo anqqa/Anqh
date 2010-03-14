@@ -1,27 +1,39 @@
-<?php if (!empty($filters)): ?>
+<?php
+/**
+ * Data filters
+ *
+ * @package    Anqh
+ * @author     Antti Qvickström
+ * @copyright  (c) 2010 Antti Qvickström
+ * @license    http://www.opensource.org/licenses/mit-license.php MIT license
+ */
+
+if (!empty($filters)): ?>
 
 <section class="mod filters">
-	<?= form::open(null, array('class' => 'filters pills')) ?>
+	<div>
+		<?= form::open(null, array('class' => 'filters pills')) ?>
 
-		<?php foreach ($filters as $type => $filter): ?>
-		<fieldset>
-			<!-- <legend><?= html::specialchars($filter['name']) ?>:</legend>-->
-			<ul>
-				<li>
-					<?= form::checkbox(array('name' => 'filter[]', 'id' => 'all-' . $type), 'all', true) ?>
-					<?= form::label('all-' . $type, __('All')) ?>
-				</li>
-				<?php foreach ($filter['filters'] as $key => $name): ?>
-				<li>
-					<?= form::checkbox(array('name' => 'filter[]', 'id' => $type . '-' . $key), $type . '-' . $key) ?>
-					<?= form::label($type . '-' . $key, $name) ?>
-				</li>
-				<?php endforeach; ?>
-			</ul>
-		</fieldset>
-		<?php endforeach ?>
+			<?php foreach ($filters as $type => $filter): ?>
+			<fieldset>
+				<!-- <legend><?= html::specialchars($filter['name']) ?>:</legend>-->
+				<ul>
+					<li>
+						<?= form::checkbox(array('name' => 'filter[]', 'id' => 'all-' . $type), 'all', true) ?>
+						<?= form::label('all-' . $type, __('All')) ?>
+					</li>
+					<?php foreach ($filter['filters'] as $key => $name): ?>
+					<li>
+						<?= form::checkbox(array('name' => 'filter[]', 'id' => $type . '-' . $key), $type . '-' . $key) ?>
+						<?= form::label($type . '-' . $key, $name) ?>
+					</li>
+					<?php endforeach; ?>
+				</ul>
+			</fieldset>
+			<?php endforeach ?>
 
-	<?= form::close() ?>
+		<?= form::close() ?>
+	</div>
 </section>
 
 <?php

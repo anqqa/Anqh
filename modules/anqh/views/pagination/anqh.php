@@ -29,7 +29,7 @@ else:
 	endif;
 	$pages = array_merge($pages, range(max(1, $current_page - 2), min($total_pages, $current_page + 2)));
 
-	// Add halves if useful (min 5 pages from other segments)
+	// Add halves if useful
 	$first_half = ceil($current_page / 2);
 	$last_half = ceil($total_pages - ($total_pages - $current_page) / 2);
 	if ($first_half > 5 && $current_page - $first_half > 7) $pages[] = $first_half;

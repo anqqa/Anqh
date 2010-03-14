@@ -1,97 +1,109 @@
+<?php
+/**
+ * Edit event
+ *
+ * @package    Events
+ * @author     Antti Qvickström
+ * @copyright  (c) 2010 Antti Qvickström
+ * @license    http://www.opensource.org/licenses/mit-license.php MIT license
+ */
+?>
 
 <section class="mod event-edit">
-	<?= form::open_multipart() ?>
+	<div>
+		<?= form::open_multipart() ?>
 
-		<fieldset>
-			<legend><?= __('What?') ?></legend>
-			<ul>
+			<fieldset>
+				<legend><?= __('What?') ?></legend>
+				<ul>
 
-				<?= form::input_wrap('name', $values, 'maxlength="100"', __('Name'), $errors) ?>
+					<?= form::input_wrap('name', $values, 'maxlength="100"', __('Name'), $errors) ?>
 
-				<?= form::input_wrap('homepage', $values, 'maxlength="100"', __('Homepage'), $errors) ?>
+					<?= form::input_wrap('homepage', $values, 'maxlength="100"', __('Homepage'), $errors) ?>
 
-			</ul>
-		</fieldset>
+				</ul>
+			</fieldset>
 
-		<fieldset>
-			<legend><?= __('When?') ?></legend>
-			<ul>
+			<fieldset>
+				<legend><?= __('When?') ?></legend>
+				<ul>
 
-				<?= form::input_wrap('start_date', $values, 'maxlength="10"', __('Date'), $errors) ?>
+					<?= form::input_wrap('start_date', $values, 'maxlength="10"', __('Date'), $errors) ?>
 
-				<?= form::input_wrap('start_hour', $values, 'maxlength="5"', __('From'), $errors) ?>
+					<?= form::input_wrap('start_hour', $values, 'maxlength="5"', __('From'), $errors) ?>
 
-				<?= form::input_wrap('end_hour', $values, 'maxlength="5"', __('To'), $errors) ?>
+					<?= form::input_wrap('end_hour', $values, 'maxlength="5"', __('To'), $errors) ?>
 
-			</ul>
-		</fieldset>
+				</ul>
+			</fieldset>
 
-		<fieldset>
-			<legend><?= __('Where?') ?></legend>
-			<ul>
+			<fieldset>
+				<legend><?= __('Where?') ?></legend>
+				<ul>
 
-				<?= form::input_wrap('venue_name', $values, 'maxlength="100"', __('Venue'), $errors) ?>
+					<?= form::input_wrap('venue_name', $values, 'maxlength="100"', __('Venue'), $errors) ?>
 
-				<?= form::input_wrap('city_name', $values, 'maxlength="100"', __('City'), $errors) ?>
+					<?= form::input_wrap('city_name', $values, 'maxlength="100"', __('City'), $errors) ?>
 
-				<?= form::input_wrap('age', $values, 'maxlength="2"', __('Age limit'), $errors) ?>
+					<?= form::input_wrap('age', $values, 'maxlength="2"', __('Age limit'), $errors) ?>
 
-			</ul>
-		</fieldset>
+				</ul>
+			</fieldset>
 
-		<fieldset>
-			<legend><?= __('Tickets') ?></legend>
-			<ul>
+			<fieldset>
+				<legend><?= __('Tickets') ?></legend>
+				<ul>
 
-				<?= form::input_wrap('price', $values, 'maxlength="5"', __('At the door'), $errors) ?>
+					<?= form::input_wrap('price', $values, 'maxlength="5"', __('At the door'), $errors) ?>
 
-				<?= form::input_wrap('price2', $values, 'maxlength="5"', __('Presale'), $errors) ?>
+					<?= form::input_wrap('price2', $values, 'maxlength="5"', __('Presale'), $errors) ?>
 
-			</ul>
-		</fieldset>
+				</ul>
+			</fieldset>
 
-		<fieldset>
-			<legend><?= __('Who?') ?></legend>
-			<ul>
+			<fieldset>
+				<legend><?= __('Who?') ?></legend>
+				<ul>
 
-				<?= form::textarea_wrap('dj', $values, 'rows="5" cols="25"', true, __('DJ'), $errors) ?>
+					<?= form::textarea_wrap('dj', $values, 'rows="5" cols="25"', true, __('DJ'), $errors) ?>
 
-			</ul>
-		</fieldset>
+				</ul>
+			</fieldset>
 
-		<fieldset>
-			<legend><?= __('What?') ?></legend>
-			<ul>
+			<fieldset>
+				<legend><?= __('What?') ?></legend>
+				<ul>
 
-				<?= form::textarea_wrap('info', $values, 'rows="5" cols="25"', true, __('Information'), $errors) ?>
+					<?= form::textarea_wrap('info', $values, 'rows="5" cols="25"', true, __('Information'), $errors) ?>
 
-				<?= form::checkboxes_wrap('tags', $form, $values, __('Tags'), $errors, 'pills') ?>
+					<?= form::checkboxes_wrap('tags', $form, $values, __('Tags'), $errors, 'pills') ?>
 
-			</ul>
+				</ul>
 
-		</fieldset>
+			</fieldset>
 
-		<fieldset>
-			<legend><?= __('Flyers') ?></legend>
-			<ul>
+			<fieldset>
+				<legend><?= __('Flyers') ?></legend>
+				<ul>
 
-				<?= $values['flyer_front_image_id'] ? '<li class="flyer">' . html::img(new Image_Model($values['flyer_front_image_id']), 'thumb') . '</li>' : '' ?>
-				<?= form::upload_wrap('flyer_front', null, null, __('Front'), $errors) ?>
+					<?= $values['flyer_front_image_id'] ? '<li class="flyer">' . html::img(new Image_Model($values['flyer_front_image_id']), 'thumb') . '</li>' : '' ?>
+					<?= form::upload_wrap('flyer_front', null, null, __('Front'), $errors) ?>
 
-				<?= $values['flyer_back_image_id'] ? '<li class="flyer">' . html::img(new Image_Model($values['flyer_back_image_id']), 'thumb') . '</li>' : '' ?>
-				<?= form::upload_wrap('flyer_back', null, null, __('Back'), $errors) ?>
+					<?= $values['flyer_back_image_id'] ? '<li class="flyer">' . html::img(new Image_Model($values['flyer_back_image_id']), 'thumb') . '</li>' : '' ?>
+					<?= form::upload_wrap('flyer_back', null, null, __('Back'), $errors) ?>
 
-			</ul>
-		</fieldset>
+				</ul>
+			</fieldset>
 
-		<fieldset>
-			<?= form::csrf() ?>
-			<?= form::hidden('venue_id', $values['venue_id']) ?>
-			<?= form::hidden('city_id', $values['city_id']) ?>
-			<?= empty($values['id']) ? '' : form::hidden('id', $values['id']) ?>
-			<?= form::submit(false, __('Save')) ?>
-			<?= html::anchor($_SESSION['history'], __('Cancel')) ?>
-		</fieldset>
+			<fieldset>
+				<?= form::csrf() ?>
+				<?= form::hidden('venue_id', $values['venue_id']) ?>
+				<?= form::hidden('city_id', $values['city_id']) ?>
+				<?= empty($values['id']) ? '' : form::hidden('id', $values['id']) ?>
+				<?= form::submit(false, __('Save')) ?>
+				<?= html::anchor($_SESSION['history'], __('Cancel')) ?>
+			</fieldset>
 
-	<?= form::close() ?>
+		<?= form::close() ?>
+	</div>
 </section>

@@ -1,83 +1,93 @@
+<?php
+/**
+ * Comments section
+ *
+ * @package    Anqh
+ * @author     Antti Qvickström
+ * @copyright  (c) 2010 Antti Qvickström
+ * @license    http://www.opensource.org/licenses/mit-license.php MIT license
+ */
+?>
 
 <section class="mod comments">
-
-	<header>
-		<h3><?= __('Comments') ?></h3>
-
-		<?= $pagination ?>
-
-	</header>
-
-	<?= form::open() ?>
-	<fieldset class="horizontal">
-		<ul>
-			<?php if ($private): ?>
-			<?= form::checkbox_wrap('private', '1', $values, "onchange=\"$('input[name=comment]').toggleClass('private', this.checked)\"", '<abbr class="private" title="' . __('Private comment') . '">' . __('Priv') . '</abbr>') ?>
-			<?php endif; ?>
-
-			<?= form::input_wrap(array('name' => 'comment', 'id' => 'comment', 'maxlength' => 300), '', '', '', $errors) ?>
-
-			<li><?= form::submit(false, __('Comment')) ?></li>
-		</ul>
-		<?= form::csrf() ?>
-	</fieldset>
-	<?= form::close() ?>
-
-	<?php foreach ($comments as $comment):
-		$classes = array();
-
-		if ($comment->private) {
-			$classes[] = 'private';
-		}
-
-		// Viewer's post
-		if ($user && $comment->author_id == $user->id) {
-			$classes[] = 'my';
-			$mine = true;
-		} else {
-			$mine = false;
-		}
-
-		// Topic author's post
-		if ($comment->author_id == $comment->user_id) {
-			$classes[] = 'owner';
-		}
- 	?>
-
-	<article id="comment-<?= $comment->id ?>" class="<?= implode(' ', $classes) ?>">
-
-		<?= html::avatar($comment->author->avatar, $comment->author->username) ?>
-
+	<div>
 		<header>
-			<?php if ($user && $comment->user_id == $user->id || $mine): ?>
-			<span class="actions">
-				<?php if ($private && !$comment->private): ?>
-				<?= html::anchor(sprintf($private, $comment->id), __('Set as private'), array('class' => 'action comment-private')) ?>
-				<?php endif; ?>
-				<?= html::anchor(sprintf($delete, $comment->id), __('Delete'), array('class' => 'action comment-delete')) ?>
-			</span>
-			<?php endif; ?>
+			<h3><?= __('Comments') ?></h3>
 
-			<?= html::nick($comment->author_id, $comment->author->username) ?>,
-			<?= __(':ago ago', array(
-				':ago' => html::time(date::timespan_short($comment->created), $comment->created))
-			) ?>
+			<?= $pagination ?>
+
 		</header>
 
-		<p>
-			<?= $comment->private ? '<abbr title="' . __('Private comment') . '">' . __('Priv') . '</abbr>: ' : '' ?>
-			<?= text::smileys(text::auto_link_urls(html::specialchars($comment->comment))) ?>
-		</p>
-	</article>
+		<?= form::open() ?>
+		<fieldset class="horizontal">
+			<ul>
+				<?php if ($private): ?>
+				<?= form::checkbox_wrap('private', '1', $values, "onchange=\"$('input[name=comment]').toggleClass('private', this.checked)\"", '<abbr class="private" title="' . __('Private comment') . '">' . __('Priv') . '</abbr>') ?>
+				<?php endif; ?>
 
-	<?php endforeach; ?>
+				<?= form::input_wrap(array('name' => 'comment', 'id' => 'comment', 'maxlength' => 300), '', '', '', $errors) ?>
 
-	<footer>
+				<li><?= form::submit(false, __('Comment')) ?></li>
+			</ul>
+			<?= form::csrf() ?>
+		</fieldset>
+		<?= form::close() ?>
 
-		<?= $pagination ?>
+		<?php foreach ($comments as $comment):
+			$classes = array();
 
-	</footer>
+			if ($comment->private) {
+				$classes[] = 'private';
+			}
 
+			// Viewer's post
+			if ($user && $comment->author_id == $user->id) {
+				$classes[] = 'my';
+				$mine = true;
+			} else {
+				$mine = false;
+			}
+
+			// Topic author's post
+			if ($comment->author_id == $comment->user_id) {
+				$classes[] = 'owner';
+			}
+	 	?>
+
+		<article id="comment-<?= $comment->id ?>" class="<?= implode(' ', $classes) ?>">
+
+			<?= html::avatar($comment->author->avatar, $comment->author->username) ?>
+
+			<header>
+				<?php if ($user && $comment->user_id == $user->id || $mine): ?>
+				<span class="actions">
+					<?php if ($private && !$comment->private): ?>
+					<?= html::anchor(sprintf($private, $comment->id), __('Set as private'), array('class' => 'action comment-private')) ?>
+					<?php endif; ?>
+					<?= html::anchor(sprintf($delete, $comment->id), __('Delete'), array('class' => 'action comment-delete')) ?>
+				</span>
+				<?php endif; ?>
+
+				<?= html::nick($comment->author_id, $comment->author->username) ?>,
+				<?= __(':ago ago', array(
+					':ago' => html::time(date::timespan_short($comment->created), $comment->created))
+				) ?>
+			</header>
+
+			<p>
+				<?= $comment->private ? '<abbr title="' . __('Private comment') . '">' . __('Priv') . '</abbr>: ' : '' ?>
+				<?= text::smileys(text::auto_link_urls(html::specialchars($comment->comment))) ?>
+			</p>
+		</article>
+
+		<?php endforeach; ?>
+
+		<footer>
+
+			<?= $pagination ?>
+
+		</footer>
+	</div>
 </section>
 <?php
 

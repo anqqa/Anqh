@@ -16,7 +16,7 @@
 		<?php endif; ?>
 		<?php if (!empty($user->latitude) && !empty($user->longitude)): ?>
 		<dt><?= __('Location') ?>:</dt><dd><?= $user->latitude ?>, <?= $user->longitude ?></dd>
-		<dd><?= html::anchor('#map', __('Toggle map')) ?></dd>
+		<dd><?= html::anchor('#map', __('Toggle map'), array('class' => 'expander', 'title' => __('Show/hide'))) ?></dd>
 		<dd><div id="map" style="display: none"><?= __('Map loading') ?></div></dd>
 		<?php
 			$map = new Gmap('map', array('ScrollWheelZoom' => true));
