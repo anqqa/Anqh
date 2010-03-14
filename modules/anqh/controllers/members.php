@@ -20,15 +20,6 @@ class Members_Controller extends Website_Controller {
 	/***** /MAGIC *****/
 
 
-	/***** INTERNAL *****/
-
-	private function _side_views($extra_views = array()) {
-		widget::add('side', implode("\n", $extra_views));
-	}
-
-	/***** /INTERNAL *****/
-
-
 	/***** VIEWS *****/
 
 	public function index() {
@@ -51,14 +42,13 @@ class Members_Controller extends Website_Controller {
 		if (empty($error)) {
 			$this->page_subtitle = __('Latest :users members', array(':users' => '<var>' . count($new_users) . '</var>'));
 
-			widget::add('main', View::factory('member/members', array('users' => $users, 'type' => 'new')));
-			$side_views[] = new View('member/birthdays_list', array('birthdays' => $birthdays));
+			widget::add('main', View_Mod::factory('member/members', array('users' => $users, 'type' => 'new')));
+			widget::add('side', View_Mod::factory('member/birthdays_list', array('mod_class' => 'birthdays', 'birthdays' => $birthdays)));
 		} else {
-			$this->page_title .= ' ' . Kohana::lang('generic.error');
+			$this->page_title .= ' ' . __('Uh oh.');
 			widget::add('main', implode('<br />', $error));
 		}
 
-		$this->_side_views($side_views);
 	}
 
 	/***** /VIEWS *****/

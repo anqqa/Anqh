@@ -7,7 +7,7 @@
  * @copyright  (c) 2010 Antti Qvickström
  * @license    http://www.opensource.org/licenses/mit-license.php MIT license
  */
-class View_Mod_Core extends View_Core {
+class View_Mod_Core extends View {
 
 	/**
 	 * Creates a new View Mod using the given parameters.
@@ -31,7 +31,10 @@ class View_Mod_Core extends View_Core {
 	public function wrap($output) {
 		$data = array(
 			'id'      => arr::get($this->kohana_local_data, 'mod_id'),
-			'class'   => trim('mod ' . arr::get($this->kohana_local_data, 'mod_class')),
+
+			// Class name defaults to view name
+			'class'   => 'mod ' . arr::get($this->kohana_local_data, 'mod_class', basename($this->kohana_filename, '.php')),
+
 			'content' => $output,
 		);
 

@@ -28,7 +28,7 @@ class Index_Controller extends Website_Controller {
 		// Display news feed
 		$newsfeed = new NewsFeed($this->user);
 		$newsfeed->max_items = 25;
-		widget::add('main', View::factory('generic/newsfeed', array('newsfeed' => $newsfeed->as_array())));
+		widget::add('main', View_Mod::factory('generic/newsfeed', array('newsfeed' => $newsfeed->as_array())));
 
 	}
 
