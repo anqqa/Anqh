@@ -32,7 +32,7 @@ class Roles_Controller extends Website_Controller {
 		$this->page_actions[] = array('link' => 'role/add', 'text' => __('Add new role'), 'class' => 'role-add');
 
 		$roles = new Role_Model();
-		widget::add('main', View::Factory('roles/roles', array('roles' => $roles->order_by('name', 'ASC')->find_all())));
+		widget::add('main', View_Mod::Factory('roles/roles', array('roles' => $roles->order_by('name', 'ASC')->find_all())));
 	}
 
 
@@ -83,7 +83,7 @@ class Roles_Controller extends Website_Controller {
 		}
 
 		if (empty($errors)) {
-			widget::add('main', View::factory('roles/role_edit', array('values' => $form_values, 'errors' => $form_errors)));
+			widget::add('main', View_Mod::factory('roles/role_edit', array('values' => $form_values, 'errors' => $form_errors)));
 		} else {
 			$this->_error(Kohana::lang('generic.error'), $errors);
 		}

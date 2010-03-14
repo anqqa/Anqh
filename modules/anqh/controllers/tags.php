@@ -42,7 +42,7 @@ class Tags_Controller extends Website_Controller {
 
 		$tag_groups = ORM::factory('tag_group')->find_all();
 
-		widget::add('main', new View('tags/tag_groups', array('tag_groups' => $tag_groups)));
+		widget::add('main', View_Mod::factory('tags/tag_groups', array('tag_groups' => $tag_groups)));
 
 		$this->_side_views();
 	}
@@ -95,7 +95,7 @@ class Tags_Controller extends Website_Controller {
 				$this->page_actions[] = array('link' => url::model($tag_group) . '/add',  'text' => __('New tag'),   'class' => 'tag-add');
 			}
 
-			widget::add('main', View::factory('tags/tags', array('tags' => $tag_group->tags)));
+			widget::add('main', View_Mod::factory('tags/tags', array('tags' => $tag_group->tags->find_all())));
 		} else {
 			$this->_error(Kohana::lang('generic.error'), $errors);
 		}
@@ -173,7 +173,7 @@ class Tags_Controller extends Website_Controller {
 		}
 
 		if (empty($errors)) {
-			widget::add('main', new View('tags/group_edit', array('values' => $form, 'errors' => $form_errors)));
+			widget::add('main', View_Mod::factory('tags/group_edit', array('values' => $form, 'errors' => $form_errors)));
 		} else {
 			$this->_error(Kohana::lang('generic.error'), $errors);
 		}
@@ -322,7 +322,7 @@ class Tags_Controller extends Website_Controller {
 
 		// show form
 		if (empty($errors)) {
-			widget::add('main', new View('tags/tag_edit', array('values' => $form_values, 'errors' => $form_errors)));
+			widget::add('main', View_Mod::factory('tags/tag_edit', array('values' => $form_values, 'errors' => $form_errors)));
 		} else {
 			$this->_error(Kohana::lang('generic.error'), $errors);
 		}

@@ -1,21 +1,29 @@
+<?php
+/**
+ * Edit role
+ *
+ * @package    Anqh
+ * @author     Antti Qvickström
+ * @copyright  (c) 2010 Antti Qvickström
+ * @license    http://www.opensource.org/licenses/mit-license.php MIT license
+ */
+?>
 
-<section class="mod role-edit">
-	<?= form::open() ?>
+<?= form::open() ?>
 
-		<fieldset>
-			<ul>
+	<fieldset>
+		<ul>
 
-				<?= form::input_wrap('name', $values, 'maxlength="32"', __('Name'), $errors) ?>
+			<?= form::input_wrap('name', $values, 'maxlength="32"', __('Name'), $errors) ?>
 
-				<?= form::input_wrap('description', $values, '', __('Description'), $errors) ?>
+			<?= form::input_wrap('description', $values, '', __('Description'), $errors) ?>
 
-			</ul>
-		</fieldset>
+		</ul>
+	</fieldset>
 
-		<fieldset>
-			<?= form::submit(false, __('Save')) ?>
-			<?= html::anchor($_SESSION['history'], __('Cancel')) ?>
-		</fieldset>
+	<fieldset>
+		<?= form::submit(false, __('Save')) ?>
+		<?= html::anchor($_SESSION['history'], __('Cancel')) ?>
+	</fieldset>
 
-	<?= form::close() ?>
-</section>
+<?= form::close() ?>

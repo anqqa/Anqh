@@ -33,7 +33,7 @@ class View_Mod_Core extends View {
 			'id'      => arr::get($this->kohana_local_data, 'mod_id'),
 
 			// Class name defaults to view name
-			'class'   => 'mod ' . arr::get($this->kohana_local_data, 'mod_class', basename($this->kohana_filename, '.php')),
+			'class'   => 'mod ' . arr::get($this->kohana_local_data, 'mod_class', strtr('_', '-', basename($this->kohana_filename, '.php'))),
 
 			'content' => $output,
 		);

@@ -1,8 +1,18 @@
+<?php
+/**
+ * Tag groups
+ *
+ * @package    Anqh
+ * @author     Antti Qvickström
+ * @copyright  (c) 2010 Antti Qvickström
+ * @license    http://www.opensource.org/licenses/mit-license.php MIT license
+ */
+?>
 
 <?php if (empty($tag_groups)): ?>
-<div class="prefix-1 notice"><?= __('No tag groups found') ?></div>
+<div class="notice"><?= __('No tag groups found') ?></div>
 <?php else: ?>
-<ul class="taggroups contentlist">
+<ul>
 	<?php foreach ($tag_groups as $tag_group): ?>
 	<li class="group clearfix">
 
