@@ -7,9 +7,9 @@
 .border-radius (@radius)               { border-radius: @radius; -moz-border-radius: @radius; -webkit-border-radius: @radius; }
 .box-shadow (@shadow)                  { box-shadow: @shadow; -moz-box-shadow: @shadow; -webkit-box-shadow: @shadow; }
 
-@body-background-color:                black;
-@body-background-image:                url(../background.jpg) no-repeat center top;
-@section-background:                   /*transparent;*/ #121212;
+@body-background-color:                #313131;
+@body-background-image:                no-repeat center top;
+@section-background:                   #121212;
 @section-background-alt:               #111;
 @mod-background:                       #141211;
 
@@ -29,7 +29,7 @@
 @text-color:                           #a7a7a7;
 @link-color:                           #3ac;
 @link-hover-color:                     white;
-@action-background:                    #222 /*url(../action.png) repeat-x*/;
+@action-background:                    #222;
 @action-link-color:                    black;
 @positive-color:                       #ac3;
 @negative-color:                       #c33;
@@ -62,12 +62,3 @@
 @import "../jquery-ui.css";
 @import "jquery-ui.css";
 @import "../site.css";
-
-
-/***** forum *****/
-
-span.locked                            { color: #333; font-variant: small-caps; }
-blockquote                             { color: #777; }
-aside.post-old                         { color: @separator-color; text-align: center; }
-
-/***** /forum *****/

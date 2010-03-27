@@ -154,6 +154,7 @@
 /***** OOCSS *****/
 
 .divider,
+aside .mod                             { margin-left: 10px; }
 .mod                                   { /*margin: 0 -1px -1px 0; padding: 0 1px 1px 0;*/ position: relative; }
 .mod article                           { padding: 10px; }
 /*
