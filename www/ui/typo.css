@@ -48,7 +48,7 @@ h4,
 h5,
 h6                                     { font-weight: normal; font-family: 'ColaborateLightRegular', Arial, sans-serif; }
 h1                                     { font-size: 2em; line-height: 1.666em; /*margin-top: 0.833em;*/ }
-h2                                     { font-size: 1.75em; line-height: 1.9048em; padding: 0.476em 0; /*margin-bottom: 0.952em;*/ }
+h2                                     { font-size: 1.75em; /*line-height: 1.9048em;*/ padding: 0.476em 0; /*margin-bottom: 0.952em;*/ }
 legend                                 { font-size: 1.5em; line-height: 1.1111em; padding-top: 1.111em; }
 h3                                     { font-size: 1.5em; line-height: 1.1111em; padding-top: 1.111em; }
 h4                                     { font-size: 1.3333em; line-height: 1.25em; padding-top: 1.25em; }

@@ -10,7 +10,7 @@
 ?>
 
 <section class="<?= $class ?>"<?= $id ? ' id="' . $id . '"' : '' ?>>
-	<div>
+	<div class="container">
 
 <?= $content ?>
 

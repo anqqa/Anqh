@@ -334,8 +334,9 @@ class Blogs_Controller extends Website_Controller {
 			$this->page_actions[] = array('link' => 'blog/add', 'text' => __('New blog entry'), 'class' => 'topic-add');
 		}
 
-		widget::add('main', View::factory('blog/entries', array(
-			'entries' => ORM::factory('blog_entry')->find_latest(20),
+		widget::add('main', View_Mod::factory('blog/entries', array(
+			'mod_class' => 'blogentries',
+			'entries'   => ORM::factory('blog_entry')->find_latest(20),
 		)));
 	}
 

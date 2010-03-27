@@ -39,24 +39,24 @@ class Forum_Controller extends Website_Controller {
 
 		// Initialize tabs
 		$tabs = array(
-			'active' => array('href' => '#topics-active', 'title' => __('New posts'), 'tab' => new View('forum/topics_list', array(
-				'id'     => 'topics-active',
-				'title'  => __('New posts'),
-				'topics' => ORM::factory('forum_topic')->find_active($this->config['topics_per_list']),
-				'class'  => 'tab',
+			'active' => array('href' => '#topics-active', 'title' => __('New posts'), 'tab' => new View_Mod('forum/topics_list', array(
+				'mod_id'    => 'topics-active',
+				'mod_class' => 'cut tab topics',
+				'title'     => __('New posts'),
+				'topics'    => ORM::factory('forum_topic')->find_active($this->config['topics_per_list']),
 			))),
-			'latest' => array('href' => '#topics-new', 'title' => __('New topics'), 'tab' => new View('forum/topics_list', array(
-				'id'     => 'topics-new',
-				'title'  => __('New topics'),
-				'topics' => ORM::factory('forum_topic')->find_latest($this->config['topics_per_list']),
-				'class'  => 'tab',
+			'latest' => array('href' => '#topics-new', 'title' => __('New topics'), 'tab' => new View_Mod('forum/topics_list', array(
+				'mod_id'    => 'topics-new',
+				'mod_class' => 'cut tab topics',
+				'title'     => __('New topics'),
+				'topics'    => ORM::factory('forum_topic')->find_latest($this->config['topics_per_list']),
 			))),
-			'areas' => array('href' => '#forum-areas', 'title' => __('Areas'), 'selected' => in_array($this->tab_id, array('active', 'latest')), 'tab' => new View('forum/groups_list', array(
-				'id'     => 'forum-areas',
-				'title'  => __('Forum areas'),
-				'groups' => ORM::factory('forum_group')->find_all(),
-				'user'   => $this->user,
-				'class'  => 'tab',
+			'areas' => array('href' => '#forum-areas', 'title' => __('Areas'), 'selected' => in_array($this->tab_id, array('active', 'latest')), 'tab' => new View_Mod('forum/groups_list', array(
+				'mod_id'    => 'forum-areas',
+				'mod_class' => 'cut tab areas',
+				'title'     => __('Forum areas'),
+				'groups'    => ORM::factory('forum_group')->find_all(),
+				'user'      => $this->user,
 			))),
 		);
 

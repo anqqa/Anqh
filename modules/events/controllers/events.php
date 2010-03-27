@@ -245,8 +245,18 @@ class Events_Controller extends Website_Controller {
 		$updated_events = ORM::factory('event')->where('modifies', '>', 0)->order_by('modified', 'DESC')->find_all(15);
 
 		$tabs = array();
-		$tabs[] = array('href' => '#events-new',     'title' => __('New events'),     'tab' => new View('events/events_list', array('id' => 'events-new',     'title' => __('New events'),     'events' => $new_events)));
-		$tabs[] = array('href' => '#events-updated', 'title' => __('Updated events'), 'tab' => new View('events/events_list', array('id' => 'events-updated', 'title' => __('Updated events'), 'events' => $updated_events)));
+		$tabs[] = array('href' => '#events-new', 'title' => __('New events'), 'tab' => View_Mod::factory('events/events_list', array(
+			'mod_id'    => 'events-new',
+			'mod_class' => 'cut events',
+			'title'     => __('New events'),
+			'events'    => $new_events
+		)));
+		$tabs[] = array('href' => '#events-updated', 'title' => __('Updated events'), 'tab' => View_Mod::factory('events/events_list', array(
+			'mod_id'    => 'events-updated',
+			'mod_class' => 'cut events',
+			'title'     => __('Updated events'),
+			'events'    => $updated_events
+		)));
 		widget::add('side', new View('generic/tabs', array('id' => 'events-tab', 'tabs' => $tabs)));
 		//widget::add('foot', html::script_source('$(function() { $("#events-tab > ul").tabs({ fx: { height: "toggle", opacity: "toggle", duration: "fast" } }); });'));
 	}

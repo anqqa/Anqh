@@ -9,22 +9,18 @@
  */
 ?>
 
-<section id="<?= $id ?>" class="mod cut topics<?= isset($class) ? ' ' . $class : '' ?>">
-	<div>
-		<header>
-			<h4><?= $title ?></h4>
-		</header>
+<header>
+	<h4><?= $title ?></h4>
+</header>
 
-		<?php	if (empty($topics)): ?>
-		<span class="notice"><?= __('No topics found') ?></span>
-		<?php else: ?>
-		<ul>
+<?php	if (empty($topics)): ?>
+<span class="notice"><?= __('No topics found') ?></span>
+<?php else: ?>
+<ul>
 
-			<?php foreach ($topics as $topic): ?>
-			<li class="topic-<?= $topic->id ?>"><?= html::anchor(url::model($topic) . '/page/last#last', $topic->name) ?></li>
-			<?php endforeach; ?>
+	<?php foreach ($topics as $topic): ?>
+	<li class="topic-<?= $topic->id ?>"><?= html::anchor(url::model($topic) . '/page/last#last', $topic->name) ?></li>
+	<?php endforeach; ?>
 
-		</ul>
-		<?php	endif; ?>
-	</div>
-</section>
+</ul>
+<?php	endif; ?>

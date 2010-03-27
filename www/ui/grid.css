@@ -162,7 +162,7 @@
 */
 .mod article:last-of-type              { margin-bottom: 0; }
 .mod article + article                 { margin-top: 10px; }
-.mod > div                             { padding: 10px; }
+.container                             { overflow: hidden; padding: 10px; }
 .content                               { margin: 0 auto; position: relative; width: 100%; }
 .mod,
 .content,
