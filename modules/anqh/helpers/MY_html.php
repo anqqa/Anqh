@@ -150,6 +150,28 @@ class html extends html_Core {
 
 
 	/**
+	 * Print icon with value
+	 *
+	 * @param  integer|array  $value     :var => value
+	 * @param  string         $singular  title for singular value
+	 * @param  string         $plural    title for plural value
+	 * @param  string         $class     icon class
+	 */
+	public static function icon_value($value, $singular = '', $plural = '', $class = '') {
+		$class = $class ? 'icon ' . $class : 'icon';
+		if (is_array($value)) {
+			$var = key($value);
+			$value = $value[$var];
+		}
+		$formatted = num::format($value);
+		$plural = $plural ? $plural : $singular;
+		$title = ($singular && $plural) ? ' title="' . __2($singular, $plural, $value, array($var => $formatted)) . '"' : '';
+
+		return '<var class="' . $class . '"' . $title . '>' . $formatted . '</var>';
+	}
+
+
+	/**
 	 * Creates image link
 	 *
 	 * @param   Image_Model|int  $image  or image_id
@@ -272,9 +294,9 @@ class html extends html_Core {
 	/**
 	 * Returns user link
 	 *
-	 * @param	  User_Model  $user  or uid
-	 * @param	  string      $nick
-	 * @param   string      $class
+	 * @param	  mixed   $user  or uid
+	 * @param	  string  $nick
+	 * @param   string  $class
 	 * @return  string
 	 */
 	public static function user($user, $nick = null, $class = null) {
