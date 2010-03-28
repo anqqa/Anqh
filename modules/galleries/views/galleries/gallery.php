@@ -19,7 +19,8 @@
 				<div class="thumb">
 					<?= html::anchor(url::model($gallery) . '/' . $image->id, html::image('http://' . Kohana::config('site.image_server') . '/kuvat/' . $gallery->dir . '/thumb_' . $image->legacy_filename), array('title' => html::chars($image->description))) ?>
 				</div>
-				<?= __(':comments C, :views V', array(':comments' => '<var>' . $image->comments . '</var>', ':views' => '<var>' . $image->views . '</var>')) ?>
+				<?= html::icon_value(array(':comments' => $image->comments), ':comments comment', ':comments comments', 'posts') ?>
+				<?= html::icon_value(array(':views' => $image->views), ':views view', ':views views', 'views') ?>
 			</li>
 
 			<?php endforeach; ?>

@@ -26,14 +26,13 @@
 
 				<article class="area area-<?= $area->id ?>">
 					<header>
-						<h4>
-							<?= html::anchor(url::model($area), text::title($area->name), array('title' => strip_tags($area->description))) ?>
-							<span><?= __(':topics topics, :posts posts', array(
-							':topics' => '<var>' . num::format($area->topics) . '</var>',
-							':posts'  => '<var>' . num::format($area->posts) . '</var>'
-						)) ?></span>
-						</h4>
-						<span class="details">
+						<h4 class="unit size2of3"><?= html::anchor(url::model($area), text::title($area->name), array('title' => strip_tags($area->description))) ?></h4>
+						<ul class="details unit size1of3">
+							<li class="unit size1of2"><?= html::icon_value(array(':topics' => $area->topics), ':topics topic', ':topics topics', 'topics') ?></li>
+							<li class="unit size1of2"><?= html::icon_value(array(':posts' => $area->posts), ':posts post', ':posts posts', 'posts') ?></li>
+						</ul>
+					</header>
+					<footer>
 						<?php if ($area->topics > 0): ?>
 						<?= __('Last post in :area by :user :ago ago', array(
 							':area' => html::anchor(url::model($area->last_topic) . '/page/last#last', text::limit_chars(text::title($area->last_topic->name), 20, '&hellip;', true), array('title' => html::specialchars($area->last_topic->name))),
@@ -43,8 +42,7 @@
 						<?php else: ?>
 						<sup><?= __('No topics found') ?></sup>
 						<?php endif; ?>
-						</span>
-					</header>
+					</footer>
 				</article>
 
 				<?php elseif (!$area->is_type(Forum_Area_Model::TYPE_HIDDEN)): ?>

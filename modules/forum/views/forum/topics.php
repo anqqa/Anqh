@@ -16,7 +16,7 @@
 		<h4 class="unit size2of3"><?= html::anchor(url::model($topic) . '/page/last#last', text::title($topic->name)) ?></h4>
 		<ul class="details unit size1of3">
 			<li class="unit size1of2"><?= html::icon_value(array(':views' => $topic->reads), ':views view', ':views views', 'views') ?></li>
-			<li class="unit size1of2"><?= html::icon_value(array(':replies' => $topic->posts - 1), ':replies reply', ':replies replies', 'replies') ?></li>
+			<li class="unit size1of2"><?= html::icon_value(array(':replies' => $topic->posts - 1), ':replies reply', ':replies replies', 'posts') ?></li>
 		</ul>
 	</header>
 	<footer>
