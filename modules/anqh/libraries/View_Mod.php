@@ -31,6 +31,7 @@ class View_Mod_Core extends View {
 	public function wrap($output) {
 		$data = array(
 			'id'      => arr::get($this->kohana_local_data, 'mod_id'),
+			'title'   => arr::get($this->kohana_local_data, 'mod_title'),
 
 			// Class name defaults to view name
 			'class'   => 'mod ' . arr::get($this->kohana_local_data, 'mod_class', strtr('_', '-', basename($this->kohana_filename, '.php'))),

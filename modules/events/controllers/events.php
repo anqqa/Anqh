@@ -247,13 +247,13 @@ class Events_Controller extends Website_Controller {
 		$tabs = array();
 		$tabs[] = array('href' => '#events-new', 'title' => __('New events'), 'tab' => View_Mod::factory('events/events_list', array(
 			'mod_id'    => 'events-new',
-			'mod_class' => 'cut events',
+			'mod_class' => 'cut tab events',
 			'title'     => __('New events'),
 			'events'    => $new_events
 		)));
 		$tabs[] = array('href' => '#events-updated', 'title' => __('Updated events'), 'tab' => View_Mod::factory('events/events_list', array(
 			'mod_id'    => 'events-updated',
-			'mod_class' => 'cut events',
+			'mod_class' => 'cut tab events',
 			'title'     => __('Updated events'),
 			'events'    => $updated_events
 		)));

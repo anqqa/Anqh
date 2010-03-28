@@ -101,9 +101,10 @@ class Forum_Controller extends Website_Controller {
 		$this->tab_id = 'active';
 		$this->page_id_sub = 'newposts';
 
-		widget::add('main', View::factory('forum/topics', array(
-			'topics' => ORM::factory('forum_topic')->find_active($this->config['topics_per_list']),
-			'area'   => true,
+		widget::add('main', View_Mod::factory('forum/topics', array(
+			'mod_class' => 'topics',
+			'topics'    => ORM::factory('forum_topic')->find_active($this->config['topics_per_list']),
+			'area'      => true,
 		)));
 
 		$this->_side_views();
@@ -117,8 +118,9 @@ class Forum_Controller extends Website_Controller {
 		$this->tab_id = 'latest';
 		$this->page_id_sub = 'newtopics';
 
-		widget::add('main', View::factory('forum/topics', array(
-			'topics' => ORM::factory('forum_topic')->find_latest($this->config['topics_per_list']),
+		widget::add('main', View_Mod::factory('forum/topics', array(
+			'mod_class' => 'topics',
+			'topics'    => ORM::factory('forum_topic')->find_latest($this->config['topics_per_list']),
 		)));
 
 		$this->_side_views();
@@ -204,7 +206,10 @@ class Forum_Controller extends Website_Controller {
 
 				if (count($topics)) {
 					widget::add('main', $pagination);
-					widget::add('main', View::factory('forum/topics', array('topics' => $topics)));
+					widget::add('main', View_Mod::factory('forum/topics', array(
+						'mod_class' => 'topics',
+						'topics'    => $topics
+					)));
 					widget::add('main', $pagination);
 				} else {
 					$errors[] = __('No topics found');

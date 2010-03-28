@@ -25,8 +25,13 @@ $previous_padding = true;
 $next_padding = false;
 ?>
 
-<section class="mod calendar">
-	<div>
+<section class="mod article calendar">
+	<div class="container">
+
+		<header>
+			<h4><?= __('Calendar') ?></h4>
+		</header>
+
 		<table>
 			<thead>
 				<tr>

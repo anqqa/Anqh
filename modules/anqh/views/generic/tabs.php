@@ -1,3 +1,14 @@
+<?php
+/**
+ * Tabs
+ *
+ * @package    Anqh
+ * @author     Antti Qvickström
+ * @copyright  (c) 2010 Antti Qvickström
+ * @license    http://www.opensource.org/licenses/mit-license.php MIT license
+ */
+?>
+
 <section id="<?= $id ?>" class="mod tabs">
 	<ul>
 		<?php	$t = 0; $selected = 0; foreach ($tabs as $tab): $selected = !empty($tab['selected']) ? $t : $selected; $t++; ?>

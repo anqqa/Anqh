@@ -9,10 +9,6 @@
  */
 ?>
 
-<header>
-	<h4><?= $title ?></h4>
-</header>
-
 <?php	if (!empty($events)): ?>
 <ul class="events">
 

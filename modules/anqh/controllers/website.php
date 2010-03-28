@@ -173,19 +173,19 @@ abstract class Website_Controller extends Controller {
 		// Footer
 		widget::add('footer', View_Mod::factory('events/events_list', array(
 			'mod_id'    => 'footer-events-new',
-			'mod_class' => 'unit size1of4 cut events',
+			'mod_class' => 'article unit size1of4 cut events',
 			'title'     => __('New events'),
 			'events'    => ORM::factory('event')->order_by('id', 'DESC')->find_all(10)
 		)));
 		widget::add('footer', View_Mod::factory('forum/topics_list', array(
 			'mod_id'    => 'footer-topics-active',
-			'mod_class' => 'unit size1of4 cut topics',
+			'mod_class' => 'article unit size1of4 cut topics',
 			'title'     => __('New posts'),
 			'topics'    => ORM::factory('forum_topic')->order_by('last_post_id', 'DESC')->find_all(10)
 		)));
 		widget::add('footer', View_Mod::factory('blog/entries_list', array(
 			'mod_id'    => 'footer-blog-entries',
-			'mod_class' => 'unit size1of4 cut blogentries',
+			'mod_class' => 'article unit size1of4 cut blogentries',
 			'title'     => __('New blogs'),
 			'entries'   => ORM::factory('blog_entry')->find_latest(10),
 		)));

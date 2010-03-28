@@ -12,6 +12,12 @@
 <section class="<?= $class ?>"<?= $id ? ' id="' . $id . '"' : '' ?>>
 	<div class="container">
 
+		<?php if ($title): ?>
+		<header>
+			<h4><?= $title ?></h4>
+		</header>
+		<?php endif; ?>
+
 <?= $content ?>
 
 	</div>
