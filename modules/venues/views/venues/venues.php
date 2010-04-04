@@ -9,25 +9,21 @@
  */
 ?>
 
-<section class="mod venues">
-	<div>
-	<?php if (empty($venues)): ?>
+<?php if (empty($venues)): ?>
 
-	<?= __('No venues found') ?>
+<?= __('No venues found') ?>
 
-	<?php else: ?>
+<?php else: ?>
 
-		<?php	foreach ($venues as $city => $city_venues): ?>
-			<header class="city">
-				<h3 id="<?= html::specialchars(mb_strtolower($city)) ?>"><?= html::chars($city) ?></h3>
-			</header>
+	<?php	foreach ($venues as $city => $city_venues): ?>
+		<header class="city">
+			<h3 id="<?= html::specialchars(mb_strtolower($city)) ?>"><?= html::chars($city) ?></h3>
+		</header>
 
-			<?php foreach ($city_venues as $venue): ?>
-			<?= View::factory('venues/venue_mini', array('venue' => $venue)) ?>
-			<?php endforeach; ?>
+		<?php foreach ($city_venues as $venue): ?>
+		<?= View::factory('venues/venue_mini', array('venue' => $venue)) ?>
+		<?php endforeach; ?>
 
-		<?php	endforeach; ?>
+	<?php	endforeach; ?>
 
-	<?php endif; ?>
-	</div>
-</section>
+<?php endif; ?>

@@ -88,7 +88,7 @@ class Venues_Controller extends Website_Controller {
 		$cities = $this->country ? ORM::factory('country')->find($this->country)->cities->as_array() : false;
 		$venue_categories = ORM::factory('venue_category')->find_all();
 
-		widget::add('main', View::factory('venues/venue_categories', array('venue_categories' => $venue_categories, 'cities' => $cities)));
+		widget::add('main', View_Mod::factory('venues/venue_categories', array('venue_categories' => $venue_categories, 'cities' => $cities)));
 
 		$this->_side_views();
 	}
@@ -153,9 +153,12 @@ class Venues_Controller extends Website_Controller {
 
 			// Add city filters if more than 1 city
 			if ($num_cities > 1) {
-				widget::add('main', View::factory('generic/filters', array('filters' => $this->_build_filters($venues))));
+				widget::add('main', View_Mod::factory('generic/filters', array('filters' => $this->_build_filters($venues))));
 			}
-			widget::add('main', View::factory('venues/venues', array('venues' => $venues)));
+			widget::add('main', View_Mod::factory('venues/venues', array(
+				'mod_class' => 'venues articles',
+				'venues'    => $venues
+			)));
 		}
 
 		if (count($errors)) {
@@ -290,19 +293,19 @@ class Venues_Controller extends Website_Controller {
 
 			$events = ORM::factory('event')->find_upcoming(10, array('venue_id', '=', $venue->id));
 			if ($events->count()) {
-				widget::add('main', View::factory('events/events_list', array(
-					'id'     => 'venue-upcoming-events',
-					'title'  => __('Upcoming events'),
-					'events' => $events)
+				widget::add('main', View_Mod::factory('events/events_list', array(
+					'mod_id'    => 'venue-upcoming-events',
+					'mod_title' => __('Upcoming events'),
+					'events'    => $events)
 				));
 			}
 
 			$events = ORM::factory('event')->find_past(10, array('venue_id', '=', $venue->id));
 			if ($events->count()) {
-				widget::add('main', View::factory('events/events_list', array(
-					'id'     => 'venue-past-events',
-					'title'  => __('Past events'),
-					'events' => $events)
+				widget::add('main', View_Mod::factory('events/events_list', array(
+					'mod_id'    => 'venue-past-events',
+					'mod_title' => __('Past events'),
+					'events'    => $events)
 				));
 			}
 
@@ -465,7 +468,7 @@ class Venues_Controller extends Website_Controller {
 			$venue_categories = ORM::factory('venue_category')->find_all()->select_list('id', 'name');
 			$form['venue_category_id'] = $venue_categories;
 
-			widget::add('main', View::factory('venues/venue_edit', array('form' => $form, 'values' => $form_values, 'errors' => $form_errors)));
+			widget::add('main', View_Mod::factory('venues/venue_edit', array('form' => $form, 'values' => $form_values, 'errors' => $form_errors)));
 
 			// city autocomplete
 			$this->_autocomplete_city();
