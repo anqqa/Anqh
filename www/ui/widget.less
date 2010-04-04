@@ -31,6 +31,7 @@ h5 a                                   { color: @subheader-color; }
 time[title]:not([class*="date"]),
 abbr[title]                            { border-bottom: 1px dotted @separator-color; margin-bottom: -1px; }
 
+span.user,
 a.user                                 { font-weight: bold; }
 
 .tip                                   { color: @tip-color; font-size: 0.9em; font-style: italic; line-height: 1.552em; }
@@ -323,10 +324,20 @@ ul.bbcode_list li + li                 { border-top: none; padding-top: 0; }
 /***** /MONTH BROWSER *****/
 
 
+/***** events *****/
+
+.events ol.days                        { list-style: none; }
+.events ol.days li                     { overflow: hidden; }
+.events ol.days li article             { padding: 10px 0; }
+
+/***** /events *****/
+
+
 /***** forum *****/
 
 span.locked                            { color: #333; font-variant: small-caps; }
 blockquote                             { color: #777; }
 aside.post-old                         { color: @separator-color; text-align: center; }
+section.mod .divider                   { border-bottom: 1px dotted @body-background-color; border-top: 1px dotted @body-background-color; margin: 2px 0; text-align: center; }
 
 /***** /forum *****/

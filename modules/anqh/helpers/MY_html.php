@@ -294,7 +294,7 @@ class html extends html_Core {
 	/**
 	 * Returns user link
 	 *
-	 * @param	  mixed   $user  or uid
+	 * @param	  mixed   $user  User_Model, uid or username
 	 * @param	  string  $nick
 	 * @param   string  $class
 	 * @return  string

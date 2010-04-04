@@ -9,10 +9,6 @@
  */
 ?>
 
-<header>
-	<h4><?= $title ?></h4>
-</header>
-
 <?php	if (empty($entries)): ?>
 <span class="notice"><?= __('No blog entries found') ?></span>
 <?php else: ?>

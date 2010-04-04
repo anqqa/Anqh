@@ -17,8 +17,8 @@ class View_Mod_Core extends View {
 	 * @param   string  type of file: html, css, js, etc.
 	 * @return  object
 	 */
-	public static function factory($name = NULL, $data = NULL, $type = NULL) {
-		return new View_Mod($name, $data, $type);
+	public static function factory($name = null, $data = null, $type = null) {
+		return new self($name, $data, $type);
 	}
 
 
@@ -28,15 +28,16 @@ class View_Mod_Core extends View {
 	 * @param   string  $output
 	 * @return  string
 	 */
-	public function wrap($output) {
+	public function wrap(&$output) {
 		$data = array(
-			'id'      => arr::get($this->kohana_local_data, 'mod_id'),
-			'title'   => arr::get($this->kohana_local_data, 'mod_title'),
 
 			// Class name defaults to view name
-			'class'   => 'mod ' . arr::get($this->kohana_local_data, 'mod_class', strtr('_', '-', basename($this->kohana_filename, '.php'))),
+			'class'      => 'mod ' . arr::get($this->kohana_local_data, 'mod_class', strtr(basename($this->kohana_filename, '.php'), '_', '-')),
 
-			'content' => $output,
+			'id'         => arr::get($this->kohana_local_data, 'mod_id'),
+			'title'      => arr::get($this->kohana_local_data, 'mod_title'),
+			'pagination' => arr::get($this->kohana_local_data, 'pagination'),
+			'content'    => $output,
 		);
 
 		return (string)View::factory('generic/mod', $data);

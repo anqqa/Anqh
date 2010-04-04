@@ -102,7 +102,7 @@ class Forum_Controller extends Website_Controller {
 		$this->page_id_sub = 'newposts';
 
 		widget::add('main', View_Mod::factory('forum/topics', array(
-			'mod_class' => 'topics',
+			'mod_class' => 'topics articles',
 			'topics'    => ORM::factory('forum_topic')->find_active($this->config['topics_per_list']),
 			'area'      => true,
 		)));
@@ -119,7 +119,7 @@ class Forum_Controller extends Website_Controller {
 		$this->page_id_sub = 'newtopics';
 
 		widget::add('main', View_Mod::factory('forum/topics', array(
-			'mod_class' => 'topics',
+			'mod_class' => 'topics articles',
 			'topics'    => ORM::factory('forum_topic')->find_latest($this->config['topics_per_list']),
 		)));
 
@@ -205,12 +205,11 @@ class Forum_Controller extends Website_Controller {
 				$topics = $forum_area->forum_topics->find_all($per_page, $pagination->sql_offset);
 
 				if (count($topics)) {
-					widget::add('main', $pagination);
 					widget::add('main', View_Mod::factory('forum/topics', array(
-						'mod_class' => 'topics',
-						'topics'    => $topics
+						'mod_class'  => 'topics',
+						'topics'     => $topics,
+						'pagination' => $pagination,
 					)));
-					widget::add('main', $pagination);
 				} else {
 					$errors[] = __('No topics found');
 				}
@@ -759,6 +758,8 @@ class Forum_Controller extends Website_Controller {
 				$this->page_subtitle = __('Area :area. ', array(
 					':area' => html::anchor(url::model($forum_area), text::title($forum_area->name), array('title' => strip_tags($forum_area->description)))
 				));
+				$this->page_subtitle .= html::icon_value(array(':views' => $forum_topic->reads), ':views view', ':views views', 'views');
+				$this->page_subtitle .= html::icon_value(array(':posts' => $forum_topic->posts), ':posts post', ':posts posts', 'posts');
 
 				// Handle pagination
 				$per_page = $this->config['posts_per_page'];
@@ -771,14 +772,6 @@ class Forum_Controller extends Website_Controller {
 				}
 
 				$posts = $forum_topic->forum_posts->find_all($per_page, $pagination->sql_offset);
-				$this->page_subtitle .=
-					__2(':posts post', ':posts posts', $forum_topic->posts, array(
-						':posts' => '<var>' . num::format($forum_topic->posts) . '</var>'
-					)) . ', '
-					. __('page :page of :pages', array(
-						':page'  => '<var>' . $pagination->current_page . '</var>',
-						':pages' => '<var>' . $pagination->total_pages . '</var>'
-					));
 
 				// Update read counter if not owner
 				if (!$forum_topic->is_author($this->user)) {
@@ -787,9 +780,13 @@ class Forum_Controller extends Website_Controller {
 				}
 
 				if (count($posts)) {
-					widget::add('main', $pagination);
-					widget::add('main', View::factory('forum/topic', array('user' => $this->user, 'topic' => $forum_topic, 'posts' => $posts)));
-					widget::add('main', $pagination);
+					widget::add('main', View_Mod::factory('forum/topic', array(
+						'mod_class'  => 'topic articles topic-' . $forum_topic->id,
+						'user'       => $this->user,
+						'topic'      => $forum_topic,
+						'posts'      => $posts,
+						'pagination' => $pagination
+					)));
 				} else {
 					$errors[] = __('No posts found.');
 				}

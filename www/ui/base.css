@@ -18,7 +18,9 @@ ul.grouped li.group + li.group         { padding-top: 1.6667em; }
 li.line,
 /*section article                        { padding: 0.8333em 10px; }*/
 .groups .group                         { border: none; min-height: 5em; padding-bottom: 0; padding-top: 0; }
-section article .details               { opacity: .5; }
+section .divider,
+section article .details               { opacity: .2; }
+section .divider:hover,
 section article:hover .details         { opacity: 1; }
 section article .hidden                { float: right; visibility: hidden; }
 section article:hover .hidden          { visibility: visible; }
@@ -112,7 +114,6 @@ table.calendar td            { padding: 0; }
 
 /***** calendar *****/
 
-
 .calendar table                        { width: 100%; }
 .calendar table th,
 .calendar table td                     { padding: 0; text-align: right; width: 12.5%; }
@@ -120,9 +121,6 @@ table.calendar td            { padding: 0; }
 .calendar table .month                 { text-align: center; }
 .calendar table .inactive              { opacity: 0.50; }
 .calendar table .today                 { font-weight: bold; }
-
-.calendar ol.days                      { list-style: none; }
-
 
 #events .day time.date                 { float: left; }
 #events .day .city                     { margin-left: 80px; margin-bottom: 0.8333em; }

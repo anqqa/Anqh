@@ -54,6 +54,10 @@ h3                                     { font-size: 1.5em; line-height: 1.1111em
 h4                                     { font-size: 1.3333em; line-height: 1.25em; padding-top: 1.25em; }
 h5,
 h6                                     { font-size: 1.1667em; line-height: 1.4286em; padding-top: 1.4286em; }
+header h3,
+header h4,
+header h5,
+header h6                              { padding-top: 0; }
 h1 span                                { font-size: 0.5em; }
 h2 span                                { font-size: 0.571em; }
 h3 span                                { font-size: 0.666em; }

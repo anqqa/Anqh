@@ -132,8 +132,15 @@ class Events_Controller extends Website_Controller {
 
 		if ($events->count()) {
 			$this->page_subtitle = __2(':events event', ':events events', $events->count(), array(':events' => '<var>' . $events->count() . '</var>'));
-			widget::add('main', new View('generic/filters', array('filters' => $this->_build_filters($events))));
-			widget::add('main', new View('events/events', array('events' => $this->_build_events_list($events))));
+
+			widget::add('main', View_Mod::factory('generic/filters', array(
+				'filters' => $this->_build_filters($events)
+			)));
+
+			widget::add('main', View_Mod::factory('events/events', array(
+				'events'    => $this->_build_events_list($events)
+			)));
+
 		} else {
 //			$this->_error(false, Kohana::lang('events.error_events_not_found'));
 		}
@@ -613,8 +620,12 @@ $('input[name=venue_name]').autocomplete(venues, {
 
 		if ($events->count()) {
 			$this->page_subtitle = __2(':events event', ':events events', $events->count(), array(':events' => '<var>' . $events->count() . '</var>'));
-			widget::add('main', new View('generic/filters', array('filters' => $this->_build_filters($events))));
-			widget::add('main', new View('events/events', array('events' => $this->_build_events_list($events))));
+			widget::add('main', View_Mod::factory('generic/filters', array(
+				'filters' => $this->_build_filters($events)
+			)));
+			widget::add('main', View_Mod::factory('events/events', array(
+				'events'    => $this->_build_events_list($events)
+			)));
 		}
 
 		$this->_side_views();
@@ -645,8 +656,12 @@ $('input[name=venue_name]').autocomplete(venues, {
 
 		if ($events->count()) {
 			$this->page_subtitle = __2(':events event', ':events events', $events->count(), array(':events' => '<var>' . $events->count() . '</var>'));
-			widget::add('main', new View('generic/filters', array('filters' => $this->_build_filters($events))));
-			widget::add('main', new View('events/events', array('events' => $this->_build_events_list($events))));
+			widget::add('main', View_Mod::factory('generic/filters', array(
+				'filters' => $this->_build_filters($events)
+			)));
+			widget::add('main', View_Mod::factory('events/events', array(
+				'events'    => $this->_build_events_list($events)
+			)));
 		}
 
 		$this->_side_views();

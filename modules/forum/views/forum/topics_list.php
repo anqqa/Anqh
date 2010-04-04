@@ -9,10 +9,6 @@
  */
 ?>
 
-<header>
-	<h4><?= $title ?></h4>
-</header>
-
 <?php	if (empty($topics)): ?>
 <span class="notice"><?= __('No topics found') ?></span>
 <?php else: ?>

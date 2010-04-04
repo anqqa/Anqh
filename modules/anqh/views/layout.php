@@ -51,15 +51,13 @@
 			<section id="content" class="unit size5of6">
 
 				<header id="title">
-					<div class="container">
 
-						<h2><?= $page_title ?></h2>
-						<?= !empty($page_subtitle) ? '<p class="subtitle">' . $page_subtitle . '</p>' : '' ?>
+					<h2><?= $page_title ?></h2>
+					<?= !empty($page_subtitle) ? '<p class="subtitle">' . $page_subtitle . '</p>' : '' ?>
 
 <?= widget::get('actions') ?>
 <?= widget::get('tabs') ?>
 
-					</div>
 				</header><!-- #title -->
 
 

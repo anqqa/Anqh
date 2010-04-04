@@ -18,7 +18,11 @@
 		</header>
 		<?php endif; ?>
 
+<?php if ($pagination) echo $pagination; ?>
+
 <?= $content ?>
+
+<?php if ($pagination) echo $pagination; ?>
 
 	</div>
 </section><!-- <?= $class ?> -->

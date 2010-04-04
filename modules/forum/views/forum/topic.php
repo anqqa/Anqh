@@ -9,26 +9,23 @@
  */
 ?>
 
-<section class="mod topic topic-<?= $topic->id ?>">
-	<div>
-		<?php foreach ($posts as $post):
+<?php foreach ($posts as $post):
 
-			// Time difference between posts
-			$current = strtotime($post->created);
-			$difference = (isset($previous)) ? date::timespan($current, $previous, 'years,months') : array('years' => 0, 'months' => 0);
-			if ($difference['years'] || $difference['months']):
-		?>
+	// Time difference between posts
+	$current = strtotime($post->created);
+	$difference = (isset($previous)) ? date::timespan($current, $previous, 'years,months') : array('years' => 0, 'months' => 0);
+	if ($difference['years'] || $difference['months']):
+?>
 
-		<div class="divider post-old"><?= __('Previous post over :ago ago', array(':ago' => date::timespan_short($current, $previous))) ?></div>
+<div class="divider post-old"><?= __('Previous post over :ago ago', array(':ago' => date::timespan_short($current, $previous))) ?></div>
 
-		<?php endif;
-			$previous = $current;
+<?php endif;
+	$previous = $current;
 
-			echo View::factory('forum/post', array('topic' => $topic, 'post'  => $post, 'user'  => $user));
+	echo View::factory('forum/post', array('topic' => $topic, 'post'  => $post, 'user'  => $user));
 
-		endforeach; ?>
-	</div>
-</section>
+endforeach; ?>
+
 <?php
 echo html::script_source('
 $(function() {
