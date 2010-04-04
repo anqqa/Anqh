@@ -9,22 +9,18 @@
  */
 ?>
 
-<section class="mod gallery">
-	<div>
-		<ul>
+<ul>
 
-			<?php foreach ($gallery->find_images() as $image): ?>
+	<?php foreach ($gallery->find_images() as $image): ?>
 
-			<li class="unit size1of4">
-				<div class="thumb">
-					<?= html::anchor(url::model($gallery) . '/' . $image->id, html::image('http://' . Kohana::config('site.image_server') . '/kuvat/' . $gallery->dir . '/thumb_' . $image->legacy_filename), array('title' => html::chars($image->description))) ?>
-				</div>
-				<?= html::icon_value(array(':comments' => $image->comments), ':comments comment', ':comments comments', 'posts') ?>
-				<?= html::icon_value(array(':views' => $image->views), ':views view', ':views views', 'views') ?>
-			</li>
+	<li class="unit size1of4">
+		<div class="thumb">
+			<?= html::anchor(url::model($gallery) . '/' . $image->id, html::image('http://' . Kohana::config('site.image_server') . '/kuvat/' . $gallery->dir . '/thumb_' . $image->legacy_filename), array('title' => html::chars($image->description))) ?>
+		</div>
+		<?= html::icon_value(array(':comments' => $image->comments), ':comments comment', ':comments comments', 'posts') ?>
+		<?= html::icon_value(array(':views' => $image->views), ':views view', ':views views', 'views') ?>
+	</li>
 
-			<?php endforeach; ?>
+	<?php endforeach; ?>
 
-		</ul>
-	</div>
-</section>
+</ul>

@@ -206,7 +206,7 @@ class Forum_Controller extends Website_Controller {
 
 				if (count($topics)) {
 					widget::add('main', View_Mod::factory('forum/topics', array(
-						'mod_class'  => 'topics',
+						'mod_class'  => 'topics articles',
 						'topics'     => $topics,
 						'pagination' => $pagination,
 					)));
@@ -361,7 +361,7 @@ class Forum_Controller extends Website_Controller {
 			}
 
 			//$forum_groups = ORM::factory('forum_group')->find_all();
-			widget::add('main', View::factory('forum/groups', array('groups' => array($forum_group))));
+			widget::add('main', View_Mod::factory('forum/groups', array('mod_class' => 'groups articles', 'groups' => array($forum_group))));
 			$this->_side_views();
 		}
 

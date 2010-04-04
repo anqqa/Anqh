@@ -58,12 +58,12 @@ class Galleries_Controller extends Website_Controller {
 		$this->page_title .= ' - ' . text::title(date('F Y', mktime(null, null, null, $month, 1, $year)));
 
 		// Month browser
-		widget::add('wide', View::factory('galleries/month_browser', array('year' => $year, 'month' => $month, 'months' => $months)));
+		widget::add('wide', View_Mod::factory('galleries/month_browser', array('year' => $year, 'month' => $month, 'months' => $months)));
 
 		// Galleries
 		$galleries = Gallery_Model::find_by_year($year, $month);
 		if ($galleries->count()) {
-			widget::add('wide', new View('galleries/galleries', array('galleries' => $galleries)));
+			widget::add('wide', View_Mod::factory('galleries/galleries', array('galleries' => $galleries)));
 		}
 
 	}
@@ -184,7 +184,7 @@ class Galleries_Controller extends Website_Controller {
 			$this->page_subtitle = html::time(date::format('DMYYYY', $gallery->event_date), $gallery->event_date, true);
 
 			// Pictures
-			widget::add('main', View::factory('galleries/gallery', array('gallery' => $gallery)));
+			widget::add('main', View_Mod::factory('galleries/gallery', array('gallery' => $gallery)));
 
 			// Event information
 			if ($gallery->event) {
@@ -321,7 +321,7 @@ class Galleries_Controller extends Website_Controller {
 		$galleries = ORM::factory('gallery')->find_latest(10);
 
 		if ($galleries->count()) {
-			widget::add('wide', new View('galleries/galleries', array('galleries' => $galleries)));
+			widget::add('wide', new View_Mod('galleries/galleries', array('galleries' => $galleries)));
 		}
 
 	}
