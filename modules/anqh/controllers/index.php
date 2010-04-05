@@ -32,7 +32,13 @@ class Index_Controller extends Website_Controller {
 
 		// Shout
 		$shouts = ORM::factory('shout')->find_all(10);
-		widget::add('side', View_Mod::factory('generic/shout', array('mod_title' => __('Shouts'), 'shouts' => $shouts)));
+		widget::add('side', View_Mod::factory('generic/shout', array(
+			'mod_title' => __('Shouts'),
+			'shouts'    => $shouts,
+			'can_shout' => ORM::factory('shout')->has_access(Shout_Model::ACCESS_WRITE, $this->user),
+			'errors'    => array(),
+			'values'    => array(),
+		)));
 
 	}
 
