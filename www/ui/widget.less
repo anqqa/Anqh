@@ -100,62 +100,47 @@ input[type="submit"],
 a.action                               { background: @action-background; border-bottom: 1px solid rgba(0,0,0,0.25); .border-radius(5px); .box-shadow(0 1px 3px rgba(0,0,0,0.5)); display: inline-block; color: #fff; cursor: pointer; font-weight: bold; line-height: 1; opacity: 0.9; padding: 4px 1em 3px; position: relative; text-shadow: 0 -1px 1px rgba(0,0,0,0.25); }
 .ui-widget .ui-dialog-buttonpane .ui-state-default,
 input[type="submit"]                   { border-width: 0 0 1px 0; padding: 1px 1em 0; }
-.ui-widget .ui-dialog-buttonpane .ui-state-hover,
-button:hover,
-input[type="submit"]:hover,
-a.action:hover                         { opacity: 1; text-decoration: none; }
 .ui-widget .ui-dialog-buttonpane .ui-state-default:active,
 button:active,
 input[type="submit"]:active,
 a.action:active                        { outline: none; top: 1px; }
-section article .actions,
-.tab .actions,
-.container .actions,
-li.line .actions                       { opacity: 0.1; }
 .ui-widget .ui-dialog-buttonpane .ui-state-hover,
-section article:hover .actions,
-.tab .actions:hover,
-.container .actions:hover,
-li.line:hover .actions                 { opacity: 1; }
+button:hover,
+input[type="submit"]:hover,
+a.action:hover                         { opacity: 1; text-decoration: none; }
+
+section article .actions               { opacity: 0.1; }
+section article:hover .actions         { opacity: 1; }
 .ui-widget .ui-dialog-buttonpane .ui-state-default,
 section article:hover .actions a.action,
-.tab:hover .actions a.action,
-.container:hover .actions a.action,
-li.line:hover .actions a.action,
 button,
 input[type="submit"],
 a.action                               { background-color: @link-color; }
+section article .actions a.action      { background-color: @action-background; }
+
 section article:hover .actions a[class*="-add"],
-li.line:hover .actions a[class*="-add"],
 a[class*="-add"]                       { background-color: @positive-color; }
 .confirm-delete .ui-dialog-buttonpane button:first-of-type,
 section article:hover .actions a[class*="-delete"],
-li.line:hover .actions a[class*="-delete"],
 a.action.close,
 a[class*="-delete"]                    { background-color: @negative-color; }
 section article:hover .actions a[class*="-private"],
-li.line:hover .actions a[class*="-private"],
 a[class*="-private"]                   { background-color: @private-color; }
-/*
+
 .ui-widget .ui-dialog-buttonpane .ui-state-default:hover,
-section article.edit,
 button:hover,
 input[type="submit"]:hover,
 a.action:hover                         { .box-shadow(0 0 10px @link-color); }
 section article:hover .actions a[class*="-private"]:hover,
-li.line:hover .actions a[class*="-private"]:hover,
 a[class*="-private"]:hover             { .box-shadow(0 0 10px @private-color); }
 section article:hover .actions a[class*="-add"]:hover,
-li.line:hover .actions a[class*="-add"]:hover,
 a[class*="-add"]:hover                 { .box-shadow(0 0 10px @positive-color); }
 .confirm-delete,
 .confirm-delete .ui-dialog-buttonpane button:first-of-type:hover,
-section article.delete,
 section article:hover .actions a[class*="-delete"]:hover,
-li.line:hover .actions a[class*="-delete"]:hover,
 a.action.close:hover,
 a[class*="-delete"]:hover              { .box-shadow(0 0 10px @negative-color); }
-*/
+
 form .buttons                          { display: block; margin-bottom: 1em; margin-top: 1em; text-align: center; }
 
 .pills li                              { display: inline; }
@@ -345,5 +330,6 @@ span.locked                            { color: #333; font-variant: small-caps; 
 blockquote                             { color: #777; }
 aside.post-old                         { color: @separator-color; text-align: center; }
 section.mod .divider                   { border-bottom: 1px dotted @body-background-color; border-top: 1px dotted @body-background-color; margin: 2px 0; text-align: center; }
+/*article.post header                    { min-height: 55px; height: 55px; height: auto; overflow: visible; }*/
 
 /***** /forum *****/
