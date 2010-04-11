@@ -9,33 +9,30 @@
  */
 ?>
 
-<section class="mod topic-edit">
-	<div>
-		<?= form::open() ?>
+<?= form::open() ?>
 
-		<fieldset>
-			<ul>
+<fieldset>
+	<ul>
 
-				<?php if ($topics === false): ?>
-				<?= form::input_wrap(array('name' => 'name', 'maxlength' => 100), $topic, '', __('Topic'), $errors) ?>
-				<?php else: ?>
-				<?= form::dropdown_wrap('bind_id', $topics, $topic, '', __('Topic'), $errors) ?>
-				<?php endif; ?>
+		<?php if ($topics === false): ?>
+		<?= form::input_wrap(array('name' => 'name', 'maxlength' => 100), $topic, '', __('Topic'), $errors) ?>
+		<?php else: ?>
+		<?= form::dropdown_wrap('bind_id', $topics, $topic, '', __('Topic'), $errors) ?>
+		<?php endif; ?>
 
-				<?= form::textarea_wrap(array('name' => 'post', 'id' => 'post', 'rows' => 20, 'cols' => 25), $topic, '', true, __('Post'), $errors) ?>
+		<?= form::textarea_wrap(array('name' => 'post', 'id' => 'post', 'rows' => 20, 'cols' => 25), $topic, '', true, __('Post'), $errors) ?>
 
-			</ul>
-		</fieldset>
+	</ul>
+</fieldset>
 
-		<fieldset>
-			<?= form::csrf() ?>
-			<?= empty($topic['id']) ? '' : form::hidden('id', $topic['id']) ?>
-			<?= form::submit(false, __('Save')) ?>
-			<?= html::anchor($_SESSION['history'], __('Cancel')) ?>
-		</fieldset>
+<fieldset>
+	<?= form::csrf() ?>
+	<?= empty($topic['id']) ? '' : form::hidden('id', $topic['id']) ?>
+	<?= form::submit(false, __('Save')) ?>
+	<?= html::anchor(url::back('/forum', true), __('Cancel')) ?>
+</fieldset>
 
-		<?= form::close() ?>
-	</div>
-</section>
+<?= form::close() ?>
+
 <?php
 echo html::script_source('$(function() { $("#post").markItUp(bbCodeSettings); });');

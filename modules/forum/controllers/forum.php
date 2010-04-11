@@ -635,7 +635,7 @@ class Forum_Controller extends Website_Controller {
 							return;
 						}
 
-						URL::redirect(url::model($forum_topic));
+						url::redirect(url::model($forum_topic) . '/page/last/#last');
 					} else {
 						$form_errors = $post->errors();
 					}
@@ -653,11 +653,11 @@ class Forum_Controller extends Website_Controller {
 		// show form
 		if (empty($errors)) {
 			$view_editor = View::factory('forum/post_edit', array(
-					'topic'     => $form_values_topic,
-					'post'      => $form_values_post,
-					'errors'    => $form_errors,
-					'parent_id' => $parent_id,
-				));
+				'topic'     => $form_values_topic,
+				'post'      => $form_values_post,
+				'errors'    => $form_errors,
+				'parent_id' => $parent_id,
+			));
 			if (request::is_ajax()) {
 
 				// AJAX requests show immediately
@@ -747,7 +747,7 @@ class Forum_Controller extends Website_Controller {
 
 			// Logged user actions
 			if ($forum_topic->has_access(Forum_Topic_Model::ACCESS_WRITE)) {
-				$this->page_actions[] = array('link' => url::model($forum_topic) . '/post',   'text' => __('Reply to topic'),  'class' => 'topic-post');
+				$this->page_actions[] = array('link' => '#reply', 'text' => __('Reply to topic'), 'class' => 'topic-post');
 			}
 
 			// Check access and proceed
@@ -780,6 +780,8 @@ class Forum_Controller extends Website_Controller {
 				}
 
 				if (count($posts)) {
+
+					// Posts
 					widget::add('main', View_Mod::factory('forum/topic', array(
 						'mod_class'  => 'topic articles topic-' . $forum_topic->id,
 						'user'       => $this->user,
@@ -787,6 +789,19 @@ class Forum_Controller extends Website_Controller {
 						'posts'      => $posts,
 						'pagination' => $pagination
 					)));
+
+					// Reply
+					if ($forum_topic->has_access(Forum_Topic_Model::ACCESS_WRITE)) {
+						widget::add('main', View_Mod::factory('forum/post_edit', array(
+							'mod_id'    => 'reply',
+							'mod_title' => __('Reply'),
+							'form_post' => url::model($forum_topic) . '/post',
+							'post'      => array('post_id' => 0),
+							'errors'    => array(),
+							'parent_id' => 0,
+						)));
+					}
+
 				} else {
 					$errors[] = __('No posts found.');
 				}
@@ -985,7 +1000,7 @@ class Forum_Controller extends Website_Controller {
 			));
 
 			widget::add('head', html::script(array('js/jquery.markitup.pack', 'js/markitup.bbcode')));
-			widget::add('main', View::factory('forum/topic_edit', array(
+			widget::add('main', View_Mod::factory('forum/topic_edit', array(
 				'topic'  => $form_values_topic,
 				'topics' => $form_topics,
 				'post'   => $form_values_post,

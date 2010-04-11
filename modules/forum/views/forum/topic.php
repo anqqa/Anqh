@@ -51,7 +51,7 @@ $(function() {
 		});
 	});
 
-	$("section.post-edit form").live("submit", function(e) {
+	$("section.post-content form").live("submit", function(e) {
 		e.preventDefault();
 		var post = $(this).closest("article");
 		$.post($(this).attr("action"), $(this).serialize(), function(data) {
@@ -59,7 +59,7 @@ $(function() {
 		});
 	});
 
-	$("section.post-edit a").live("click", function(e) {
+	$("section.post-content form a").live("click", function(e) {
 		e.preventDefault();
 		var post = $(this).closest("article");
 		$.get($(this).attr("href"), function(data) {
