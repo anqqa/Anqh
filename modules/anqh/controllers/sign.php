@@ -115,6 +115,7 @@ class Sign_Controller extends Website_Controller {
 		if (request::method() == 'post') {
 			$post = $this->input->post();
 			$post['email'] = $invitation->email;
+			$post['username_clean'] = utf8::clean($post['username']);
 			if ($user->validate($post, false, null, null, array('rules' => 'register', 'callbacks' => 'register'))) {
 				$invitation->delete();
 

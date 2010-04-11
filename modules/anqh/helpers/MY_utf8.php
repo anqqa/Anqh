@@ -10,6 +10,26 @@
 class utf8 extends utf8_Core {
 
 	/**
+	 * Transliterate UTF8 text to lowercase 7bit ASCII, 0-9a-z
+	 *
+	 * @param   string  $str
+	 * @return  string
+	 */
+	public static function clean($str) {
+		$str = mb_strtolower(text::strip_ascii_ctrl($str));
+		if (!text::is_ascii($str)) {
+			$str = strtolower(text::transliterate_to_ascii($str));
+		}
+		if (!text::is_ascii($str)) {
+			$str = text::strip_non_ascii($str);
+		}
+
+		return $str;
+		// return strtolower(iconv(Kohana::CHARSET, 'ASCII//TRANSLIT//IGNORE', $str));
+	}
+
+
+	/**
 	 * Makes a UTF-8 string lowercase.
 	 *
 	 * @param   string   mixed case string

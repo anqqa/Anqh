@@ -52,11 +52,13 @@ class User_Model extends Modeler_ORM {
 	protected $callbacks_register = array(
 		'email'            => array('unique'),
 		'username'         => array('unique'),
+		'username_clean'   => array('unique'),
 	);
 	protected $rules_register = array(
 		'email'            => array('required', 'length[4,127]', 'valid::email'),
-		'username'         => array('required', 'length[4,32]', 'chars[a-zA-Z0-9_.]'),
-		'password'         => array('required', 'length[5,128]'),
+		'username'         => array(), // Loaded in construct
+		'password'         => array(), // Loaded in construct
+		'username_clean'   => array('required'),
 		//'password_confirm' => array('matches[password'),
 	);
 	protected $rules_password = array(
@@ -470,9 +472,15 @@ class User_Model extends Modeler_ORM {
 
 		}
 
-		// Then try others (user_id, username, email)
+		// Then try others (user_id, email, username_clean)
 		if (!$user && $id !== true && !empty($id)) {
-			$id = (is_numeric($id) || empty($id)) ? (int)$id : mb_strtolower($id);
+			if (is_numeric($id) || empty($id)) {
+				$id = (int)$id;
+			} else if (valid::email($id)) {
+				$id = mb_strtolower($id);
+			} else {
+				$id = utf8::clean($id);
+			}
 			if (isset(self::$users[$id])) {
 
 				// Found from static cache
@@ -489,7 +497,7 @@ class User_Model extends Modeler_ORM {
 				if (is_int($id)) {
 					$user = $this->find($id);
 				} else {
-					$user = $this->where(new Database_Expression('LOWER(' . $this->db->quote_table($this->table_name) . '.' . $this->unique_key($id) . ') = LOWER(' . $this->db->quote($id) . ')'))->find();
+					$user = $this->where((valid::email($id) ? 'email' : 'username_clean'), '=', $id)->find();
 				}
 				$cache = true;
 
@@ -498,7 +506,7 @@ class User_Model extends Modeler_ORM {
 
 		// If user found, add to cache(s)
 		if ($user && $user->loaded()) {
-			self::$users[$user->id] = self::$users[mb_strtolower($user->username)] = self::$users[mb_strtolower($user->email)] = $user;
+			self::$users[$user->id] = self::$users[utf8::clean($user->username)] = self::$users[mb_strtolower($user->email)] = $user;
 			if ($cache) {
 				$this->cache->set($this->cache->key('user', $user->id), serialize($user), null, self::$cache_max_age);
 			}
