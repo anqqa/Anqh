@@ -59,6 +59,7 @@ $(function() {
 		$("#post-" + post[1] + " .actions").fadeOut();
 		$.get(href, function(data) {
 			article.append(data);
+			window.scrollTo(0, article.find("#quote").offset().top - 20);
 		});
 	});
 
