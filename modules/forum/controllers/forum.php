@@ -652,7 +652,9 @@ class Forum_Controller extends Website_Controller {
 
 		// show form
 		if (empty($errors)) {
-			$view_editor = View::factory('forum/post_edit', array(
+			$view_editor = View_Mod::factory('forum/post_edit', array(
+				'mod_id'    => $quote ? 'quote' : ($parent_id ? 'reply' : 'post-edit'),
+				'mod_title' => $quote ? __('Quote') : ($parent_id ? __('Reply') : null),
 				'topic'     => $form_values_topic,
 				'post'      => $form_values_post,
 				'errors'    => $form_errors,

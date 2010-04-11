@@ -51,6 +51,17 @@ $(function() {
 		});
 	});
 
+	$("a.post-quote").live("click", function(e) {
+		e.preventDefault();
+		var href = $(this).attr("href");
+		var post = href.match(/([0-9]*)\\/quote/);
+		var article = $(this).closest("article");
+		$("#post-" + post[1] + " .actions").fadeOut();
+		$.get(href, function(data) {
+			article.append(data);
+		});
+	});
+
 	$("section.post-content form").live("submit", function(e) {
 		e.preventDefault();
 		var post = $(this).closest("article");
@@ -65,6 +76,14 @@ $(function() {
 		$.get($(this).attr("href"), function(data) {
 			post.replaceWith(data);
 		});
+	});
+
+	$("section#quote form a").live("click", function(e) {
+		e.preventDefault();
+		var section = $(this).closest("section");
+		var article = section.closest("article");
+		section.slideUp(null, function() { section.remove(); });
+		article.find(".actions").fadeIn();
 	});
 });
 ');

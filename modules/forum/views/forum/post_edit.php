@@ -26,7 +26,7 @@ $post_id = (empty($post['id']) ? 'post-new-content' : 'post-' . $post['id'] . '-
 	<?= empty($post['id']) ? '' : form::hidden('id', $post['id']) ?>
 	<?= empty($parent_id) ? '' : form::hidden('parent_id', $parent_id) ?>
 	<?= form::submit(false, __('Save')) ?>
-	<?= html::anchor(request::is_ajax() ? 'forum/post/' . $post['id'] : url::back('/forum', true), __('Cancel')) ?>
+	<?= html::anchor(request::is_ajax() ? 'forum/post/' . ($post['id'] ? $post['id'] : $parent_id) : url::back('/forum', true), __('Cancel')) ?>
 </fieldset>
 
 <?= form::close() ?>
