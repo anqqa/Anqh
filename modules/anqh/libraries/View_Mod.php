@@ -28,7 +28,7 @@ class View_Mod_Core extends View {
 	 * @param   string  $output
 	 * @return  string
 	 */
-	public function wrap(&$output) {
+	public function wrap($output) {
 		$data = array(
 
 			// Class name defaults to view name
