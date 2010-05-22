@@ -21,8 +21,13 @@ class online_hook {
 	 * Save current user to online cache
 	 */
 	public function online() {
-		$user = Visitor::instance()->get_user();
 
+		// Skip when signing in/out to avoid strange Fatal error
+		if (strpos(URI::instance()->string(), 'sign') === 0) {
+			return;
+		}
+
+		$user = Visitor::instance()->get_user();
 		$online = new Online_User_Model($_SESSION['session_id']);
 		if (!$online->loaded()) {
 			$online->session_id = $_SESSION['session_id'];
