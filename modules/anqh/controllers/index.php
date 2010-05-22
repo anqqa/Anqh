@@ -40,6 +40,21 @@ class Index_Controller extends Website_Controller {
 			'values'    => array(),
 		)));
 
+		// Online
+		$guests = Online_User_Model::get_guest_count();
+		$online = Online_User_Model::find_online_users();
+		$counts = array();
+		if ($guests) {
+			$counts[] = __2(':guests guest', ':guests guests', $guests, array(':guests' => $guests));
+		}
+		if (count($online)) {
+			$counts[] = __2(':members member', ':members members', count($online), array(':members' => count($online)));
+		}
+		widget::add('side', View_Mod::factory('generic/users', array(
+			'mod_title' => __('Online') . ': ' . implode(', ', $counts),
+			'viewer'    => $this->user,
+			'users'     => $online,
+		)));
 	}
 
 }
