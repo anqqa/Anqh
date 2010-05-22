@@ -1,4 +1,4 @@
-<?php
+<?php defined('SYSPATH') OR die('No direct access allowed.');
 /**
  * Anqh extended HTML5 helper class.
  *
@@ -18,7 +18,7 @@ class html extends html_Core {
 	 * @return  string
 	 */
 	public static function avatar($avatar, $title = '', $mini = false) {
-		if (empty($avatar) || strpos($avatar, ':') || strpos($avatar, '/') === false) $avatar = 'avatar/unknown.png';
+		if (empty($avatar) || /*strpos($avatar, ':') ||*/ strpos($avatar, '/') === false) $avatar = 'avatar/unknown.png';
 
 		if (empty($title)) {
 			return '<div class="avatar">' . html::image(array('src' => $avatar), 'Avatar') . '</div>';
