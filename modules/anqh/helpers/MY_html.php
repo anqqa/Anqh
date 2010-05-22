@@ -40,7 +40,7 @@ class html extends html_Core {
 
 		// Get date elements
 		$date = !is_numeric($date) ? strtotime($date) : (int)$date;
-		list($weekday, $day, $month, $year) = split(' ', date('D d M y', $date));
+		list($weekday, $day, $month, $year) = explode(' ', date('D d M y', $date));
 		if ($show_year) {
 			$month .= " '" . $year;
 		}

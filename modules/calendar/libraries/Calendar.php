@@ -313,13 +313,15 @@ class Calendar_Core extends Event_Subject {
 		}
 	}
 
+	public function notify() {}
+	
 	/**
 	 * Resets the observed data and sends a notify to all attached events.
 	 *
 	 * @param   array  UNIX timestamp
 	 * @return  void
 	 */
-	public function notify($data)
+	public function notify2($data)
 	{
 		// Reset observed data
 		$this->observed_data = array
@@ -329,7 +331,7 @@ class Calendar_Core extends Event_Subject {
 		);
 
 		// Send a notify
-		parent::notify($data);
+		parent::notify2($data);
 	}
 
 	/**
