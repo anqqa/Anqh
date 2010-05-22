@@ -13,7 +13,7 @@ class online_hook {
 	 * Hook the recorder
 	 */
 	public function __construct() {
-		Event::add('system.pre_controller', array($this, 'online'));
+		Event::add('system.send_headers', array($this, 'online'));
 	}
 
 
