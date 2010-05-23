@@ -24,6 +24,8 @@ class Online_User_Model extends ORM {
 	 * @return  array
 	 */
 	public static function find_online_users() {
+		self::gc();
+
 		$online = array();
 		$users = db::build()->select('user_id')->from('online_users')->where('user_id', '>', 0)->execute()->as_array();
 		foreach ($users as $user) {
@@ -35,12 +37,31 @@ class Online_User_Model extends ORM {
 
 
 	/**
+	 * Garbage collect
+	 *
+	 * @static
+	 */
+	public static function gc() {
+		static $collected = false;
+
+		// Remove users idle for over 15 minutes
+		if (!$collected) {
+			$collected = true;
+			db::build()->delete('online_users', array(array('last_activity', '<', time() - 60 * 15)))->execute();
+		}
+
+	}
+
+
+	/**
 	 * Get number of guests online
 	 *
 	 * @static
 	 * @return  integer
 	 */
 	public static function get_guest_count() {
+		self::gc();
+
 		return (int)ORM::factory('online_user')->where('user_id', 'IS', null)->count_all();
 	}
 
